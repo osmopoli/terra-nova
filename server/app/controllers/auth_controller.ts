@@ -3,6 +3,7 @@ import { errors as authErrors } from '@adonisjs/auth'
 import User from '#models/user'
 import { loginValidator, registerValidator } from '#validators/auth'
 import { DEFAULT_ROLE } from '#constants/domain'
+import { checkLock, lockMessage, recordAttempt } from '#services/login_guard'
 
 const TOKEN_TTL = '30 days'
 
@@ -18,13 +19,27 @@ export default class AuthController {
 
   async login({ request, response }: HttpContext) {
     const { email, password } = await request.validateUsing(loginValidator)
+    const ip = request.ip()
+
+    const lock = await checkLock(email, ip)
+    if (lock) {
+      await recordAttempt(email, ip, 'bloque', lock.scope)
+      const retryAfter = Math.ceil((lock.until - Date.now()) / 1000)
+      response.header('Retry-After', String(retryAfter))
+      return response.tooManyRequests({
+        error: lockMessage(lock.until),
+        retryAfterSeconds: retryAfter,
+      })
+    }
 
     try {
       const user = await User.verifyCredentials(email, password)
+      await recordAttempt(email, ip, 'succes')
       const token = await User.accessTokens.create(user, ['*'], { expiresIn: TOKEN_TTL })
       return { user, token: token.value!.release() }
     } catch (error) {
       if (error instanceof authErrors.E_INVALID_CREDENTIALS) {
+        await recordAttempt(email, ip, 'echec')
         return response.badRequest({ errors: [{ message: 'E-mail ou mot de passe incorrect.' }] })
       }
       throw error
