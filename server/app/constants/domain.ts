@@ -17,14 +17,11 @@
 export const LIMITS = {
   fullName: 80,
   email: 254,
-<<<<<<< HEAD
   contactSubject: 120,
   contactMessage: 2000,
-=======
   newsTitle: 160,
   newsSummary: 300,
   newsBody: 10000,
->>>>>>> 7e8acfd (WEBC-8: ajoute l'API des actualités de la ville)
 } as const
 
 /** Catégories des actualités de la ville (colonne news_posts.category). */
@@ -47,7 +44,6 @@ export const ROLE_VALUES = Object.keys(ROLES) as Role[]
 /** Rôle attribué à toute inscription publique. */
 export const DEFAULT_ROLE: Role = 'citoyen'
 
-<<<<<<< HEAD
 /**
  * Profils autorisés par espace protégé (middleware `role`, 403 sinon).
  * - agent : outils des agents municipaux (l'admin y a aussi accès) ;
@@ -92,19 +88,12 @@ export const SERVICE_CATEGORIES = {
 } as const
 export type ServiceCategory = keyof typeof SERVICE_CATEGORIES
 export const SERVICE_CATEGORY_VALUES = Object.keys(SERVICE_CATEGORIES) as ServiceCategory[]
-=======
-/** Profils autorisés à publier des actualités (un agent ne modifie que les siennes). */
-export const NEWS_PUBLISHER_ROLES = ['agent', 'admin'] as const satisfies readonly Role[]
->>>>>>> 7e8acfd (WEBC-8: ajoute l'API des actualités de la ville)
 
 /** Listes fermées exposées au front par GET /api/meta (clé -> libellé). */
 export const META: Record<string, Record<string, string>> = {
   roles: ROLES,
-<<<<<<< HEAD
   contactServices: CONTACT_SERVICES,
   contactStatuses: CONTACT_STATUSES,
   serviceCategories: SERVICE_CATEGORIES,
-=======
   newsCategories: NEWS_CATEGORIES,
->>>>>>> 7e8acfd (WEBC-8: ajoute l'API des actualités de la ville)
 }
