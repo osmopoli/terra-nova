@@ -94,6 +94,7 @@ router
       .group(() => {
         router.get('/users', [AdminUsersController, 'index'])
         router.patch('/users/:id/role', [AdminUsersController, 'updateRole'])
+        router.get('/login-attempts', [AdminUsersController, 'loginAttempts'])
         router.post('/webcup/refresh', [WebcupController, 'refresh'])
       })
       .prefix('/admin')
