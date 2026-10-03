@@ -18,6 +18,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   HOST: Env.schema.string({ format: 'host' }),
   APP_NAME: Env.schema.string.optional(),
   WEBCUP_API_KEY: Env.schema.string.optional(),
+  DEMO_PASSWORD: Env.schema.string.optional(),
   LOG_LEVEL: Env.schema.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']),
 
   /*

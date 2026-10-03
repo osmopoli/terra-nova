@@ -2,13 +2,15 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { errors as authErrors } from '@adonisjs/auth'
 import User from '#models/user'
 import { loginValidator, registerValidator } from '#validators/auth'
+import { DEFAULT_ROLE } from '#constants/domain'
 
 const TOKEN_TTL = '30 days'
 
 export default class AuthController {
   async register({ request, response }: HttpContext) {
     const payload = await request.validateUsing(registerValidator)
-    const user = await User.create(payload)
+    // Inscription publique : toujours citoyen, le rôle n'est jamais lu depuis le corps.
+    const user = await User.create({ ...payload, role: DEFAULT_ROLE })
     const token = await User.accessTokens.create(user, ['*'], { expiresIn: TOKEN_TTL })
 
     return response.created({ user, token: token.value!.release() })

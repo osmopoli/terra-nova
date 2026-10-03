@@ -19,5 +19,18 @@ export const LIMITS = {
   email: 254,
 } as const
 
+/** Profils de la plateforme (colonne users.role). */
+export const ROLES = {
+  citoyen: 'Citoyen',
+  agent: 'Agent municipal',
+  admin: 'Administrateur',
+} as const
+export type Role = keyof typeof ROLES
+export const ROLE_VALUES = Object.keys(ROLES) as Role[]
+/** Rôle attribué à toute inscription publique. */
+export const DEFAULT_ROLE: Role = 'citoyen'
+
 /** Listes fermées exposées au front par GET /api/meta (clé -> libellé). */
-export const META: Record<string, Record<string, string>> = {}
+export const META: Record<string, Record<string, string>> = {
+  roles: ROLES,
+}
