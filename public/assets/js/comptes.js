@@ -117,7 +117,7 @@
         g.n++;
         NT.auth.ecrireJournal('echec_mdp', email, cle);
         let restantes = 5 - g.n;
-        if (g.n >= 5) { g.fin = Date.now() + 5 * 60000; g.n = 0; restantes = 0; NT.auth.ecrireJournal('verrouillage', email, cle + ' : 5 min'); }
+        if (g.n >= 5) { g.fin = Date.now() + 5 * 60000; g.n = 0; restantes = 0; }   // le verrouillage est journalisé par le serveur
         ecrire(g); return restantes;
       },
       ok() { try { sessionStorage.removeItem(k); } catch (e) { /* ignoré */ } }
@@ -561,7 +561,7 @@
       const diff = [['Prénom', avantU.prenom, v('p-prenom')], ['Nom', avantU.nom, v('p-nom')], ['Téléphone', avantU.telephone || '', v('p-tel')], ['Quartier', avantU.quartier || '', v('p-quartier')],
         ['Alertes du quartier', avantU.alertesQuartier !== false ? 'oui' : 'non', $('#p-alertes').checked ? 'oui' : 'non'], ['Personne vulnérable', avantU.vulnerable ? 'oui' : 'non', $('#p-vulnerable').checked ? 'oui' : 'non']]
         .filter(x => x[1] !== x[2]);
-      if (diff.length) NT.audit.log({ categorie: 'compte', action: 'Modification du profil', objetId: avantU.email, objetLibelle: nomComplet(avantU),
+      if (diff.length) NT.audit.log({ categorie: 'compte', action: 'Modification du profil', objetId: avantU.id, objetLibelle: nomComplet(avantU),
         avant: diff.map(x => x[0] + ' : ' + (x[1] || '—')).join(' ; '), apres: diff.map(x => x[0] + ' : ' + (x[2] || '—')).join(' ; ') });
       NT.store.update('utilisateurs', moi().id, { prenom: v('p-prenom'), nom: v('p-nom'), telephone: v('p-tel'), quartier: v('p-quartier'), langue,
         alertesQuartier: $('#p-alertes').checked, vulnerable: $('#p-vulnerable').checked, profilComplet: !!(v('p-quartier') && v('p-tel')) });
@@ -672,7 +672,7 @@
             if (!ok) return;
             const cible = moi();
             if (!cible || cible.role !== 'citoyen') return;
-            NT.audit.log({ categorie: 'compte', action: 'Suppression du compte par son titulaire', objetId: cible.email, objetLibelle: nomComplet(cible), avant: 'Actif', apres: 'Supprimé', motif: 'Demande de l’utilisateur' });
+            NT.audit.log({ categorie: 'compte', action: 'Suppression du compte par son titulaire', objetId: cible.id, objetLibelle: nomComplet(cible), avant: 'Actif', apres: 'Supprimé', motif: 'Demande de l’utilisateur' });
             NT.auth.supprimerCompte(cible);
             g.ok();
             try { sessionStorage.setItem('nt:compteSupprime', '1'); } catch (x) { /* ignoré */ }
