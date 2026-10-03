@@ -26,7 +26,7 @@ function Route({ session }) {
   if (pathname === '/contact') return <ContactPage user={user} meta={meta} onExpired={expire} />;
   if (pathname === '/services') return <ServicesPage meta={meta} />;
   const serviceMatch = pathname.match(/^\/services\/([a-z0-9-]+)$/);
-  if (serviceMatch) return <ServicePage slug={serviceMatch[1]} meta={meta} />;
+  if (serviceMatch) return <ServicePage slug={serviceMatch[1]} meta={meta} user={user} />;
   if (pathname === '/connexion' || pathname === '/profil') {
     return (
       <div className="flex flex-col items-center gap-6">

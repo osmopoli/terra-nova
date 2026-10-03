@@ -1,21 +1,27 @@
+import { useState } from 'react';
 import { api } from '../api/client.js';
 import { labelOf } from '../lib/constants.js';
 import { Link } from '../lib/router.jsx';
 import { useAsync } from '../lib/useAsync.js';
 import NotFoundPage from './NotFoundPage.jsx';
 import LanguageSwitcher from '../components/LanguageSwitcher.jsx';
+import ServiceTranslationForm from '../components/ServiceTranslationForm.jsx';
 import { serviceUi, useContentLanguage } from '../lib/contentLanguage.js';
 
 // Fiche détail d'un service municipal : description, horaires, contact, démarches.
-export default function ServicePage({ slug, meta }) {
+export default function ServicePage({ slug, meta, user }) {
   const [lang, setLang] = useContentLanguage();
   const t = serviceUi(lang);
+  const [revision, setRevision] = useState(0);
   const { status, data: service, error } = useAsync(
     () => api(`/services/${slug}?lang=${lang}`),
-    [slug, lang],
+    [slug, lang, revision],
   );
 
-  if (status === 'loading') return <p className="text-ink-muted">Chargement du service...</p>;
+  // Rechargement après une saisie admin : on garde la fiche affichée (et le formulaire monté).
+  if (status === 'loading' && service?.slug !== slug) {
+    return <p className="text-ink-muted">Chargement du service...</p>;
+  }
   if (status === 'error') {
     if (error.status === 404) return <NotFoundPage message="Ce service n'existe pas." />;
     return (
@@ -102,6 +108,17 @@ export default function ServicePage({ slug, meta }) {
           </section>
         </aside>
       </div>
+
+      {user?.role === 'admin' && (
+        <ServiceTranslationForm
+          slug={slug}
+          languages={meta.contentLanguages}
+          onSaved={(saved) => {
+            setLang(saved);
+            setRevision((r) => r + 1);
+          }}
+        />
+      )}
     </article>
   );
 }

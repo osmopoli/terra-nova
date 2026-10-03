@@ -23,6 +23,8 @@ const AdminUsersController = () => import('#controllers/admin_users_controller')
 const WebcupController = () => import('#controllers/webcup_controller')
 const ContactMessagesController = () => import('#controllers/contact_messages_controller')
 const ServicesController = () => import('#controllers/services_controller')
+const AdminServiceTranslationsController = () =>
+  import('#controllers/admin_service_translations_controller')
 
 router
   .group(() => {
@@ -97,6 +99,15 @@ router
         router.patch('/users/:id/role', [AdminUsersController, 'updateRole'])
         router.get('/login-attempts', [AdminUsersController, 'loginAttempts'])
         router.post('/webcup/refresh', [WebcupController, 'refresh'])
+        // F27 : traduction des contenus d'un service (ex. version EN).
+        router.get('/services/:slug/translations/:lang', [
+          AdminServiceTranslationsController,
+          'show',
+        ])
+        router.put('/services/:slug/translations/:lang', [
+          AdminServiceTranslationsController,
+          'update',
+        ])
       })
       .prefix('/admin')
       .use([middleware.auth(), middleware.role({ roles: ACCESS.admin })])
