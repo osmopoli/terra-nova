@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { api } from '../api/client.js';
+import AgentMessages from '../components/AgentMessages.jsx';
 import { APP_NAME } from '../lib/constants.js';
 import ListState from '../components/ListState.jsx';
 
@@ -171,6 +172,8 @@ export default function AgentPage({ onExpired }) {
           Les besoins transmis par l’API Nova Terra, mis à jour en continu.
         </p>
       </div>
+
+      <AgentMessages onExpired={onExpired} />
 
       {/* Échec d'un rafraîchissement : la dernière liste reçue reste affichée sous l'alerte. */}
       {error && data && (
