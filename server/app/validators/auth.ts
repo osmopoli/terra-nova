@@ -51,3 +51,10 @@ export const updateProfileValidator = vine.compile(
   })
 )
 updateProfileValidator.messagesProvider = messages
+
+export const deleteAccountValidator = vine.compile(
+  vine.object({
+    password: vine.string().maxLength(PASSWORD.max),
+  })
+)
+deleteAccountValidator.messagesProvider = messages

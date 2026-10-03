@@ -79,3 +79,110 @@ test.group('Auth', (group) => {
     meta.assertStatus(200)
   })
 })
+
+test.group('Suppression de compte', (group) => {
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+
+  async function signUp(email: string) {
+    const user = await User.create({
+      fullName: 'Citoyen Test',
+      email,
+      password: 'motdepasse123',
+      role: 'citoyen',
+    })
+    const token = await User.accessTokens.create(user)
+    return { user, token: token.value!.release() }
+  }
+
+  test('sans jeton : 401', async ({ client }) => {
+    const response = await client.delete('/api/me').json({ password: 'motdepasse123' })
+    response.assertStatus(401)
+  })
+
+  test('mot de passe faux : 422 et compte conservé', async ({ client, assert }) => {
+    const { user, token } = await signUp('a@test.local')
+    const response = await client
+      .delete('/api/me')
+      .bearerToken(token)
+      .json({ password: 'faux-faux-faux' })
+    response.assertStatus(422)
+    response.assertBodyContains({ errors: [{ field: 'password' }] })
+    assert.isNotNull(await User.find(user.id))
+  })
+
+  test('mot de passe absent : 422', async ({ client }) => {
+    const { token } = await signUp('a@test.local')
+    const response = await client.delete('/api/me').bearerToken(token).json({})
+    response.assertStatus(422)
+  })
+
+  test('suppression : jeton et connexion invalides, autres comptes intacts', async ({
+    client,
+    assert,
+  }) => {
+    const { user, token } = await signUp('a@test.local')
+    const other = await signUp('b@test.local')
+
+    const response = await client
+      .delete('/api/me')
+      .bearerToken(token)
+      .json({ password: 'motdepasse123' })
+    response.assertStatus(204)
+
+    assert.isNull(await User.find(user.id))
+    assert.isNotNull(await User.find(other.user.id))
+    const after = await client.get('/api/me').bearerToken(token)
+    after.assertStatus(401)
+    const login = await client
+      .post('/api/auth/login')
+      .json({ email: 'a@test.local', password: 'motdepasse123' })
+    login.assertStatus(400)
+  })
+
+  test("un identifiant dans le corps n'agit pas sur un autre compte", async ({
+    client,
+    assert,
+  }) => {
+    const { token } = await signUp('a@test.local')
+    const other = await signUp('b@test.local')
+    await client
+      .delete('/api/me')
+      .bearerToken(token)
+      .json({ password: 'motdepasse123', id: other.user.id })
+    assert.isNotNull(await User.find(other.user.id))
+  })
+
+  test('mots de passe faux répétés : 429, même avec le bon ensuite', async ({ client, assert }) => {
+    const { user, token } = await signUp('a@test.local')
+    for (let i = 0; i < 5; i++) {
+      const wrong = await client
+        .delete('/api/me')
+        .bearerToken(token)
+        .json({ password: 'faux-faux-faux' })
+      wrong.assertStatus(422)
+    }
+    const blocked = await client
+      .delete('/api/me')
+      .bearerToken(token)
+      .json({ password: 'motdepasse123' })
+    blocked.assertStatus(429)
+    assert.isNotNull(await User.find(user.id))
+  })
+
+  test('agent ou admin : 403', async ({ client, assert }) => {
+    const admin = await User.create({
+      fullName: 'Admin',
+      email: 'admin@test.local',
+      password: 'motdepasse123',
+      role: 'admin',
+    })
+    const created = await User.accessTokens.create(admin)
+    const token = created.value!.release()
+    const response = await client
+      .delete('/api/me')
+      .bearerToken(token)
+      .json({ password: 'motdepasse123' })
+    response.assertStatus(403)
+    assert.isNotNull(await User.find(admin.id))
+  })
+})
