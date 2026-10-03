@@ -91,6 +91,7 @@ router
     router
       .group(() => {
         router.get('/overview', [AgentController, 'overview'])
+        router.patch('/services/:slug/availability', [ServicesController, 'updateAvailability'])
         router.get('/webcup/requests', [WebcupController, 'index'])
         router.post('/webcup/requests/seen', [WebcupController, 'markSeen'])
         /** Messages des habitants (F22) : liste, filtre « à traiter », changement de statut. */

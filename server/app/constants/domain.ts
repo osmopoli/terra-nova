@@ -28,6 +28,8 @@ export const LIMITS = {
   alertMessage: 2000,
   location: 200,
   demandeNote: 1000,
+
+  availabilityMessage: 300,
 } as const
 
 /** Catégories des actualités de la ville (colonne news_posts.category). */
@@ -194,6 +196,17 @@ export const ISSUE_SERVICE: Record<IssueCategory, Service> = {
   autre: 'autre',
 }
 
+/** Disponibilité d'un service municipal (colonne services.availability). */
+export const SERVICE_AVAILABILITIES = {
+  disponible: 'Disponible',
+  maintenance: 'En maintenance',
+  incident: 'Incident en cours',
+} as const
+export type ServiceAvailability = keyof typeof SERVICE_AVAILABILITIES
+export const SERVICE_AVAILABILITY_VALUES = Object.keys(
+  SERVICE_AVAILABILITIES
+) as ServiceAvailability[]
+
 /** Listes fermées exposées au front par GET /api/meta (clé -> libellé). */
 export const META: Record<string, Record<string, string>> = {
   roles: ROLES,
@@ -202,6 +215,7 @@ export const META: Record<string, Record<string, string>> = {
   contactServices: CONTACT_SERVICES,
   contactStatuses: CONTACT_STATUSES,
   serviceCategories: SERVICE_CATEGORIES,
+  serviceAvailabilities: SERVICE_AVAILABILITIES,
   newsCategories: NEWS_CATEGORIES,
   loginOutcomes: LOGIN_OUTCOMES,
   loginBlockScopes: LOGIN_BLOCK_SCOPES,

@@ -1,5 +1,10 @@
 import vine, { SimpleMessagesProvider } from '@vinejs/vine'
-import { CONTENT_LANGUAGE_VALUES, DEFAULT_CONTENT_LANGUAGE } from '#constants/domain'
+import {
+  CONTENT_LANGUAGE_VALUES,
+  DEFAULT_CONTENT_LANGUAGE,
+  LIMITS,
+  SERVICE_AVAILABILITY_VALUES,
+} from '#constants/domain'
 
 /** F27 : langue des contenus demandée en paramètre (?lang=en). */
 export const serviceLanguageValidator = vine.compile(
@@ -45,3 +50,42 @@ updateTranslationValidator.messagesProvider = new SimpleMessagesProvider(
   },
   { name: 'nom', summary: 'résumé', description: 'description', hours: 'horaires' }
 )
+
+import { LIMITS, SERVICE_AVAILABILITY_VALUES } from '#constants/domain'
+
+/** Statut de disponibilité d'un service (WEBC-61), saisi par un agent. */
+const availabilityMessages = new SimpleMessagesProvider(
+  {
+    required: 'Ce champ est obligatoire.',
+    requiredWhen: 'Ce champ est obligatoire pour un service indisponible.',
+    string: 'Ce champ doit être un texte.',
+    minLength: 'Au moins {{ min }} caractères.',
+    maxLength: 'Au plus {{ max }} caractères.',
+    regex: 'Date invalide (format AAAA-MM-JJ).',
+    enum: 'Valeur non autorisée.',
+  },
+  {
+    status: 'statut',
+    message: 'message',
+    returnDate: 'date de retour',
+  }
+)
+
+export const serviceAvailabilityValidator = vine.compile(
+  vine.object({
+    status: vine.enum(SERVICE_AVAILABILITY_VALUES),
+    message: vine
+      .string()
+      .trim()
+      .minLength(3)
+      .maxLength(LIMITS.availabilityMessage)
+      .optional()
+      .requiredWhen('status', 'in', ['maintenance', 'incident']),
+    returnDate: vine
+      .string()
+      .trim()
+      .regex(/^\d{4}-\d{2}-\d{2}$/)
+      .optional(),
+  })
+)
+serviceAvailabilityValidator.messagesProvider = availabilityMessages

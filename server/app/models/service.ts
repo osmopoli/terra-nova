@@ -5,6 +5,7 @@ import {
   CONTENT_LANGUAGE_VALUES,
   DEFAULT_CONTENT_LANGUAGE,
   type ContentLanguage,
+  type ServiceAvailability,
   type ServiceCategory,
 } from '#constants/domain'
 
@@ -51,6 +52,19 @@ export default class Service extends BaseModel {
 
   @column()
   declare address: string | null
+
+  @column()
+  declare availability: ServiceAvailability
+
+  @column()
+  declare availabilityMessage: string | null
+
+  /** Date de retour prévue (AAAA-MM-JJ), sans heure. */
+  @column({
+    consume: (value: Date | string | null) =>
+      value instanceof Date ? value.toISOString().slice(0, 10) : value,
+  })
+  declare availabilityUntil: string | null
 
   @column({
     prepare: (value: ServiceProcedure[]) => JSON.stringify(value),
