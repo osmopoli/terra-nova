@@ -223,11 +223,9 @@
      D03 + F37 — connexion
      ===================================================================== */
   C.connexion = function () {
+    // Seuls les comptes citoyens sont pré-remplis : les identifiants agent / admin sont fournis par l'équipe (mot de passe défini en production)
     const DEMOS = [
       { role: 'citoyen', nom: 'Léa Martin', email: 'citoyen@nova.test', mdp: 'Citoyen2026', icone: 'ph-user' },
-      { role: 'agent', nom: 'Karim Benali', email: 'agent@nova.test', mdp: 'Agent2026', icone: 'ph-identification-badge' },
-      { role: 'admin', nom: 'Inès Rousseau', email: 'admin@nova.test', mdp: 'Admin2026', icone: 'ph-shield-check' },
-      { role: 'agent', nom: 'Sophie Laurent · ' + L('c.con.habilitee', 'habilitée'), email: 'social@nova.test', mdp: 'Agent2026', icone: 'ph-identification-badge' },   // vague 13 (F70)
       { role: 'citoyen', nom: 'Youssef Haddad · ' + L('c.con.sansEmail', 'sans e-mail'), email: 'TN-100001', mdp: '482915', icone: 'ph-identification-card' }   // vague 13 (F71)
     ];
     const form = $('#form-connexion');
@@ -921,7 +919,7 @@
     'c.con.oubliTexte': 'For your security, a forgotten password is reset through the city hall: come to the front desk with an ID, or write to us from the contact page. A staff member will check your identity and unlock your access.',
     'c.con.oubliDemo': 'In this demo, a staff member can unlock a locked account from the “Accounts” page.', 'c.con.oubliLien': 'Contact the city hall',
     'c.con.pasDeCompte': 'No account yet?', 'c.con.creer': 'Create an account', 'c.con.demoTitre': 'Demo accounts',
-    'c.con.demoAide': 'To try the three profiles: the button fills in the form, you just have to submit it.', 'c.con.utiliser': 'Use', 'c.con.utiliserAria': 'Use the {role} account',
+    'c.con.demoAide': 'Resident test accounts: the button fills in the form, you just have to submit it. Staff credentials are provided by the team.', 'c.con.utiliser': 'Use', 'c.con.utiliserAria': 'Use the {role} account',
     'c.con.rempli': 'Form filled with the {role} account. Submit to sign in.', 'c.con.question': 'What is {a} + {b}?',
     'c.con.verifFausse': 'That is not the right answer. Here is a new question.', 'c.con.debloque': 'You can try to sign in again.',
     'c.con.verifDemandee': 'For security, answer the small question below to confirm you are a person.', 'c.con.restantes': '{n} attempt(s) left before a temporary lock.',
@@ -1056,7 +1054,7 @@
     'c.con.oubliTexte': 'Por su seguridad, una contraseña olvidada se restablece a través del ayuntamiento: acuda a la recepción con un documento de identidad o escríbanos desde la página de contacto. Un agente comprobará su identidad y desbloqueará su acceso.',
     'c.con.oubliDemo': 'En esta demostración, un agente puede desbloquear una cuenta bloqueada desde la página «Cuentas».', 'c.con.oubliLien': 'Contactar con el ayuntamiento',
     'c.con.pasDeCompte': '¿Aún no tiene cuenta?', 'c.con.creer': 'Crear una cuenta', 'c.con.demoTitre': 'Cuentas de demostración',
-    'c.con.demoAide': 'Para probar los tres perfiles: el botón rellena el formulario, solo queda validarlo.', 'c.con.utiliser': 'Usar', 'c.con.utiliserAria': 'Usar la cuenta {role}',
+    'c.con.demoAide': 'Cuentas de prueba de habitantes: el botón rellena el formulario, solo queda validarlo. Los accesos del personal los facilita el equipo.', 'c.con.utiliser': 'Usar', 'c.con.utiliserAria': 'Usar la cuenta {role}',
     'c.con.rempli': 'Formulario rellenado con la cuenta {role}. Valide para iniciar sesión.', 'c.con.question': '¿Cuánto es {a} + {b}?',
     'c.con.verifFausse': 'No es la respuesta correcta. Aquí tiene una nueva pregunta.', 'c.con.debloque': 'Puede volver a intentar iniciar sesión.',
     'c.con.verifDemandee': 'Por seguridad, responda a la pequeña pregunta siguiente para confirmar que es una persona.', 'c.con.restantes': '{n} intento(s) restante(s) antes de un bloqueo temporal.',
@@ -1187,7 +1185,7 @@
     'c.con.oubliTexte': 'حفاظاً على أمانك، تُعاد تعيين كلمة المرور المنسية عبر البلدية: توجه إلى مكتب الاستقبال ببطاقة هوية، أو راسلنا من صفحة الاتصال. سيتحقق عون من هويتك ويفتح قفل وصولك.',
     'c.con.oubliDemo': 'في هذا العرض التجريبي، يمكن لعون فتح قفل حساب مقفل من صفحة «الحسابات».', 'c.con.oubliLien': 'الاتصال بالبلدية',
     'c.con.pasDeCompte': 'ليس لديك حساب بعد؟', 'c.con.creer': 'إنشاء حساب', 'c.con.demoTitre': 'حسابات تجريبية',
-    'c.con.demoAide': 'لتجربة الملفات الثلاثة: يملأ الزر الاستمارة، ولا يبقى سوى التأكيد.', 'c.con.utiliser': 'استخدام', 'c.con.utiliserAria': 'استخدام حساب {role}',
+    'c.con.demoAide': 'حسابات تجريبية للسكان: يملأ الزر الاستمارة، ولا يبقى سوى التأكيد. يقدّم الفريق بيانات دخول الأعوان.', 'c.con.utiliser': 'استخدام', 'c.con.utiliserAria': 'استخدام حساب {role}',
     'c.con.rempli': 'تم ملء الاستمارة بحساب {role}. أكّد لتسجيل الدخول.', 'c.con.question': 'كم يساوي {a} + {b}؟',
     'c.con.verifFausse': 'هذه ليست الإجابة الصحيحة. إليك سؤالاً جديداً.', 'c.con.debloque': 'يمكنك محاولة تسجيل الدخول مجدداً.',
     'c.con.verifDemandee': 'للأمان، أجب عن السؤال البسيط أدناه لتأكيد أنك شخص حقيقي.', 'c.con.restantes': '{n} محاولة متبقية قبل قفل مؤقت.',
