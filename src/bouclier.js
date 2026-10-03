@@ -112,7 +112,6 @@ const REGLES = [
   { nom: 'connexion', max: 20, fenetre: 60e3, test: (r) => r.method === 'POST' && /^\/api\/auth\/(connecter|code|cle)$/.test(r.path) },
   { nom: 'inscription', max: 8, fenetre: 10 * 60e3, test: (r) => r.method === 'POST' && /^\/api\/(auth\/inscrire|accueil\/inscrire)$/.test(r.path) },
   { nom: 'sensible', max: 20, fenetre: 60e3, test: (r) => ECRITURE.has(r.method) && /^\/api\/(auth\/(verifier|mot-de-passe|supprimer|debloquer)|securite\/|sensible\/|habilitations|accueil\/code)/.test(r.path) },
-  { nom: 'enumeration', max: 30, fenetre: 60e3, test: (r) => r.method === 'GET' && r.path === '/api/auth/email-pris' },
   { nom: 'guichet', max: 400, fenetre: 10 * 60e3, test: (r) => r.method === 'POST' && r.path === '/api/accueil/agent/inscrire' },
   { nom: 'ecriture', max: 300, fenetre: 60e3, test: (r) => ECRITURE.has(r.method) && r.path.startsWith('/api/') }
 ];
