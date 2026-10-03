@@ -14,9 +14,9 @@ export default function EmergencyPage({ meta }) {
   const numbers = meta.emergencyNumbers ?? [];
 
   return (
-    <section className="space-y-4 sm:space-y-6">
+    <section className="space-y-3 sm:space-y-6">
       <header>
-        <h1 className="font-display text-2xl font-bold sm:text-3xl">Urgences et santé</h1>
+        <h1 className="font-display text-xl font-bold sm:text-3xl">Urgences et santé</h1>
         <p className="mt-1 text-sm text-ink-muted sm:text-base">
           Gratuit, 24 h/24, même sans crédit.
         </p>
@@ -57,17 +57,17 @@ export default function EmergencyPage({ meta }) {
             {places.map((place) => (
               <li
                 key={place.slug}
-                className="rounded-card border border-mist bg-surface px-3 py-2.5 shadow-card sm:p-5"
+                className="rounded-card border border-mist bg-surface px-3 py-2 shadow-card sm:p-5"
               >
                 <h3 className="font-display font-bold leading-tight sm:text-lg">{place.name}</h3>
-                <p className="text-sm font-semibold text-success sm:mt-1">{place.hours}</p>
+                <p className="text-sm font-semibold leading-snug text-success sm:mt-1">{place.hours}</p>
                 <p className="hidden text-sm text-ink-muted sm:mt-2 sm:block">{place.summary}</p>
-                {place.address && <p className="text-sm text-ink-muted sm:mt-1">{place.address}</p>}
-                <div className="mt-2 flex flex-wrap gap-2 sm:mt-4">
+                {place.address && <p className="text-sm leading-snug text-ink-muted sm:mt-1">{place.address}</p>}
+                <div className="mt-1.5 flex flex-wrap gap-2 sm:mt-4">
                   {place.phone && (
                     <a
                       href={telHref(place.phone)}
-                      className="rounded-control bg-primary px-3 py-1 text-sm font-bold text-white hover:bg-primary-strong sm:py-1.5"
+                      className="rounded-control bg-primary px-3 py-0.5 text-sm font-bold text-white hover:bg-primary-strong sm:py-1.5"
                     >
                       Appeler le {place.phone}
                     </a>
@@ -77,7 +77,7 @@ export default function EmergencyPage({ meta }) {
                       href={routeHref(place.address)}
                       target="_blank"
                       rel="noreferrer"
-                      className="rounded-control border border-primary px-3 py-1 text-sm font-bold text-primary hover:bg-mist sm:py-1.5"
+                      className="rounded-control border border-primary px-3 py-0.5 text-sm font-bold text-primary hover:bg-mist sm:py-1.5"
                     >
                       Itinéraire
                     </a>
