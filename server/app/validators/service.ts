@@ -51,8 +51,6 @@ updateTranslationValidator.messagesProvider = new SimpleMessagesProvider(
   { name: 'nom', summary: 'résumé', description: 'description', hours: 'horaires' }
 )
 
-import { LIMITS, SERVICE_AVAILABILITY_VALUES } from '#constants/domain'
-
 /** Statut de disponibilité d'un service (WEBC-61), saisi par un agent. */
 const availabilityMessages = new SimpleMessagesProvider(
   {

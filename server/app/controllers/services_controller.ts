@@ -7,7 +7,18 @@ export default class ServicesController {
   async index({ request }: HttpContext) {
     const { lang } = await request.validateUsing(serviceLanguageValidator, { data: request.qs() })
     const services = await Service.query()
-      .select('id', 'slug', 'name', 'category', 'summary', 'phone', 'translations', 'availability', 'availability_message', 'availability_until')
+      .select(
+        'id',
+        'slug',
+        'name',
+        'category',
+        'summary',
+        'phone',
+        'translations',
+        'availability',
+        'availability_message',
+        'availability_until'
+      )
       .orderBy('name', 'asc')
     return services.map((service) => {
       const localized = service.localized(lang)
