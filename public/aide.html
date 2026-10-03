@@ -25,7 +25,7 @@
     <header class="titre-page">
       <h1 data-i18n="ai.titre">Aide et lexique</h1>
       <p data-i18n="ai.intro">Les réponses aux questions les plus fréquentes et l’explication, en mots simples, des termes que vous croiserez sur la plateforme.</p>
-      <nav class="ai-sauts" aria-label="Sur cette page">
+      <nav class="ai-sauts" aria-label="Sur cette page" data-i18n-attr="aria-label:ai.surPage">
         <a href="#faq" data-i18n="ai.sautFaq">Questions fréquentes</a>
         <a href="#lexique" data-i18n="ai.sautLexique">Lexique</a>
         <a href="#contact" data-i18n="ai.sautContact">Nous écrire</a>
@@ -65,7 +65,7 @@
     NT.i18n.ajouter({
       fr: {
         'ai.titre': 'Aide et lexique', 'ai.intro': 'Les réponses aux questions les plus fréquentes et l’explication, en mots simples, des termes que vous croiserez sur la plateforme.',
-        'ai.sautFaq': 'Questions fréquentes', 'ai.sautLexique': 'Lexique', 'ai.sautContact': 'Nous écrire',
+        'ai.surPage': 'Sur cette page', 'ai.sautFaq': 'Questions fréquentes', 'ai.sautLexique': 'Lexique', 'ai.sautContact': 'Nous écrire',
         'ai.faq': 'Questions fréquentes', 'ai.faqD': 'Cliquez sur une question pour lire la réponse. Les mots soulignés en pointillés s’expliquent au survol, au clic ou au clavier.',
         'ai.lexique': 'Lexique : les mots difficiles', 'ai.lexiqueD': 'Tapez un mot pour le retrouver. Chaque définition est écrite en français simple.',
         'ai.rechercheLabel': 'Rechercher un mot dans le lexique', 'ai.recherchePh': 'Démarche, créneau, quartier…', 'ai.aussi': 'Aussi écrit :',
@@ -83,7 +83,7 @@
       },
       en: {
         'ai.titre': 'Help and glossary', 'ai.intro': 'Answers to the most common questions and a plain-language explanation of the terms you will meet on the platform.',
-        'ai.sautFaq': 'Frequently asked questions', 'ai.sautLexique': 'Glossary', 'ai.sautContact': 'Write to us',
+        'ai.surPage': 'On this page', 'ai.sautFaq': 'Frequently asked questions', 'ai.sautLexique': 'Glossary', 'ai.sautContact': 'Write to us',
         'ai.faq': 'Frequently asked questions', 'ai.faqD': 'Click a question to read the answer. Words underlined with dots are explained on hover, click or keyboard.',
         'ai.lexique': 'Glossary: difficult words', 'ai.lexiqueD': 'Type a word to find it. Every definition is written in plain language.',
         'ai.rechercheLabel': 'Search a word in the glossary', 'ai.recherchePh': 'Procedure, time slot, district…', 'ai.aussi': 'Also written:',
@@ -101,18 +101,39 @@
       },
       es: {
         'ai.titre': 'Ayuda y glosario', 'ai.intro': 'Respuestas a las preguntas más frecuentes y explicación sencilla de los términos de la plataforma.',
-        'ai.sautFaq': 'Preguntas frecuentes', 'ai.sautLexique': 'Glosario', 'ai.sautContact': 'Escríbanos',
+        'ai.surPage': 'En esta página', 'ai.sautFaq': 'Preguntas frecuentes', 'ai.sautLexique': 'Glosario', 'ai.sautContact': 'Escríbanos',
         'ai.faq': 'Preguntas frecuentes', 'ai.faqD': 'Haga clic en una pregunta para leer la respuesta.',
         'ai.lexique': 'Glosario: palabras difíciles', 'ai.lexiqueD': 'Escriba una palabra para encontrarla.',
-        'ai.rechercheLabel': 'Buscar una palabra en el glosario', 'ai.recherchePh': 'Trámite, cita, barrio…',
+        'ai.rechercheLabel': 'Buscar una palabra en el glosario', 'ai.recherchePh': 'Trámite, cita, barrio…', 'ai.aussi': 'También escrito:',
         'ai.nb0': 'Ninguna palabra coincide con su búsqueda.', 'ai.nb1': '1 palabra mostrada.', 'ai.nbN': '{n} palabras mostradas.',
-        'ai.contactH': '¿No encuentra su respuesta?', 'ai.contactD': 'Escriba al ayuntamiento: un agente le responde y recibe una confirmación de envío.', 'ai.contactBtn': 'Escribir al ayuntamiento'
+        'ai.contactH': '¿No encuentra su respuesta?', 'ai.contactD': 'Escriba al ayuntamiento: un agente le responde y recibe una confirmación de envío con un número de seguimiento.', 'ai.contactBtn': 'Escribir al ayuntamiento',
+        'ai.q1': '¿Cómo hago una solicitud al ayuntamiento?', 'ai.r1': 'Abra la página <a href="services.html">Servicios</a>, elija el servicio que le corresponde y luego «Hacer una solicitud». Recibirá un acuse de recibo con un número para seguir su trámite.',
+        'ai.q2': '¿Cómo aviso de un problema en mi barrio?', 'ai.r2': 'Use el botón «Avisar de un problema» de la página de inicio o <a href="demande.html?type=signalement">este enlace directo</a>. Indique qué ocurre y la dirección: cuanto más preciso sea el lugar, más rápida será la intervención.',
+        'ai.q3': '¿Cómo sé en qué estado está mi solicitud?', 'ai.r3': 'Inicie sesión y abra <a href="espace.html">Mi espacio</a>: cada solicitud muestra su estado (recibida, en curso, resuelta o cerrada) y el historial de etapas. Una notificación le avisa de cada cambio.',
+        'ai.q4': 'Un servicio no está disponible: ¿qué hago?', 'ai.r4': 'La página del servicio lo indica antes de empezar: qué está parado, cuándo volver y qué hacer mientras tanto. Se le propone una alternativa (cita, recepción, mensaje) en lugar del trámite en línea.',
+        'ai.q5': '¿Cómo pido cita y recibo un recordatorio?', 'ai.r5': 'Desde la ficha de un servicio o la página <a href="rendez-vous.html">Citas</a>, elija un horario. Se le envía un recordatorio antes de la cita, con la lista de documentos que debe traer.',
+        'ai.q6': '¿Cómo me avisan en caso de alerta?', 'ai.r6': 'Las alertas y los anuncios importantes aparecen en la baliza «Alertas» en la parte superior de la página y en sus notificaciones. En la página <a href="annonces.html">Anuncios</a> puede elegir lo que quiere recibir, por ejemplo solo las alertas de su barrio.',
+        'ai.q7': '¿Cómo agrando el texto o cambio de idioma?', 'ai.r7': 'En la parte superior de cada página, el botón redondo de accesibilidad ajusta el tamaño del texto, el contraste y las animaciones. El menú «Idioma» ofrece francés, inglés, español y árabe.',
+        'ai.q8': '¿Qué puedo hacer sin cuenta?', 'ai.r8': 'Puede consultar los servicios, los anuncios y los horarios de las lanzaderas sin iniciar sesión. Una cuenta permite seguir sus solicitudes, pedir cita y recibir notificaciones.',
+        'ai.q9': 'No entiendo una palabra, ¿dónde encuentro una explicación?', 'ai.r9': 'Las palabras subrayadas con puntos abren una breve explicación. También encontrará todos los términos en el glosario, más abajo en esta página.'
       },
       ar: {
         'ai.titre': 'المساعدة والقاموس', 'ai.intro': 'إجابات عن الأسئلة الشائعة وشرح مبسط للمصطلحات التي ستصادفها في المنصة.',
-        'ai.sautFaq': 'الأسئلة الشائعة', 'ai.sautLexique': 'القاموس', 'ai.sautContact': 'راسلنا',
-        'ai.faq': 'الأسئلة الشائعة', 'ai.lexique': 'القاموس: الكلمات الصعبة', 'ai.rechercheLabel': 'البحث عن كلمة في القاموس',
-        'ai.contactH': 'لم تجد إجابتك؟', 'ai.contactBtn': 'مراسلة البلدية'
+        'ai.surPage': 'في هذه الصفحة', 'ai.sautFaq': 'الأسئلة الشائعة', 'ai.sautLexique': 'القاموس', 'ai.sautContact': 'راسلنا',
+        'ai.faq': 'الأسئلة الشائعة', 'ai.faqD': 'اضغط على سؤال لقراءة الإجابة. الكلمات المسطّرة بنقاط تُشرح عند التمرير أو النقر أو بلوحة المفاتيح.',
+        'ai.lexique': 'القاموس: الكلمات الصعبة', 'ai.lexiqueD': 'اكتب كلمة للعثور عليها. كل تعريف مكتوب بلغة بسيطة.',
+        'ai.rechercheLabel': 'البحث عن كلمة في القاموس', 'ai.recherchePh': 'إجراء، موعد، حي…', 'ai.aussi': 'يُكتب أيضاً:',
+        'ai.nb0': 'لا توجد كلمة تطابق بحثك.', 'ai.nb1': 'كلمة واحدة معروضة.', 'ai.nbN': '{n} كلمات معروضة.',
+        'ai.contactH': 'لم تجد إجابتك؟', 'ai.contactD': 'راسل البلدية: يرد عليك عون وتتلقى تأكيد الإرسال مع رقم متابعة.', 'ai.contactBtn': 'مراسلة البلدية',
+        'ai.q1': 'كيف أقدّم طلباً إلى البلدية؟', 'ai.r1': 'افتح صفحة <a href="services.html">الخدمات</a>، واختر الخدمة المعنية ثم «تقديم طلب». ستتلقى إشعاراً بالاستلام مع رقم لمتابعة إجرائك.',
+        'ai.q2': 'كيف أبلّغ عن مشكلة في حيّي؟', 'ai.r2': 'استخدم زر «الإبلاغ عن مشكلة» في الصفحة الرئيسية أو <a href="demande.html?type=signalement">هذا الرابط المباشر</a>. اذكر ما لا يعمل والعنوان: كلما كان المكان أدق كان التدخل أسرع.',
+        'ai.q3': 'كيف أعرف أين وصل طلبي؟', 'ai.r3': 'سجّل الدخول وافتح <a href="espace.html">فضائي</a>: يعرض كل طلب حالته (مستلم، قيد المعالجة، تمت المعالجة أو مغلق) وسجل المراحل. يخبرك إشعار عند كل تغيير.',
+        'ai.q4': 'خدمة غير متاحة: ماذا أفعل؟', 'ai.r4': 'تبيّن صفحة الخدمة ذلك قبل البدء: ما هو متوقف، ومتى تعود، وما يجب فعله في الأثناء. يُقترح عليك بديل (موعد، استقبال، رسالة) بدل الإجراء عبر الإنترنت.',
+        'ai.q5': 'كيف أحجز موعداً وأتلقى تذكيراً؟', 'ai.r5': 'من بطاقة خدمة أو من صفحة <a href="rendez-vous.html">المواعيد</a>، اختر وقتاً. يُرسل إليك تذكير قبل الموعد مع قائمة الوثائق المطلوبة.',
+        'ai.q6': 'كيف أُخطر في حال وجود تنبيه؟', 'ai.r6': 'تظهر التنبيهات والإعلانات المهمة في شارة «تنبيهات» أعلى الصفحة وفي إشعاراتك. في صفحة <a href="annonces.html">الإعلانات</a> يمكنك اختيار ما تريد تلقيه، مثلاً تنبيهات حيّك فقط.',
+        'ai.q7': 'كيف أكبّر النص أو أغيّر اللغة؟', 'ai.r7': 'في أعلى كل صفحة، يضبط زر إمكانية الوصول الدائري حجم النص والتباين والحركة. تقترح قائمة «اللغة» الفرنسية والإنجليزية والإسبانية والعربية.',
+        'ai.q8': 'ماذا يمكنني أن أفعل بدون حساب؟', 'ai.r8': 'يمكنك الاطلاع على الخدمات والإعلانات ومواعيد الحافلات دون تسجيل الدخول. يتيح الحساب متابعة طلباتك وحجز المواعيد وتلقي الإشعارات.',
+        'ai.q9': 'لا أفهم كلمة، أين أجد شرحاً؟', 'ai.r9': 'تفتح الكلمات المسطّرة بنقاط شرحاً قصيراً. كما تجد كل المصطلحات في القاموس أسفل هذه الصفحة.'
       }
     });
 

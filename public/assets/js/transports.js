@@ -59,16 +59,31 @@
       'tr.prochains': 'Las 3 próximas salidas', 'tr.dans': 'en {n} min', 'tr.maintenant': 'ahora', 'tr.demain': 'mañana', 'tr.arriveeA': 'llegada {h}',
       'tr.duree': 'Duración estimada', 'tr.nbArrets': 'Paradas', 'tr.frequence': 'Frecuencia', 'tr.minutes': '{n} min', 'tr.arrets': '{n} paradas', 'tr.arret1': '1 parada', 'tr.freq': 'Cada {n} min',
       'tr.voirArrets': 'Ver las paradas del trayecto', 'tr.correspondance': 'Transbordo en {a}', 'tr.puis': 'luego línea {l} a las {h}',
-      'tr.memeArret': 'Salida y llegada son iguales: elija dos paradas distintas.', 'tr.aucun': 'No se encontró trayecto entre estas paradas.',
-      'tr.premier': 'Primera salida', 'tr.dernier': 'Última salida', 'tr.arret': 'Parada', 'tr.vers': 'hacia {d}', 'tr.nonDesservi': 'Sin servicio',
+      'tr.memeArret': 'Salida y llegada son iguales: elija dos paradas distintas.', 'tr.aucun': 'No se encontró trayecto entre estas paradas. Contacte con el servicio de movilidad para recibir ayuda.',
+      'tr.perturbeIci': 'Incidencia en este trayecto', 'tr.arretFerme': 'La parada {a} no tiene servicio: tome la lanzadera en {r}.', 'tr.arretFermeFin': 'La parada {a} no tiene servicio: bájese en {r}.', 'tr.marche': 'unos {n} min a pie',
+      'tr.premier': 'Primera salida', 'tr.dernier': 'Última salida', 'tr.arret': 'Parada', 'tr.vers': 'hacia {d}', 'tr.captionLigne': 'Horarios de la línea {l}: primeros y últimos pasos en cada parada',
+      'tr.serviceDe': 'Servicio de {a} a {b}', 'tr.tousJours': 'todos los días', 'tr.nonDesservi': 'Sin servicio',
       'tr.ligne.N1': 'Centro – Norte', 'tr.ligne.N2': 'Sur – Estación orbital', 'tr.ligne.N3': 'Este – Oeste', 'tr.ligne.N4': 'Este – Estación orbital'
     },
     ar: {
       'tr.titre': 'حافلات البلدية', 'tr.intro': 'اختر محطة الانطلاق والوصول: يظهر الخط المناسب والرحلات القادمة فوراً.',
       'tr.trafic': 'معلومات حركة المرور', 'tr.monTrajet': 'رحلتي', 'tr.depart': 'محطة الانطلاق', 'tr.arrivee': 'محطة الوصول', 'tr.inverser': 'عكس الانطلاق والوصول', 'tr.inverserCourt': 'عكس',
       'tr.lignes': 'المواعيد حسب الخط', 'tr.lignesD': 'أربعة خطوط كل يوم. الأوقات هي أوقات الانطلاق عند كل محطة.',
-      'tr.choisir': 'اختر محطة', 'tr.traficOk': 'سير عادي', 'tr.traficPerturbee': 'مضطرب', 'tr.traficAlt': 'ماذا أفعل؟',
-      'tr.prochains': 'الرحلات الثلاث القادمة', 'tr.dans': 'بعد {n} د', 'tr.maintenant': 'الآن', 'tr.demain': 'غداً', 'tr.premier': 'أول رحلة', 'tr.dernier': 'آخر رحلة', 'tr.arret': 'المحطة', 'tr.duree': 'المدة التقديرية'
+      'tr.choisir': 'اختر محطة', 'tr.noteQuartier': 'محطة انطلاق مقترحة حسب حيّك ({q}). يمكنك تغييرها.', 'tr.noteVisiteur': 'سجّل الدخول مع تحديد حيّك للحصول على محطة انطلاق مقترحة تلقائياً.',
+      'tr.nommeQuartier': 'حي {q}',
+      'tr.traficOk': 'سير عادي', 'tr.traficPerturbee': 'مضطرب', 'tr.traficTitre': 'اضطراب جارٍ على الخط {l}', 'tr.traficAlt': 'ماذا أفعل؟', 'tr.voirAlerte': 'عرض تنبيه ارتفاع المياه',
+      'tr.traficResume': 'خط واحد مضطرب، 3 خطوط عادية.', 'tr.toutNormal': 'الخطوط الأربعة تسير بشكل عادي.',
+      'tr.pertMsg': 'ارتفاع المياه في الحي الجنوبي: لم تعد محطة Canal Sud مخدومة. ينطلق الخط N2 مؤقتاً من Place des Pionniers.',
+      'tr.pertAlt': 'توجّه سيراً إلى Place des Pionniers (نحو 6 دقائق): يمر الخط N2 كل 15 دقيقة. تجنّب الطوابق السفلى قرب القناة.',
+      'tr.prendre': 'خذ الخط {l}', 'tr.direction': 'اتجاه {d}', 'tr.depuisArret': 'من {a}', 'tr.jusqua': 'حتى {a}',
+      'tr.prochains': 'الرحلات الثلاث القادمة', 'tr.dans': 'بعد {n} د', 'tr.maintenant': 'الآن', 'tr.demain': 'غداً', 'tr.arriveeA': 'الوصول {h}',
+      'tr.duree': 'المدة التقديرية', 'tr.nbArrets': 'المحطات', 'tr.frequence': 'التواتر', 'tr.minutes': '{n} د', 'tr.arrets': '{n} محطات', 'tr.arret1': 'محطة واحدة', 'tr.freq': 'كل {n} د',
+      'tr.voirArrets': 'عرض محطات الرحلة', 'tr.correspondance': 'تبديل في {a}', 'tr.puis': 'ثم الخط {l} الساعة {h}',
+      'tr.memeArret': 'محطتا الانطلاق والوصول متطابقتان: اختر محطتين مختلفتين.', 'tr.aucun': 'لم يُعثر على رحلة بين هاتين المحطتين. اتصل بخدمة التنقل للمساعدة.',
+      'tr.perturbeIci': 'اضطراب على هذه الرحلة', 'tr.arretFerme': 'محطة {a} غير مخدومة: خذ الحافلة من {r}.', 'tr.arretFermeFin': 'محطة {a} غير مخدومة: انزل في {r}.', 'tr.marche': 'نحو {n} د سيراً',
+      'tr.premier': 'أول رحلة', 'tr.dernier': 'آخر رحلة', 'tr.arret': 'المحطة', 'tr.vers': 'نحو {d}', 'tr.captionLigne': 'مواعيد الخط {l}: أول وآخر مرور عند كل محطة',
+      'tr.serviceDe': 'الخدمة من {a} إلى {b}', 'tr.tousJours': 'كل يوم', 'tr.nonDesservi': 'غير مخدومة',
+      'tr.ligne.N1': 'الوسط – الشمال', 'tr.ligne.N2': 'الجنوب – المحطة المدارية', 'tr.ligne.N3': 'الشرق – الغرب', 'tr.ligne.N4': 'الشرق – المحطة المدارية'
     }
   });
 
