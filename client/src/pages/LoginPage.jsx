@@ -1,5 +1,6 @@
 import horizon from '../assets/planete-horizon.svg';
 import AuthScreen from '../components/AuthScreen.jsx';
+import SkipLink from '../components/SkipLink.jsx';
 import TextSizeControl from '../components/TextSizeControl.jsx';
 import ContrastControl from '../components/ContrastControl.jsx';
 import { APP_NAME } from '../lib/constants.js';
@@ -10,6 +11,7 @@ import { Brand } from './ArrivalPage.jsx';
 export default function LoginPage({ onAuthenticated }) {
   return (
     <main className="min-h-dvh bg-space font-sans text-star md:grid md:grid-cols-[minmax(0,1.18fr)_minmax(380px,0.82fr)]">
+      <SkipLink />
       <section
         aria-label="Vue de la ville"
         className="relative isolate flex min-h-[42dvh] flex-col justify-between gap-8 overflow-hidden bg-cover bg-center px-6 py-7 md:p-[clamp(35px,5vw,76px)]"
@@ -44,8 +46,10 @@ export default function LoginPage({ onAuthenticated }) {
         </div>
       </section>
       <section
+        id="contenu"
+        tabIndex={-1}
         aria-label="Connexion ou inscription"
-        className="grid place-items-center border-t border-glow/20 bg-space-panel px-4 py-10 md:border-t-0 md:border-l md:p-[clamp(24px,6vw,92px)]">
+        className="grid place-items-center border-t border-glow/20 bg-space-panel focus:outline-none px-4 py-10 md:border-t-0 md:border-l md:p-[clamp(24px,6vw,92px)]">
         <AuthScreen onAuthenticated={onAuthenticated} />
       </section>
     </main>
