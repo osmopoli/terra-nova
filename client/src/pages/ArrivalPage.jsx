@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import orbite from '../assets/planete-orbite.svg';
 import { APP_NAME } from '../lib/constants.js';
+import TextSizeControl from '../components/TextSizeControl.jsx';
 import { Link, navigate } from '../lib/router.jsx';
 
 const TRAVEL_MS = 3000;
@@ -65,12 +66,13 @@ export default function ArrivalPage() {
           aria-hidden="true"
           className="absolute inset-0 -z-10 bg-linear-to-t from-space/90 to-space/30 md:bg-linear-to-r md:from-space/95 md:via-space/70 md:to-space/10"
         />
-        <header className="flex h-[74px] items-center justify-between border-b border-glow/20 px-6 backdrop-blur-md md:h-[90px] md:px-[clamp(24px,6vw,92px)]">
+        <header className="flex min-h-[4.625rem] flex-wrap items-center justify-between gap-3 border-b border-glow/20 px-6 py-3 backdrop-blur-md md:min-h-[5.625rem] md:px-[clamp(24px,6vw,92px)]">
           <Brand />
           <p className="hidden text-xs font-semibold uppercase tracking-[0.12em] text-star-muted md:block">
             <b className="block text-glow">Système localisé</b>
             Coordonnées NT-01 · Liaison stable
           </p>
+          <TextSizeControl className="text-star" />
         </header>
 
         <main className="flex flex-1 items-end px-6 pb-40 pt-12 md:items-center md:px-[clamp(24px,7vw,110px)] md:pb-28">
@@ -104,8 +106,8 @@ export default function ArrivalPage() {
           </div>
         </main>
 
-        <footer className="absolute inset-x-5 bottom-6 rounded-card border border-glow/20 bg-space/60 px-4 py-3 text-[10px] uppercase tracking-[0.08em] text-star-muted backdrop-blur-md md:inset-x-auto md:right-[clamp(24px,5vw,72px)] md:bottom-10 md:text-xs">
-          <dl className="flex justify-between gap-3 md:gap-6">
+        <footer className="absolute inset-x-5 bottom-6 rounded-card border border-glow/20 bg-space/60 px-4 py-3 text-[0.625rem] uppercase tracking-[0.08em] text-star-muted backdrop-blur-md md:inset-x-auto md:right-[clamp(24px,5vw,72px)] md:bottom-10 md:text-xs">
+          <dl className="flex flex-wrap justify-between gap-x-3 gap-y-2 md:gap-6">
             <div>
               <dt>Destination</dt>
               <dd className="text-xs font-bold text-star md:text-sm">{APP_NAME}</dd>
