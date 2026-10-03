@@ -7,7 +7,7 @@
 
   NT.i18n.ajouter({
     en: {
-      'tb.titre': 'Dashboard', 'tb.intro': 'Platform activity at a glance: what needs action, what is moving and what deserves your attention.',
+      'tb.ariane': 'Dashboard', 'tb.titre': 'Dashboard', 'tb.intro': 'Platform activity at a glance: what needs action, what is moving and what deserves your attention.',
       'tb.actualiser': 'Refresh', 'tb.chargement': 'Loading indicators…', 'tb.essentiel': 'The essentials today', 'tb.surveiller': 'To watch',
       'tb.graphes': 'Activity and breakdown', 'tb.voirDonnees': 'View the data', 'tb.retour': 'Back to the staff area',
       'tb.k.attente': 'Requests waiting to be handled', 'tb.k.attenteCta': 'Handle them now',
@@ -35,7 +35,67 @@
       'tb.gStatut': 'Breakdown by status', 'tb.gStatutAide': 'Where all the requests stand.', 'tb.statut': 'Status',
       'tb.aucune': 'No data yet.', 'tb.nonPrecise': 'Not specified', 'tb.part': 'Share'
     },
-    es: { 'tb.titre': 'Panel de control', 'tb.actualiser': 'Actualizar', 'tb.essentiel': 'Lo esencial hoy', 'tb.surveiller': 'A vigilar' }
+    fr: { 'tb.ariane': 'Tableau de bord' },
+    es: {
+      'tb.ariane': 'Panel de control',
+      'tb.titre': 'Panel de control', 'tb.intro': 'La actividad de la plataforma de un vistazo: lo que espera una acción, lo que avanza y lo que merece su atención.',
+      'tb.actualiser': 'Actualizar', 'tb.chargement': 'Cargando los indicadores…', 'tb.essentiel': 'Lo esencial hoy', 'tb.surveiller': 'A vigilar',
+      'tb.graphes': 'Actividad y distribución', 'tb.voirDonnees': 'Ver los datos', 'tb.retour': 'Volver al espacio de agentes',
+      'tb.k.attente': 'Solicitudes pendientes de tramitación', 'tb.k.attenteCta': 'Tramitarlas ahora',
+      'tb.k.urgentes': 'Solicitudes urgentes sin resolver', 'tb.k.urgentesCta': 'Ver las solicitudes',
+      'tb.k.delai': 'Plazo medio de tramitación', 'tb.k.delaiCta': 'Ver las solicitudes resueltas', 'tb.k.delaiAucun': 'Ninguna solicitud resuelta todavía',
+      'tb.k.traitees': 'Solicitudes resueltas', 'tb.k.traiteesCta': 'Ver las solicitudes resueltas',
+      'tb.k.rdv': 'Próximas citas', 'tb.k.rdvCta': 'Abrir las citas', 'tb.k.alertes': 'Alertas activas', 'tb.k.alertesCta': 'Gestionar las alertas',
+      'tb.h': 'h', 'tb.j': 'días',
+      'tb.maj': 'Última actualización: {h}', 'tb.majEchec': 'Última actualización correcta: {h}', 'tb.majJamais': 'Todavía sin actualizar',
+      'tb.live': 'Panel actualizado a las {h}.', 'tb.erreur': 'No se han podido cargar los indicadores. Próximo intento en 60 segundos.',
+      'tb.erreurAnciennes': 'Las cifras mostradas datan de las {h}.', 'tb.erreurDroits': 'Su sesión ya no permite acceder a los indicadores. Vuelva a iniciar sesión.',
+      'tb.w.niveauAlerte': 'Prioritario', 'tb.w.niveauAttention': 'Atención', 'tb.w.niveauInfo': 'Para información',
+      'tb.w.urgentes1': '{n} solicitud urgente aún no está resuelta.', 'tb.w.urgentesN': '{n} solicitudes urgentes aún no están resueltas.', 'tb.w.urgentesLien': 'Tramitar las urgentes',
+      'tb.w.quartier1': 'Barrio {q}: {n} solicitud en espera, el máximo de todos los barrios.', 'tb.w.quartierN': 'Barrio {q}: {n} solicitudes en espera, el máximo de todos los barrios.', 'tb.w.quartierLien': 'Ver las solicitudes en espera',
+      'tb.w.service': 'Servicio más solicitado: {s} ({n} solicitudes, {p} % del total).', 'tb.w.serviceLien': 'Ver todas las solicitudes',
+      'tb.w.contrib1': '{n} contribución sobre datos espera una respuesta.', 'tb.w.contribN': '{n} contribuciones sobre datos esperan una respuesta.', 'tb.w.contribLien': 'Abrir las contribuciones',
+      'tb.w.anciennes1': '{n} solicitud espera desde hace más de 2 días.', 'tb.w.anciennesN': '{n} solicitudes esperan desde hace más de 2 días.', 'tb.w.anciennesLien': 'Tramitar las más antiguas',
+      'tb.w.delai': 'El plazo medio de tramitación es de {d}: por encima de 48 horas.', 'tb.w.delaiLien': 'Ver las solicitudes resueltas',
+      'tb.w.rien': 'Nada inusual que señalar. Las solicitudes en espera están bajo control.',
+      'tb.gJour': 'Actividad de los últimos 14 días', 'tb.gJourAide': 'Solicitudes creadas y solicitudes resueltas, día a día.',
+      'tb.creees': 'Creadas', 'tb.traitees': 'Resueltas', 'tb.jour': 'Día', 'tb.gJourDesc': 'Gráfico de barras: solicitudes creadas y resueltas por día en los últimos 14 días.',
+      'tb.gQuartier': 'Solicitudes por barrio', 'tb.gQuartierAide': 'Todas las solicitudes, con la parte aún en espera.',
+      'tb.total': 'Total', 'tb.enAttente': 'En espera', 'tb.quartier': 'Barrio', 'tb.dont': '{n} en espera',
+      'tb.gService': 'Servicios más solicitados', 'tb.gServiceAide': 'Los 6 servicios que reciben más solicitudes.', 'tb.service': 'Servicio', 'tb.demandes': 'Solicitudes',
+      'tb.gStatut': 'Distribución por estado', 'tb.gStatutAide': 'En qué punto están todas las solicitudes.', 'tb.statut': 'Estado',
+      'tb.aucune': 'Todavía no hay datos.', 'tb.nonPrecise': 'No especificado', 'tb.part': 'Parte'
+    },
+    ar: {
+      'tb.ariane': 'لوحة القيادة',
+      'tb.titre': 'لوحة القيادة', 'tb.intro': 'نشاط المنصة في لمحة: ما ينتظر إجراءً، وما يتقدم، وما يستحق انتباهك.',
+      'tb.actualiser': 'تحديث', 'tb.chargement': 'جارٍ تحميل المؤشرات…', 'tb.essentiel': 'الأساسي اليوم', 'tb.surveiller': 'للمراقبة',
+      'tb.graphes': 'النشاط والتوزيع', 'tb.voirDonnees': 'عرض البيانات', 'tb.retour': 'العودة إلى فضاء الأعوان',
+      'tb.k.attente': 'طلبات في انتظار المعالجة', 'tb.k.attenteCta': 'معالجتها الآن',
+      'tb.k.urgentes': 'طلبات عاجلة لم تُعالج', 'tb.k.urgentesCta': 'عرض الطلبات',
+      'tb.k.delai': 'متوسط مدة المعالجة', 'tb.k.delaiCta': 'عرض الطلبات المعالجة', 'tb.k.delaiAucun': 'لم تتم معالجة أي طلب بعد',
+      'tb.k.traitees': 'طلبات معالجة', 'tb.k.traiteesCta': 'عرض الطلبات المعالجة',
+      'tb.k.rdv': 'مواعيد قادمة', 'tb.k.rdvCta': 'فتح المواعيد', 'tb.k.alertes': 'تنبيهات نشطة', 'tb.k.alertesCta': 'إدارة التنبيهات',
+      'tb.h': 'س', 'tb.j': 'أيام',
+      'tb.maj': 'آخر تحديث: {h}', 'tb.majEchec': 'آخر تحديث ناجح: {h}', 'tb.majJamais': 'لم يُحدَّث بعد',
+      'tb.live': 'تم تحديث لوحة القيادة في {h}.', 'tb.erreur': 'تعذر تحميل المؤشرات. المحاولة التالية بعد 60 ثانية.',
+      'tb.erreurAnciennes': 'الأرقام المعروضة تعود إلى {h}.', 'tb.erreurDroits': 'لم تعد جلستك تسمح بالوصول إلى المؤشرات. سجّل الدخول مجدداً.',
+      'tb.w.niveauAlerte': 'أولوية', 'tb.w.niveauAttention': 'انتباه', 'tb.w.niveauInfo': 'للعلم',
+      'tb.w.urgentes1': '{n} طلب عاجل لم يُعالج بعد.', 'tb.w.urgentesN': '{n} طلبات عاجلة لم تُعالج بعد.', 'tb.w.urgentesLien': 'معالجة الطلبات العاجلة',
+      'tb.w.quartier1': 'حي {q}: {n} طلب في الانتظار، وهو الأكثر بين جميع الأحياء.', 'tb.w.quartierN': 'حي {q}: {n} طلبات في الانتظار، وهو الأكثر بين جميع الأحياء.', 'tb.w.quartierLien': 'عرض الطلبات في الانتظار',
+      'tb.w.service': 'الخدمة الأكثر طلباً: {s} ({n} طلبات، {p} % من المجموع).', 'tb.w.serviceLien': 'عرض جميع الطلبات',
+      'tb.w.contrib1': '{n} مساهمة حول البيانات تنتظر رداً.', 'tb.w.contribN': '{n} مساهمات حول البيانات تنتظر رداً.', 'tb.w.contribLien': 'فتح المساهمات',
+      'tb.w.anciennes1': '{n} طلب ينتظر منذ أكثر من يومين.', 'tb.w.anciennesN': '{n} طلبات تنتظر منذ أكثر من يومين.', 'tb.w.anciennesLien': 'معالجة الأقدم',
+      'tb.w.delai': 'متوسط مدة المعالجة هو {d}: أكثر من 48 ساعة.', 'tb.w.delaiLien': 'عرض الطلبات المعالجة',
+      'tb.w.rien': 'لا شيء غير معتاد. الطلبات في الانتظار تحت السيطرة.',
+      'tb.gJour': 'نشاط آخر 14 يوماً', 'tb.gJourAide': 'الطلبات المنشأة والطلبات المعالجة، يوماً بيوم.',
+      'tb.creees': 'منشأة', 'tb.traitees': 'معالجة', 'tb.jour': 'اليوم', 'tb.gJourDesc': 'رسم بياني بالأعمدة: الطلبات المنشأة والمعالجة في كل يوم خلال آخر 14 يوماً.',
+      'tb.gQuartier': 'الطلبات حسب الحي', 'tb.gQuartierAide': 'جميع الطلبات، مع الجزء الذي ما زال في الانتظار.',
+      'tb.total': 'المجموع', 'tb.enAttente': 'في الانتظار', 'tb.quartier': 'الحي', 'tb.dont': '{n} في الانتظار',
+      'tb.gService': 'الخدمات الأكثر طلباً', 'tb.gServiceAide': 'الخدمات الست التي تتلقى أكبر عدد من الطلبات.', 'tb.service': 'الخدمة', 'tb.demandes': 'الطلبات',
+      'tb.gStatut': 'التوزيع حسب الحالة', 'tb.gStatutAide': 'أين وصلت جميع الطلبات.', 'tb.statut': 'الحالة',
+      'tb.aucune': 'لا توجد بيانات بعد.', 'tb.nonPrecise': 'غير محدد', 'tb.part': 'الحصة'
+    }
   });
 
   const A = NT.agent, T = A.T, e = NT.ui.echap;
@@ -90,8 +150,9 @@
     const haut = max % 2 ? max + 1 : max;
     const L = 34, R = 696, H = 190, Y0 = 22, larg = (R - L) / jours.length, bw = 16;
     const y = v => Y0 + H - (v / haut) * H;
-    const fmtJ = j => new Date(j + 'T12:00:00').toLocaleDateString(NT.i18n.langue === 'fr' ? 'fr-FR' : undefined, { day: '2-digit', month: '2-digit' });
-    const fmtS = j => new Date(j + 'T12:00:00').toLocaleDateString(NT.i18n.langue === 'fr' ? 'fr-FR' : undefined, { weekday: 'short' });
+    const localeJour = { fr: 'fr-FR', en: 'en-GB', es: 'es-ES', ar: 'ar' }[NT.i18n.langue] || 'fr-FR';
+    const fmtJ = j => new Date(j + 'T12:00:00').toLocaleDateString(localeJour, { day: '2-digit', month: '2-digit' });
+    const fmtS = j => new Date(j + 'T12:00:00').toLocaleDateString(localeJour, { weekday: 'short' });
     let s = `<svg viewBox="0 0 700 250" role="img" aria-label="${e(T('tb.gJourDesc', 'Histogramme : demandes créées et traitées par jour sur les 14 derniers jours.'))}" focusable="false">`;
     [0, haut / 2, haut].forEach(v => { s += `<line class="${v === 0 ? 'tb-axe' : 'tb-grille'}" x1="${L}" x2="${R}" y1="${y(v)}" y2="${y(v)}"/><text class="tb-t-lab" x="${L - 6}" y="${y(v) + 4}" text-anchor="end">${v}</text>`; });
     jours.forEach((j, i) => {

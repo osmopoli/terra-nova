@@ -193,7 +193,54 @@
         'al.svcRetourLib': 'Return', 'al.svcModifier': 'Change', 'al.svcModifierPour': 'Change the status of {nom}', 'al.svcMsgErr': 'Explain what is happening so residents understand why the service is unavailable.', 'al.svcResume': 'The status cannot be saved yet:',
         'al.svcOk': '{nom}: status changed to “{etat}”.', 'al.svcRien': 'No message'
       },
-      es: { 'al.titre': 'Difundir un mensaje a los habitantes', 'al.publier': 'Difundir el mensaje', 'al.services': 'Estado de los servicios' }
+      es: {
+        'al.titre': 'Difundir un mensaje a los habitantes', 'al.intro': 'Publique una alerta o un aviso: aparece en la baliza de alertas del sitio y notifica a los habitantes afectados.',
+        'al.formTitre': 'Difundir un mensaje a todos los habitantes', 'al.modeles': 'Plantillas listas, en un clic',
+        'al.m.eaux': 'Subida de las aguas', 'al.m.eauxD': 'Alerta, barrio Sur', 'al.m.chaleur': 'Ola de calor', 'al.m.chaleurD': 'Alerta, personas vulnerables', 'al.m.annonce': 'Anuncio importante de la ciudad', 'al.m.annonceD': 'Importante, toda la ciudad', 'al.m.general': 'Mensaje general', 'al.m.generalD': 'Información para todos',
+        'al.niveau': 'Nivel del mensaje', 'al.niv.info': 'Publicado en los anuncios. Sin baliza ni notificación: útil pero no urgente.', 'al.niv.importante': 'La baliza pasa a ámbar y los habitantes afectados reciben una notificación.', 'al.niv.alerte': 'La baliza roja se enciende para todos los habitantes, con notificación e instrucciones. Solo para situaciones peligrosas.',
+        'al.fTitre': 'Título', 'al.fTitreAide': 'Corto y preciso, por ejemplo «Subida de las aguas en el barrio Sur».', 'al.fResume': 'Resumen corto', 'al.fResumeAide': 'Una o dos frases: es el texto que se muestra en la baliza de alertas.',
+        'al.fContenu': 'Contenido', 'al.fContenuAide': 'Explique la situación en detalle, con palabras sencillas.', 'al.fZone': 'Zona afectada', 'al.fConsignes': 'Instrucciones (¿qué deben hacer los habitantes?)', 'al.ajoutConsigne': 'Añadir una instrucción',
+        'al.fPublics': 'Grupos prioritarios (opcional)', 'al.fPublicsAide': 'Las personas vulnerables afectadas reciben además un mensaje personalizado.', 'al.fExpire': 'Fecha de caducidad (opcional)', 'al.fExpireAide': 'Después de esta fecha el mensaje desaparece de la baliza de alertas.', 'al.publier': 'Difundir el mensaje',
+        'al.apercu': 'Vista previa: lo que verán los habitantes', 'al.apercuAide': 'Esta tarjeta aparece en el panel que se abre desde la baliza de alertas.',
+        'al.actives': 'Alertas y avisos en curso', 'al.activesD': 'Levante una alerta en cuanto la situación vuelva a la normalidad.',
+        'al.services': 'Estado de los servicios', 'al.servicesD': 'Indique un mantenimiento o una incidencia: los habitantes lo ven antes de iniciar un trámite.', 'al.svcCaption': 'Estado de los servicios municipales', 'al.svcEtat': 'Estado', 'al.svcInfo': 'Mensaje y vuelta', 'al.svcAction': 'Acción',
+        'al.svcForm': 'Cambiar el estado de un servicio', 'al.svcMessage': 'Mensaje para los habitantes', 'al.svcMessageAide': 'Obligatorio si el servicio no está disponible. Diga qué ocurre.', 'al.svcRetour': 'Cuándo volver, o qué hacer mientras tanto', 'al.svcRetourAide': 'Por ejemplo «Reapertura el lunes a las 9 h» o «Entregue su expediente en recepción».', 'al.svcEnregistrer': 'Guardar el estado',
+        'al.p.agees': 'Personas mayores', 'al.p.enfants': 'Niños', 'al.p.enceintes': 'Mujeres embarazadas', 'al.p.malades': 'Personas enfermas', 'al.p.mobilite': 'Personas con movilidad reducida',
+        'al.zoneVille': 'Toda la ciudad', 'al.dest': 'Unos {n} habitante(s) afectado(s).', 'al.destVuln': ' Entre ellos, {v} persona(s) vulnerable(s) que recibirán un mensaje personal.',
+        'al.consigneN': 'Instrucción {n}', 'al.supprConsigne': 'Quitar la instrucción {n}', 'al.modeleOk': 'Plantilla «{nom}» aplicada. Revise el texto antes de difundirlo.',
+        'al.resumeErr': 'El mensaje aún no puede difundirse:', 'al.errTitre': 'Indique un título.', 'al.errResume': 'Indique un resumen corto (se muestra en la baliza de alertas).', 'al.errContenu': 'Indique el contenido del mensaje.', 'al.errExpire': 'Elija una fecha futura o deje el campo vacío.',
+        'al.okAlerte': 'Alerta difundida a {n} habitantes', 'al.okImportante': 'Mensaje importante difundido a {n} habitantes', 'al.okInfo': 'Información publicada para {n} habitantes',
+        'al.okVuln': '{v} persona(s) vulnerable(s) también recibieron un mensaje personalizado.', 'al.okDetail': 'Ver el anuncio', 'al.okFerme': 'La baliza de la cabecera se ha actualizado.',
+        'al.persoTitre': 'Para usted: {titre}', 'al.persoTexte': '{prenom}, este mensaje le concierne en particular ({publics}). {resume}{consigne}', 'al.persoConsigne': ' Lo primero que hacer: {c}',
+        'al.aucuneActive': 'Ninguna alerta ni aviso en curso.', 'al.lever': 'Levantar la alerta', 'al.retirer': 'Retirar el aviso', 'al.leverOk': '«{titre}» se ha levantado.', 'al.levee': 'Levantada', 'al.expiree': 'Caducada',
+        'al.expire': 'caduca el {d}', 'al.zoneLib': 'Zona', 'al.terminees': 'Mensajes levantados o caducados ({n})', 'al.aucuneTerminee': 'Ningún mensaje levantado ni caducado.',
+        'al.svcRetourLib': 'Vuelta', 'al.svcModifier': 'Cambiar', 'al.svcModifierPour': 'Cambiar el estado de {nom}', 'al.svcMsgErr': 'Explique qué ocurre para que los habitantes entiendan por qué el servicio no está disponible.', 'al.svcResume': 'El estado aún no puede guardarse:',
+        'al.svcOk': '{nom}: estado cambiado a «{etat}».', 'al.svcRien': 'Sin mensaje'
+      },
+      ar: {
+        'al.titre': 'بث رسالة إلى السكان', 'al.intro': 'انشر تنبيهاً أو إعلاناً: يظهر في شارة التنبيهات بالموقع ويُشعر السكان المعنيين.',
+        'al.formTitre': 'بث رسالة إلى جميع السكان', 'al.modeles': 'نماذج جاهزة، بنقرة واحدة',
+        'al.m.eaux': 'ارتفاع منسوب المياه', 'al.m.eauxD': 'تنبيه، الحي الجنوبي', 'al.m.chaleur': 'موجة حر', 'al.m.chaleurD': 'تنبيه، الفئات الهشة', 'al.m.annonce': 'إعلان مهم من المدينة', 'al.m.annonceD': 'مهم، المدينة كلها', 'al.m.general': 'رسالة عامة', 'al.m.generalD': 'معلومة للجميع',
+        'al.niveau': 'مستوى الرسالة', 'al.niv.info': 'تُنشر ضمن الإعلانات. بلا شارة ولا إشعار: مفيدة لكنها غير عاجلة.', 'al.niv.importante': 'تتحول الشارة إلى اللون الكهرماني ويتلقى السكان المعنيون إشعاراً.', 'al.niv.alerte': 'تضيء الشارة الحمراء لجميع السكان، مع إشعار وتعليمات. للحالات الخطرة فقط.',
+        'al.fTitre': 'العنوان', 'al.fTitreAide': 'قصير ودقيق، مثلاً «ارتفاع منسوب المياه في الحي الجنوبي».', 'al.fResume': 'ملخص قصير', 'al.fResumeAide': 'جملة أو جملتان: هذا هو النص المعروض في شارة التنبيهات.',
+        'al.fContenu': 'المحتوى', 'al.fContenuAide': 'اشرح الوضع بالتفصيل، بكلمات بسيطة.', 'al.fZone': 'المنطقة المعنية', 'al.fConsignes': 'التعليمات (ماذا يجب على السكان فعله؟)', 'al.ajoutConsigne': 'إضافة تعليمة',
+        'al.fPublics': 'الفئات ذات الأولوية (اختياري)', 'al.fPublicsAide': 'يتلقى الأشخاص الهشون المعنيون أيضاً رسالة شخصية.', 'al.fExpire': 'تاريخ الانتهاء (اختياري)', 'al.fExpireAide': 'بعد هذا التاريخ تختفي الرسالة من شارة التنبيهات.', 'al.publier': 'بث الرسالة',
+        'al.apercu': 'معاينة: ما سيراه السكان', 'al.apercuAide': 'تظهر هذه البطاقة في اللوحة التي تُفتح من شارة التنبيهات.',
+        'al.actives': 'التنبيهات والإعلانات الجارية', 'al.activesD': 'ارفع التنبيه فور عودة الوضع إلى طبيعته.',
+        'al.services': 'حالة الخدمات', 'al.servicesD': 'أبلغ عن صيانة أو عطل: يراه السكان قبل بدء أي إجراء.', 'al.svcCaption': 'حالة الخدمات البلدية', 'al.svcEtat': 'الحالة', 'al.svcInfo': 'الرسالة وموعد العودة', 'al.svcAction': 'الإجراء',
+        'al.svcForm': 'تغيير حالة خدمة', 'al.svcMessage': 'رسالة للسكان', 'al.svcMessageAide': 'إلزامية إذا كانت الخدمة غير متاحة. اذكر ما يحدث.', 'al.svcRetour': 'متى تعود الخدمة، أو ماذا يُفعل في الأثناء', 'al.svcRetourAide': 'مثلاً «إعادة الفتح يوم الاثنين الساعة 9» أو «سلّم ملفك في مكتب الاستقبال».', 'al.svcEnregistrer': 'حفظ الحالة',
+        'al.p.agees': 'كبار السن', 'al.p.enfants': 'الأطفال', 'al.p.enceintes': 'النساء الحوامل', 'al.p.malades': 'المرضى', 'al.p.mobilite': 'ذوو الحركة المحدودة',
+        'al.zoneVille': 'المدينة كلها', 'al.dest': 'حوالي {n} ساكن معني.', 'al.destVuln': ' من بينهم {v} شخص هش سيتلقون رسالة شخصية.',
+        'al.consigneN': 'التعليمة {n}', 'al.supprConsigne': 'حذف التعليمة {n}', 'al.modeleOk': 'طُبّق النموذج «{nom}». راجع النص قبل البث.',
+        'al.resumeErr': 'لا يمكن بث الرسالة بعد:', 'al.errTitre': 'أدخل عنواناً.', 'al.errResume': 'أدخل ملخصاً قصيراً (يُعرض في شارة التنبيهات).', 'al.errContenu': 'أدخل محتوى الرسالة.', 'al.errExpire': 'اختر تاريخاً في المستقبل، أو اترك الحقل فارغاً.',
+        'al.okAlerte': 'بُثّ التنبيه إلى {n} ساكن', 'al.okImportante': 'بُثّت الرسالة المهمة إلى {n} ساكن', 'al.okInfo': 'نُشرت المعلومة لـ {n} ساكن',
+        'al.okVuln': 'تلقى {v} شخص هش أيضاً رسالة شخصية.', 'al.okDetail': 'عرض الإعلان', 'al.okFerme': 'تم تحديث الشارة في رأس الصفحة.',
+        'al.persoTitre': 'لك: {titre}', 'al.persoTexte': '{prenom}، تخصك هذه الرسالة بشكل خاص ({publics}). {resume}{consigne}', 'al.persoConsigne': ' أول ما يجب فعله: {c}',
+        'al.aucuneActive': 'لا يوجد تنبيه أو إعلان جارٍ.', 'al.lever': 'رفع التنبيه', 'al.retirer': 'سحب الإعلان', 'al.leverOk': 'تم رفع «{titre}».', 'al.levee': 'مرفوع', 'al.expiree': 'منتهٍ',
+        'al.expire': 'ينتهي في {d}', 'al.zoneLib': 'المنطقة', 'al.terminees': 'الرسائل المرفوعة أو المنتهية ({n})', 'al.aucuneTerminee': 'لا توجد رسالة مرفوعة أو منتهية.',
+        'al.svcRetourLib': 'العودة', 'al.svcModifier': 'تغيير', 'al.svcModifierPour': 'تغيير حالة {nom}', 'al.svcMsgErr': 'اشرح ما يحدث حتى يفهم السكان سبب عدم توفر الخدمة.', 'al.svcResume': 'لا يمكن حفظ الحالة بعد:',
+        'al.svcOk': '{nom}: تغيرت الحالة إلى «{etat}».', 'al.svcRien': 'لا رسالة'
+      }
     });
     /* F63 : désactivation rapide par l'administrateur */
     NT.i18n.ajouter({
