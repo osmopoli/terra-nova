@@ -93,7 +93,7 @@ const toutesSecurites = () => Object.fromEntries(db.prepare('SELECT email, etat 
 
 // Même contrat que l'ancien store navigateur : { ok, erreur, verification, verrouJusqu, restantes, alerteSecurite, utilisateur }
 function connecter(req, res, email, motdepasse, verificationReussie) {
-  email = String(email || '').trim().toLowerCase();
+  email = require('./modules/accueil').resoudreLogin(email);   // F71 : e-mail, identifiant TN-xxxxxx ou numéro de téléphone
   const etat = etatSecurite(email);
   const t = Date.now();
   if (etat.verrouJusqu > t) {
@@ -105,7 +105,7 @@ function connecter(req, res, email, motdepasse, verificationReussie) {
   const profil = row && docs.get('utilisateurs', row.doc_id);
   if (!row || !verifier(motdepasse || '', row.password_hash) || !profil || profil.actif === false) {
     etat.echecs++; etat.echecsDepuisConnexion = (etat.echecsDepuisConnexion || 0) + 1;
-    let rep = { ok: false, erreur: 'Adresse e-mail ou mot de passe incorrect.' };
+    let rep = { ok: false, erreur: 'Identifiant ou mot de passe incorrect.' };
     if (profil && profil.actif === false && row && verifier(motdepasse || '', row.password_hash)) rep.erreur = 'Ce compte est désactivé. Contactez la mairie.';
     if (etat.echecs >= SEUIL_BLOCAGE) {
       etat.blocages = (etat.blocages || 0) + 1;

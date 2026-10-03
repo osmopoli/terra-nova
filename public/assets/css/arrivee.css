@@ -1,0 +1,112 @@
+/* Terra Nova — vague 13 : nouveaux arrivants (F71, F72). Tokens du thème, rem, mobile d'abord (360 px), RTL. */
+[hidden]{ display:none!important; }
+.bloc-arr{ margin-top:2.5rem; }
+.bloc-arr > h2,.titre-arr{ font-size:clamp(1.25rem,2.2vw,1.6rem); margin:0 0 .5rem; display:flex; gap:.5rem; align-items:center; }
+.bloc-arr > h2 i,.titre-arr i{ color:var(--iono); font-size:1.4em; }
+.bloc-arr > .doux{ margin-top:0; max-width:60ch; }
+.btn.petit{ min-height:2.5rem; padding:.3rem .9rem; font-size:.9rem; }
+
+/* Choix de la langue : gros boutons, nom dans la langue, salutation */
+.langues{ display:grid; gap:.6rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,8rem),1fr)); margin-top:1rem; }
+.langue-choix{ display:flex; flex-direction:column; align-items:flex-start; gap:.15rem; padding:1rem 1.1rem; min-height:4.5rem; border-radius:var(--r-l); border:1px solid var(--trait-2);
+  background:var(--verre); color:var(--givre); font:inherit; cursor:pointer; text-align:start; transition:border-color 160ms ease, transform 160ms var(--ease-out); }
+.langue-choix:active{ transform:scale(.98); }
+@media (hover:hover) and (pointer:fine){ .langue-choix:hover{ border-color:var(--iono); } }
+.langue-choix[aria-pressed="true"]{ border-color:var(--iono); box-shadow:0 0 0 1px var(--iono) inset, 0 0 30px -12px var(--lueur); }
+.langue-choix .nom{ font-size:1.2rem; font-weight:700; display:flex; gap:.5rem; align-items:center; }
+.langue-choix .nom i{ color:var(--iono); }
+.langue-choix .salut{ color:var(--brume); font-size:.95rem; }
+
+/* Premier passage sur l'accueil : choix de la langue (encart discret, une seule fois) */
+.premiere-langue{ margin:1rem 0 0; padding:1.1rem 1.25rem; }
+.premiere-langue .tete{ display:flex; gap:1rem; align-items:flex-start; justify-content:space-between; }
+.premiere-langue h2{ font-size:1.05rem; margin:0; display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; }
+.premiere-langue h2 i{ color:var(--iono); font-size:1.4rem; }
+.premiere-langue .langues{ grid-template-columns:repeat(auto-fit,minmax(min(100%,8rem),1fr)); gap:.5rem; }
+.premiere-langue .langue-choix{ min-height:3.6rem; padding:.65rem .8rem; }
+.premiere-langue .langue-choix .nom{ font-size:1.05rem; }
+.raccourci-arrivee{ font-weight:700; }
+
+/* Guide : questions à pictogrammes */
+.question{ border:0; padding:0; margin:0 0 1.5rem; min-width:0; }
+.question legend{ font-weight:700; font-size:1.1rem; margin-bottom:.75rem; padding:0; }
+.question .aide{ color:var(--brume); font-size:.9rem; margin:-.4rem 0 .75rem; }
+.choix{ display:grid; gap:.6rem; grid-template-columns:repeat(auto-fill,minmax(min(100%,6.5rem),1fr)); }
+.choix label{ position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.4rem; text-align:center; min-height:5.25rem; padding:.7rem .5rem;
+  border:1px solid var(--trait-2); border-radius:var(--r-l); background:var(--verre); cursor:pointer; font-weight:600; transition:border-color 160ms ease; }
+.choix label i{ font-size:2rem; color:var(--iono); }
+.choix input{ position:absolute; opacity:0; inset:0; width:100%; height:100%; margin:0; cursor:pointer; }
+.choix label:has(input:checked){ border-color:var(--iono); background:color-mix(in oklch, var(--iono) 10%, var(--verre)); box-shadow:0 0 0 1px var(--iono) inset; }
+.choix label:has(input:focus-visible){ outline:3px solid var(--iono); outline-offset:2px; }
+.choix label:has(input:checked)::after{ content:"✓"; position:absolute; top:.35rem; inset-inline-end:.55rem; color:var(--iono); font-weight:700; }
+
+/* Liste personnalisée */
+.progression{ display:flex; gap:.75rem; align-items:center; margin:.25rem 0 1rem; flex-wrap:wrap; }
+.progression .barre{ flex:1; min-width:8rem; height:.5rem; border-radius:99px; background:var(--trait); overflow:hidden; }
+.progression .barre span{ display:block; height:100%; background:var(--iono); border-radius:inherit; transition:width 300ms var(--ease-out); }
+.etapes-arr{ list-style:none; margin:0; padding:0; display:grid; gap:.75rem; counter-reset:etape; }
+.etape-arr{ display:grid; grid-template-columns:auto 1fr; gap:.4rem 1rem; padding:1rem 1.1rem; border:1px solid var(--trait); border-radius:var(--r-l); background:var(--verre); }
+.etape-arr.faite{ border-color:color-mix(in oklch, var(--calme) 50%, var(--trait)); }
+.etape-arr .ico{ width:2.75rem; height:2.75rem; border-radius:12px; display:grid; place-items:center; font-size:1.5rem; color:var(--iono); background:color-mix(in oklch, var(--iono) 10%, transparent); grid-row:span 2; }
+.etape-arr.faite .ico{ color:var(--calme); }
+.etape-arr h3{ margin:0; font-size:1.05rem; }
+.etape-arr p{ margin:0; color:var(--brume); }
+.etape-arr .actions{ grid-column:2; display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin-top:.4rem; }
+.case-faite{ display:inline-flex; gap:.45rem; align-items:center; min-height:2.5rem; padding:0 .4rem; cursor:pointer; font-weight:600; }
+.case-faite input{ width:1.2rem; height:1.2rem; accent-color:var(--iono); }
+.etape-arr.faite h3{ text-decoration:line-through; text-decoration-color:var(--calme); }
+@media (max-width:480px){ .etape-arr{ grid-template-columns:1fr; } .etape-arr .ico{ grid-row:auto; } .etape-arr .actions{ grid-column:1; } }
+
+/* Formulaires */
+.form-arr .grille-champs{ display:grid; gap:0 1rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr)); }
+.form-arr .erreur{ color:var(--corail); font-weight:700; font-size:.9rem; }
+.resume-arr:not(:empty){ border:1px solid var(--corail); padding:.8rem 1rem; border-radius:var(--r); margin-bottom:1rem; font-weight:600; }
+.code-saisie{ font-family:var(--mono); letter-spacing:.2em; }
+
+/* Guichet (agent) */
+.inscrits{ list-style:none; margin:0; padding:0; display:grid; gap:.6rem; }
+.inscrit{ display:flex; flex-wrap:wrap; gap:.5rem 1rem; align-items:center; justify-content:space-between; padding:.8rem 1rem; border:1px solid var(--trait); border-radius:var(--r-l); background:var(--verre); }
+.inscrit.echec{ border-color:var(--corail); }
+.inscrit .qui{ display:grid; gap:.1rem; }
+.inscrit .ident{ font-family:var(--mono); font-size:1.1rem; font-weight:700; letter-spacing:.04em; }
+.inscrit .actions{ display:flex; flex-wrap:wrap; gap:.5rem; }
+.lot-apercu{ font-size:.9rem; color:var(--brume); }
+textarea.lot{ font-family:var(--mono); min-height:8rem; }
+
+/* Fiche d'accueil (écran et impression) */
+.fiche-accueil{ border:1px solid var(--trait-2); border-radius:var(--r-l); padding:1.4rem; background:var(--verre); max-width:44rem; }
+.fa-tete{ display:flex; gap:.75rem; align-items:center; margin-bottom:.75rem; }
+.fa-tete .logo-embleme{ width:2.5rem; height:2.5rem; flex:none; }
+.fa-tete div{ display:grid; }
+.fa-tete strong{ font-size:1.2rem; }
+.fa-tete span{ color:var(--brume); font-size:.9rem; }
+.fa-bienvenue{ font-size:1.35rem; margin:.25rem 0 1rem; }
+.fa-ids{ display:grid; gap:.75rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr)); margin-bottom:1rem; }
+.fa-ids > div{ display:grid; gap:.2rem; padding:.8rem 1rem; border:2px solid var(--iono); border-radius:var(--r); }
+.fa-lib{ display:flex; gap:.4rem; align-items:center; font-weight:600; color:var(--brume); }
+.fa-lib i{ color:var(--iono); font-size:1.2rem; }
+.fa-valeur{ font-family:var(--mono); font-size:1.7rem; font-weight:700; letter-spacing:.08em; }
+.fa-aide{ font-size:.85rem; color:var(--brume); }
+.fiche-accueil h3{ font-size:1.05rem; margin:1rem 0 .4rem; display:flex; gap:.4rem; align-items:center; }
+.fiche-accueil h3 i{ color:var(--iono); }
+.fa-liste{ margin:0; padding-inline-start:1.3rem; display:grid; gap:.35rem; }
+.fa-liste i{ color:var(--iono); margin-inline-end:.35rem; vertical-align:-.15em; }
+.fa-url{ font-family:var(--mono); font-size:.85rem; overflow-wrap:anywhere; }
+.fa-secret{ margin:1rem 0 .25rem; padding:.7rem .9rem; border-inline-start:3px solid var(--iono); display:flex; gap:.5rem; align-items:flex-start; }
+.fa-secret i{ color:var(--iono); font-size:1.3rem; flex:none; }
+.fa-pied{ margin:.5rem 0 0; color:var(--brume); font-size:.85rem; }
+#zone-impression{ display:none; }
+@media print{
+  :root{ color-scheme:light; }
+  body.impression-fiches > *:not(#zone-impression){ display:none!important; }
+  body.impression-fiches #zone-impression{ display:block!important; }
+  body.impression-fiches{ background:Canvas!important; color:CanvasText!important; }
+  body.impression-fiches::before,body.impression-fiches::after{ display:none!important; }
+  .fiche-accueil{ background:none; color:CanvasText; border-color:CanvasText; max-width:none; break-after:page; box-shadow:none; }
+  .fiche-accueil *{ color:CanvasText!important; }
+  .fa-ids > div{ border-color:CanvasText; }
+  body:not(.impression-fiches) .pas-imprimer{ display:none!important; }
+}
+
+/* RTL : les icônes Phosphor duotone superposent deux glyphes, à garder de gauche à droite */
+[dir="rtl"] .ph-duotone{ direction:ltr; unicode-bidi:isolate; }

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Centre de sécurité — Terra Nova</title>
+  <meta name="description" content="Centre de sécurité numérique : tentatives bloquées, protections actives, habilitations aux données réservées et journal des consultations.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/securite.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/sensible.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="securite" data-ariane="nav.agent|agent.html;nav.securite" data-roles="admin">
+  <main id="contenu" class="conteneur">
+    <header class="titre-page">
+      <span class="surtitre" data-i18n="cs.surtitre">Centre de sécurité numérique</span>
+      <h1 data-i18n="cs.titre">Centre de sécurité</h1>
+      <p data-i18n="cs.sous">Tentatives bloquées par la plateforme, protections actives, habilitations aux données réservées et journal de chaque consultation.</p>
+    </header>
+
+    <section class="kpis-sec" id="cs-kpis" aria-label="Résumé des dernières 24 heures"></section>
+
+    <section class="bloc-sec" aria-labelledby="t-blocages">
+      <h2 id="t-blocages" data-i18n="cs.blocages">Tentatives bloquées</h2>
+      <p class="doux" data-i18n="cs.blocagesD">Requêtes venues d’un autre site, rafales de tentatives, données malformées, accès refusés. Les adresses IP sont tronquées.</p>
+      <div class="filtres-sec">
+        <div class="champ"><label for="cs-type" data-i18n="cs.fType">Type</label><select id="cs-type"></select></div>
+        <button class="btn" type="button" id="cs-csv"><i class="ph-duotone ph-file-csv" aria-hidden="true"></i><span data-i18n="cs.csv">Exporter (CSV)</span></button>
+      </div>
+      <p class="doux" id="cs-nb" aria-live="polite"></p>
+      <div class="table-defile">
+        <table class="table-sec empilee">
+          <caption class="sr-only" data-i18n="cs.blocagesCap">Journal des tentatives bloquées</caption>
+          <thead><tr><th scope="col" data-i18n="cs.cDate">Date</th><th scope="col" data-i18n="cs.cType">Type</th><th scope="col" data-i18n="cs.cRequete">Requête</th><th scope="col" data-i18n="cs.cOrigine">Origine</th><th scope="col" data-i18n="cs.cDetail">Détail</th></tr></thead>
+          <tbody id="cs-blocages"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="bloc-sec" aria-labelledby="t-hab">
+      <h2 id="t-hab" data-i18n="cs.hab">Habilitations aux données réservées</h2>
+      <p class="doux" data-i18n="cs.habD">En plus du rôle : seuls les agents habilités peuvent afficher le téléphone et le dossier administratif d’un habitant, avec un motif à chaque fois. Les administrateurs sont habilités par leur rôle.</p>
+      <div class="table-defile">
+        <table class="table-sec empilee">
+          <caption class="sr-only" data-i18n="cs.habCap">Personnel et habilitations</caption>
+          <thead><tr><th scope="col" data-i18n="cs.hNom">Personne</th><th scope="col" data-i18n="cs.hRole">Rôle</th><th scope="col" data-i18n="cs.hEtat">Habilitation</th><th scope="col" data-i18n="cs.hDecision">Décision</th><th scope="col" data-i18n="cs.hAction">Action</th></tr></thead>
+          <tbody id="cs-hab"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="bloc-sec" aria-labelledby="t-acces">
+      <h2 id="t-acces" data-i18n="cs.acces">Consultations de données réservées</h2>
+      <p class="doux" data-i18n="cs.accesD">Qui a affiché quoi, quand et pourquoi. Ce journal ne peut pas être modifié.</p>
+      <div class="table-defile">
+        <table class="table-sec empilee">
+          <caption class="sr-only" data-i18n="cs.accesCap">Journal des consultations de données réservées</caption>
+          <thead><tr><th scope="col" data-i18n="cs.cDate">Date</th><th scope="col" data-i18n="cs.aAgent">Agent</th><th scope="col" data-i18n="cs.aPersonne">Personne concernée</th><th scope="col" data-i18n="cs.aChamps">Données</th><th scope="col" data-i18n="cs.aMotif">Motif</th></tr></thead>
+          <tbody id="cs-acces"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="bloc-sec" aria-labelledby="t-prot">
+      <h2 id="t-prot" data-i18n="cs.prot">Protections actives</h2>
+      <ul class="liste-protections" id="cs-prot"></ul>
+    </section>
+  </main>
+  <script src="assets/js/agent-securite.js" defer></script>
+</body>
+</html>

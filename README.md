@@ -29,6 +29,7 @@ Hodifly redéploie à chaque push sur `main` avec la commande de build du projet
 - Variables Hodifly utiles : `NODE_ENV=production`, `WEBCUP_API_KEY`, `PORT`. Les variables `DB_*` MySQL de l'ancienne version ne servent plus.
 - Base SQLite : `~/terranova-data/terranova.db`, hors du dossier de release, donc conservée entre deux déploiements (`DB_PATH` pour la déplacer). Aucune migration à lancer.
 - Node 22.13 ou plus récent requis (`node:sqlite` sans option).
+- Vague 13 (F69) : définir `DATA_ENCRYPTION_KEY` (longue valeur aléatoire, à ne jamais changer ensuite) pour chiffrer les données sensibles ; sans elle, une clé est créée dans `~/terranova-data/terranova.key` (à conserver avec la base). `NODE_ENV=production` active HSTS et `upgrade-insecure-requests`.
 - Surveillance : `GET /api/health` → `{"status":"ok","service":"terra-nova","database":"ok",…}`.
 
 ## Comptes de démonstration (créés au premier démarrage)
@@ -39,7 +40,7 @@ Hodifly redéploie à chaque push sur `main` avec la commande de build du projet
 | Agent municipal | `agent@nova.test` | `Agent2026` |
 | Administrateur | `admin@nova.test` | `Admin2026` |
 
-Autres habitants : `marc@`, `amina@`, `jean@nova.test` (mot de passe `Citoyen2026`). La page de connexion propose de pré-remplir ces comptes.
+Autres habitants : `marc@`, `amina@`, `jean@nova.test` (mot de passe `Citoyen2026`). Vague 13 : agent habilité aux données réservées `social@nova.test` / `Agent2026` ; nouvel arrivant sans e-mail `TN-100001` (ou `06 39 48 21 77`) / code `482915`. La page de connexion propose de pré-remplir ces comptes.
 Comptes d'équipe supplémentaires possibles via `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `AGENT_EMAIL` / `AGENT_PASSWORD` dans `.env`.
 Réinitialiser les données de démonstration : connecté en admin, `POST /api/demo/reinitialiser` (ou console : `NT.store.reset()`).
 
@@ -67,3 +68,5 @@ Le détail « où et comment le montrer au jury » est dans [`docs/RENDU-JURY.md
 | Rendez-vous, transports, carte | F36, F39, F40, F45, F46 | `rendez-vous`, `transports`, `carte` |
 | Participation, données | F51, F52 | `soutenir`, `donnees` |
 | Accessibilité, langues, langage clair | D13, D14, D20, F21, F23, F24, F41, F42, F43, F44 | toutes (panneau ♿, touche `?`, `aide`) |
+| Sécurité numérique, données réservées (vague 13) | F69, F70 | toutes (en-têtes, anti-CSRF, débit), `securite`, `agent-securite`, `admin-comptes` |
+| Nouveaux arrivants (vague 13) | F71, F72 | `bienvenue`, `agent-accueil`, `connexion`, `index` |

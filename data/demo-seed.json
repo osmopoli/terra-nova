@@ -786,5 +786,84 @@
    "acteurNom": "Karim Benali",
    "acteurRole": "agent"
   }
- ]
+ ],
+ "vague13": {
+  "_note": "Vague 13 : dossiers administratifs réservés (F70, chiffrés au repos), agent habilité, nouvel arrivant sans e-mail (F71)",
+  "dossiers": {
+   "citoyen@nova.test": {
+    "naissance": "12/04/1991",
+    "situation": "Seule avec 1 enfant",
+    "quotientFamilial": "742 €",
+    "numeroAllocataire": "CAF 4581 2297",
+    "aides": "Allocation logement",
+    "noteService": "Dossier complet, renouvellement en mars."
+   },
+   "marc@nova.test": {
+    "naissance": "03/02/1985",
+    "situation": "Marié, 3 enfants",
+    "quotientFamilial": "1 105 €",
+    "numeroAllocataire": "CAF 3320 1874",
+    "aides": "Allocations familiales",
+    "noteService": ""
+   },
+   "amina@nova.test": {
+    "naissance": "03/09/1948",
+    "situation": "Veuve, vit seule",
+    "quotientFamilial": "512 €",
+    "numeroAllocataire": "CAF 1187 5520",
+    "aides": "Aide à domicile, téléassistance",
+    "noteService": "Personne isolée : appel du CCAS en cas de canicule."
+   },
+   "jean@nova.test": {
+    "naissance": "21/11/1952",
+    "situation": "Marié, sans enfant à charge",
+    "quotientFamilial": "634 €",
+    "numeroAllocataire": "CAF 2045 9931",
+    "aides": "Carte de transport solidaire",
+    "noteService": "Mobilité réduite (fauteuil)."
+   }
+  },
+  "utilisateurs": [
+   {
+    "id": "usr-v13social01",
+    "cree": "@2592000002",
+    "prenom": "Sophie",
+    "nom": "Laurent",
+    "email": "social@nova.test",
+    "role": "agent",
+    "quartier": "Centre",
+    "telephone": "06 00 00 00 00",
+    "actif": true,
+    "premiereConnexion": false,
+    "profilComplet": true,
+    "vulnerable": false,
+    "habilitation": {
+     "active": true,
+     "motif": "Instruction des aides sociales (CCAS)",
+     "par": "Inès Rousseau",
+     "le": "@864000000"
+    },
+    "motdepasseDemo": "Agent2026"
+   },
+   {
+    "id": "usr-v13arrive01",
+    "cree": "@172800000",
+    "prenom": "Youssef",
+    "nom": "Haddad",
+    "email": "tn-100001",
+    "identifiant": "TN-100001",
+    "sansEmail": true,
+    "role": "citoyen",
+    "quartier": "Est",
+    "telephone": "06 39 48 21 77",
+    "langue": "ar",
+    "actif": true,
+    "premiereConnexion": true,
+    "profilComplet": false,
+    "vulnerable": false,
+    "inscritPar": "Karim Benali",
+    "motdepasseDemo": "482915"
+   }
+  ]
+ }
 }
