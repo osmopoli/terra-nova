@@ -1,7 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import Demande from '#models/demande'
-import { DEMANDE_STATUS_VALUES } from '#constants/domain'
+import { DEFAULT_DEMANDE_STATUS, DEMANDE_STATUS_VALUES } from '#constants/domain'
 import { listAgentDemandesValidator, updateAgentDemandeValidator } from '#validators/agent_demande'
 
 /** F22 : demandes des habitants vues et traitées par les agents (et les admins). */
@@ -51,6 +51,24 @@ export default class AgentDemandesController {
     })
     await demande.load('steps', (q) => q.orderBy('created_at', 'asc').orderBy('id', 'asc'))
     return demande
+  }
+
+  /**
+   * D17 : charge de travail en un coup d'œil. `pending` = demandes reçues que personne
+   * n'a encore prises en charge ; `oldestPendingAt` = la plus ancienne d'entre elles.
+   */
+  async summary() {
+    const counts = await AgentDemandesController.counts()
+    const oldest = await Demande.query()
+      .where('status', DEFAULT_DEMANDE_STATUS)
+      .orderBy('created_at', 'asc')
+      .first()
+    return {
+      pending: counts.nouveau ?? 0,
+      inProgress: counts.en_cours ?? 0,
+      counts,
+      oldestPendingAt: oldest?.createdAt ?? null,
+    }
   }
 
   /** Nombre de demandes par état (D17 s'appuie dessus pour la charge de travail). */

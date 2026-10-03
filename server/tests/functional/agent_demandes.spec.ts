@@ -114,3 +114,36 @@ test.group('Vue agent des demandes des habitants (F22)', (group) => {
     response.assertStatus(403)
   })
 })
+
+test.group('Charge de travail des agents (D17)', (group) => {
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+
+  test('nombre de demandes en attente, mis à jour après prise en charge', async ({
+    client,
+    assert,
+  }) => {
+    const citizen = await account('citoyen')
+    const { a } = await seed(citizen.user.id)
+    const { token } = await account('agent')
+
+    const before = await client.get('/api/agent/demandes/summary').bearerToken(token)
+    before.assertStatus(200)
+    assert.equal(before.body().pending, 1)
+    assert.isString(before.body().oldestPendingAt)
+
+    await client
+      .patch(`/api/agent/demandes/${a.id}`)
+      .bearerToken(token)
+      .json({ status: 'en_cours' })
+    const after = await client.get('/api/agent/demandes/summary').bearerToken(token)
+    assert.equal(after.body().pending, 0)
+    assert.equal(after.body().inProgress, 2)
+    assert.isNull(after.body().oldestPendingAt)
+  })
+
+  test('réservé aux agents (403 pour un citoyen)', async ({ client }) => {
+    const citizen = await account('citoyen')
+    const response = await client.get('/api/agent/demandes/summary').bearerToken(citizen.token)
+    response.assertStatus(403)
+  })
+})

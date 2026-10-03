@@ -129,6 +129,7 @@ router
           .patch('/contact-messages/:code', [AgentMessagesController, 'updateStatus'])
           .where('code', /^NT-[A-Za-z0-9]{6}$/)
         router.get('/demandes', [AgentDemandesController, 'index'])
+        router.get('/demandes/summary', [AgentDemandesController, 'summary'])
         router.get('/demandes/:id', [AgentDemandesController, 'show'])
         router.patch('/demandes/:id', [AgentDemandesController, 'update'])
       })

@@ -8,6 +8,7 @@ import ContrastControl from './ContrastControl.jsx';
 import LightModeControl from './LightModeControl.jsx';
 import { LightModeFooter, LightModeNotice } from './LightModeStatus.jsx';
 import SkipLink from './SkipLink.jsx';
+import PendingCounter from './PendingCounter.jsx';
 
 export default function Layout({ user, children }) {
   // Entrée active : soulignée en couleur primaire (aria-current posé par NavLink).
@@ -48,9 +49,12 @@ export default function Layout({ user, children }) {
               </NavLink>
             )}
             {user && user.role !== 'citoyen' && (
-              <NavLink to="/agent/demandes" className={linkClass}>
-                Demandes des habitants
-              </NavLink>
+              <>
+                <NavLink to="/agent/demandes" className={linkClass}>
+                  Demandes des habitants
+                </NavLink>
+                <PendingCounter />
+              </>
             )}
             <NavLink
               to={user ? '/profil' : '/connexion'}

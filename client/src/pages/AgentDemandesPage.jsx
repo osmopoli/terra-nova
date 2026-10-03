@@ -3,6 +3,7 @@ import { api } from '../api/client.js';
 import { FormError, inputClass } from '../components/Field.jsx';
 import { labelOf } from '../lib/constants.js';
 import { useAsync } from '../lib/useAsync.js';
+import { WORKLOAD_EVENT } from '../components/PendingCounter.jsx';
 
 const STATUS_CLASS = {
   nouveau: 'bg-accent text-on-primary',
@@ -40,6 +41,7 @@ function DemandeDetail({ id, meta, onChanged }) {
       setNote('');
       setVersion((v) => v + 1);
       onChanged();
+      window.dispatchEvent(new Event(WORKLOAD_EVENT));
     } catch (err) {
       setError(err);
     } finally {
@@ -136,6 +138,21 @@ export default function AgentDemandesPage({ meta }) {
         <h1 className="font-display text-2xl font-bold">Demandes des habitants</h1>
         <p className="text-ink-muted">Les nouvelles demandes, qui attendent une prise en charge, sont en tête.</p>
       </div>
+
+      {list.data && (
+        <dl className="grid grid-cols-3 gap-3">
+          {[
+            ['En attente de prise en charge', counts.nouveau ?? 0, 'bg-accent text-ink'],
+            ['En cours', counts.en_cours ?? 0, 'bg-surface'],
+            ['Traitées', counts.traite ?? 0, 'bg-surface'],
+          ].map(([label, value, tone]) => (
+            <div key={label} className={`rounded-card p-4 shadow-card ${tone}`}>
+              <dt className="text-sm font-semibold">{label}</dt>
+              <dd className="font-display text-3xl font-bold">{value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
 
       <div role="tablist" aria-label="Filtrer par état" className="flex flex-wrap gap-2">
         {tabs.map((tab) => (
