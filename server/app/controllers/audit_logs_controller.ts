@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import AuditLog from '#models/audit_log'
-import { listAuditLogsValidator } from '#validators/audit'
+import AuditService from '#services/audit_service'
+import { listAuditLogsValidator, objectHistoryValidator } from '#validators/audit'
 
 const PER_PAGE = 25
 
@@ -22,5 +23,11 @@ export default class AuditLogsController {
       .paginate(page ?? 1, PER_PAGE)
 
     return logs.toJSON()
+  }
+
+  /** Historique d'un objet administré : dernier modificateur et changements (WEBC-75). */
+  async history({ request }: HttpContext) {
+    const { params } = await request.validateUsing(objectHistoryValidator)
+    return AuditService.history(params.objectType, params.objectId)
   }
 }

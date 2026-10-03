@@ -29,3 +29,13 @@ listAuditLogsValidator.messagesProvider = new SimpleMessagesProvider(
   },
   { actorId: 'agent', objectType: "type d'objet", from: 'date de début', to: 'date de fin' }
 )
+
+export const objectHistoryValidator = vine.compile(
+  vine.object({
+    params: vine.object({
+      objectType: vine.enum(AUDIT_OBJECT_TYPE_VALUES),
+      objectId: vine.string().maxLength(64),
+    }),
+  })
+)
+objectHistoryValidator.messagesProvider = listAuditLogsValidator.messagesProvider

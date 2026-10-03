@@ -85,6 +85,7 @@ export const SERVICE_CATEGORY_VALUES = Object.keys(SERVICE_CATEGORIES) as Servic
 export const AUDIT_ACTIONS = {
   role_changed: 'Rôle d’un compte modifié',
   account_created: 'Compte créé',
+  account_updated: 'Compte modifié',
   account_deleted: 'Compte supprimé',
   request_status_changed: 'Statut d’une demande modifié',
   alert_broadcast: 'Alerte ou message diffusé',

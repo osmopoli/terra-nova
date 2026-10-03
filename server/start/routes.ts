@@ -21,6 +21,8 @@ const AgentController = () => import('#controllers/agent_controller')
 const AdminUsersController = () => import('#controllers/admin_users_controller')
 const WebcupController = () => import('#controllers/webcup_controller')
 const ContactMessagesController = () => import('#controllers/contact_messages_controller')
+const AgentContactMessagesController = () =>
+  import('#controllers/agent_contact_messages_controller')
 const AuditLogsController = () => import('#controllers/audit_logs_controller')
 const ServicesController = () => import('#controllers/services_controller')
 
@@ -75,6 +77,11 @@ router
         router.get('/webcup/requests', [WebcupController, 'index'])
         router.post('/webcup/requests/seen', [WebcupController, 'markSeen'])
         router.get('/audit-logs', [AuditLogsController, 'index'])
+        router.get('/history/:objectType/:objectId', [AuditLogsController, 'history'])
+        router.patch('/contact-messages/:code/status', [
+          AgentContactMessagesController,
+          'updateStatus',
+        ])
       })
       .prefix('/agent')
       .use([middleware.auth(), middleware.role({ roles: ACCESS.agent })])

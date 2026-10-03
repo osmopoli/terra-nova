@@ -1,5 +1,5 @@
 import vine, { SimpleMessagesProvider } from '@vinejs/vine'
-import { CONTACT_SERVICE_VALUES, LIMITS } from '#constants/domain'
+import { CONTACT_SERVICE_VALUES, CONTACT_STATUS_VALUES, LIMITS } from '#constants/domain'
 
 const messages = new SimpleMessagesProvider(
   {
@@ -20,3 +20,14 @@ export const createContactMessageValidator = vine.compile(
   })
 )
 createContactMessageValidator.messagesProvider = messages
+
+export const updateContactStatusValidator = vine.compile(
+  vine.object({
+    status: vine.enum(CONTACT_STATUS_VALUES),
+    params: vine.object({ code: vine.string().maxLength(20) }),
+  })
+)
+updateContactStatusValidator.messagesProvider = new SimpleMessagesProvider(
+  { required: 'Ce champ est obligatoire.', enum: 'Valeur non autorisée.' },
+  { status: 'statut' }
+)
