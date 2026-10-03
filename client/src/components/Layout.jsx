@@ -20,6 +20,9 @@ export default function Layout({ user, children }) {
             <Link to="/" className={linkClass}>
               Accueil
             </Link>
+            <Link to="/contact" className={linkClass}>
+              Contact
+            </Link>
             <Link
               to={user ? '/profil' : '/connexion'}
               className="rounded-control bg-primary px-3 py-1.5 font-bold text-white hover:bg-primary-strong"

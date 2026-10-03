@@ -20,6 +20,7 @@ const ProfileController = () => import('#controllers/profile_controller')
 const AgentController = () => import('#controllers/agent_controller')
 const AdminUsersController = () => import('#controllers/admin_users_controller')
 const WebcupController = () => import('#controllers/webcup_controller')
+const ContactMessagesController = () => import('#controllers/contact_messages_controller')
 
 router
   .group(() => {
@@ -57,6 +58,11 @@ router
         router.post('/auth/logout', [AuthController, 'logout'])
         router.get('/me', [ProfileController, 'show'])
         router.patch('/me', [ProfileController, 'update'])
+
+        /** Messages aux services municipaux (WEBC-6) : chaque habitant ne voit que les siens. */
+        router.get('/contact-messages', [ContactMessagesController, 'index'])
+        router.post('/contact-messages', [ContactMessagesController, 'store'])
+        router.get('/contact-messages/:code', [ContactMessagesController, 'show'])
       })
       .use(middleware.auth())
 
