@@ -1,14 +1,27 @@
+import { useState } from 'react';
 import { api } from '../api/client.js';
 import { labelOf } from '../lib/constants.js';
 import { Link } from '../lib/router.jsx';
 import { useAsync } from '../lib/useAsync.js';
 import NotFoundPage from './NotFoundPage.jsx';
+import LanguageSwitcher from '../components/LanguageSwitcher.jsx';
+import ServiceTranslationForm from '../components/ServiceTranslationForm.jsx';
+import { serviceUi, useContentLanguage } from '../lib/contentLanguage.js';
 
 // Fiche détail d'un service municipal : description, horaires, contact, démarches.
-export default function ServicePage({ slug, meta }) {
-  const { status, data: service, error } = useAsync(() => api(`/services/${slug}`), [slug]);
+export default function ServicePage({ slug, meta, user }) {
+  const [lang, setLang] = useContentLanguage();
+  const t = serviceUi(lang);
+  const [revision, setRevision] = useState(0);
+  const { status, data: service, error } = useAsync(
+    () => api(`/services/${slug}?lang=${lang}`),
+    [slug, lang, revision],
+  );
 
-  if (status === 'loading') return <p className="text-ink-muted">Chargement du service...</p>;
+  // Rechargement après une saisie admin : on garde la fiche affichée (et le formulaire monté).
+  if (status === 'loading' && service?.slug !== slug) {
+    return <p className="text-ink-muted">Chargement du service...</p>;
+  }
   if (status === 'error') {
     if (error.status === 404) return <NotFoundPage message="Ce service n'existe pas." />;
     return (
@@ -19,10 +32,18 @@ export default function ServicePage({ slug, meta }) {
   }
 
   return (
-    <article>
-      <Link to="/services" className="text-sm font-semibold text-primary hover:underline">
-        ← Tous les services
-      </Link>
+    <article lang={service.lang}>
+      <div className="flex flex-wrap items-center justify-between gap-3" lang={lang}>
+        <Link to="/services" className="text-sm font-semibold text-primary hover:underline">
+          ← {t.back}
+        </Link>
+        <LanguageSwitcher options={meta.contentLanguages} value={lang} onChange={setLang} />
+      </div>
+      {service.lang !== lang && (
+        <p lang={lang} role="status" className="mt-4 rounded-control bg-mist p-3 text-sm">
+          {t.notTranslated}
+        </p>
+      )}
       <p className="mt-6 text-xs font-semibold uppercase tracking-wide text-primary">
         {labelOf(meta.serviceCategories, service.category)}
       </p>
@@ -32,13 +53,13 @@ export default function ServicePage({ slug, meta }) {
       <div className="mt-8 grid gap-6 lg:grid-cols-[2fr_1fr]">
         <div className="space-y-8">
           <section>
-            <h2 className="font-display text-xl font-bold">Présentation</h2>
+            <h2 className="font-display text-xl font-bold">{t.presentation}</h2>
             <p className="mt-2 leading-relaxed">{service.description}</p>
           </section>
 
           {service.procedures.length > 0 && (
             <section>
-              <h2 className="font-display text-xl font-bold">Démarches</h2>
+              <h2 className="font-display text-xl font-bold">{t.procedures}</h2>
               <ol className="mt-3 space-y-3">
                 {service.procedures.map((procedure, index) => (
                   <li key={procedure.title} className="flex gap-3 rounded-card bg-mist p-4">
@@ -62,11 +83,11 @@ export default function ServicePage({ slug, meta }) {
         {/* Horaires et contact d'abord sur mobile : c'est l'information la plus cherchée. */}
         <aside className="order-first h-fit space-y-6 lg:order-none rounded-card border border-mist bg-surface p-5 shadow-card">
           <section>
-            <h2 className="font-semibold">Horaires</h2>
+            <h2 className="font-semibold">{t.hours}</h2>
             <p className="mt-1 whitespace-pre-line text-sm text-ink-muted">{service.hours}</p>
           </section>
           <section>
-            <h2 className="font-semibold">Contact</h2>
+            <h2 className="font-semibold">{t.contact}</h2>
             <ul className="mt-1 space-y-1 text-sm">
               {service.phone && (
                 <li>
@@ -87,6 +108,17 @@ export default function ServicePage({ slug, meta }) {
           </section>
         </aside>
       </div>
+
+      {user?.role === 'admin' && (
+        <ServiceTranslationForm
+          slug={slug}
+          languages={meta.contentLanguages}
+          onSaved={(saved) => {
+            setLang(saved);
+            setRevision((r) => r + 1);
+          }}
+        />
+      )}
     </article>
   );
 }

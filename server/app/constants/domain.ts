@@ -111,6 +111,18 @@ export const LOGIN_BLOCK_SCOPES = {
   ip: 'Adresse IP verrouillée',
 } as const
 export type LoginBlockScope = keyof typeof LOGIN_BLOCK_SCOPES
+/**
+ * Langues des contenus des services (F27), libellées dans leur propre langue.
+ * Le français est la langue de référence : toute traduction manquante retombe sur lui.
+ */
+export const CONTENT_LANGUAGES = {
+  fr: 'Français',
+  en: 'English',
+  es: 'Español',
+} as const
+export type ContentLanguage = keyof typeof CONTENT_LANGUAGES
+export const CONTENT_LANGUAGE_VALUES = Object.keys(CONTENT_LANGUAGES) as ContentLanguage[]
+export const DEFAULT_CONTENT_LANGUAGE: ContentLanguage = 'fr'
 
 /** Listes fermées exposées au front par GET /api/meta (clé -> libellé). */
 export const META: Record<string, Record<string, string>> = {
@@ -121,4 +133,5 @@ export const META: Record<string, Record<string, string>> = {
   newsCategories: NEWS_CATEGORIES,
   loginOutcomes: LOGIN_OUTCOMES,
   loginBlockScopes: LOGIN_BLOCK_SCOPES,
+  contentLanguages: CONTENT_LANGUAGES,
 }
