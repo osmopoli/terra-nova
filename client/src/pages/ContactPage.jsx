@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { api } from '../api/client.js';
-import Field, { FormError, OptionSelect, inputClass } from '../components/Field.jsx';
+import Field, { FormError, OptionSelect, inputClass, useFocusFirstError } from '../components/Field.jsx';
 import { labelOf } from '../lib/constants.js';
 import { loginPath } from '../lib/redirect.js';
 import { Link, navigate } from '../lib/router.jsx';
@@ -14,6 +14,13 @@ export default function ContactPage({ user, meta, onExpired }) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(null);
+  const formRef = useFocusFirstError(error);
+  const sentTitle = useRef(null);
+
+  // Confirmation : le focus va sur son titre pour que le lecteur d'écran l'annonce.
+  useEffect(() => {
+    if (sent) sentTitle.current?.focus();
+  }, [sent]);
 
   useEffect(() => {
     if (!user) navigate(loginPath('/contact'), { replace: true });
@@ -40,12 +47,9 @@ export default function ContactPage({ user, meta, onExpired }) {
 
   if (sent) {
     return (
-      <section
-        className="mx-auto w-full max-w-lg rounded-card bg-surface p-5 shadow-card sm:p-8"
-        aria-live="polite"
-      >
+      <section className="mx-auto w-full max-w-lg rounded-card bg-surface p-5 shadow-card sm:p-8">
         <p className="text-sm font-semibold text-primary">Message envoyé</p>
-        <h1 className="mt-1 font-display text-2xl font-bold text-ink">Votre demande est bien transmise</h1>
+        <h1 ref={sentTitle} tabIndex={-1} className="mt-1 font-display text-2xl font-bold text-ink focus:outline-none">Votre demande est bien transmise</h1>
         <p className="mt-3 text-ink-muted">
           Le service <strong className="text-ink">{labelOf(meta.contactServices, sent.service)}</strong> a
           reçu votre message « {sent.subject} ». Conservez ce numéro pour suivre son traitement.
@@ -83,27 +87,26 @@ export default function ContactPage({ user, meta, onExpired }) {
         Une question, une difficulté ? Votre message est transmis au service choisi et vous recevez un
         numéro de suivi.
       </p>
-      <form onSubmit={submit} className="mt-6 space-y-4" noValidate>
-        <Field label="Sujet" error={error?.fields?.subject}>
+      <form ref={formRef} onSubmit={submit} className="mt-6 space-y-4" noValidate>
+        <Field label="Sujet" required error={error?.fields?.subject}>
           <input
             className={inputClass}
             value={form.subject}
             onChange={update('subject')}
             maxLength={120}
-            required
           />
         </Field>
-        <Field label="Service concerné" error={error?.fields?.service}>
+        <Field label="Service concerné" required error={error?.fields?.service}>
           <OptionSelect
             options={meta.contactServices}
             placeholder="Choisissez un service"
             value={form.service}
             onChange={update('service')}
-            required
           />
         </Field>
         <Field
           label="Message"
+          required
           error={error?.fields?.message}
           hint={`${form.message.length} / ${MESSAGE_MAX} caractères`}
         >
@@ -112,7 +115,6 @@ export default function ContactPage({ user, meta, onExpired }) {
             value={form.message}
             onChange={update('message')}
             maxLength={MESSAGE_MAX}
-            required
           />
         </Field>
         <FormError error={error} />

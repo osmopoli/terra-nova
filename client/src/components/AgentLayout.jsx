@@ -38,7 +38,7 @@ export default function AgentLayout({ user, onLogout, children }) {
           </nav>
         </div>
       </header>
-      <main id="contenu" className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
+      <main id="contenu" tabIndex={-1} className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8 focus:outline-none">
         {children}
       </main>
     </div>

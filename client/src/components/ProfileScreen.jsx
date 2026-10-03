@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { api } from '../api/client.js';
-import Field, { FormError, inputClass } from './Field.jsx';
+import Field, { FormError, inputClass, useFocusFirstError } from './Field.jsx';
 
 export default function ProfileScreen({ user, onUpdated, onLogout }) {
   const [form, setForm] = useState({ fullName: user.fullName ?? '' });
   const [error, setError] = useState(null);
   const [saved, setSaved] = useState(false);
+  const formRef = useFocusFirstError(error);
 
   async function save(e) {
     e.preventDefault();
@@ -36,15 +37,16 @@ export default function ProfileScreen({ user, onUpdated, onLogout }) {
         </button>
       </div>
 
-      <form onSubmit={save} aria-labelledby="titre-profil" className="mt-6 space-y-4 border-t border-mist pt-6" noValidate>
+      <form ref={formRef} onSubmit={save} aria-labelledby="titre-profil" className="mt-6 space-y-4 border-t border-mist pt-6" noValidate>
         <h2 id="titre-profil" className="font-semibold text-ink">
           Mon profil
         </h2>
-        <Field label="Nom" error={error?.fields?.fullName}>
+        <Field label="Nom" required error={error?.fields?.fullName}>
           <input
             className={inputClass}
             value={form.fullName}
             onChange={(e) => setForm({ ...form, fullName: e.target.value })}
+            autoComplete="name"
           />
         </Field>
         <FormError error={error} />

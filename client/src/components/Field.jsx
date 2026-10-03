@@ -1,11 +1,12 @@
-import { Children, cloneElement, isValidElement, useId } from 'react';
+import { Children, cloneElement, isValidElement, useEffect, useId, useRef } from 'react';
 
 export const inputClass =
   'w-full rounded-control border border-ink-muted/40 bg-surface px-3 py-2.5 text-base text-ink focus:border-primary focus:ring-2 focus:ring-primary/30';
 
 // Label relié explicitement au champ (htmlFor/id) ; aide et erreur annoncées par
 // le lecteur d'écran via aria-describedby, erreur signalée par aria-invalid.
-export default function Field({ label, error, hint, children }) {
+// `required` : attribut natif sur le champ (annoncé « obligatoire ») + mention écrite dans le label.
+export default function Field({ label, error, hint, required = false, children }) {
   const id = useId();
   const hintId = `${id}-aide`;
   const errorId = `${id}-erreur`;
@@ -14,6 +15,7 @@ export default function Field({ label, error, hint, children }) {
   const control = isValidElement(child)
     ? cloneElement(child, {
         id: child.props.id ?? id,
+        required: required || child.props.required,
         'aria-invalid': error ? true : undefined,
         'aria-describedby': describedBy,
       })
@@ -23,6 +25,7 @@ export default function Field({ label, error, hint, children }) {
     <div>
       <label htmlFor={child.props?.id ?? id} className="mb-1 block text-sm font-medium text-ink">
         {label}
+        {required && <span className="font-normal text-ink-muted"> (obligatoire)</span>}
       </label>
       {control}
       {hint && !error && (
@@ -53,6 +56,19 @@ export function OptionSelect({ options = [], placeholder = 'Choisissez', ...prop
       ))}
     </select>
   );
+}
+
+/**
+ * Après une erreur de validation, place le focus sur le premier champ invalide :
+ * le lecteur d'écran lit alors son label, « obligatoire », « non valide » et le message
+ * d'erreur (aria-describedby). Renvoie la ref à poser sur le <form>.
+ */
+export function useFocusFirstError(error) {
+  const formRef = useRef(null);
+  useEffect(() => {
+    if (error) formRef.current?.querySelector('[aria-invalid="true"]')?.focus();
+  }, [error]);
+  return formRef;
 }
 
 /** Message d'erreur global (ex. identifiants incorrects), quand aucun champ n'est en cause. */

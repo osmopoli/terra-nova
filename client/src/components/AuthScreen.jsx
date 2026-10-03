@@ -1,15 +1,21 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { api, setToken } from '../api/client.js';
 import { APP_NAME } from '../lib/constants.js';
-import Field, { FormError, inputClass } from './Field.jsx';
+import Field, { FormError, inputClass, useFocusFirstError } from './Field.jsx';
 
 const EMPTY = { fullName: '', email: '', password: '' };
+const TABS = [
+  { value: 'login', label: 'Connexion' },
+  { value: 'register', label: 'Inscription' },
+];
 
 export default function AuthScreen({ onAuthenticated }) {
+  const ids = useId();
   const [mode, setMode] = useState('login');
   const [form, setForm] = useState(EMPTY);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const formRef = useFocusFirstError(error);
   const isRegister = mode === 'register';
 
   const update = (key) => (e) => setForm({ ...form, [key]: e.target.value });
@@ -30,21 +36,23 @@ export default function AuthScreen({ onAuthenticated }) {
     }
   }
 
-  const tab = (value, label) => (
-    <button
-      type="button"
-      aria-pressed={mode === value}
-      onClick={() => {
-        setMode(value);
-        setError(null);
-      }}
-      className={`flex-1 rounded-control py-2 text-sm font-semibold ${
-        mode === value ? 'bg-surface text-primary shadow-card' : 'text-ink-muted'
-      }`}
-    >
-      {label}
-    </button>
-  );
+  function select(value) {
+    setMode(value);
+    setError(null);
+  }
+
+  // Onglets ARIA : un seul onglet dans l'ordre de tabulation, flèches gauche/droite pour changer.
+  function onTabKey(e) {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+    e.preventDefault();
+    const index = TABS.findIndex((t) => t.value === mode);
+    const step = { ArrowLeft: -1, ArrowRight: 1 }[e.key];
+    const target = step
+      ? TABS[(index + step + TABS.length) % TABS.length].value
+      : TABS[e.key === 'Home' ? 0 : TABS.length - 1].value;
+    select(target);
+    document.getElementById(`${ids}-onglet-${target}`)?.focus();
+  }
 
   return (
     <div className="w-full max-w-md rounded-card bg-surface p-5 shadow-card sm:p-8">
@@ -52,16 +60,42 @@ export default function AuthScreen({ onAuthenticated }) {
         {APP_NAME}
       </h2>
 
-      <div role="group" aria-label="Choix du formulaire" className="mt-6 flex gap-1 rounded-control bg-mist p-1">
-        {tab('login', 'Connexion')}
-        {tab('register', 'Inscription')}
+      <div
+        role="tablist"
+        aria-label="Choix du formulaire"
+        onKeyDown={onTabKey}
+        className="mt-6 flex gap-1 rounded-control bg-mist p-1"
+      >
+        {TABS.map(({ value, label }) => (
+          <button
+            key={value}
+            type="button"
+            role="tab"
+            id={`${ids}-onglet-${value}`}
+            aria-selected={mode === value}
+            aria-controls={`${ids}-panneau`}
+            tabIndex={mode === value ? 0 : -1}
+            onClick={() => select(value)}
+            className={`flex-1 rounded-control py-2 text-sm font-semibold ${
+              mode === value ? 'bg-surface text-primary shadow-card' : 'text-ink-muted'
+            }`}
+          >
+            {label}
+          </button>
+        ))}
       </div>
 
       <form
+        ref={formRef}
         onSubmit={submit}
-        aria-label={isRegister ? 'Inscription' : 'Connexion'} className="mt-6 space-y-4" noValidate>
+        id={`${ids}-panneau`}
+        role="tabpanel"
+        aria-labelledby={`${ids}-onglet-${mode}`}
+        className="mt-6 space-y-4"
+        noValidate
+      >
         {isRegister && (
-          <Field label="Nom" error={error?.fields?.fullName}>
+          <Field label="Nom" required error={error?.fields?.fullName}>
             <input
               className={inputClass}
               value={form.fullName}
@@ -70,7 +104,7 @@ export default function AuthScreen({ onAuthenticated }) {
             />
           </Field>
         )}
-        <Field label="E-mail" error={error?.fields?.email}>
+        <Field label="E-mail" required error={error?.fields?.email}>
           <input
             className={inputClass}
             type="email"
@@ -81,6 +115,7 @@ export default function AuthScreen({ onAuthenticated }) {
         </Field>
         <Field
           label="Mot de passe"
+          required
           error={error?.fields?.password}
           hint={isRegister ? '8 caractères minimum.' : null}
         >
