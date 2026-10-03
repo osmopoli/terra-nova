@@ -27,6 +27,11 @@ Hodifly redéploie à chaque push sur `main` avec la commande de build du projet
 
 - `npm run build` (`tools/build-hodi.js`) prépare `server/build/` : `server.js`, `src/`, `public/`, données de démo et `loader.cjs` (point d'entrée Passenger, charge le `.env`).
 - Variables Hodifly utiles : `NODE_ENV=production`, `WEBCUP_API_KEY`, `PORT`. Les variables `DB_*` MySQL de l'ancienne version ne servent plus.
+- **Obligatoire en production** : définir `ADMIN_PASSWORD` et `AGENT_PASSWORD` dans Hodifly. Au démarrage, `ADMIN_PASSWORD` remplace le mot de passe
+  du compte `admin@nova.test` et `AGENT_PASSWORD` celui de `agent@nova.test` et `social@nova.test` (comptes publiés ci-dessous, donc inutilisables
+  tels quels sur la prod) ; les sessions ouvertes avec l'ancien mot de passe sont fermées. Les valeurs d'exemple `admin1234` / `agent1234` sont refusées
+  en production. Le `grep` de la commande de build qui écrit le `.env` doit donc inclure `ADMIN_|AGENT_|DB_PATH|POLL_|DATA_ENCRYPTION_KEY`
+  (ex. `printenv | grep -E '^(NODE_ENV|PORT|WEBCUP_|ADMIN_|AGENT_|DB_PATH|POLL_|DATA_ENCRYPTION_KEY)' > .env`).
 - Base SQLite : `~/terranova-data/terranova.db`, hors du dossier de release, donc conservée entre deux déploiements (`DB_PATH` pour la déplacer). Aucune migration à lancer.
 - Node 22.13 ou plus récent requis (`node:sqlite` sans option).
 - Vague 13 (F69) : définir `DATA_ENCRYPTION_KEY` (longue valeur aléatoire, à ne jamais changer ensuite) pour chiffrer les données sensibles ; sans elle, une clé est créée dans `~/terranova-data/terranova.key` (à conserver avec la base). `NODE_ENV=production` active HSTS et `upgrade-insecure-requests`.
@@ -41,7 +46,8 @@ Hodifly redéploie à chaque push sur `main` avec la commande de build du projet
 | Administrateur | `admin@nova.test` | `Admin2026` |
 
 Autres habitants : `marc@`, `amina@`, `jean@nova.test` (mot de passe `Citoyen2026`). Vague 13 : agent habilité aux données réservées `social@nova.test` / `Agent2026` ; nouvel arrivant sans e-mail `TN-100001` (ou `06 39 48 21 77`) / code `482915`. La page de connexion propose de pré-remplir ces comptes.
-Comptes d'équipe supplémentaires possibles via `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `AGENT_EMAIL` / `AGENT_PASSWORD` dans `.env`.
+Comptes d'équipe supplémentaires possibles via `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `AGENT_EMAIL` / `AGENT_PASSWORD` dans `.env`. En production, ces
+mêmes `ADMIN_PASSWORD` / `AGENT_PASSWORD` remplacent les mots de passe des comptes de démo admin et agents (voir Déploiement HODI).
 Réinitialiser les données de démonstration : connecté en admin, `POST /api/demo/reinitialiser` (ou console : `NT.store.reset()`).
 
 ## Architecture
@@ -63,14 +69,15 @@ Le détail « où et comment le montrer au jury » est dans [`docs/RENDU-JURY.md
 | Thème | Demandes | Pages |
 |---|---|---|
 | Accueil, services, navigation | D05, D07, D15, F27, F28, F32, F38 | `index`, `services` |
-| Comptes, rôles, sécurité | D01, D03, D08, D09, D12, F33, F34, F35, F37 | `inscription`, `connexion`, `espace`, `compte`, `admin-comptes` |
+| Comptes, rôles, sécurité | D01, D02, D03, D08, D09, D12, F33, F34, F35, F37, F53, F54 | `inscription`, `connexion`, `espace`, `compte`, `admin-comptes` |
 | Demandes citoyennes | D04, D11, D16, F25, F26, F49 | `demande`, `suivi`, `espace` |
 | Espace agents | D17, D19, F22, F47, F48, F50 | `agent`, `agent-tableau`, `agent-demandes`, `agent-journal` |
 | Alertes et annonces | D06, D18, F29, F30, F31 | `annonces`, `agent-alertes` |
 | Rendez-vous, transports, carte | F36, F39, F40, F45, F46 | `rendez-vous`, `transports`, `carte` |
-| Participation, données | F51, F52, F65, F66, F67, F68 | `soutenir`, `participer`, `donnees`, `espace` |
+| Participation, données | F51, F52, F55, F56, F65, F66, F67, F68 | `soutenir`, `participer`, `donnees`, `espace`, `mes-informations`, `recapitulatif` |
 | Accessibilité, langues, langage clair | D13, D14, D20, F21, F23, F24, F41, F42, F43, F44 | toutes (panneau ♿, touche `?`, `aide`) |
 | Légèreté, appareils peu puissants, version simple | F61, F62 | panneau ♿, pied de page, `/simple` (`src/modules/simple.js`) |
+| Sobriété numérique | F57, F58, F59, F60 | `sobriete`, panneau ♿ (« Mode connexion lente »), `index` (images WebP), `src/statique.js` |
 | État des services (désactivation admin, avant toute démarche) | F63, F64 | `agent-alertes`, `services`, `demande`, `rendez-vous` |
 
 | Sécurité numérique, données réservées (vague 13) | F69, F70 | toutes (en-têtes, anti-CSRF, débit), `securite`, `agent-securite`, `admin-comptes` |
