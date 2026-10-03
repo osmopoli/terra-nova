@@ -91,7 +91,9 @@ export default function App() {
   return (
     <Layout user={user}>
       {loading ? (
-        <p className="text-ink-muted">Chargement...</p>
+        <p role="status" className="text-ink-muted">
+          Chargement...
+        </p>
       ) : (
         <Route session={{ user, meta, setUser, logout, expire }} />
       )}

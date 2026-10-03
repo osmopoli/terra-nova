@@ -36,8 +36,10 @@ export default function ProfileScreen({ user, onUpdated, onLogout }) {
         </button>
       </div>
 
-      <form onSubmit={save} className="mt-6 space-y-4 border-t border-mist pt-6" noValidate>
-        <h2 className="font-semibold text-ink">Mon profil</h2>
+      <form onSubmit={save} aria-labelledby="titre-profil" className="mt-6 space-y-4 border-t border-mist pt-6" noValidate>
+        <h2 id="titre-profil" className="font-semibold text-ink">
+          Mon profil
+        </h2>
         <Field label="Nom" error={error?.fields?.fullName}>
           <input
             className={inputClass}
@@ -46,7 +48,9 @@ export default function ProfileScreen({ user, onUpdated, onLogout }) {
           />
         </Field>
         <FormError error={error} />
-        {saved && <p className="text-sm text-primary">Profil enregistré.</p>}
+        <p role="status" className="text-sm text-primary">
+          {saved ? 'Profil enregistré.' : ''}
+        </p>
         <button
           type="submit"
           className="w-full rounded-control bg-primary py-3 font-semibold text-white hover:bg-primary-strong"

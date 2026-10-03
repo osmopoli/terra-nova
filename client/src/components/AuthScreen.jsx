@@ -33,6 +33,7 @@ export default function AuthScreen({ onAuthenticated }) {
   const tab = (value, label) => (
     <button
       type="button"
+      aria-pressed={mode === value}
       onClick={() => {
         setMode(value);
         setError(null);
@@ -47,16 +48,18 @@ export default function AuthScreen({ onAuthenticated }) {
 
   return (
     <div className="w-full max-w-md rounded-card bg-surface p-5 shadow-card sm:p-8">
-      <h1 className="text-center font-display text-2xl font-bold text-primary sm:text-3xl">
+      <h2 className="text-center font-display text-2xl font-bold text-primary sm:text-3xl">
         {APP_NAME}
-      </h1>
+      </h2>
 
-      <div className="mt-6 flex gap-1 rounded-control bg-mist p-1">
+      <div role="group" aria-label="Choix du formulaire" className="mt-6 flex gap-1 rounded-control bg-mist p-1">
         {tab('login', 'Connexion')}
         {tab('register', 'Inscription')}
       </div>
 
-      <form onSubmit={submit} className="mt-6 space-y-4" noValidate>
+      <form
+        onSubmit={submit}
+        aria-label={isRegister ? 'Inscription' : 'Connexion'} className="mt-6 space-y-4" noValidate>
         {isRegister && (
           <Field label="Nom" error={error?.fields?.fullName}>
             <input
@@ -95,6 +98,7 @@ export default function AuthScreen({ onAuthenticated }) {
         <button
           type="submit"
           disabled={loading}
+          aria-busy={loading}
           className="w-full rounded-control bg-primary py-3 font-semibold text-white hover:bg-primary-strong disabled:opacity-60"
         >
           {loading ? 'Patientez...' : isRegister ? 'Créer mon compte' : 'Se connecter'}

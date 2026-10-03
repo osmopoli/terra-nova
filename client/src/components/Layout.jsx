@@ -29,9 +29,14 @@ export default function Layout({ user, children }) {
           </nav>
         </div>
       </header>
-      <main id="contenu" className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
+      <main id="contenu" tabIndex={-1} className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10 focus:outline-none">
         {children}
       </main>
+      <footer className="border-t border-mist">
+        <p className="mx-auto max-w-6xl px-4 py-4 text-sm text-ink-muted sm:px-6">
+          {APP_NAME}, la plateforme des services municipaux.
+        </p>
+      </footer>
     </div>
   );
 }
