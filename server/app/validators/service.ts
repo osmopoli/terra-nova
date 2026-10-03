@@ -1,5 +1,10 @@
 import vine, { SimpleMessagesProvider } from '@vinejs/vine'
-import { CONTENT_LANGUAGE_VALUES, DEFAULT_CONTENT_LANGUAGE } from '#constants/domain'
+import {
+  CONTENT_LANGUAGE_VALUES,
+  DEFAULT_CONTENT_LANGUAGE,
+  QUARTIER_VALUES,
+  SERVICE_CATEGORY_VALUES,
+} from '#constants/domain'
 
 /** F27 : langue des contenus demandée en paramètre (?lang=en). */
 export const serviceLanguageValidator = vine.compile(
@@ -44,4 +49,17 @@ updateTranslationValidator.messagesProvider = new SimpleMessagesProvider(
     'params.slug.regex': 'Service inconnu.',
   },
   { name: 'nom', summary: 'résumé', description: 'description', hours: 'horaires' }
+)
+
+/** WEBC-72 : filtres de l'annuaire (?quartier=, ?category=) en plus de ?lang=. */
+export const listServicesValidator = vine.compile(
+  vine.object({
+    lang: vine.enum(CONTENT_LANGUAGE_VALUES).optional(),
+    quartier: vine.enum(QUARTIER_VALUES).optional(),
+    category: vine.enum(SERVICE_CATEGORY_VALUES).optional(),
+  })
+)
+listServicesValidator.messagesProvider = new SimpleMessagesProvider(
+  { enum: 'Valeur non autorisée.' },
+  { lang: 'langue', quartier: 'quartier', category: 'catégorie' }
 )

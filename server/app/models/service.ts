@@ -5,6 +5,7 @@ import {
   CONTENT_LANGUAGE_VALUES,
   DEFAULT_CONTENT_LANGUAGE,
   type ContentLanguage,
+  type Quartier,
   type ServiceCategory,
 } from '#constants/domain'
 
@@ -51,6 +52,16 @@ export default class Service extends BaseModel {
 
   @column()
   declare address: string | null
+
+  @column()
+  declare quartier: Quartier | null
+
+  /** Coordonnées WGS84 : MySQL renvoie le decimal en texte, converti en nombre. */
+  @column({ consume: (value: string | null) => (value === null ? null : Number(value)) })
+  declare latitude: number | null
+
+  @column({ consume: (value: string | null) => (value === null ? null : Number(value)) })
+  declare longitude: number | null
 
   @column({
     prepare: (value: ServiceProcedure[]) => JSON.stringify(value),
