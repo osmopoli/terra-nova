@@ -19,7 +19,7 @@ export default function NotFoundPage({ message = "Cette page n'existe pas ou a Ã
         aria-hidden="true"
         className="absolute inset-0 -z-10 bg-linear-to-b from-space via-space/70 to-space/30"
       />
-      <p className="font-display text-7xl font-extrabold leading-none tracking-tight text-glow sm:text-8xl">
+      <p className="font-display text-7xl font-bold leading-none tracking-tight text-glow sm:text-8xl">
         404
       </p>
       <h1 id="introuvable-titre" className="mt-4 font-display text-2xl font-bold sm:text-3xl">

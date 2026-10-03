@@ -1,5 +1,7 @@
 import { api } from '../api/client.js';
 import { labelOf } from '../lib/constants.js';
+import Loading from './Loading.jsx';
+import StatusBadge from './StatusBadge.jsx';
 import { Link } from '../lib/router.jsx';
 import { useAsync } from '../lib/useAsync.js';
 
@@ -15,7 +17,7 @@ export default function MyMessages({ meta }) {
       aria-labelledby="mes-messages"
     >
       <div className="flex items-center justify-between gap-3">
-        <h2 id="mes-messages" className="font-semibold text-ink">
+        <h2 id="mes-messages" className="font-display text-xl font-bold text-ink">
           Mes messages aux services
         </h2>
         <Link
@@ -25,20 +27,30 @@ export default function MyMessages({ meta }) {
           Nouveau message
         </Link>
       </div>
-      {status === 'loading' && <p className="mt-4 text-sm text-ink-muted">Chargement...</p>}
-      {status === 'error' && <p className="mt-4 text-sm text-danger">{error.message}</p>}
+      {status === 'loading' && <Loading label="Chargement de vos messages" className="mt-4" />}
+      {status === 'error' && (
+        <p role="alert" className="mt-4 text-sm text-danger">
+          {error.message}
+        </p>
+      )}
       {status === 'success' && data.length === 0 && (
-        <p className="mt-4 text-sm text-ink-muted">Vous n’avez encore envoyé aucun message.</p>
+        <div className="mt-4">
+          <p className="text-sm text-ink-muted">Vous n’avez encore envoyé aucun message.</p>
+          <Link
+            to="/contact"
+            className="mt-3 inline-block rounded-control border border-line bg-surface px-4 py-2.5 text-sm font-semibold text-ink hover:bg-mist"
+          >
+            Écrire aux services
+          </Link>
+        </div>
       )}
       {status === 'success' && data.length > 0 && (
-        <ul className="mt-4 divide-y divide-mist">
+        <ul className="mt-4 divide-y divide-line">
           {data.map((m) => (
             <li key={m.trackingCode} className="py-3">
               <div className="flex items-start justify-between gap-3">
                 <p className="min-w-0 font-medium text-ink">{m.subject}</p>
-                <span className="shrink-0 rounded-control bg-mist px-2 py-0.5 text-xs font-semibold text-ink">
-                  {labelOf(meta.contactStatuses, m.status)}
-                </span>
+                <StatusBadge statuses={meta.contactStatuses} value={m.status} />
               </div>
               <p className="mt-1 text-sm text-ink-muted">
                 {labelOf(meta.contactServices, m.service)} ·{' '}

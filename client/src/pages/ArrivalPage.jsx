@@ -14,7 +14,7 @@ const warpRings = {
 
 export function Brand() {
   return (
-    <span className="flex items-center gap-3 font-display font-extrabold uppercase tracking-[0.12em]">
+    <span className="flex items-center gap-3 font-display font-bold uppercase tracking-orbit">
       <span
         aria-hidden="true"
         className="grid size-10 place-items-center rounded-card border border-glow/40 shadow-glow"
@@ -66,9 +66,9 @@ export default function ArrivalPage() {
           aria-hidden="true"
           className="absolute inset-0 -z-10 bg-linear-to-t from-space/90 to-space/30 md:bg-linear-to-r md:from-space/95 md:via-space/70 md:to-space/10"
         />
-        <header className="flex min-h-[4.625rem] flex-wrap items-center justify-between gap-3 border-b border-glow/20 px-6 py-3 backdrop-blur-md md:min-h-[5.625rem] md:px-[clamp(24px,6vw,92px)]">
+        <header className="flex min-h-18.5 flex-wrap items-center justify-between gap-3 border-b border-glow/20 px-6 py-3 backdrop-blur-md md:min-h-22.5 md:px-gutter">
           <Brand />
-          <p className="hidden text-xs font-semibold uppercase tracking-[0.12em] text-star-muted md:block">
+          <p className="hidden text-xs font-semibold uppercase tracking-orbit text-star-muted md:block">
             <b className="block text-glow">Système localisé</b>
             Coordonnées NT-01 · Liaison stable
           </p>
@@ -77,7 +77,7 @@ export default function ArrivalPage() {
 
         <main className="flex flex-1 items-end px-6 pb-40 pt-12 md:items-center md:px-[clamp(24px,7vw,110px)] md:pb-28">
           <div className="max-w-3xl">
-            <p className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-glow">
+            <p className="flex items-center gap-3 text-xs font-bold uppercase tracking-signal text-glow">
               <span aria-hidden="true" className="h-px w-8 bg-glow" />
               Aux frontières du système Nova
             </p>
@@ -106,7 +106,7 @@ export default function ArrivalPage() {
           </div>
         </main>
 
-        <footer className="absolute inset-x-5 bottom-6 rounded-card border border-glow/20 bg-space/60 px-4 py-3 text-[0.625rem] uppercase tracking-[0.08em] text-star-muted backdrop-blur-md md:inset-x-auto md:right-[clamp(24px,5vw,72px)] md:bottom-10 md:text-xs">
+        <footer className="absolute inset-x-5 bottom-6 rounded-card border border-glow/20 bg-space/60 px-4 py-3 text-xs uppercase tracking-wider text-star-muted backdrop-blur-md md:inset-x-auto md:right-gutter md:bottom-10">
           <dl className="flex flex-wrap justify-between gap-x-3 gap-y-2 md:gap-6">
             <div>
               <dt>Destination</dt>
@@ -141,7 +141,7 @@ export default function ArrivalPage() {
                 <Ship />
               </div>
             </div>
-            <p className="mt-8 text-xs uppercase tracking-[0.22em] text-glow">
+            <p className="mt-8 text-xs uppercase tracking-signal text-glow">
               Traversée du corridor orbital
             </p>
             <div aria-hidden="true" className="mx-auto mt-4 h-0.5 overflow-hidden bg-star/10">

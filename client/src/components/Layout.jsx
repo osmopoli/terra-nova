@@ -35,7 +35,7 @@ export default function Layout({ user, children }) {
             </NavLink>
             <NavLink
               to={user ? '/profil' : '/connexion'}
-              className="rounded-control bg-primary px-3 py-1.5 font-bold text-white hover:bg-primary-strong aria-[current=page]:bg-primary-strong aria-[current=page]:ring-2 aria-[current=page]:ring-accent aria-[current=page]:ring-offset-2"
+              className="rounded-control bg-primary px-3 py-1.5 font-bold text-surface hover:bg-primary-strong aria-[current=page]:bg-primary-strong aria-[current=page]:ring-2 aria-[current=page]:ring-accent aria-[current=page]:ring-offset-2"
             >
               {user ? 'Mon profil' : 'Se connecter'}
             </NavLink>
@@ -46,7 +46,7 @@ export default function Layout({ user, children }) {
         <Breadcrumb />
         {children}
       </main>
-      <footer className="border-t border-mist">
+      <footer className="border-t border-line">
         <p className="mx-auto max-w-6xl px-4 py-4 text-sm text-ink-muted sm:px-6">
           {APP_NAME}, la plateforme des services municipaux.
         </p>

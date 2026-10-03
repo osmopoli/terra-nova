@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Layout from './components/Layout.jsx';
 import AgentLayout from './components/AgentLayout.jsx';
+import Loading from './components/Loading.jsx';
 import AuthScreen from './components/AuthScreen.jsx';
 import ProfileScreen from './components/ProfileScreen.jsx';
 import MyMessages from './components/MyMessages.jsx';
@@ -111,7 +112,7 @@ export default function App() {
     return (
       <AgentLayout user={user} onLogout={logout}>
         {loading || !user ? (
-          <p className="text-ink-muted">Chargement...</p>
+          <Loading label="Chargement de l’espace agents" />
         ) : (
           <AgentPage onExpired={expire} />
         )}
@@ -122,9 +123,7 @@ export default function App() {
   return (
     <Layout user={user}>
       {loading ? (
-        <p role="status" className="text-ink-muted">
-          Chargement...
-        </p>
+        <Loading label="Chargement de Nova Terra" />
       ) : (
         <Route session={{ user, meta, setUser, logout, expire }} />
       )}

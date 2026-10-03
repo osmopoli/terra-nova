@@ -46,6 +46,11 @@
   --color-glow: #79e6ff;
   --color-flare: #ff4d97;
   --shadow-glow: 0 0 34px rgb(121 230 255 / 0.18);
+  --tracking-orbit: 0.12em;
+  --tracking-signal: 0.2em;
+  --text-hero: clamp(2.6875rem, 6vw, 5.375rem);
+  --leading-hero: 0.96;
+  --spacing-gutter: clamp(1.5rem, 6vw, 5.75rem);
 
   --animate-ship-float: ship-float 0.45s ease-in-out infinite alternate;
   --animate-ship-launch: ship-launch 3s cubic-bezier(0.2, 0.8, 0.2, 1) both;

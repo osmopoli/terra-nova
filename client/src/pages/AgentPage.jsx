@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { api } from '../api/client.js';
+import Loading from '../components/Loading.jsx';
 import { APP_NAME } from '../lib/constants.js';
 
 const FALLBACK_POLL_SECONDS = 20;
@@ -63,7 +64,7 @@ function RequestCard({ request, onSeen }) {
       <div className="flex flex-wrap items-center gap-2">
         <h3 className="font-display text-lg font-bold">{request.request_code}</h3>
         {request.isNew && (
-          <span className="rounded-control bg-accent px-2 py-0.5 text-xs font-bold uppercase text-ink">
+          <span className="rounded-full bg-accent px-2 py-0.5 text-xs font-semibold uppercase text-ink">
             Nouvelle
           </span>
         )}
@@ -77,10 +78,10 @@ function RequestCard({ request, onSeen }) {
       </p>
       <p className="mt-3 flex-1 leading-relaxed">{request.message_public}</p>
       <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
-        <span className="rounded-control bg-mist px-2 py-1">
+        <span className="rounded-full bg-mist px-2 py-0.5 text-xs">
           Difficulté : <strong>{request.difficulty ?? request.difficulty_level}</strong>
         </span>
-        <span className="rounded-control bg-mist px-2 py-1">
+        <span className="rounded-full bg-mist px-2 py-0.5 text-xs">
           Vague <strong>{wave}</strong>
         </span>
         {request.isNew && (
@@ -165,7 +166,7 @@ export default function AgentPage({ onExpired }) {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-2xl font-bold sm:text-3xl">Demandes de la ville</h1>
+        <h1 className="font-display text-xl font-bold">Demandes de la ville</h1>
         <p className="mt-1 text-ink-muted">
           Les besoins transmis par l’API Nova Terra, mis à jour en continu.
         </p>
@@ -177,7 +178,7 @@ export default function AgentPage({ onExpired }) {
         </p>
       )}
 
-      {!data && !error && <p className="text-ink-muted">Chargement des demandes...</p>}
+      {!data && !error && <Loading label="Chargement des demandes" />}
 
       {data && (
         <>

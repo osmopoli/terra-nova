@@ -1,7 +1,7 @@
 import { Children, cloneElement, isValidElement, useId } from 'react';
 
 export const inputClass =
-  'w-full rounded-control border border-ink-muted/40 bg-surface px-3 py-2.5 text-base text-ink focus:border-primary focus:ring-2 focus:ring-primary/30';
+  'w-full rounded-control border border-line bg-surface px-3 py-3 text-base text-ink focus:border-primary focus:ring-2 focus:ring-primary/30';
 
 // Label relié explicitement au champ (htmlFor/id) ; aide et erreur annoncées par
 // le lecteur d'écran via aria-describedby, erreur signalée par aria-invalid.
@@ -32,6 +32,7 @@ export default function Field({ label, error, hint, children }) {
       )}
       {error && (
         <p id={errorId} className="mt-1 text-sm text-danger">
+          <span className="font-semibold">Erreur : </span>
           {error}
         </p>
       )}
@@ -60,6 +61,7 @@ export function FormError({ error }) {
   if (!error || Object.keys(error.fields ?? {}).length > 0) return null;
   return (
     <p role="alert" className="rounded-control bg-danger/10 p-3 text-sm text-danger">
+      <span className="font-semibold">Erreur : </span>
       {error.message}
     </p>
   );

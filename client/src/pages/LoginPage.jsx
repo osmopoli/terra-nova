@@ -25,10 +25,10 @@ export default function LoginPage({ onAuthenticated }) {
           <TextSizeControl className="text-star" />
         </div>
         <div className="max-w-2xl">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-glow">
+          <p className="text-xs font-bold uppercase tracking-signal text-glow">
             Portail citoyen sécurisé
           </p>
-          <h1 className="mt-4 font-display text-[43px] font-bold leading-[0.96] tracking-tight md:text-[clamp(44px,6vw,86px)]">
+          <h1 className="mt-4 font-display text-hero font-bold leading-hero tracking-tight">
             Bienvenue
             <br />
             chez vous.

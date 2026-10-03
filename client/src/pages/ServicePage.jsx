@@ -2,13 +2,14 @@ import { api } from '../api/client.js';
 import { labelOf } from '../lib/constants.js';
 import { Link } from '../lib/router.jsx';
 import { useAsync } from '../lib/useAsync.js';
+import Loading from '../components/Loading.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
 
 // Fiche détail d'un service municipal : description, horaires, contact, démarches.
 export default function ServicePage({ slug, meta }) {
   const { status, data: service, error } = useAsync(() => api(`/services/${slug}`), [slug]);
 
-  if (status === 'loading') return <p className="text-ink-muted">Chargement du service...</p>;
+  if (status === 'loading') return <Loading label="Chargement du service" className="max-w-md" />;
   if (status === 'error') {
     if (error.status === 404) return <NotFoundPage message="Ce service n'existe pas." />;
     return (
@@ -44,7 +45,7 @@ export default function ServicePage({ slug, meta }) {
                   <li key={procedure.title} className="flex gap-3 rounded-card bg-mist p-4">
                     <span
                       aria-hidden="true"
-                      className="grid size-7 shrink-0 place-items-center rounded-full bg-primary text-sm font-bold text-white"
+                      className="grid size-7 shrink-0 place-items-center rounded-full bg-primary text-sm font-bold text-surface"
                     >
                       {index + 1}
                     </span>
@@ -60,13 +61,13 @@ export default function ServicePage({ slug, meta }) {
         </div>
 
         {/* Horaires et contact d'abord sur mobile : c'est l'information la plus cherchée. */}
-        <aside className="order-first h-fit space-y-6 lg:order-none rounded-card border border-mist bg-surface p-5 shadow-card">
+        <aside className="order-first h-fit space-y-6 lg:order-none rounded-card border border-line bg-surface p-5 shadow-card">
           <section>
-            <h2 className="font-semibold">Horaires</h2>
+            <h2 className="font-display font-bold">Horaires</h2>
             <p className="mt-1 whitespace-pre-line text-sm text-ink-muted">{service.hours}</p>
           </section>
           <section>
-            <h2 className="font-semibold">Contact</h2>
+            <h2 className="font-display font-bold">Contact</h2>
             <ul className="mt-1 space-y-1 text-sm">
               {service.phone && (
                 <li>

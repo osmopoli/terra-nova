@@ -4,7 +4,7 @@ import { APP_NAME } from '../lib/constants.js';
 // Layout du back-office agents : bandeau sombre, distinct de l'espace citoyen.
 export default function AgentLayout({ user, onLogout, children }) {
   return (
-    <div className="min-h-screen bg-mist font-sans text-ink">
+    <div data-space="agent" className="min-h-screen bg-canvas font-sans text-ink">
       <a
         href="#contenu"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-10 focus:rounded-control focus:bg-surface focus:px-4 focus:py-2"
