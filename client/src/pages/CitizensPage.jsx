@@ -10,10 +10,11 @@ function CitizenRow({ citizen, busy, onToggle }) {
   const name = citizen.fullName || citizen.email;
   return (
     <li className="flex flex-wrap items-center gap-3 rounded-card bg-surface p-4 shadow-card sm:p-5">
-      <div className="min-w-0 flex-1">
-        <p className="truncate font-display text-lg font-bold">{name}</p>
-        <p className="truncate text-sm text-ink-muted">
-          {citizen.email} · inscrit le {dateFormat.format(new Date(citizen.createdAt))}
+      <div className="min-w-0 basis-full sm:flex-1 sm:basis-0">
+        <p className="break-words font-display text-lg font-bold">{name}</p>
+        <p className="break-all text-sm text-ink-muted">{citizen.email}</p>
+        <p className="text-sm text-ink-muted">
+          Inscrit le {dateFormat.format(new Date(citizen.createdAt))}
         </p>
       </div>
       <span
