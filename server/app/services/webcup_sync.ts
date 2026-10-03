@@ -131,7 +131,12 @@ function liveSession(session: WebcupSession | null, syncedAt: Date | null) {
   ) {
     const next = new Date(syncedAt.getTime() + Number(session.minutes_until_next_wave) * 60_000)
     live.next_wave_at = next.toISOString()
-    live.minutes_until_next_wave = Math.max(0, Math.ceil((next.getTime() - Date.now()) / 60_000))
+    // MySQL arrondit la date de synchro à la seconde : on ne dépasse jamais la valeur reçue de l'API.
+    const remaining = Math.ceil((next.getTime() - Date.now()) / 60_000)
+    live.minutes_until_next_wave = Math.min(
+      Math.max(0, remaining),
+      Number(session.minutes_until_next_wave)
+    )
   }
   return live
 }
