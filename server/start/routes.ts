@@ -27,6 +27,7 @@ const AdminServiceTranslationsController = () =>
   import('#controllers/admin_service_translations_controller')
 const AgentMessagesController = () => import('#controllers/agent_messages_controller')
 const AlertsController = () => import('#controllers/alerts_controller')
+const DemandesController = () => import('#controllers/demandes_controller')
 
 router
   .group(() => {
@@ -131,6 +132,15 @@ router
       })
       .prefix('/alerts')
       .use([middleware.auth(), middleware.role({ roles: ACCESS.admin })])
+    /** Demandes des habitants (« Mes demandes ») : citoyens uniquement, 403 sinon. */
+    router
+      .group(() => {
+        router.get('/', [DemandesController, 'index'])
+        router.post('/', [DemandesController, 'store'])
+        router.get('/:id', [DemandesController, 'show'])
+      })
+      .prefix('/demandes')
+      .use([middleware.auth(), middleware.role({ roles: ACCESS.citoyen })])
 
     // Routes métier : à ajouter ici (préfixe /api déjà appliqué, jamais de /spike).
 
