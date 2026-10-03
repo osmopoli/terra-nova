@@ -21,7 +21,9 @@ Conventions d'équipe et règles des agents : **[`CLAUDE.md`](CLAUDE.md)**. Chec
 | Pont ESM pour Passenger | `server/loader.cjs` |
 | Tests API (Japa) | `server/tests/functional/` |
 
-Comptes de démo : `demo@webcup.test` et `jury@webcup.test`, mot de passe `Webcup2026!` (à changer pour la démo finale si besoin).
+Comptes de démo (un par rôle, créés par `node ace db:seed`) : `citoyen@novaterra.test` (citoyen), `agent@novaterra.test` (agent municipal),
+`admin@novaterra.test` (administrateur). Mot de passe commun : variable d'environnement `DEMO_PASSWORD` (8 caractères minimum), à définir
+dans `server/.env` ou au lancement : `DEMO_PASSWORD=... node ace db:seed`. Le rôle est renvoyé par `GET /api/me` (`role`) et la liste par `GET /api/meta` (`roles`).
 
 ## À personnaliser à H+0
 
