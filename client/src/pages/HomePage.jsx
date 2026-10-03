@@ -3,6 +3,7 @@ import { APP_NAME } from '../lib/constants.js';
 import { Link } from '../lib/router.jsx';
 import { useAsync } from '../lib/useAsync.js';
 import { useLightMode } from '../lib/lightMode.js';
+import Term from '../components/Term.jsx';
 
 const formatDate = (iso) => new Date(iso).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
 
@@ -67,7 +68,7 @@ export default function HomePage({ user }) {
         {highlights.data?.length > 0 && (
           <section aria-labelledby="accueil-demarches">
             <h2 id="accueil-demarches" className="font-display text-xl font-bold">
-              Démarches les plus demandées
+              <Term id="demarche">Démarches</Term> les plus demandées
             </h2>
             <ul className="mt-3 divide-y divide-mist rounded-card bg-surface shadow-card">
               {highlights.data.map((h) => (

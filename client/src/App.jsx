@@ -20,6 +20,7 @@ const ReportPage = lazy(() => import('./pages/ReportPage.jsx'));
 const ServicePage = lazy(() => import('./pages/ServicePage.jsx'));
 const ServicesPage = lazy(() => import('./pages/ServicesPage.jsx'));
 const SobrietyPage = lazy(() => import('./pages/SobrietyPage.jsx'));
+const GlossaryPage = lazy(() => import('./pages/GlossaryPage.jsx'));
 
 function Loading({ className = 'text-ink-muted' }) {
   return (
@@ -45,6 +46,7 @@ function Route({ session }) {
   if (pathname === '/') return <HomePage user={user} />;
   // Ajouter les routes métier ici (ex. /items, /items/:id).
   if (pathname === '/contact') return <ContactPage user={user} meta={meta} onExpired={expire} />;
+  if (pathname === '/glossaire') return <GlossaryPage />;
   if (pathname === '/services') return <ServicesPage meta={meta} />;
   if (pathname === '/accessibilite') return <AccessibilityPage />;
   if (pathname === '/sobriete') return <SobrietyPage />;

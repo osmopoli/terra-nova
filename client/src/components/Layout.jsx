@@ -66,6 +66,9 @@ export default function Layout({ user, children }) {
           <p>{APP_NAME}, la plateforme des services municipaux.</p>
           <LightModeFooter />
           <div className="flex flex-wrap gap-4">
+            <Link to="/glossaire" className="font-semibold text-ink">
+              Glossaire des mots difficiles
+            </Link>
             <Link to="/accessibilite" className="font-semibold text-ink">
               Accessibilité
             </Link>

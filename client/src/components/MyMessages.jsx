@@ -3,6 +3,7 @@ import { labelOf } from '../lib/constants.js';
 import { Link, useLocation } from '../lib/router.jsx';
 import { useAsync } from '../lib/useAsync.js';
 import ListState from './ListState.jsx';
+import Term from './Term.jsx';
 
 const dateFormat = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium', timeStyle: 'short' });
 
@@ -28,6 +29,9 @@ export default function MyMessages({ meta }) {
           Nouveau message
         </Link>
       </div>
+      <p className="mt-2 text-sm text-ink-muted">
+        Le <Term id="statut">statut</Term> indique où en est chaque message.
+      </p>
       <ListState
         state={state}
         isEmpty={!messages.length}

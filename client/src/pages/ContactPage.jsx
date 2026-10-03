@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { api } from '../api/client.js';
+import Term from '../components/Term.jsx';
 import Field, { FormError, OptionSelect, inputClass } from '../components/Field.jsx';
 import { labelOf } from '../lib/constants.js';
 import { focusFirstError } from '../lib/focusError.js';
@@ -62,13 +63,15 @@ export default function ContactPage({ user, meta, onExpired }) {
         </h1>
         <p className="mt-3 text-ink-muted">
           Le service <strong className="text-ink">{labelOf(meta.contactServices, sent.service)}</strong> a
-          reçu votre message « {sent.subject} ». Conservez ce numéro pour suivre son traitement.
+          reçu votre message « {sent.subject} ». Gardez ce numéro pour savoir où en est votre demande.
         </p>
         <div className="mt-6 rounded-control bg-mist p-4 text-center">
-          <p className="text-sm text-ink-muted">Numéro de suivi</p>
+          <p className="text-sm text-ink-muted">
+            <Term id="numero-de-suivi">Numéro de suivi</Term>
+          </p>
           <p className="mt-1 font-mono text-2xl font-bold tracking-widest text-ink">{sent.trackingCode}</p>
           <p className="mt-2 text-sm text-ink-muted">
-            Statut : {labelOf(meta.contactStatuses, sent.status)}
+            <Term id="statut">Statut</Term> : {labelOf(meta.contactStatuses, sent.status)}
           </p>
         </div>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -94,8 +97,9 @@ export default function ContactPage({ user, meta, onExpired }) {
     <section className="mx-auto w-full max-w-lg rounded-card bg-surface p-5 shadow-card sm:p-8">
       <h1 className="font-display text-2xl font-bold text-ink">Contacter les services municipaux</h1>
       <p className="mt-2 text-ink-muted">
-        Une question, une difficulté ? Votre message est transmis au service choisi et vous recevez un
-        numéro de suivi.
+        Une question, une difficulté ? Votre message est transmis au{' '}
+        <Term id="service-municipal">service municipal</Term> choisi et vous recevez un{' '}
+        <Term id="numero-de-suivi">numéro de suivi</Term>.
       </p>
       <form onSubmit={submit} className="mt-6 space-y-4" noValidate>
         <Field label="Sujet" error={error?.fields?.subject}>
@@ -107,7 +111,18 @@ export default function ContactPage({ user, meta, onExpired }) {
             required
           />
         </Field>
-        <Field label="Service concerné" error={error?.fields?.service}>
+        <Field
+          label="Service concerné"
+          error={error?.fields?.service}
+          hint={
+            <>
+              Un mot n'est pas clair ? <Term id="etat-civil">État civil</Term>,{' '}
+              <Term id="urbanisme">urbanisme</Term>, <Term id="voirie">voirie</Term>,{' '}
+              <Term id="action-sociale">action sociale</Term>,{' '}
+              <Term id="petite-enfance">petite enfance</Term> : passez dessus ou touchez-les.
+            </>
+          }
+        >
           <OptionSelect
             options={meta.contactServices}
             placeholder="Choisissez un service"

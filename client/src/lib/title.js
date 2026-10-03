@@ -11,6 +11,7 @@ const TITLES = {
   '/contact': 'Contact',
   '/accessibilite': 'Accessibilité',
   '/sobriete': 'Sobriété numérique',
+  '/glossaire': 'Glossaire',
   '/services': 'Services',
   '/actualites': 'Actualités',
   '/mes-demarches': 'Mes démarches',
