@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+/*
+ * Tokens visuels du projet : SOURCE DE VÉRITÉ du design.
+ * Toute couleur, police, rayon ou ombre de l'interface passe par ces variables
+ * (classes Tailwind générées : bg-primary, text-ink, rounded-card, font-display...).
+ * Aucune valeur codée en dur dans les composants.
+ *
+ * Valeurs NEUTRES de départ : l'agent Designer / DA les remplace à H+1 selon
+ * la direction artistique validée. Contrastes à vérifier (WCAG AA >= 4.5).
+ */
+@theme {
+  --color-ink: #111827;
+  --color-ink-muted: #4b5563;
+  --color-surface: #ffffff;
+  --color-mist: #f3f4f6;
+  --color-primary: #1d4ed8;
+  --color-primary-strong: #1e3a8a;
+  --color-accent: #f59e0b;
+  --color-danger: #b91c1c;
+
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: var(--font-sans);
+
+  --radius-card: 14px;
+  --radius-control: 8px;
+
+  --shadow-card: 0 1px 3px rgb(0 0 0 / 0.12);
+}
+
+@layer base {
+  :focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
