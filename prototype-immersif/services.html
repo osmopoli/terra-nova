@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#03070C">
+<title>Services municipaux — Terra Nova</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/nova.css">
+</head>
+<body data-page="services">
+
+<!-- D05 : présenter les services municipaux et leurs informations utiles -->
+<main id="contenu">
+  <header class="tete-page">
+    <img src="assets/terra-nova/backgrounds/planete-orbite.svg" width="1380" height="430" alt="">
+    <div class="contenu">
+      <h1>Services municipaux</h1>
+      <p>Trouvez le service qui correspond à votre besoin : où il se trouve, quand il est ouvert et ce qu’il peut faire pour vous.</p>
+    </div>
+  </header>
+
+  <div class="outils">
+    <div class="recherche">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <label class="sr-only" for="q">Rechercher un service</label>
+      <input id="q" type="search" data-recherche placeholder="Rechercher : logement, navette, vaccin…" autocomplete="off">
+    </div>
+    <div class="puces-filtre" role="group" aria-label="Filtrer par thème">
+      <span class="curseur" aria-hidden="true"></span>
+      <button type="button" data-filtre="tout" aria-pressed="true">Tous</button>
+      <button type="button" data-filtre="quotidien" aria-pressed="false">Quotidien</button>
+      <button type="button" data-filtre="soin" aria-pressed="false">Santé</button>
+      <button type="button" data-filtre="communaute" aria-pressed="false">Communauté</button>
+    </div>
+  </div>
+
+  <div class="services" data-services></div>
+  <div class="vide" role="status">
+    <strong>Aucun service ne correspond</strong>
+    Essayez un autre mot, ou <button type="button" data-reinitialiser>affichez tous les services</button>.
+  </div>
+</main>
+
+<script src="assets/js/donnees.js"></script>
+<script src="assets/js/nova.js"></script>
+</body>
+</html>
+
