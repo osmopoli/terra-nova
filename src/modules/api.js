@@ -35,7 +35,7 @@ function etatPour(u) {
 router.get('/api/etat', (req, res) => { res.set('Cache-Control', 'no-store'); res.json(etatPour(req.user)); });
 
 /* ---------- Authentification ---------- */
-router.get('/api/auth/email-pris', (req, res) => res.json({ pris: !!A.parEmail(req.query.email) }));
+// (pas de route « e-mail déjà pris » : elle permettait d'énumérer les comptes ; l'inscription répond elle-même, limitée par IP)
 
 router.post('/api/auth/inscrire', (req, res) => {
   const { prenom, nom, motdepasse, quartier, telephone, alertesQuartier } = req.body || {};
@@ -333,7 +333,7 @@ function demandeResumee(d) {
     maj: (histo[histo.length - 1] || {}).date || d.cree, traiteeLe: (histo.find((h) => h.statut === 'traitee') || {}).date || null,
     reponse: rep ? { date: rep.date, par: rep.par, note: rep.note } : null };
 }
-router.get('/api/mes-informations', A.exigerRole('citoyen'), (req, res) => {
+router.get('/api/mes-informations', A.exigerRole(...A.ROLES), (req, res) => {
   const u = req.user;
   const mes = (col) => docs.tous(col).filter((x) => x.userId === u.id);
   const notifs = mes('notifications');
