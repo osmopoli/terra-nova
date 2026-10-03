@@ -2,10 +2,27 @@ import { useState } from 'react';
 import { api } from '../api/client.js';
 import Field, { FormError, inputClass } from './Field.jsx';
 
-export default function ProfileScreen({ user, onUpdated, onLogout }) {
+export default function ProfileScreen({ user, onUpdated, onLogout, onDeleted }) {
   const [form, setForm] = useState({ fullName: user.fullName ?? '' });
   const [error, setError] = useState(null);
   const [saved, setSaved] = useState(false);
+  const [confirming, setConfirming] = useState(false);
+  const [password, setPassword] = useState('');
+  const [deleteError, setDeleteError] = useState(null);
+  const [deleting, setDeleting] = useState(false);
+
+  async function deleteAccount(e) {
+    e.preventDefault();
+    setDeleteError(null);
+    setDeleting(true);
+    try {
+      await api('/me', { method: 'DELETE', body: { password } });
+      onDeleted();
+    } catch (err) {
+      setDeleteError(err);
+      setDeleting(false);
+    }
+  }
 
   async function save(e) {
     e.preventDefault();
@@ -58,6 +75,60 @@ export default function ProfileScreen({ user, onUpdated, onLogout }) {
           Enregistrer
         </button>
       </form>
+
+      {user.role === 'citoyen' && (
+      <section aria-labelledby="titre-suppression" className="mt-6 border-t border-mist pt-6">
+        <h2 id="titre-suppression" className="font-semibold text-ink">
+          Supprimer mon compte
+        </h2>
+        {confirming ? (
+          <form onSubmit={deleteAccount} className="mt-3 space-y-4" noValidate>
+            <p className="text-sm text-ink-muted">
+              Cette action est définitive : votre compte et vos messages seront effacés. Saisissez votre mot de
+              passe pour confirmer.
+            </p>
+            <Field label="Mot de passe" error={deleteError?.fields?.password}>
+              <input
+                type="password"
+                autoComplete="current-password"
+                className={inputClass}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Field>
+            {!deleteError?.fields?.password && <FormError error={deleteError} />}
+            <div className="flex gap-3">
+              <button
+                type="submit"
+                disabled={deleting || !password}
+                className="flex-1 rounded-control bg-danger py-3 font-semibold text-white disabled:opacity-60"
+              >
+                {deleting ? 'Suppression…' : 'Supprimer définitivement'}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setConfirming(false);
+                  setPassword('');
+                  setDeleteError(null);
+                }}
+                className="rounded-control border border-ink-muted/40 px-4 py-3 font-medium text-ink hover:bg-mist"
+              >
+                Annuler
+              </button>
+            </div>
+          </form>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setConfirming(true)}
+            className="mt-3 rounded-control border border-danger px-4 py-2.5 text-sm font-semibold text-danger hover:bg-mist"
+          >
+            Supprimer mon compte
+          </button>
+        )}
+      </section>
+      )}
     </div>
   );
 }

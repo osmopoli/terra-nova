@@ -74,6 +74,7 @@ router
         router.get('/me', [ProfileController, 'show'])
         router.patch('/me', [ProfileController, 'update'])
         router.post('/me/onboarding', [ProfileController, 'completeOnboarding'])
+        router.delete('/me', [ProfileController, 'destroy'])
 
         /** Messages aux services municipaux (WEBC-6) : chaque habitant ne voit que les siens. */
         router.get('/contact-messages', [ContactMessagesController, 'index'])
