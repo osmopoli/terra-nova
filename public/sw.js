@@ -5,7 +5,7 @@
    - toujours le RÉSEAU D'ABORD pour les pages, les scripts et les styles : la copie ne sert que si le réseau échoue,
      donc jamais d'ancien script après un déploiement. Aucune autre donnée de l'API n'est gardée (rien de personnel). */
 'use strict';
-const VERSION = 'v15-2';
+const VERSION = 'v15-3';
 const CACHE = 'terra-nova-' + VERSION;
 const COQUILLE = ['/', '/index.html', '/services.html', '/annonces.html', '/carte.html', '/simple',
   '/assets/css/theme.css', '/assets/css/vague15.css', '/assets/css/accueil.css', '/assets/css/services.css', '/assets/css/annonces.css',
@@ -19,9 +19,16 @@ self.addEventListener('activate', (ev) => {
   ev.waitUntil(caches.keys().then((l) => Promise.all(l.filter((k) => k.startsWith('terra-nova-') && k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim()));
 });
 
+// Seules l'enveloppe (COQUILLE) et les API prévues sont copiées, jamais une réponse marquée no-store : une page personnelle
+// rendue par le serveur (ex. /simple/suivi) ne doit pas réapparaître hors connexion sur un appareil partagé.
+function conservable(url, r) {
+  const chemin = new URL(url).pathname;
+  if (!COQUILLE.includes(chemin) && !API_GARDEES.includes(chemin)) return false;
+  return !/\bno-store\b/i.test(r.headers.get('Cache-Control') || '');
+}
 function reseauDabord(req, cle) {
   return fetch(req).then((r) => {
-    if (r && r.ok && r.type === 'basic') { const copie = r.clone(); caches.open(CACHE).then((c) => c.put(cle || req, copie)).catch(() => {}); }
+    if (r && r.ok && r.type === 'basic' && conservable(req.url, r)) { const copie = r.clone(); caches.open(CACHE).then((c) => c.put(cle || req, copie)).catch(() => {}); }
     return r;
   }).catch(() => caches.match(cle || req, { ignoreSearch: req.mode === 'navigate' }).then((r) => r
     || (req.mode === 'navigate' ? caches.match('/simple').then((s) => s || caches.match('/')) : undefined)

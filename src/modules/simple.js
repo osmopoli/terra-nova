@@ -111,7 +111,7 @@ function langueDe(req) {
 const niveau = (s) => { const c = (s.etat && s.etat.code) || 'ok'; return c === 'ok' ? 'disponible' : c === 'desactive' ? 'indisponible' : 'perturbe'; };
 const ICONE = { disponible: '✓', perturbe: '!', indisponible: '✕' };
 
-function page(req, res, { l, titre, corps, complete }) {
+function page(req, res, { l, titre, corps, complete, prive }) {
   const t = T[l];
   const ici = req.path;
   const langues = Object.entries(LANGUES).map(([c, n]) => (c === l ? `<strong lang="${c}">${n}</strong>`
@@ -135,7 +135,7 @@ function page(req, res, { l, titre, corps, complete }) {
   const brouillon = rendu('');
   const ko = (n) => (Math.round(n / 102.4) / 10).toLocaleString(LOCALES[l]);
   const html = rendu(t.poids.replace('{ko}', ko(Buffer.byteLength(brouillon))).replace('{kc}', ko(zlib.brotliCompressSync(brouillon).length)));
-  res.set('Cache-Control', 'no-cache');
+  res.set('Cache-Control', prive ? 'no-store' : 'no-cache');   // page personnelle : jamais copiée (navigateur, Service Worker)
   res.set('Vary', 'Accept-Encoding, Accept-Language');
   const accepte = String(req.headers['accept-encoding'] || '');
   res.type('html');
@@ -248,7 +248,7 @@ router.get('/simple/suivi', (req, res) => {
     }
   }
   const corps = `<h1>${e(t.suivi)}</h1><p>${e(t.suiviIntro)}</p>${form}${resultat}`;
-  page(req, res, { l, titre: t.suivi, corps, complete: '/suivi.html' + (id ? '?id=' + encodeURIComponent(id) : '') });
+  page(req, res, { l, titre: t.suivi, corps, complete: '/suivi.html' + (id ? '?id=' + encodeURIComponent(id) : ''), prive: true });
 });
 
 /* ?simple=1 sur une page complète → sa version simple */
