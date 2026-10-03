@@ -101,6 +101,20 @@ La couleur renforce, elle ne porte jamais seule une information :
   statuts en pastilles `rounded-full px-2 text-xs font-semibold` avec `bg-success/10 text-success`, `bg-warning/10 text-warning`, `bg-danger/10 text-danger`.
 - Fond de page `bg-canvas`, jamais de carte sur fond `surface` sans bordure `line`.
 
+## Version légère (connexion lente, appareil modeste)
+
+Bouton « Version légère » à côté des préférences d’affichage (`lib/lightMode.js`, attribut `data-light="on"` sur `<html>`).
+Mêmes couleurs, mêmes informations et actions ; on retire seulement ce qui coûte :
+
+- polices de l’appareil (`system-ui`) : les polices web ne sont pas téléchargées (`index.html`) ;
+- ni ombre, ni flou (`backdrop-filter`), ni animation, ni transition (`index.css`, bloc hors `@layer`) ;
+- illustrations (planètes du parcours d’arrivée) non affichées et non téléchargées ; le voyage animé est sauté ;
+- accueil, annuaire et fiche service en listes texte sur une colonne (horaires, contact, démarches d’abord) ;
+- rafraîchissement automatique 4 fois moins fréquent.
+
+Activation automatique (message unique) si l’appareil signale l’économie de données ou une connexion 2g.
+Un nouveau composant décoratif doit se masquer avec `useLightMode()`.
+
 ## Icône et PWA
 
 `client/public/icon.svg` : planète sable sur fond lagon, horizon `primary-strong`, anneau `accent` et une étoile.

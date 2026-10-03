@@ -1,6 +1,8 @@
 import { Link } from '../lib/router.jsx';
 import { APP_NAME } from '../lib/constants.js';
 import ContrastControl from './ContrastControl.jsx';
+import LightModeControl from './LightModeControl.jsx';
+import { LightModeFooter, LightModeNotice } from './LightModeStatus.jsx';
 import SkipLink from './SkipLink.jsx';
 
 // Layout du back-office agents : bandeau sombre, distinct de l'espace citoyen.
@@ -19,6 +21,7 @@ export default function AgentLayout({ user, onLogout, children }) {
           <nav aria-label="Navigation agents" className="ml-auto flex flex-wrap items-center gap-3 text-sm">
             {user && <span className="hidden text-mist sm:inline">{user.fullName}</span>}
             <ContrastControl className="text-surface" />
+            <LightModeControl className="text-surface" />
             <Link to="/" className="font-bold text-surface underline-offset-4 hover:underline">
               Espace citoyen
             </Link>
@@ -35,7 +38,9 @@ export default function AgentLayout({ user, onLogout, children }) {
         </div>
       </header>
       <main id="contenu" tabIndex={-1} className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8 focus:outline-none">
+        <LightModeNotice className="mb-4 bg-surface text-ink" />
         {children}
+        <LightModeFooter className="mt-8 text-sm text-ink-muted" />
       </main>
     </div>
   );

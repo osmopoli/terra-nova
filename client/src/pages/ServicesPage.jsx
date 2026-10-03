@@ -5,6 +5,7 @@ import { useAsync } from '../lib/useAsync.js';
 import ListState from '../components/ListState.jsx';
 import LanguageSwitcher from '../components/LanguageSwitcher.jsx';
 import { serviceUi, useContentLanguage } from '../lib/contentLanguage.js';
+import { useLightMode } from '../lib/lightMode.js';
 
 // Annuaire des services municipaux (D05) : liste publique, fiche par service.
 export default function ServicesPage({ meta }) {
@@ -12,6 +13,7 @@ export default function ServicesPage({ meta }) {
   const t = serviceUi(lang);
   const state = useAsync(() => api(`/services?lang=${lang}`), [lang]);
   const services = Array.isArray(state.data) ? state.data : [];
+  const light = useLightMode();
 
   return (
     <section lang={lang}>
@@ -40,25 +42,43 @@ export default function ServicesPage({ meta }) {
           ),
         }}
       >
-        <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((service) => (
-            <li key={service.slug} lang={service.lang}>
-              <Link
-                to={`/services/${service.slug}`}
-                className="flex h-full flex-col rounded-card border border-mist bg-surface p-5 shadow-card transition hover:border-primary"
-              >
-                <span className="text-xs font-semibold uppercase tracking-wide text-primary">
-                  {labelOf(meta.serviceCategories, service.category)}
+        {light ? (
+          // Version légère : liste texte, un service par ligne (nom, rubrique, en bref).
+          <ul className="mt-6 divide-y divide-line border-y border-line">
+            {services.map((service) => (
+              <li key={service.slug} lang={service.lang} className="py-3">
+                <Link to={`/services/${service.slug}`} className="font-bold text-primary">
+                  {service.name}
+                </Link>
+                <span className="text-sm text-ink-muted">
+                  {' '}
+                  · {labelOf(meta.serviceCategories, service.category)}
                 </span>
-                <span className="mt-2 font-display text-lg font-bold text-ink">{service.name}</span>
-                <span className="mt-2 flex-1 text-sm text-ink-muted">{service.summary}</span>
-                <span lang={lang} className="mt-4 text-sm font-semibold text-primary">
-                  {t.see}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+                <p className="mt-1 text-sm">{service.summary}</p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {services.map((service) => (
+              <li key={service.slug} lang={service.lang}>
+                <Link
+                  to={`/services/${service.slug}`}
+                  className="flex h-full flex-col rounded-card border border-mist bg-surface p-5 shadow-card transition hover:border-primary"
+                >
+                  <span className="text-xs font-semibold uppercase tracking-wide text-primary">
+                    {labelOf(meta.serviceCategories, service.category)}
+                  </span>
+                  <span className="mt-2 font-display text-lg font-bold text-ink">{service.name}</span>
+                  <span className="mt-2 flex-1 text-sm text-ink-muted">{service.summary}</span>
+                  <span lang={lang} className="mt-4 text-sm font-semibold text-primary">
+                    {t.see}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </ListState>
     </section>
   );

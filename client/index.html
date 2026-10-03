@@ -7,12 +7,39 @@
     <meta name="description" content="Nova Terra, la plateforme des services municipaux" />
     <link rel="icon" href="/icon.svg" type="image/svg+xml" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
+    <meta
+      name="webfonts"
+      content="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
     />
+    <script>
+      // Version légère (F59) décidée avant tout téléchargement : en version légère, les polices
+      // de l'appareil suffisent et les polices web ne sont pas chargées. Même règle que src/lib/lightMode.js.
+      (function () {
+        var light = false;
+        try {
+          var saved = localStorage.getItem('light_mode');
+          var c = navigator.connection || {};
+          light =
+            saved === 'on' ||
+            (saved === null &&
+              (c.saveData || /(^|-)2g$/.test(c.effectiveType || '') || matchMedia('(prefers-reduced-data: reduce)').matches));
+        } catch (e) {}
+        if (light) {
+          document.documentElement.dataset.light = 'on';
+          return;
+        }
+        var pre = document.createElement('link');
+        pre.rel = 'preconnect';
+        pre.href = 'https://fonts.gstatic.com';
+        pre.crossOrigin = '';
+        document.head.appendChild(pre);
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.id = 'webfonts';
+        link.href = document.querySelector('meta[name="webfonts"]').content;
+        document.head.appendChild(link);
+      })();
+    </script>
     <title>Nova Terra</title>
   </head>
   <body>

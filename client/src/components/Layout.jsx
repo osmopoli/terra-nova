@@ -3,6 +3,8 @@ import Breadcrumb from './Breadcrumb.jsx';
 import { APP_NAME } from '../lib/constants.js';
 import TextSizeControl from './TextSizeControl.jsx';
 import ContrastControl from './ContrastControl.jsx';
+import LightModeControl from './LightModeControl.jsx';
+import { LightModeFooter, LightModeNotice } from './LightModeStatus.jsx';
 import SkipLink from './SkipLink.jsx';
 
 export default function Layout({ user, children }) {
@@ -22,6 +24,7 @@ export default function Layout({ user, children }) {
           <nav aria-label="Navigation principale" className="ml-auto flex flex-wrap items-center gap-3 sm:gap-4">
             <TextSizeControl className="text-ink" />
             <ContrastControl className="text-ink" />
+            <LightModeControl className="text-ink" />
             <NavLink to="/" className={linkClass}>
               Accueil
             </NavLink>
@@ -51,12 +54,14 @@ export default function Layout({ user, children }) {
         </div>
       </header>
       <main id="contenu" tabIndex={-1} className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10 focus:outline-none">
+        <LightModeNotice className="mb-4 bg-surface text-ink" />
         <Breadcrumb />
         {children}
       </main>
       <footer className="border-t border-mist">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-4 text-sm text-ink-muted sm:px-6">
           <p>{APP_NAME}, la plateforme des services municipaux.</p>
+          <LightModeFooter />
           <Link to="/accessibilite" className="font-semibold text-ink">
             Accessibilité
           </Link>

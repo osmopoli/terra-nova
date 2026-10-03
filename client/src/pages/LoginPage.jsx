@@ -3,19 +3,24 @@ import AuthScreen from '../components/AuthScreen.jsx';
 import SkipLink from '../components/SkipLink.jsx';
 import TextSizeControl from '../components/TextSizeControl.jsx';
 import ContrastControl from '../components/ContrastControl.jsx';
+import LightModeControl from '../components/LightModeControl.jsx';
+import { LightModeFooter } from '../components/LightModeStatus.jsx';
+import { useLightMode } from '../lib/lightMode.js';
 import { APP_NAME } from '../lib/constants.js';
 import { Link } from '../lib/router.jsx';
 import { Brand } from './ArrivalPage.jsx';
 
 // Fin du parcours d'arrivée : visuel de la planète + vraie connexion / inscription.
 export default function LoginPage({ onAuthenticated }) {
+  const light = useLightMode();
   return (
     <main className="min-h-dvh bg-space font-sans text-star md:grid md:grid-cols-[minmax(0,1.18fr)_minmax(380px,0.82fr)]">
       <SkipLink />
       <section
         aria-label="Vue de la ville"
         className="relative isolate flex min-h-[42dvh] flex-col justify-between gap-8 overflow-hidden bg-cover bg-center px-6 py-7 md:p-[clamp(35px,5vw,76px)]"
-        style={{ backgroundImage: `url(${horizon})` }}
+        // Version légère : pas d'illustration (le fichier n'est pas téléchargé).
+        style={light ? undefined : { backgroundImage: `url(${horizon})` }}
       >
         <div
           aria-hidden="true"
@@ -31,6 +36,7 @@ export default function LoginPage({ onAuthenticated }) {
             </Link>
             <TextSizeControl className="text-star" />
             <ContrastControl className="text-star" />
+            <LightModeControl className="text-star" />
           </div>
         </div>
         <div className="max-w-2xl">
@@ -53,7 +59,10 @@ export default function LoginPage({ onAuthenticated }) {
         tabIndex={-1}
         aria-label="Connexion ou inscription"
         className="grid place-items-center border-t border-glow/20 bg-space-panel focus:outline-none px-4 py-10 md:border-t-0 md:border-l md:p-[clamp(24px,6vw,92px)]">
-        <AuthScreen onAuthenticated={onAuthenticated} />
+        <div className="w-full max-w-md">
+          <AuthScreen onAuthenticated={onAuthenticated} />
+          <LightModeFooter className="mt-6 text-center text-sm text-star-muted" />
+        </div>
       </section>
     </main>
   );
