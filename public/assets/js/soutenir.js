@@ -74,11 +74,15 @@
     const u = NT.auth.utilisateur();
     const citoyen = !!u && u.role === 'citoyen';
     let donnees = [];
+    let pause = '';   // F77, F78 : message du serveur quand la liste est mise en pause (forte affluence)
     const commentaires = {};
     let cible = (location.hash || '').replace('#', '');
 
     function charger() {
       const r = NT.api('GET', '/api/demandes/publiques');
+      // liste secondaire mise en pause par un serveur surchargé : message calme, dernière liste gardée
+      if (r.statut === 503) { pause = (r.donnees && r.donnees.erreur) || ''; return; }
+      pause = '';
       donnees = r.statut === 200 && Array.isArray(r.donnees) ? r.donnees : [];
     }
     const nombre = n => (n === 0 ? L('sou.n0', 'Aucun soutien pour l’instant') : n === 1 ? L('sou.n1', '1 habitant soutient') : L('sou.n', '{n} habitants soutiennent', { n }));
@@ -128,7 +132,7 @@
     let tri = null;
     function rendre() { if (tri) tri.appliquer(); }
     function dessiner(l) {
-      $('#liste').innerHTML = l.length ? l.map(d => carte(d, '')).join('') : `<li class="vide">${E(L('sou.aucun', 'Aucun signalement ne correspond. Essayez un autre quartier ou un autre mot.'))}</li>`;
+      $('#liste').innerHTML = l.length ? l.map(d => carte(d, '')).join('') : pause ? `<li class="vide" role="status">${E(pause)}</li>` : `<li class="vide">${E(L('sou.aucun', 'Aucun signalement ne correspond. Essayez un autre quartier ou un autre mot.'))}</li>`;
       const mes = donnees.filter(d => d.soutenuParMoi);
       $('#mes-soutiens').hidden = !mes.length;
       $('#liste-mes-soutiens').innerHTML = mes.map(d => carte(d, 'ms-')).join('');

@@ -27,4 +27,3 @@
 .confirm-sou i{ font-size:1.25em; vertical-align:-.2em; color:var(--calme); }
 .btn-soutien[aria-pressed="true"]{ border-color:var(--iono); color:var(--iono); }
 .pied-sou{ margin-top:2rem; }
-.filtres-sou .sujets-outils{ grid-column:1 / -1; }   /* F79 : tri et puces de sujet sur toute la largeur */

@@ -1,5 +1,5 @@
 /* Terra Nova — tenue en charge côté navigateur (vague 15 : F77 surcharge du serveur, F78 affluence simultanée)
-   Chargé par ui.js sur toutes les pages. S'appuie sur NT.charge (store.js), alimenté par l'en-tête X-Charge et les 503.
+   Chargé par store.js sur toutes les pages (démarre une fois l'interface prête, NT.pret). S'appuie sur NT.charge (store.js), alimenté par l'en-tête X-Charge et les 503.
    - Avis calme, jamais de bandeau : une ligne en pied de page (« Forte affluence : l'essentiel reste disponible ») et une
      carte en tête du tiroir « Alertes » ; la balise prend une teinte discrète, sans clignoter.
    - Pendant la surcharge, les mises à jour en direct sont espacées (recul exponentiel + gigue, voir NT.econome.delai) et
@@ -15,6 +15,8 @@
   const NT = window.NT;
   if (!NT || !NT.charge || NT.resilience) return;
   NT.resilience = true;
+  NT.pret(demarrer);
+  function demarrer() {
   NT.i18n.ajouter({
     fr: { 'ch.pied': 'Forte affluence : l’essentiel reste disponible.', 'ch.horsLigne': 'Connexion au serveur interrompue : dernières informations connues affichées.', 'ch.savoir': 'En savoir plus',
       'ch.titre': 'Forte affluence : l’essentiel reste disponible', 'ch.texte': 'Beaucoup d’habitants se connectent en même temps. Les alertes, l’état des services, vos demandes et la connexion restent prioritaires. Certaines parties secondaires (statistiques, soutiens, avis…) se mettent en pause quelques instants et les mises à jour en direct sont espacées.',
@@ -61,7 +63,7 @@
   ligne.className = 'pied-charge';
   ligne.hidden = true;
   if (pied) pied.append(ligne);
-  NT.ui.carteCharge = () => {
+  const carteCharge = () => {
     if (horsLigne()) {
       const depuis = NT.horsLigne && NT.horsLigne.depuis;
       return `<article class="alerte-fiche niveau-charge" aria-labelledby="ch-h"><h3 id="ch-h"><i class="ph-duotone ph-wifi-slash" aria-hidden="true"></i>${e(t('ch.titreHL'))}</h3>
@@ -70,6 +72,18 @@
     if (!degrade()) return '';
     return `<article class="alerte-fiche niveau-charge" aria-labelledby="ch-h"><h3 id="ch-h"><i class="ph-duotone ph-users-three" aria-hidden="true"></i>${e(t('ch.titre'))}</h3>
       <p>${e(t('ch.texte'))}</p><p class="doux">${e(t('ch.saisies'))}</p></article>`;
+  };
+  // Le tiroir « Alertes » de ui.js est complété (sans le modifier) : carte en tête, teinte discrète de la balise
+  const rendreAlertes = NT.ui.rafraichirAlertes;
+  NT.ui.rafraichirAlertes = () => {
+    if (rendreAlertes) rendreAlertes();
+    const tiroir = NT.ui.tiroirAlertes, balise = document.getElementById('nt-balise');
+    const c = carteCharge();
+    if (balise) balise.classList.toggle('charge', !!c);
+    if (!tiroir || !c) return;
+    const vide = tiroir.querySelector(':scope > p.vide');
+    if (vide) vide.remove();
+    tiroir.insertAdjacentHTML('afterbegin', c);
   };
   let annonce = degrade() || horsLigne();
   function rendre() {
@@ -203,4 +217,5 @@
 
   rendre();
   surveiller();
+  }
 })();

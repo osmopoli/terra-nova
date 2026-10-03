@@ -66,6 +66,8 @@
 
   X.recharger = () => {
     const r = NT.api('GET', '/api/demandes/groupes');
+    X.pause = r.statut === 503 ? ((r.donnees && r.donnees.erreur) || '') : '';   // vague 15 : regroupement mis en pause pendant la forte affluence
+    if (X.pause) return;
     groupes = r.statut === 200 ? r.donnees.groupes : [];
     parDemande.clear();
     groupes.forEach(g => g.demandes.concat(g.rattachees).forEach(id => parDemande.set(id, g)));
@@ -103,7 +105,7 @@
     const A = NT.agent;
     z.innerHTML = `<h2 id="sg-h"><i class="ph-duotone ph-stack" aria-hidden="true"></i> ${e(t('sg.titre'))} <span class="pastille-n">${groupes.length}</span></h2>
       <p class="doux" style="margin:.2rem 0 .8rem;font-size:.88rem">${e(t('sg.intro'))}</p>
-      ${groupes.length ? `<ul class="sg-liste">${groupes.map(g => `<li class="sg-groupe${g.urgente ? ' sg-urgente' : ''}">
+      ${X.pause && !groupes.length ? `<p class="vide" role="status">${e(X.pause)}</p>` : groupes.length ? `<ul class="sg-liste">${groupes.map(g => `<li class="sg-groupe${g.urgente ? ' sg-urgente' : ''}">
         <div class="ligne entre"><strong class="sg-n">${e(t('sg.n', { n: g.taille }))}</strong>${g.urgente ? `<span class="ag-prio ag-prio-haute"><i class="ph ph-caret-double-up" aria-hidden="true"></i>${e(t('sg.urgent'))}</span>` : ''}</div>
         <p class="sg-objet">${e(g.objet)}</p>
         <p class="sg-meta">${e(A.service(g.serviceId) || '–')} · ${e(g.quartiers.join(', ') || '–')} · ${e(t('sg.habitants', { n: g.habitants }))} · ${e(t('sg.periode', { d: NT.ui.dateHeure(g.premier), f: NT.ui.dateHeure(g.dernier) }))}</p>

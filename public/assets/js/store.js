@@ -364,4 +364,46 @@
       });
     }
   };
+
+  /* ---------- Vague 15 (F77, F78, F79) : styles, textes et page de secours ----------
+     Styles propres à la vague (assets/css/vague15.css) et script de tenue en charge (assets/js/resilience.js) ajoutés ici,
+     sans toucher aux pages ni au thème. Page de secours : affichée par ui.js sur une page réservée quand le serveur ne
+     répond pas (au lieu d'une redirection vers la connexion qui échouerait aussi). */
+  const feuille = Object.assign(document.createElement('link'), { rel: 'stylesheet', href: 'assets/css/vague15.css' });
+  document.head.append(feuille);
+  const scriptResilience = Object.assign(document.createElement('script'), { src: 'assets/js/resilience.js' });
+  document.head.append(scriptResilience);
+  if (NT.i18n && NT.i18n.ajouter) NT.i18n.ajouter({
+    fr: { 'nav.plateforme': 'Plateforme', 'secours.titre': 'Le serveur ne répond pas pour le moment', 'secours.texte': 'Votre espace revient dès que possible. Rien n’est perdu : vos brouillons restent sur cet appareil. L’essentiel en attendant :',
+      'secours.urgences': 'Urgences : SAMU 15 · numéro européen 112', 'secours.alertes': 'Dernières alertes connues', 'secours.aucune': 'Aucune alerte en cours lors de la dernière connexion.', 'secours.date': 'Informations enregistrées le {d}.',
+      'secours.simple': 'Version simple et rapide', 'secours.reessayer': 'Réessayer', 'secours.accueil': 'Accueil' },
+    en: { 'nav.plateforme': 'Platform', 'secours.titre': 'The server is not responding right now', 'secours.texte': 'Your space will be back as soon as possible. Nothing is lost: your drafts stay on this device. The essentials meanwhile:',
+      'secours.urgences': 'Emergencies: ambulance 15 · European number 112', 'secours.alertes': 'Last known alerts', 'secours.aucune': 'No alert in progress at the last connection.', 'secours.date': 'Information saved on {d}.',
+      'secours.simple': 'Simple, fast version', 'secours.reessayer': 'Try again', 'secours.accueil': 'Home' },
+    es: { 'nav.plateforme': 'Plataforma', 'secours.titre': 'El servidor no responde por ahora', 'secours.texte': 'Su espacio volverá lo antes posible. No se pierde nada: sus borradores quedan en este dispositivo. Lo esencial mientras tanto:',
+      'secours.urgences': 'Urgencias: SAMU 15 · número europeo 112', 'secours.alertes': 'Últimas alertas conocidas', 'secours.aucune': 'Ninguna alerta en curso en la última conexión.', 'secours.date': 'Información guardada el {d}.',
+      'secours.simple': 'Versión sencilla y rápida', 'secours.reessayer': 'Reintentar', 'secours.accueil': 'Inicio' },
+    ar: { 'nav.plateforme': 'المنصة', 'secours.titre': 'الخادم لا يستجيب حالياً', 'secours.texte': 'سيعود فضاؤك في أقرب وقت. لن يضيع شيء: تبقى مسوداتك على هذا الجهاز. الأساسي في الأثناء:',
+      'secours.urgences': 'الطوارئ: الإسعاف 15 · الرقم الأوروبي 112', 'secours.alertes': 'آخر التنبيهات المعروفة', 'secours.aucune': 'لا يوجد تنبيه جارٍ عند آخر اتصال.', 'secours.date': 'معلومات محفوظة بتاريخ {d}.',
+      'secours.simple': 'النسخة المبسطة والسريعة', 'secours.reessayer': 'إعادة المحاولة', 'secours.accueil': 'الرئيسية' }
+  });
+  charge.pageSecours = () => {
+    const t = (k, v) => NT.t(k, v);
+    const echap = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const main = document.getElementById('contenu') || document.body;
+    const alertes = annonces.toutes().filter(a => a.active && a.importance !== 'info').slice(0, 4);
+    const depuis = NT.horsLigne && NT.horsLigne.depuis ? new Date(NT.horsLigne.depuis).toLocaleString() : '';
+    main.innerHTML = `<section class="panneau secours" aria-labelledby="secours-h">
+      <h1 id="secours-h">${echap(t('secours.titre'))}</h1>
+      <p>${echap(t('secours.texte'))}</p>
+      <p><a class="btn btn-primaire" href="tel:15"><i class="ph ph-phone" aria-hidden="true"></i>${echap(t('secours.urgences'))}</a></p>
+      <h2>${echap(t('secours.alertes'))}</h2>
+      ${alertes.length ? `<ul>${alertes.map(a => `<li><strong>${echap(a.titre)}</strong> — ${echap(a.zone || '')}${a.resume ? '<br>' + echap(a.resume) : ''}</li>`).join('')}</ul>` : `<p class="doux">${echap(t('secours.aucune'))}</p>`}
+      ${depuis ? `<p class="doux">${echap(t('secours.date', { d: depuis }))}</p>` : ''}
+      <p class="ligne"><button type="button" class="btn" id="secours-reessayer"><i class="ph ph-arrow-clockwise" aria-hidden="true"></i>${echap(t('secours.reessayer'))}</button>
+        <a class="btn" href="/simple?lang=${echap(NT.i18n.langue)}"><i class="ph ph-article" aria-hidden="true"></i>${echap(t('secours.simple'))}</a>
+        <a class="btn" href="index.html">${echap(t('secours.accueil'))}</a></p></section>`;
+    main.querySelector('#secours-reessayer').addEventListener('click', () => location.reload());
+    document.body.classList.add('pret');
+  };
 })();

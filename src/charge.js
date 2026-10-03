@@ -47,7 +47,7 @@ const LOURD = [/^\/api\/sobriete$/, /^\/api\/indicateurs$/, /^\/api\.php$/, /^\/
 // Délestés en charge critique : utiles mais secondaires
 const SECONDAIRE = [/^\/api\/demandes\/(groupes|publiques)$/, /^\/api\/demandes\/[^/]+\/(semblables|soutenir)$/, /^\/api\/participation/,
   /^\/api\/(consultations|idees|projets)/, /^\/api\/avis-services/, /^\/api\/contributions/, /^\/api\/mon-recapitulatif$/, /^\/api\/mes-informations$/,
-  /^\/api\/journal$/, /^\/api\/habilitations/, /^\/api\/associations$/, /^\/api\/officiels\/tous$/];
+  /^\/api\/journal$/, /^\/api\/habilitations/, /^\/api\/officiels\/tous$/];
 function classe(req) {
   if (!req.path.startsWith('/api')) return 'page';
   if (estEssentiel(req)) return 'essentiel';
@@ -91,9 +91,9 @@ setInterval(() => {
   const vise = m.lag.p99 >= CONFIG.lagCritique || m.enCours >= CONFIG.enCoursCritique || (r10.n >= 20 && r10.p95 >= CONFIG.p95Critique) ? 'critique'
     : m.lag.p99 >= CONFIG.lagForte || m.enCours >= CONFIG.enCoursForte || (r10.n >= 20 && r10.p95 >= CONFIG.p95Forte) ? 'forte' : 'normal';
   const t = Date.now();
-  if (rang(vise) > 0) dernierDepassement = t;
+  if (rang(vise) >= rang(auto)) dernierDepassement = t;                                               // le niveau actuel est encore justifié
   if (rang(vise) > rang(auto)) { auto = vise; autoDepuis = t; }                                       // monte tout de suite
-  else if (rang(vise) < rang(auto) && t - dernierDepassement >= CONFIG.retour) { auto = NIVEAUX[rang(auto) - 1]; autoDepuis = t; dernierDepassement = t; }   // redescend par palier
+  else if (rang(vise) < rang(auto) && t - dernierDepassement >= CONFIG.retour) { auto = NIVEAUX[rang(auto) - 1]; autoDepuis = t; dernierDepassement = t; }   // redescend d'un palier après 15 s sous le seuil
   if (++tick % 2 === 0) {
     const d = latences(2000);
     historique.push({ t, lag: m.lag.p99, enCours: m.enCours, rps: Math.round(d.n / 2), p95: d.p95, niveau: niveau() });
