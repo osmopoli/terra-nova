@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Créer un compte — Terra Nova</title>
+  <meta name="description" content="Créez votre compte habitant Terra Nova pour suivre vos démarches, vos rendez-vous et les alertes de votre quartier.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/comptes.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/comptes.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="" data-ariane="nav.accueil|index.html;nav.inscription">
+  <main id="contenu" class="conteneur">
+    <header class="titre-page">
+      <h1 data-i18n="c.ins.titre">Créer mon compte habitant</h1>
+      <p data-i18n="c.ins.sous">Une minute suffit pour accéder à votre espace personnel : suivi de vos demandes, rendez-vous et alertes de votre quartier.</p>
+    </header>
+
+    <div class="auth-mise-en-page">
+      <section class="panneau" aria-labelledby="t-form">
+        <h2 id="t-form" class="sr-only" data-i18n="c.ins.formTitre">Formulaire d’inscription</h2>
+
+        <div id="deja-connecte" class="note-info" hidden>
+          <p><strong data-i18n="c.ins.dejaTitre">Vous êtes déjà connecté.</strong></p>
+          <p id="deja-texte"></p>
+          <a class="btn btn-primaire" href="espace.html" data-i18n="c.ins.versEspace">Aller à mon espace</a>
+        </div>
+
+        <form id="form-inscription" novalidate>
+          <div class="resume-erreurs" role="alert"></div>
+          <p class="doux" data-i18n="c.ins.oblig">Tous les champs sont obligatoires, sauf le téléphone.</p>
+
+          <div class="champs-2">
+            <div class="champ">
+              <label for="prenom" data-i18n="c.ins.prenom">Prénom</label>
+              <input id="prenom" name="prenom" type="text" autocomplete="given-name" required>
+            </div>
+            <div class="champ">
+              <label for="nom" data-i18n="c.ins.nom">Nom</label>
+              <input id="nom" name="nom" type="text" autocomplete="family-name" required>
+            </div>
+          </div>
+
+          <div class="champ">
+            <label for="email" data-i18n="c.ins.email">Adresse e-mail</label>
+            <input id="email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="aide-email">
+            <p class="aide" id="aide-email" data-i18n="c.ins.emailAide">Elle vous servira d’identifiant pour vous connecter.</p>
+          </div>
+
+          <div class="champ">
+            <label for="motdepasse" data-i18n="c.ins.mdp">Mot de passe</label>
+            <div class="mdp-ligne">
+              <input id="motdepasse" name="motdepasse" type="password" autocomplete="new-password" required aria-describedby="aide-mdp">
+            </div>
+            <p class="aide" id="aide-mdp" data-i18n="c.ins.mdpAide">Choisissez un mot de passe que vous n’utilisez nulle part ailleurs.</p>
+          </div>
+
+          <div class="champ">
+            <label for="quartier" data-i18n="c.ins.quartier">Votre quartier</label>
+            <select id="quartier" name="quartier" autocomplete="off" required aria-describedby="aide-quartier"></select>
+            <p class="aide" id="aide-quartier" data-i18n="c.ins.quartierAide">Il permet de vous prévenir en priorité en cas d’alerte près de chez vous.</p>
+          </div>
+
+          <div class="champ">
+            <label for="telephone"><span data-i18n="c.ins.tel">Téléphone</span> <span class="doux" data-i18n="c.facultatif">(facultatif)</span></label>
+            <input id="telephone" name="telephone" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="aide-tel">
+            <p class="aide" id="aide-tel" data-i18n="c.ins.telAide">Utilisé uniquement pour vous joindre au sujet d’un rendez-vous ou d’une démarche.</p>
+          </div>
+
+          <div class="case">
+            <input id="alertes" name="alertes" type="checkbox" checked>
+            <label for="alertes" data-i18n="c.ins.alertes">Je souhaite recevoir les alertes de mon quartier</label>
+          </div>
+
+          <button class="btn btn-primaire" type="submit" data-i18n="c.ins.submit">Créer mon compte</button>
+        </form>
+      </section>
+
+      <aside class="auth-cote" aria-labelledby="t-pourquoi">
+        <h2 id="t-pourquoi" data-i18n="c.ins.pourquoi">Ce que vous retrouvez dans votre espace</h2>
+        <ul class="liste-avantages">
+          <li><i class="ph-duotone ph-folder-open" aria-hidden="true"></i><span data-i18n="c.ins.b1">Toutes vos demandes et leur avancement, au même endroit.</span></li>
+          <li><i class="ph-duotone ph-calendar-check" aria-hidden="true"></i><span data-i18n="c.ins.b2">Vos rendez-vous avec les services, avec un rappel.</span></li>
+          <li><i class="ph-duotone ph-bell-ringing" aria-hidden="true"></i><span data-i18n="c.ins.b3">Les alertes de votre quartier, sans les chercher.</span></li>
+        </ul>
+        <p class="doux"><span data-i18n="c.ins.deja">Vous avez déjà un compte ?</span> <a href="connexion.html" data-i18n="c.ins.seconnecter">Se connecter</a></p>
+      </aside>
+    </div>
+  </main>
+
+  <script>NT.pret(() => NT.comptes.inscription());</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+/* Terra Nova — tableau de bord des agents (F50). Complète agent.css, mêmes variables du thème. */
+.tb-defs{ position:absolute; width:0; height:0; overflow:hidden; }
+.tb h2{ margin:1.5rem 0 .8rem; }
+.tb-barre{ display:flex; flex-wrap:wrap; gap:.5rem 1rem; align-items:center; justify-content:space-between; margin-bottom:.5rem; }
+.tb-maj{ margin:0; color:var(--brume); font-size:.88rem; }
+.tb-chargement{ padding:2rem 1rem; text-align:center; color:var(--brume); border:1px dashed var(--trait-2); border-radius:var(--r); grid-column:1/-1; list-style:none; }
+
+/* Indicateurs */
+.tb-kpis .kpi .valeur small{ font-size:.5em; font-weight:600; margin-inline-start:.25rem; color:var(--brume); }
+.tb-kpis .kpi.tb-urgent{ border-color:var(--corail); }
+.tb-kpis .kpi.tb-urgent .valeur{ color:var(--corail); }
+.tb-kpis .kpi .tb-ico{ font-size:1.3rem; color:var(--iono); display:block; margin-bottom:.2rem; }
+.tb-kpis .kpi.tb-urgent .tb-ico{ color:var(--corail); }
+
+/* À surveiller */
+.tb-points{ list-style:none; margin:0; padding:0; display:grid; gap:.5rem; }
+.tb-points li{ display:flex; gap:.7rem; align-items:flex-start; padding:.65rem .8rem; border:1px solid var(--trait); border-inline-start:3px solid var(--iono); border-radius:var(--r-s); background:oklch(0.2413 0.0307 198.9 / .25); }
+.tb-points li.tb-alerte{ border-inline-start-color:var(--corail); }
+.tb-points li.tb-attention{ border-inline-start-color:var(--soleil); }
+.tb-points li > i{ font-size:1.4rem; flex:none; color:var(--iono); }
+.tb-points li.tb-alerte > i{ color:var(--corail); }
+.tb-points li.tb-attention > i{ color:var(--soleil); }
+.tb-points .tb-niv{ display:block; font-size:.78rem; font-weight:800; color:var(--brume); }
+.tb-points p{ margin:0; }
+.tb-points a{ font-weight:700; color:var(--iono); text-underline-offset:3px; }
+.tb-vide{ color:var(--brume); margin:0; }
+
+/* Graphiques */
+.tb-graphes{ display:grid; gap:1.25rem; grid-template-columns:repeat(2,minmax(0,1fr)); align-items:start; }
+.tb-graphes .ag-bloc + .ag-bloc{ margin-top:0; }
+.tb-fig{ margin:0; min-width:0; }
+.tb-large{ grid-column:1/-1; }
+@media (max-width:900px){ .tb-graphes{ grid-template-columns:minmax(0,1fr); } }
+.tb-fig h3{ margin:0 0 .15rem; font-size:1.05rem; }
+.tb-fig figcaption p{ margin:0 0 .6rem; font-size:.88rem; }
+.tb-legende{ list-style:none; margin:0 0 .7rem; padding:0; display:flex; flex-wrap:wrap; gap:.3rem 1rem; font-size:.85rem; }
+.tb-legende li{ display:inline-flex; align-items:center; gap:.4rem; }
+.tb-legende svg{ width:1.1rem; height:1.1rem; flex:none; border:1px solid var(--trait-2); border-radius:2px; }
+.tb-svg-defile{ overflow-x:auto; }
+.tb-svg-defile svg{ display:block; width:100%; min-width:34rem; height:auto; }
+.tb-svg-defile text{ fill:var(--givre); font-family:var(--police); }
+.tb-axe{ stroke:var(--trait-2); stroke-width:1; }
+.tb-grille{ stroke:var(--trait); stroke-width:1; stroke-dasharray:3 4; }
+.tb-t-val{ font-size:11px; font-weight:700; }
+.tb-svg-defile .tb-t-lab{ font-size:11px; fill:var(--brume); }
+
+/* Barres horizontales : libellé et valeur en HTML (texte lisible), barre en SVG */
+.tb-barres{ list-style:none; margin:0; padding:0; display:grid; gap:.7rem; }
+.tb-barres li{ display:grid; gap:.2rem; }
+.tb-barres .tb-ligne{ display:flex; justify-content:space-between; gap:.75rem; font-size:.9rem; }
+.tb-barres .tb-ligne .nom{ min-width:0; overflow-wrap:anywhere; }
+.tb-barres .tb-ligne .val{ font-weight:800; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.tb-barres .tb-ligne .val small{ font-weight:500; color:var(--brume); }
+.tb-barres svg{ display:block; width:100%; height:.9rem; border-radius:3px; background:oklch(0.2413 0.0307 198.9 / .5); }
+.tb-donnees{ margin-top:.9rem; border-top:1px solid var(--trait); padding-top:.6rem; }
+.tb-donnees summary{ cursor:pointer; font-weight:700; color:var(--iono); text-decoration:underline; text-underline-offset:3px; min-height:2rem; display:flex; align-items:center; }
+.tb-donnees .table-defile{ margin-top:.6rem; }
+.tb-retour{ margin:1.5rem 0 0; }

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tableau de bord — Terra Nova</title>
+  <meta name="description" content="Tableau de bord des agents : l’essentiel de l’activité de la plateforme, graphiques et points à surveiller.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/agent.css">
+  <link rel="stylesheet" href="assets/css/tableau.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/agent.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="tableau" data-ariane="nav.agent|agent.html;Tableau de bord" data-roles="agent,admin">
+  <!-- Motifs partagés par les graphiques (jamais la couleur seule) -->
+  <svg class="tb-defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <pattern id="m-plein-iono" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" style="fill:var(--iono)"/></pattern>
+      <pattern id="m-hach-calme" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" style="fill:var(--calme);fill-opacity:.35"/><rect width="3" height="6" style="fill:var(--calme)"/></pattern>
+      <pattern id="m-points-soleil" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" style="fill:var(--soleil);fill-opacity:.35"/><circle cx="3" cy="3" r="1.6" style="fill:var(--soleil)"/></pattern>
+      <pattern id="m-hach-iono" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" style="fill:var(--iono);fill-opacity:.35"/><rect width="3" height="6" style="fill:var(--iono)"/></pattern>
+      <pattern id="m-croix-corail" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" style="fill:var(--corail);fill-opacity:.35"/><path d="M0 3H6M3 0V6" style="stroke:var(--corail);stroke-width:1.4"/></pattern>
+      <pattern id="m-plein-calme" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" style="fill:var(--calme)"/></pattern>
+      <pattern id="m-hach-soleil" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="6" height="6" style="fill:var(--soleil);fill-opacity:.35"/><rect width="3" height="6" style="fill:var(--soleil)"/></pattern>
+    </defs>
+  </svg>
+
+  <main id="contenu" class="conteneur ag tb">
+
+    <header class="titre-page">
+      <h1 data-i18n="tb.titre">Tableau de bord</h1>
+      <p data-i18n="tb.intro">L’activité de la plateforme en un coup d’œil : ce qui attend une action, ce qui avance et ce qui mérite votre attention.</p>
+    </header>
+
+    <div class="tb-barre">
+      <p class="tb-maj" id="tb-maj">–</p>
+      <button type="button" class="btn" id="tb-actualiser"><i class="ph ph-arrow-clockwise" aria-hidden="true"></i><span data-i18n="tb.actualiser">Actualiser</span></button>
+    </div>
+    <div class="sr-only" id="tb-live" aria-live="polite" role="status"></div>
+    <div class="ag-api-erreur" id="tb-erreur" role="alert" hidden>
+      <i class="ph-duotone ph-wifi-slash" aria-hidden="true"></i><p id="tb-erreur-texte"></p>
+    </div>
+
+    <section aria-labelledby="tb-t-essentiel">
+      <h2 id="tb-t-essentiel" data-i18n="tb.essentiel">L’essentiel aujourd’hui</h2>
+      <ul class="ag-kpis tb-kpis" id="tb-kpis"><li class="tb-chargement" data-i18n="tb.chargement">Chargement des indicateurs…</li></ul>
+    </section>
+
+    <section class="ag-bloc tb-surveiller" aria-labelledby="tb-t-surveiller">
+      <h2 id="tb-t-surveiller"><i class="ph-duotone ph-binoculars" aria-hidden="true"></i><span data-i18n="tb.surveiller">À surveiller</span></h2>
+      <ul class="tb-points" id="tb-points"></ul>
+    </section>
+
+    <section aria-labelledby="tb-t-graphes">
+      <h2 id="tb-t-graphes" data-i18n="tb.graphes">Activité et répartition</h2>
+      <div class="tb-graphes">
+
+        <figure class="ag-bloc tb-fig tb-large" aria-labelledby="g-jour-t">
+          <figcaption><h3 id="g-jour-t" data-i18n="tb.gJour">Activité des 14 derniers jours</h3>
+            <p class="doux" data-i18n="tb.gJourAide">Demandes créées et demandes traitées, jour par jour.</p></figcaption>
+          <ul class="tb-legende" id="g-jour-leg"></ul>
+          <div class="tb-svg-defile"><div id="g-jour"></div></div>
+          <details class="tb-donnees"><summary data-i18n="tb.voirDonnees">Voir les données</summary><div class="table-defile" id="g-jour-tab"></div></details>
+        </figure>
+
+        <figure class="ag-bloc tb-fig" aria-labelledby="g-quartier-t">
+          <figcaption><h3 id="g-quartier-t" data-i18n="tb.gQuartier">Demandes par quartier</h3>
+            <p class="doux" data-i18n="tb.gQuartierAide">Toutes les demandes, avec la part encore en attente.</p></figcaption>
+          <ul class="tb-legende" id="g-quartier-leg"></ul>
+          <div id="g-quartier"></div>
+          <details class="tb-donnees"><summary data-i18n="tb.voirDonnees">Voir les données</summary><div class="table-defile" id="g-quartier-tab"></div></details>
+        </figure>
+
+        <figure class="ag-bloc tb-fig" aria-labelledby="g-service-t">
+          <figcaption><h3 id="g-service-t" data-i18n="tb.gService">Services les plus sollicités</h3>
+            <p class="doux" data-i18n="tb.gServiceAide">Les 6 services qui reçoivent le plus de demandes.</p></figcaption>
+          <ul class="tb-legende" id="g-service-leg"></ul>
+          <div id="g-service"></div>
+          <details class="tb-donnees"><summary data-i18n="tb.voirDonnees">Voir les données</summary><div class="table-defile" id="g-service-tab"></div></details>
+        </figure>
+
+        <figure class="ag-bloc tb-fig" aria-labelledby="g-statut-t">
+          <figcaption><h3 id="g-statut-t" data-i18n="tb.gStatut">Répartition par statut</h3>
+            <p class="doux" data-i18n="tb.gStatutAide">Où en sont toutes les demandes.</p></figcaption>
+          <ul class="tb-legende" id="g-statut-leg"></ul>
+          <div id="g-statut"></div>
+          <details class="tb-donnees"><summary data-i18n="tb.voirDonnees">Voir les données</summary><div class="table-defile" id="g-statut-tab"></div></details>
+        </figure>
+
+      </div>
+    </section>
+
+    <p class="tb-retour"><a class="btn" href="agent.html"><i class="ph ph-arrow-left" aria-hidden="true"></i><span data-i18n="tb.retour">Retour à l’espace agents</span></a></p>
+  </main>
+
+  <script src="assets/js/tableau.js" defer></script>
+</body>
+</html>

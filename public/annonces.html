@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Annonces et alertes — Terra Nova</title>
+  <meta name="description" content="Annonces de la mairie de Nova Terra, informations pratiques et alertes en cours avec les consignes à suivre.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/annonces.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="annonces" data-ariane="nav.accueil|index.html;nav.annonces" data-roles="">
+  <main id="contenu" class="conteneur">
+
+    <header class="titre-page">
+      <h1 data-i18n="an.titre">Annonces et alertes</h1>
+      <p data-i18n="an.intro">Les informations de la mairie, les changements de service et les alertes en cours. Les alertes passent toujours en premier, avec ce qu’il faut faire.</p>
+    </header>
+
+    <div class="an-mise">
+      <div class="an-principal">
+        <!-- D06 : retrouver facilement les publications -->
+        <section class="an-outils" aria-labelledby="an-lbl-rech">
+          <form class="an-recherche" role="search" id="an-form">
+            <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+            <label for="an-q" id="an-lbl-rech" class="sr-only" data-i18n="an.rechercheLabel">Rechercher dans les annonces</label>
+            <input id="an-q" type="search" autocomplete="off" aria-describedby="an-compteur" data-i18n-attr="placeholder:an.recherchePh" placeholder="Eau, mairie, collecte, chaleur…">
+          </form>
+          <div class="an-filtres" role="group" aria-labelledby="an-lbl-filtres">
+            <span id="an-lbl-filtres" data-i18n="an.filtrer">Catégorie :</span>
+            <span id="an-boutons" class="an-boutons"></span>
+          </div>
+          <p class="an-compteur" id="an-compteur" role="status" aria-live="polite"></p>
+        </section>
+        <div id="an-liste"></div>
+      </div>
+
+      <!-- F30 : être prévenu -->
+      <aside class="an-prevenir" aria-labelledby="an-h-prevenir" id="an-prevenir"></aside>
+    </div>
+  </main>
+
+  <script>
+    NT.i18n.ajouter({
+      fr: {
+        'an.titre': 'Annonces et alertes', 'an.intro': 'Les informations de la mairie, les changements de service et les alertes en cours. Les alertes passent toujours en premier, avec ce qu’il faut faire.',
+        'an.rechercheLabel': 'Rechercher dans les annonces', 'an.recherchePh': 'Eau, mairie, collecte, chaleur…', 'an.filtrer': 'Catégorie :', 'an.toutes': 'Toutes',
+        'an.cat.alerte': 'Alertes', 'an.cat.sanitaire': 'Santé', 'an.cat.municipale': 'Mairie', 'an.cat.pratique': 'Pratique',
+        'an.nb0': 'Aucune annonce ne correspond.', 'an.nb1': '1 annonce affichée.', 'an.nbN': '{n} annonces affichées.',
+        'an.alertesTitre': 'Alertes en cours', 'an.infosTitre': 'Informations de la ville', 'an.archivesTitre': 'Annonces terminées',
+        'an.niveau.alerte': 'Alerte', 'an.niveau.importante': 'Important', 'an.niveau.info': 'Information', 'an.terminee': 'Terminée',
+        'an.zone': 'Zone concernée', 'an.zoneToute': 'Toute la ville', 'an.depuis': 'Depuis', 'an.concerne': 'Votre quartier est concerné', 'an.pasConcerne': 'Ne concerne pas votre quartier ({q})',
+        'an.quefaire': 'Que faire ?', 'an.publics': 'Personnes à protéger en priorité', 'an.vous': 'Vous êtes concerné en priorité',
+        'an.vousTexte': 'Votre profil indique une situation de vulnérabilité. Suivez ces consignes dès maintenant, prévenez un proche et appelez le 15 au moindre malaise.',
+        'an.lieux': 'Où se rafraîchir', 'an.urgences': 'Numéros d’urgence', 'an.n112': 'Secours', 'an.n15': 'Urgence médicale', 'an.appeler': 'Appeler le {n}',
+        'an.lire': 'Lire l’annonce complète', 'an.aucune': 'Aucune annonce ne correspond à votre recherche.',
+        'an.l1': 'Hôtel de ville — hall climatisé, de 8h à 19h', 'an.l2': 'Centre social, quartier Sud — de 9h à 17h', 'an.l3': 'Dispensaire central — 24h/24, eau et repos', 'an.l4': 'Dôme des Pionniers — ouvert 24h/24', 'an.lNote': 'La médiathèque est fermée pour maintenance.',
+        'an.prevH': 'Être prévenu', 'an.prevIntro': 'Les annonces importantes et les alertes déclenchent une notification dans la cloche et un message à l’écran dès votre prochaine visite.',
+        'an.prevVisiteur': 'Connectez-vous pour choisir ce que vous voulez recevoir et pour ne recevoir que les alertes de votre quartier.', 'an.seConnecter': 'Se connecter', 'an.creerCompte': 'Créer un compte',
+        'an.prevLegende': 'Quelles annonces voulez-vous recevoir ?', 'an.alerteToujours': 'Alertes de sécurité (toujours envoyées)', 'an.quartierSeul': 'Alertes de mon quartier uniquement ({q})',
+        'an.enregistrer': 'Enregistrer mes préférences', 'an.enregistre': 'Préférences enregistrées.', 'an.tester': 'Recevoir une notification d’essai', 'an.testTitre': 'Notification d’essai', 'an.testTexte': 'C’est ainsi que vous serez prévenu d’une annonce importante.', 'an.testToast': 'Notification d’essai envoyée : retrouvez-la dans la cloche.',
+        'an.prevPoint': 'Les alertes sont aussi visibles à tout moment grâce à la balise « Alertes » en haut de page.'
+      },
+      en: {
+        'an.titre': 'Notices and alerts', 'an.intro': 'City hall news, service changes and current alerts. Alerts always come first, with what you need to do.',
+        'an.rechercheLabel': 'Search notices', 'an.recherchePh': 'Water, city hall, collection, heat…', 'an.filtrer': 'Category:', 'an.toutes': 'All',
+        'an.cat.alerte': 'Alerts', 'an.cat.sanitaire': 'Health', 'an.cat.municipale': 'City hall', 'an.cat.pratique': 'Practical',
+        'an.nb0': 'No notice matches.', 'an.nb1': '1 notice shown.', 'an.nbN': '{n} notices shown.',
+        'an.alertesTitre': 'Current alerts', 'an.infosTitre': 'City information', 'an.archivesTitre': 'Ended notices',
+        'an.niveau.alerte': 'Alert', 'an.niveau.importante': 'Important', 'an.niveau.info': 'Information', 'an.terminee': 'Ended',
+        'an.zone': 'Area concerned', 'an.zoneToute': 'Whole city', 'an.depuis': 'Since', 'an.concerne': 'Your district is concerned', 'an.pasConcerne': 'Does not concern your district ({q})',
+        'an.quefaire': 'What to do?', 'an.publics': 'People to protect first', 'an.vous': 'You are among the people concerned first',
+        'an.vousTexte': 'Your profile indicates a vulnerable situation. Follow these instructions now, let a relative know and call 15 at the first sign of illness.',
+        'an.lieux': 'Where to cool down', 'an.urgences': 'Emergency numbers', 'an.n112': 'Rescue', 'an.n15': 'Medical emergency', 'an.appeler': 'Call {n}',
+        'an.lire': 'Read the full notice', 'an.aucune': 'No notice matches your search.',
+        'an.l1': 'City hall: air-conditioned hall, 8am–7pm', 'an.l2': 'Social centre, South district: 9am–5pm', 'an.l3': 'Central clinic: 24/7, water and rest', 'an.l4': 'Pioneers’ Dome: open 24/7', 'an.lNote': 'The library is closed for maintenance.',
+        'an.prevH': 'Get notified', 'an.prevIntro': 'Important notices and alerts trigger a notification in the bell and an on-screen message on your next visit.',
+        'an.prevVisiteur': 'Sign in to choose what you want to receive and to get only alerts for your district.', 'an.seConnecter': 'Sign in', 'an.creerCompte': 'Create an account',
+        'an.prevLegende': 'Which notices do you want to receive?', 'an.alerteToujours': 'Safety alerts (always sent)', 'an.quartierSeul': 'Alerts for my district only ({q})',
+        'an.enregistrer': 'Save my preferences', 'an.enregistre': 'Preferences saved.', 'an.tester': 'Send me a test notification', 'an.testTitre': 'Test notification', 'an.testTexte': 'This is how you will be told about an important notice.', 'an.testToast': 'Test notification sent: find it in the bell.',
+        'an.prevPoint': 'Alerts are also visible at any time through the “Alerts” beacon at the top of the page.'
+      },
+      es: {
+        'an.titre': 'Anuncios y alertas', 'an.intro': 'Noticias del ayuntamiento, cambios de servicio y alertas en curso. Las alertas van siempre primero, con lo que hay que hacer.',
+        'an.rechercheLabel': 'Buscar en los anuncios', 'an.recherchePh': 'Agua, ayuntamiento, recogida, calor…', 'an.filtrer': 'Categoría:', 'an.toutes': 'Todas',
+        'an.cat.alerte': 'Alertas', 'an.cat.sanitaire': 'Salud', 'an.cat.municipale': 'Ayuntamiento', 'an.cat.pratique': 'Práctico',
+        'an.nb0': 'Ningún anuncio coincide.', 'an.nb1': '1 anuncio mostrado.', 'an.nbN': '{n} anuncios mostrados.',
+        'an.alertesTitre': 'Alertas en curso', 'an.infosTitre': 'Información de la ciudad', 'an.archivesTitre': 'Anuncios terminados',
+        'an.niveau.alerte': 'Alerta', 'an.niveau.importante': 'Importante', 'an.niveau.info': 'Información', 'an.terminee': 'Terminado',
+        'an.zone': 'Zona afectada', 'an.zoneToute': 'Toda la ciudad', 'an.depuis': 'Desde', 'an.concerne': 'Su barrio está afectado', 'an.pasConcerne': 'No afecta a su barrio ({q})',
+        'an.quefaire': '¿Qué hacer?', 'an.publics': 'Personas a proteger en prioridad', 'an.lieux': 'Dónde refrescarse', 'an.urgences': 'Números de emergencia', 'an.n112': 'Emergencias', 'an.n15': 'Urgencia médica', 'an.appeler': 'Llamar al {n}',
+        'an.lire': 'Leer el anuncio completo', 'an.aucune': 'Ningún anuncio coincide con su búsqueda.',
+        'an.prevH': 'Recibir avisos', 'an.prevIntro': 'Los anuncios importantes y las alertas generan una notificación en la campana y un mensaje en pantalla en su próxima visita.',
+        'an.prevVisiteur': 'Inicie sesión para elegir qué desea recibir y recibir solo las alertas de su barrio.', 'an.seConnecter': 'Iniciar sesión', 'an.creerCompte': 'Crear una cuenta',
+        'an.prevLegende': '¿Qué anuncios desea recibir?', 'an.alerteToujours': 'Alertas de seguridad (siempre enviadas)', 'an.quartierSeul': 'Solo alertas de mi barrio ({q})',
+        'an.enregistrer': 'Guardar mis preferencias', 'an.enregistre': 'Preferencias guardadas.', 'an.tester': 'Recibir una notificación de prueba'
+      },
+      ar: {
+        'an.titre': 'الإعلانات والتنبيهات', 'an.intro': 'أخبار البلدية وتغييرات الخدمات والتنبيهات الجارية. التنبيهات أولاً دائماً مع ما يجب فعله.',
+        'an.rechercheLabel': 'البحث في الإعلانات', 'an.recherchePh': 'الماء، البلدية، الجمع، الحر…', 'an.filtrer': 'الفئة:', 'an.toutes': 'الكل',
+        'an.cat.alerte': 'تنبيهات', 'an.cat.sanitaire': 'الصحة', 'an.cat.municipale': 'البلدية', 'an.cat.pratique': 'عملي',
+        'an.alertesTitre': 'تنبيهات جارية', 'an.infosTitre': 'معلومات المدينة', 'an.quefaire': 'ماذا أفعل؟', 'an.urgences': 'أرقام الطوارئ', 'an.lire': 'قراءة الإعلان كاملاً',
+        'an.prevH': 'كن على علم', 'an.seConnecter': 'تسجيل الدخول', 'an.enregistrer': 'حفظ تفضيلاتي', 'an.enregistre': 'تم حفظ التفضيلات.'
+      }
+    });
+
+    NT.pret(() => {
+      const { echap } = NT.ui, t = NT.t;
+      const norm = s => String(s == null ? '' : s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+      const u = NT.auth.utilisateur();
+      const CATS = ['alerte', 'sanitaire', 'municipale', 'pratique'];
+      const catLib = c => t('an.cat.' + c, null, c);
+      const champ = document.getElementById('an-q'), boutons = document.getElementById('an-boutons'), liste = document.getElementById('an-liste'), compteur = document.getElementById('an-compteur');
+      let categorie = '';
+      const ouverts = new Set();
+      let cible = (location.hash || '').replace(/^#/, '');
+
+      const maintenant = () => new Date().toISOString();
+      const estAlerteActive = a => a.active && a.importance === 'alerte' && (!a.expire || a.expire > maintenant());
+      const estActive = a => a.active && (!a.expire || a.expire > maintenant());
+      const poids = a => (estAlerteActive(a) ? 0 : estActive(a) ? (a.importance === 'importante' ? 1 : 2) : 3);
+
+      function texteRech(a) {
+        return norm([a.titre, a.resume, a.contenu, a.zone, (a.consignes || []).join(' '), (a.publics || []).join(' '), catLib(a.categorie), a.categorie].join(' | '));
+      }
+      function filtrees() {
+        const mots = norm(champ.value).split(/\s+/).filter(Boolean);
+        return NT.annonces.toutes().filter(a => (!categorie || a.categorie === categorie) && (!mots.length || (() => { const x = texteRech(a); return mots.every(m => x.includes(m)); })()))
+          .sort((a, b) => (poids(a) - poids(b)) || b.cree.localeCompare(a.cree));
+      }
+
+      /* Numéros utiles et lieux frais selon la nature de l'annonce (F29, F31) */
+      function urgences(a) {
+        const l = [['112', 'an.n112']];
+        if (a.categorie === 'sanitaire' || /malaise|santé/i.test((a.consignes || []).join(' '))) l.push(['15', 'an.n15']);
+        return l;
+      }
+      const parleDeFraicheur = a => /climatis/i.test((a.consignes || []).join(' '));
+
+      function concerne(a) {
+        if (!u || u.role !== 'citoyen') return '';
+        if (a.zone === 'Toute la ville') return `<span class="an-chip an-oui"><i class="ph ph-map-pin-area" aria-hidden="true"></i>${echap(t('an.concerne'))}</span>`;
+        return a.zone === u.quartier
+          ? `<span class="an-chip an-oui"><i class="ph ph-map-pin-area" aria-hidden="true"></i>${echap(t('an.concerne'))}</span>`
+          : `<span class="an-chip"><i class="ph ph-map-pin" aria-hidden="true"></i>${echap(t('an.pasConcerne', { q: u.quartier }))}</span>`;
+      }
+
+      function meta(a) {
+        const zone = a.zone === 'Toute la ville' ? t('an.zoneToute') : a.zone;
+        return `<p class="an-meta"><span><i class="ph ph-map-pin" aria-hidden="true"></i><span class="sr-only">${echap(t('an.zone'))} : </span>${echap(zone)}</span>
+          <span><i class="ph ph-clock" aria-hidden="true"></i>${echap(t('an.depuis'))} <time datetime="${echap(a.cree)}" title="${echap(NT.ui.dateHeure(a.cree))}">${echap(NT.ui.depuis(a.cree))}</time></span>
+          <span class="an-chip an-cat">${echap(catLib(a.categorie))}</span>${concerne(a)}</p>`;
+      }
+
+      function niveau(a) {
+        const code = !estActive(a) ? 'fin' : a.importance;
+        const ico = code === 'alerte' ? 'ph-warning-octagon' : code === 'importante' ? 'ph-megaphone' : code === 'fin' ? 'ph-archive' : 'ph-info';
+        const lib = code === 'fin' ? t('an.terminee') : t('an.niveau.' + a.importance, null, a.importance);
+        return `<span class="an-niveau an-niv-${code}"><i class="ph-duotone ${ico}" aria-hidden="true"></i>${echap(lib)}</span>`;
+      }
+
+      function carteAlerte(a) {
+        const publics = a.publics && a.publics.length;
+        const vulnerable = publics && u && u.vulnerable;
+        return `<article class="an an-alerte" id="${echap(a.id)}" tabindex="-1" aria-labelledby="t-${echap(a.id)}">
+          <header>${niveau(a)}<h3 id="t-${echap(a.id)}">${echap(a.titre)}</h3></header>
+          ${meta(a)}
+          ${vulnerable ? `<div class="an-vous" role="note"><i class="ph-duotone ph-user-focus" aria-hidden="true"></i><div><strong>${echap(t('an.vous'))}</strong><p>${echap(t('an.vousTexte'))}</p></div></div>` : ''}
+          <p class="an-texte">${echap(a.contenu || a.resume || '')}</p>
+          ${a.consignes && a.consignes.length ? `<h4>${echap(t('an.quefaire'))}</h4><ol class="an-consignes">${a.consignes.map(c => `<li>${echap(c)}</li>`).join('')}</ol>` : ''}
+          ${publics ? `<h4>${echap(t('an.publics'))}</h4><ul class="an-publics">${a.publics.map(p => `<li><i class="ph-duotone ph-heartbeat" aria-hidden="true"></i>${echap(p)}</li>`).join('')}</ul>` : ''}
+          ${parleDeFraicheur(a) ? `<h4>${echap(t('an.lieux'))}</h4><ul class="an-lieux">${[1, 2, 3, 4].map(i => `<li>${echap(t('an.l' + i))}</li>`).join('')}</ul><p class="doux an-petit">${echap(t('an.lNote'))}</p>` : ''}
+          <h4>${echap(t('an.urgences'))}</h4>
+          <ul class="an-urgences">${urgences(a).map(([n, k]) => `<li><a class="btn${n === '112' ? ' btn-danger' : ''}" href="tel:${n}" aria-label="${echap(t('an.appeler', { n }) + ' — ' + t(k))}"><i class="ph ph-phone" aria-hidden="true"></i><strong>${n}</strong> ${echap(t(k))}</a></li>`).join('')}</ul>
+        </article>`;
+      }
+
+      function carteInfo(a) {
+        const long = a.contenu && a.contenu.trim() && a.contenu.trim() !== (a.resume || '').trim();
+        const plein = (a.consignes && a.consignes.length) || (a.publics && a.publics.length);
+        const detaille = long || plein;
+        const suite = detaille ? `<details class="an-suite" data-id="${echap(a.id)}"${ouverts.has(a.id) ? ' open' : ''}>
+            <summary>${echap(t('an.lire'))}</summary>
+            <div>${long ? `<p>${echap(a.contenu)}</p>` : ''}
+            ${a.consignes && a.consignes.length ? `<h4>${echap(t('an.quefaire'))}</h4><ol class="an-consignes">${a.consignes.map(c => `<li>${echap(c)}</li>`).join('')}</ol>` : ''}</div></details>` : '';
+        return `<article class="an an-info an-${estActive(a) ? a.importance : 'fin'}" id="${echap(a.id)}" tabindex="-1" aria-labelledby="t-${echap(a.id)}">
+          <header>${niveau(a)}<h3 id="t-${echap(a.id)}">${echap(a.titre)}</h3></header>
+          ${meta(a)}
+          <p class="an-texte">${echap(a.resume || a.contenu || '')}</p>
+          ${suite}
+        </article>`;
+      }
+
+      function groupe(titre, id, items, fn, classe) {
+        return items.length ? `<section class="an-groupe ${classe}" aria-labelledby="${id}"><h2 id="${id}">${echap(titre)}</h2>${items.map(fn).join('')}</section>` : '';
+      }
+
+      function boutonsHtml() {
+        const cats = CATS.concat(Array.from(new Set(NT.annonces.toutes().map(a => a.categorie).filter(c => c && !CATS.includes(c)))));
+        const b = (v, l) => `<button type="button" class="an-filtre" data-cat="${echap(v)}" aria-pressed="${categorie === v ? 'true' : 'false'}">${echap(l)}</button>`;
+        boutons.innerHTML = b('', t('an.toutes')) + cats.map(c => b(c, catLib(c))).join('');
+      }
+
+      function rendre() {
+        const l = filtrees();
+        const alertes = l.filter(estAlerteActive), actives = l.filter(a => estActive(a) && !estAlerteActive(a)), archives = l.filter(a => !estActive(a));
+        liste.innerHTML = l.length
+          ? groupe(t('an.alertesTitre'), 'an-h-al', alertes, carteAlerte, 'an-g-alertes') + groupe(t('an.infosTitre'), 'an-h-inf', actives, carteInfo, 'an-g-infos') + groupe(t('an.archivesTitre'), 'an-h-arc', archives, carteInfo, 'an-g-arch')
+          : `<p class="vide">${echap(t('an.aucune'))}</p>`;
+        compteur.textContent = l.length === 0 ? t('an.nb0') : l.length === 1 ? t('an.nb1') : t('an.nbN', { n: l.length });
+        marquerCible();
+      }
+
+      /* Arrivée par ancre (#ann-crue) : ouvre, surligne, place le focus */
+      function marquerCible(defiler) {
+        document.querySelectorAll('.an.cible').forEach(e => e.classList.remove('cible'));
+        if (!cible) return;
+        const el = document.getElementById(cible);
+        if (!el || !el.classList.contains('an')) return;
+        el.classList.add('cible');
+        const det = el.querySelector('details'); if (det) { det.open = true; ouverts.add(det.dataset.id); }
+        if (defiler) { el.scrollIntoView({ block: 'start' }); el.focus({ preventScroll: true }); }
+      }
+      function versAncre() {
+        cible = decodeURIComponent((location.hash || '').replace(/^#/, ''));
+        if (!cible) { marquerCible(); return; }
+        if (!document.getElementById(cible)) {          // masqué par un filtre ? on les réinitialise
+          const a = NT.annonces.toutes().find(x => x.id === cible);
+          if (!a) return;
+          champ.value = ''; categorie = ''; boutonsHtml(); rendre();
+        }
+        marquerCible(true);
+      }
+
+      /* ---------- F30 : être prévenu ---------- */
+      function prevenir() {
+        const zone = document.getElementById('an-prevenir');
+        const tete = `<h2 id="an-h-prevenir"><i class="ph-duotone ph-bell-ringing" aria-hidden="true"></i>${echap(t('an.prevH'))}</h2><p>${echap(t('an.prevIntro'))}</p>`;
+        if (!u) {
+          zone.innerHTML = tete + `<p class="doux">${echap(t('an.prevVisiteur'))}</p>
+            <div class="ligne"><a class="btn btn-primaire" href="connexion.html?retour=annonces.html">${echap(t('an.seConnecter'))}</a><a class="btn" href="inscription.html">${echap(t('an.creerCompte'))}</a></div>
+            <p class="doux an-petit">${echap(t('an.prevPoint'))}</p>`;
+          return;
+        }
+        const p = u.preferences || {};
+        const choisies = Array.isArray(p.categories) ? p.categories : CATS;
+        zone.innerHTML = tete + `<form id="an-prefs" novalidate>
+          <fieldset><legend>${echap(t('an.prevLegende'))}</legend>
+            <div class="an-case"><input type="checkbox" id="pf-alerte" checked disabled aria-describedby="pf-alerte-a"><label for="pf-alerte" id="pf-alerte-a">${echap(t('an.alerteToujours'))}</label></div>
+            ${CATS.filter(c => c !== 'alerte').map(c => `<div class="an-case"><input type="checkbox" id="pf-${c}" value="${c}" ${choisies.includes(c) ? 'checked' : ''}><label for="pf-${c}">${echap(catLib(c))}</label></div>`).join('')}
+          </fieldset>
+          <div class="an-case an-case-q"><input type="checkbox" id="pf-quartier" ${p.quartierSeul ? 'checked' : ''}><label for="pf-quartier">${echap(t('an.quartierSeul', { q: u.quartier || '—' }))}</label></div>
+          <div class="ligne an-prefs-actions"><button class="btn btn-primaire" type="submit">${echap(t('an.enregistrer'))}</button>
+            <button class="btn" type="button" id="pf-test"><i class="ph ph-bell-simple" aria-hidden="true"></i>${echap(t('an.tester'))}</button></div>
+        </form><p class="doux an-petit">${echap(t('an.prevPoint'))}</p>`;
+        zone.querySelector('#an-prefs').addEventListener('submit', e => {
+          e.preventDefault();
+          const cats = CATS.filter(c => c !== 'alerte' && zone.querySelector('#pf-' + c).checked).concat('alerte');
+          const prefs = Object.assign({}, (NT.auth.utilisateur() || {}).preferences, { categories: cats, quartierSeul: zone.querySelector('#pf-quartier').checked });
+          NT.store.update('utilisateurs', u.id, { preferences: prefs });
+          NT.ui.toast(t('an.enregistre'), 'success');
+        });
+        zone.querySelector('#pf-test').addEventListener('click', () => {
+          NT.notif.ajouter(u.id, t('an.testTitre'), t('an.testTexte'), 'annonces.html', 'info');
+          NT.ui.toast(t('an.testToast'), 'primary');
+        });
+      }
+
+      /* ---------- Démarrage ---------- */
+      boutonsHtml(); rendre(); prevenir();
+      if (cible) marquerCible(true);
+      champ.addEventListener('input', rendre);
+      document.getElementById('an-form').addEventListener('submit', e => { e.preventDefault(); rendre(); });
+      boutons.addEventListener('click', e => {
+        const b = e.target.closest('[data-cat]'); if (!b) return;
+        categorie = categorie === b.dataset.cat ? '' : b.dataset.cat;
+        boutonsHtml(); rendre();
+        const n = boutons.querySelector(`[data-cat="${CSS.escape(categorie)}"]`); if (n) n.focus();
+      });
+      liste.addEventListener('toggle', e => { const d = e.target; if (d.matches && d.matches('details[data-id]')) { d.open ? ouverts.add(d.dataset.id) : ouverts.delete(d.dataset.id); } }, true);
+      window.addEventListener('hashchange', versAncre);
+    });
+  </script>
+</body>
+</html>

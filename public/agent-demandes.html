@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demandes des habitants — Terra Nova</title>
+  <meta name="description" content="Vue des demandes citoyennes pour les agents : état, priorité, ancienneté et traitement.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/agent.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/agent.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="demandesAgent" data-ariane="nav.agent|agent.html;nav.demandesAgent" data-roles="agent,admin">
+  <main id="contenu" class="conteneur ag">
+
+    <header class="titre-page">
+      <h1 data-i18n="dm.titre">Demandes des habitants</h1>
+      <p data-i18n="dm.intro">Retrouvez chaque demande, repérez celles qui attendent une action et traitez-les depuis cette page.</p>
+    </header>
+
+    <div class="ag-onglets" id="onglets" role="group" aria-label="Filtrer par statut" data-i18n-attr="aria-label:dm.filtreStatut"></div>
+
+    <form class="ag-outils" role="search" aria-label="Filtrer les demandes" data-i18n-attr="aria-label:dm.filtrer" onsubmit="return false">
+      <div class="champ large"><label for="f-q" data-i18n="ag.rechercher">Rechercher</label>
+        <input id="f-q" type="search" autocomplete="off" data-i18n-attr="placeholder:dm.recherchePh" placeholder="N°, objet, message, citoyen…"></div>
+      <div class="champ"><label for="f-type" data-i18n="dm.type">Type</label>
+        <select id="f-type"><option value="" data-i18n="ag.toutes">Toutes</option>
+          <option value="contact" data-i18n="ag.type.contact">Question</option>
+          <option value="signalement" data-i18n="ag.type.signalement">Signalement</option>
+          <option value="demarche" data-i18n="ag.type.demarche">Démarche</option></select></div>
+      <div class="champ"><label for="f-quartier" data-i18n="ag.quartier">Quartier</label>
+        <select id="f-quartier"><option value="" data-i18n="ag.toutes">Toutes</option></select></div>
+      <div class="champ"><label for="f-prio" data-i18n="dm.priorite">Priorité</label>
+        <select id="f-prio"><option value="" data-i18n="ag.toutes">Toutes</option>
+          <option value="haute" data-i18n="ag.prio.haute">Haute</option>
+          <option value="normale" data-i18n="ag.prio.normale">Normale</option>
+          <option value="basse" data-i18n="ag.prio.basse">Basse</option></select></div>
+    </form>
+
+    <p id="compte" class="doux" aria-live="polite"></p>
+
+    <div class="table-defile">
+      <table>
+        <caption class="sr-only" data-i18n="dm.caption">Demandes des habitants, les demandes nécessitant une action en premier</caption>
+        <thead><tr>
+          <th scope="col" data-i18n="dm.numero">N°</th>
+          <th scope="col" data-i18n="dm.objet">Objet</th>
+          <th scope="col" data-i18n="dm.type">Type</th>
+          <th scope="col" data-i18n="dm.service">Service</th>
+          <th scope="col" data-i18n="ag.quartier">Quartier</th>
+          <th scope="col" data-i18n="dm.priorite">Priorité</th>
+          <th scope="col" data-i18n="dm.statut">Statut</th>
+          <th scope="col" data-i18n="dm.anciennete">Ancienneté</th>
+        </tr></thead>
+        <tbody id="lignes"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <sl-drawer id="tiroir" class="ag-tiroir-drawer" placement="end" style="--size:min(34rem,100vw)">
+    <div id="tiroir-corps" class="ag-tiroir"></div>
+    <sl-button slot="footer" id="tiroir-fermer" data-i18n="ui.fermer">Fermer</sl-button>
+  </sl-drawer>
+
+  <script>
+    NT.i18n.ajouter({
+      en: {
+        'dm.titre': 'Citizen requests', 'dm.intro': 'Find every request, spot those waiting for action and handle them from this page.',
+        'dm.filtreStatut': 'Filter by status', 'dm.filtrer': 'Filter requests', 'dm.recherchePh': 'No., subject, message, citizen…', 'dm.type': 'Type', 'dm.priorite': 'Priority',
+        'dm.caption': 'Citizen requests, those needing action first', 'dm.numero': 'No.', 'dm.objet': 'Subject', 'dm.service': 'Service', 'dm.statut': 'Status', 'dm.anciennete': 'Age',
+        'dm.tous': 'All', 'dm.action': 'Action required', 'dm.compte': '{n} request(s) shown', 'dm.aucune': 'No request matches these filters.', 'dm.depuis': 'for',
+        'dm.tiroirTitre': 'Request {id}', 'dm.recueLe': 'Received on', 'dm.agent': 'Handled by', 'dm.lieu': 'Location', 'dm.nonAssignee': 'Not assigned yet', 'dm.aucunLieu': 'Not specified',
+        'dm.message': 'Message', 'dm.photo': 'Photo attached to the request', 'dm.citoyen': 'Citizen', 'dm.anonyme': 'Anonymous or deleted account', 'dm.vulnerable': 'Vulnerable person: handle with priority',
+        'dm.historique': 'History', 'dm.traitement': 'Handling', 'dm.prendre': 'Take charge', 'dm.nouveauStatut': 'New status', 'dm.note': 'Note for the citizen',
+        'dm.noteAide': 'Required for “Resolved” and “Closed”. This text is sent to the citizen.', 'dm.enregistrer': 'Save the status', 'dm.voirSuivi': 'See what the citizen sees',
+        'dm.erreurNote': 'Add a note explaining the outcome: it is required to resolve or close a request.', 'dm.erreurRien': 'Choose a new status or add a note.',
+        'dm.resume': 'The status cannot be saved yet:', 'dm.priseOk': 'Request {id} taken in charge.', 'dm.statutOk': 'Request {id}: status changed to “{statut}”. The citizen has been notified.',
+        'dm.priseNote': 'Taken in charge by {nom}.', 'dm.par': 'by', 'dm.statutLabel': 'Status', 'dm.prioLabel': 'Priority'
+      },
+      es: { 'dm.titre': 'Solicitudes de los habitantes', 'dm.tous': 'Todas', 'dm.action': 'Acción requerida' }
+    });
+
+    NT.pret(() => {
+      const { echap } = NT.ui, A = NT.agent, T = A.T;
+      const agent = NT.auth.utilisateur();
+      const el = id => document.getElementById(id);
+      const STATUTS = ['recue', 'en_cours', 'traitee', 'cloturee'];
+      const valide = new Set(['tous', 'action'].concat(STATUTS));
+      const p = NT.ui.param('statut');
+      const etat = { statut: valide.has(p) ? p : 'tous' };
+      let ouverte = null;
+
+      /* Filtres initiaux depuis l'URL (?statut=, ?type=, ?q=) */
+      const sType = el('f-type'), sQ = el('f-quartier'), sP = el('f-prio'), champQ = el('f-q');
+      NT.QUARTIERS.forEach(q => sQ.insertAdjacentHTML('beforeend', `<option value="${echap(q)}">${echap(q)}</option>`));
+      if (['contact', 'signalement', 'demarche'].includes(NT.ui.param('type'))) sType.value = NT.ui.param('type');
+      if (NT.ui.param('q')) champQ.value = NT.ui.param('q');
+
+      const photoSure = s => typeof s === 'string' && /^(data:image\/|https?:\/\/|assets\/|\.\/)/.test(s);
+      const photoDe = d => [d.photo].concat(d.photos || []).concat([d.image]).find(photoSure) || '';
+
+      function filtrees(sansStatut) {
+        const q = A.sansAccent(champQ.value.trim());
+        return NT.demandes.toutes().filter(d => {
+          if (sType.value && d.type !== sType.value) return false;
+          if (sQ.value && A.quartierDe(d) !== sQ.value) return false;
+          if (sP.value && (sP.value === 'haute' ? !A.estHaute(d.priorite) : d.priorite !== sP.value)) return false;
+          if (q) {
+            const c = A.utilisateur(d.userId);
+            if (!A.sansAccent([d.id, d.objet, d.message, d.lieu, c ? A.nomComplet(c) : ''].join(' ')).includes(q)) return false;
+          }
+          if (!sansStatut) {
+            if (etat.statut === 'action') return A.actionRequise(d);
+            if (etat.statut !== 'tous') return d.statut === etat.statut;
+          }
+          return true;
+        });
+      }
+
+      function onglets() {
+        const base = filtrees(true);
+        const defs = [['tous', T('dm.tous', 'Toutes'), base.length], ['action', T('ag.actionRequise', 'Action requise'), base.filter(A.actionRequise).length]]
+          .concat(STATUTS.map(s => [s, T('statut.' + s, NT.STATUTS[s]), base.filter(d => d.statut === s).length]));
+        el('onglets').innerHTML = defs.map(([k, l, n]) => `<button type="button" data-statut="${k}" aria-pressed="${etat.statut === k}">${echap(l)}<span class="n" aria-label="${n}">${n}</span></button>`).join('');
+      }
+
+      function tri(a, b) {
+        const aa = A.actionRequise(a), ab = A.actionRequise(b);
+        if (aa !== ab) return aa ? -1 : 1;
+        if (aa) { // action requise : priorité haute d'abord, puis la plus ancienne
+          const h = (A.estHaute(b.priorite) ? 1 : 0) - (A.estHaute(a.priorite) ? 1 : 0);
+          return h || a.cree.localeCompare(b.cree);
+        }
+        return b.cree.localeCompare(a.cree);
+      }
+
+      function tableau() {
+        const l = filtrees(false).sort(tri);
+        el('compte').textContent = T('dm.compte', '{n} demande(s) affichée(s)', { n: l.length });
+        el('lignes').innerHTML = l.length ? l.map(d => {
+          const act = A.actionRequise(d);
+          return `<tr class="${act ? 'ag-action' : ''}">
+            <th scope="row" class="ag-code">${echap(d.id)}</th>
+            <td><button type="button" class="ag-ouvrir" data-id="${echap(d.id)}">${echap(d.objet)}</button>
+              ${act ? `<span class="ag-action-lib"><i class="ph ph-warning-circle" aria-hidden="true"></i>${echap(T('ag.actionRequise', 'Action requise'))}</span>` : ''}</td>
+            <td>${echap(A.typeLabel(d.type))}</td><td>${echap(A.service(d.serviceId) || '–')}</td><td>${echap(A.quartierDe(d) || '–')}</td>
+            <td>${A.prioBadge(d.priorite)}</td><td>${A.statutBadge(d.statut)}</td>
+            <td><time datetime="${echap(d.cree)}">${echap(NT.ui.depuis(d.cree))}</time></td></tr>`;
+        }).join('') : `<tr><td colspan="8" class="doux">${echap(T('dm.aucune', 'Aucune demande ne correspond à ces filtres.'))}</td></tr>`;
+      }
+
+      function tout() { onglets(); tableau(); }
+
+      /* ---------- Tiroir de traitement ---------- */
+      const tiroir = el('tiroir'), corps = el('tiroir-corps');
+
+      function contenu(d) {
+        const c = A.utilisateur(d.userId), photo = photoDe(d);
+        const sel = STATUTS.map(s => `<option value="${s}" ${s === d.statut ? 'selected' : ''}>${echap(T('statut.' + s, NT.STATUTS[s]))}</option>`).join('');
+        return `
+          <p class="ligne">${A.statutBadge(d.statut)} ${A.prioBadge(d.priorite)}${A.actionRequise(d) ? `<span class="ag-action-lib"><i class="ph ph-warning-circle" aria-hidden="true"></i>${echap(T('ag.actionRequise', 'Action requise'))}</span>` : ''}</p>
+          <h3 class="premier">${echap(d.objet)}</h3>
+          <dl class="ag-dl">
+            <dt>${echap(T('dm.type', 'Type'))}</dt><dd>${echap(A.typeLabel(d.type))}</dd>
+            <dt>${echap(T('dm.service', 'Service'))}</dt><dd>${echap(A.service(d.serviceId) || '–')}</dd>
+            <dt>${echap(T('ag.quartier', 'Quartier'))}</dt><dd>${echap(A.quartierDe(d) || '–')}</dd>
+            <dt>${echap(T('dm.lieu', 'Lieu'))}</dt><dd>${echap(d.lieu || T('dm.aucunLieu', 'Non précisé'))}</dd>
+            <dt>${echap(T('dm.recueLe', 'Reçue le'))}</dt><dd>${echap(NT.ui.dateHeure(d.cree))}</dd>
+            <dt>${echap(T('dm.agent', 'Prise en charge par'))}</dt><dd>${echap(d.agent || T('dm.nonAssignee', 'Pas encore assignée'))}</dd>
+          </dl>
+          <h3>${echap(T('dm.message', 'Message'))}</h3>
+          <p class="ag-message">${echap(d.message)}</p>
+          ${photo ? `<figure class="ag-photo"><img src="${echap(photo)}" alt="${echap(T('dm.photo', 'Photo jointe à la demande'))}" loading="lazy"></figure>` : ''}
+          <h3>${echap(T('dm.citoyen', 'Citoyen'))}</h3>
+          ${c ? `<p style="margin:0">${echap(A.nomComplet(c))} · ${echap(c.email)}${c.telephone ? ' · ' + echap(c.telephone) : ''}<br>${echap(T('ag.quartier', 'Quartier'))} : ${echap(c.quartier || '–')}</p>
+            ${c.vulnerable ? `<p class="ag-vuln" style="margin:.4rem 0 0"><i class="ph-duotone ph-heartbeat" aria-hidden="true"></i> ${echap(T('dm.vulnerable', 'Personne vulnérable : à traiter avec attention'))}</p>` : ''}`
+            : `<p class="doux" style="margin:0">${echap(T('dm.anonyme', 'Compte anonymisé ou supprimé'))}</p>`}
+          <h3>${echap(T('dm.historique', 'Historique'))}</h3>
+          <ol class="etapes">${(d.historique || []).map(h => `<li class="faite"><strong>${echap(T('statut.' + h.statut, NT.STATUTS[h.statut] || h.statut))}</strong>
+            <span class="doux"> · ${echap(NT.ui.dateHeure(h.date))} · ${echap(T('dm.par', 'par'))} ${echap(h.par || '')}</span>${h.note ? `<br>${echap(h.note)}` : ''}</li>`).join('')}</ol>
+          <h3>${echap(T('dm.traitement', 'Traitement'))}</h3>
+          ${d.statut === 'recue' ? `<p><button type="button" class="btn btn-primaire" data-act="prendre"><i class="ph ph-hand-grabbing" aria-hidden="true"></i>${echap(T('dm.prendre', 'Prendre en charge'))}</button></p>` : ''}
+          <form id="form-traitement" novalidate>
+            <div id="tr-resume" role="alert"></div>
+            <div class="champ"><label for="tr-statut">${echap(T('dm.nouveauStatut', 'Nouveau statut'))}</label><select id="tr-statut">${sel}</select></div>
+            <div class="champ"><label for="tr-note">${echap(T('dm.note', 'Note pour le citoyen'))}</label>
+              <textarea id="tr-note" aria-describedby="tr-aide tr-err"></textarea>
+              <span class="aide" id="tr-aide">${echap(T('dm.noteAide', 'Obligatoire pour « Traitée » et « Clôturée ». Ce texte est envoyé au citoyen.'))}</span>
+              <p class="erreur" id="tr-err" hidden></p></div>
+            <button type="submit" class="btn btn-primaire"><i class="ph ph-floppy-disk" aria-hidden="true"></i>${echap(T('dm.enregistrer', 'Enregistrer le statut'))}</button>
+          </form>
+          <p style="margin-top:1rem"><a href="suivi.html?id=${encodeURIComponent(d.id)}"><i class="ph ph-eye" aria-hidden="true"></i> ${echap(T('dm.voirSuivi', 'Voir la page de suivi du citoyen'))}</a></p>`;
+      }
+
+      function ouvrir(id) {
+        const d = NT.store.find('demandes', id); if (!d) return;
+        ouverte = id;
+        tiroir.label = T('dm.tiroirTitre', 'Demande {id}', { id: d.id });
+        corps.innerHTML = contenu(d);
+        tiroir.show();
+      }
+      function rafraichirTiroir() { const d = NT.store.find('demandes', ouverte); if (d) corps.innerHTML = contenu(d); }
+
+      function appliquer(statut, note, toastMsg) {
+        const d = NT.demandes.changerStatut(ouverte, statut, note);
+        if (!d) return;
+        if (!d.agent || (agent && d.agent !== A.nomComplet(agent) && statut === 'en_cours')) NT.store.update('demandes', d.id, { agent: A.nomComplet(agent) });
+        NT.ui.toast(toastMsg, 'success');
+        tout(); rafraichirTiroir();
+      }
+
+      corps.addEventListener('click', ev => {
+        const b = ev.target.closest('[data-act="prendre"]'); if (!b) return;
+        appliquer('en_cours', T('dm.priseNote', 'Prise en charge par {nom}.', { nom: A.nomComplet(agent) }), T('dm.priseOk', 'Demande {id} prise en charge.', { id: ouverte }));
+      });
+      corps.addEventListener('submit', ev => {
+        ev.preventDefault();
+        const d = NT.store.find('demandes', ouverte), statut = el('tr-statut').value, note = el('tr-note').value.trim();
+        const err = el('tr-err'), champ = el('tr-note'), resume = el('tr-resume');
+        const manque = (statut === 'traitee' || statut === 'cloturee') && !note ? T('dm.erreurNote', 'Ajoutez une note qui explique le résultat : elle est obligatoire pour traiter ou clôturer une demande.')
+          : (statut === d.statut && !note ? T('dm.erreurRien', 'Choisissez un nouveau statut ou ajoutez une note.') : '');
+        if (manque) {
+          err.textContent = manque; err.hidden = false; champ.setAttribute('aria-invalid', 'true');
+          resume.className = 'ag-resume-erreurs'; resume.innerHTML = `<strong>${echap(T('dm.resume', 'Le statut ne peut pas encore être enregistré :'))}</strong><ul><li>${echap(manque)}</li></ul>`;
+          (statut === d.statut ? el('tr-statut') : champ).focus();
+          return;
+        }
+        appliquer(statut, note, T('dm.statutOk', 'Demande {id} : statut « {statut} ». Le citoyen a été prévenu.', { id: d.id, statut: T('statut.' + statut, NT.STATUTS[statut]) }));
+      });
+
+      tiroir.addEventListener('sl-after-hide', ev => {
+        if (ev.target !== tiroir) return;
+        const id = ouverte; ouverte = null;
+        const b = id && document.querySelector(`.ag-ouvrir[data-id="${CSS.escape(id)}"]`);
+        if (b) b.focus();
+      });
+      el('tiroir-fermer').addEventListener('click', () => tiroir.hide());
+
+      /* ---------- Événements ---------- */
+      el('onglets').addEventListener('click', ev => { const b = ev.target.closest('[data-statut]'); if (!b) return; etat.statut = b.dataset.statut; tout(); const n = document.querySelector(`#onglets [data-statut="${b.dataset.statut}"]`); if (n) n.focus(); });
+      el('lignes').addEventListener('click', ev => { const b = ev.target.closest('.ag-ouvrir'); if (b) ouvrir(b.dataset.id); });
+      [sType, sQ, sP, champQ].forEach(c => c.addEventListener('input', tout));
+      tout();
+    });
+  </script>
+</body>
+</html>

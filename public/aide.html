@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aide et lexique — Terra Nova</title>
+  <meta name="description" content="Questions fréquentes et lexique des mots difficiles de la plateforme Terra Nova, expliqués simplement.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/aide.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/glossaire.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="aide" data-ariane="nav.accueil|index.html;Aide et lexique" data-roles="">
+  <main id="contenu" class="conteneur">
+
+    <header class="titre-page">
+      <h1 data-i18n="ai.titre">Aide et lexique</h1>
+      <p data-i18n="ai.intro">Les réponses aux questions les plus fréquentes et l’explication, en mots simples, des termes que vous croiserez sur la plateforme.</p>
+      <nav class="ai-sauts" aria-label="Sur cette page">
+        <a href="#faq" data-i18n="ai.sautFaq">Questions fréquentes</a>
+        <a href="#lexique" data-i18n="ai.sautLexique">Lexique</a>
+        <a href="#contact" data-i18n="ai.sautContact">Nous écrire</a>
+      </nav>
+    </header>
+
+    <section id="faq" class="section ai-faq" aria-labelledby="ai-h-faq">
+      <div class="titre-section"><div><h2 id="ai-h-faq" data-i18n="ai.faq">Questions fréquentes</h2>
+        <p data-i18n="ai.faqD">Cliquez sur une question pour lire la réponse. Les mots soulignés en pointillés s’expliquent au survol, au clic ou au clavier.</p></div></div>
+      <div id="ai-faq-liste"></div>
+    </section>
+
+    <!-- D13 : lexique complet et consultable -->
+    <section id="lexique" class="section ai-lexique" aria-labelledby="ai-h-lex">
+      <div class="titre-section"><div><h2 id="ai-h-lex" data-i18n="ai.lexique">Lexique : les mots difficiles</h2>
+        <p data-i18n="ai.lexiqueD">Tapez un mot pour le retrouver. Chaque définition est écrite en français simple.</p></div></div>
+      <form class="ai-recherche" role="search" id="ai-form">
+        <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+        <label for="ai-q" class="sr-only" data-i18n="ai.rechercheLabel">Rechercher un mot dans le lexique</label>
+        <input id="ai-q" type="search" autocomplete="off" aria-describedby="ai-compteur" data-i18n-attr="placeholder:ai.recherchePh" placeholder="Démarche, créneau, quartier…">
+      </form>
+      <p class="ai-compteur" id="ai-compteur" role="status" aria-live="polite"></p>
+      <dl class="ai-liste" id="ai-lexique-liste"></dl>
+    </section>
+
+    <section id="contact" class="section ai-contact" aria-labelledby="ai-h-contact">
+      <i class="ph-duotone ph-chats-circle" aria-hidden="true"></i>
+      <div>
+        <h2 id="ai-h-contact" data-i18n="ai.contactH">Vous ne trouvez pas votre réponse ?</h2>
+        <p data-i18n="ai.contactD">Écrivez à la mairie : un agent vous répond et vous recevez une confirmation d’envoi avec un numéro de suivi.</p>
+        <a class="btn btn-primaire" href="demande.html?type=contact" data-i18n="ai.contactBtn">Écrire à la mairie</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    NT.i18n.ajouter({
+      fr: {
+        'ai.titre': 'Aide et lexique', 'ai.intro': 'Les réponses aux questions les plus fréquentes et l’explication, en mots simples, des termes que vous croiserez sur la plateforme.',
+        'ai.sautFaq': 'Questions fréquentes', 'ai.sautLexique': 'Lexique', 'ai.sautContact': 'Nous écrire',
+        'ai.faq': 'Questions fréquentes', 'ai.faqD': 'Cliquez sur une question pour lire la réponse. Les mots soulignés en pointillés s’expliquent au survol, au clic ou au clavier.',
+        'ai.lexique': 'Lexique : les mots difficiles', 'ai.lexiqueD': 'Tapez un mot pour le retrouver. Chaque définition est écrite en français simple.',
+        'ai.rechercheLabel': 'Rechercher un mot dans le lexique', 'ai.recherchePh': 'Démarche, créneau, quartier…', 'ai.aussi': 'Aussi écrit :',
+        'ai.nb0': 'Aucun mot ne correspond à votre recherche.', 'ai.nb1': '1 mot affiché.', 'ai.nbN': '{n} mots affichés.',
+        'ai.contactH': 'Vous ne trouvez pas votre réponse ?', 'ai.contactD': 'Écrivez à la mairie : un agent vous répond et vous recevez une confirmation d’envoi avec un numéro de suivi.', 'ai.contactBtn': 'Écrire à la mairie',
+        'ai.q1': 'Comment faire une demande à la mairie ?', 'ai.r1': 'Ouvrez la page <a href="services.html">Services</a>, choisissez le service qui vous concerne puis « Faire une demande ». Vous recevez un accusé de réception avec un numéro pour suivre votre démarche.',
+        'ai.q2': 'Comment signaler un problème dans mon quartier ?', 'ai.r2': 'Utilisez le bouton « Signaler un problème » de la page d’accueil ou <a href="demande.html?type=signalement">ce lien direct</a>. Indiquez ce qui ne va pas et l’adresse : plus le lieu est précis, plus l’intervention est rapide.',
+        'ai.q3': 'Comment savoir où en est ma demande ?', 'ai.r3': 'Connectez-vous et ouvrez <a href="espace.html">Mon espace</a> : chaque demande affiche son statut (reçue, en cours, traitée ou clôturée) et l’historique des étapes. Une notification vous prévient à chaque changement.',
+        'ai.q4': 'Un service est indisponible : que faire ?', 'ai.r4': 'La page du service l’indique avant de commencer : ce qui est arrêté, quand revenir et ce qu’il faut faire en attendant. Une alternative (rendez-vous, accueil, message) vous est proposée à la place de la démarche en ligne.',
+        'ai.q5': 'Comment prendre rendez-vous et être rappelé ?', 'ai.r5': 'Depuis la fiche d’un service ou la page <a href="rendez-vous.html">Rendez-vous</a>, choisissez un créneau. Un rappel vous est envoyé avant le rendez-vous, avec la liste des pièces à apporter.',
+        'ai.q6': 'Comment être prévenu en cas d’alerte ?', 'ai.r6': 'Les alertes et annonces importantes apparaissent dans la balise « Alertes » en haut de page et dans vos notifications. Sur la page <a href="annonces.html">Annonces</a>, vous pouvez choisir ce que vous voulez recevoir, par exemple seulement les alertes de votre quartier.',
+        'ai.q7': 'Comment agrandir le texte ou changer de langue ?', 'ai.r7': 'En haut de chaque page, le bouton rond d’accessibilité règle la taille du texte, le contraste et les animations. Le menu « Langue » propose le français, l’anglais, l’espagnol et l’arabe.',
+        'ai.q8': 'Que puis-je faire sans compte ?', 'ai.r8': 'Vous pouvez consulter les services, les annonces et les horaires des navettes sans vous connecter. Un compte permet de suivre vos demandes, de prendre rendez-vous et de recevoir des notifications.',
+        'ai.q9': 'Je ne comprends pas un mot, où trouver une explication ?', 'ai.r9': 'Les mots soulignés en pointillés ouvrent une petite explication. Vous trouvez aussi tous les termes dans le lexique, plus bas sur cette page.'
+      },
+      en: {
+        'ai.titre': 'Help and glossary', 'ai.intro': 'Answers to the most common questions and a plain-language explanation of the terms you will meet on the platform.',
+        'ai.sautFaq': 'Frequently asked questions', 'ai.sautLexique': 'Glossary', 'ai.sautContact': 'Write to us',
+        'ai.faq': 'Frequently asked questions', 'ai.faqD': 'Click a question to read the answer. Words underlined with dots are explained on hover, click or keyboard.',
+        'ai.lexique': 'Glossary: difficult words', 'ai.lexiqueD': 'Type a word to find it. Every definition is written in plain language.',
+        'ai.rechercheLabel': 'Search a word in the glossary', 'ai.recherchePh': 'Procedure, time slot, district…', 'ai.aussi': 'Also written:',
+        'ai.nb0': 'No word matches your search.', 'ai.nb1': '1 word shown.', 'ai.nbN': '{n} words shown.',
+        'ai.contactH': 'Can’t find your answer?', 'ai.contactD': 'Write to the city hall: a staff member answers and you get a confirmation with a tracking number.', 'ai.contactBtn': 'Write to the city hall',
+        'ai.q1': 'How do I make a request to the city hall?', 'ai.r1': 'Open the <a href="services.html">Services</a> page, choose the service you need, then “Make a request”. You get an acknowledgement of receipt with a number to track your procedure.',
+        'ai.q2': 'How do I report a problem in my district?', 'ai.r2': 'Use the “Report a problem” button on the home page or <a href="demande.html?type=signalement">this direct link</a>. Say what is wrong and where: the more precise the place, the faster the repair.',
+        'ai.q3': 'How do I know where my request stands?', 'ai.r3': 'Sign in and open <a href="espace.html">My space</a>: each request shows its status (received, in progress, resolved or closed) and its history. A notification tells you about each change.',
+        'ai.q4': 'A service is unavailable: what should I do?', 'ai.r4': 'The service page says so before you start: what is stopped, when to come back and what to do meanwhile. An alternative (appointment, front desk, message) replaces the online procedure.',
+        'ai.q5': 'How do I book an appointment and get a reminder?', 'ai.r5': 'From a service page or the <a href="rendez-vous.html">Appointments</a> page, choose a time slot. A reminder is sent before the appointment, with the list of papers to bring.',
+        'ai.q6': 'How can I be warned of an alert?', 'ai.r6': 'Alerts and important notices appear in the “Alerts” beacon at the top of the page and in your notifications. On the <a href="annonces.html">News</a> page you can choose what you receive, for example only alerts for your district.',
+        'ai.q7': 'How do I enlarge the text or change language?', 'ai.r7': 'At the top of every page, the round accessibility button sets text size, contrast and animations. The “Language” menu offers French, English, Spanish and Arabic.',
+        'ai.q8': 'What can I do without an account?', 'ai.r8': 'You can browse services, notices and shuttle timetables without signing in. An account lets you track your requests, book appointments and receive notifications.',
+        'ai.q9': 'I do not understand a word, where can I find an explanation?', 'ai.r9': 'Words underlined with dots open a short explanation. You also find every term in the glossary further down this page.'
+      },
+      es: {
+        'ai.titre': 'Ayuda y glosario', 'ai.intro': 'Respuestas a las preguntas más frecuentes y explicación sencilla de los términos de la plataforma.',
+        'ai.sautFaq': 'Preguntas frecuentes', 'ai.sautLexique': 'Glosario', 'ai.sautContact': 'Escríbanos',
+        'ai.faq': 'Preguntas frecuentes', 'ai.faqD': 'Haga clic en una pregunta para leer la respuesta.',
+        'ai.lexique': 'Glosario: palabras difíciles', 'ai.lexiqueD': 'Escriba una palabra para encontrarla.',
+        'ai.rechercheLabel': 'Buscar una palabra en el glosario', 'ai.recherchePh': 'Trámite, cita, barrio…',
+        'ai.nb0': 'Ninguna palabra coincide con su búsqueda.', 'ai.nb1': '1 palabra mostrada.', 'ai.nbN': '{n} palabras mostradas.',
+        'ai.contactH': '¿No encuentra su respuesta?', 'ai.contactD': 'Escriba al ayuntamiento: un agente le responde y recibe una confirmación de envío.', 'ai.contactBtn': 'Escribir al ayuntamiento'
+      },
+      ar: {
+        'ai.titre': 'المساعدة والقاموس', 'ai.intro': 'إجابات عن الأسئلة الشائعة وشرح مبسط للمصطلحات التي ستصادفها في المنصة.',
+        'ai.sautFaq': 'الأسئلة الشائعة', 'ai.sautLexique': 'القاموس', 'ai.sautContact': 'راسلنا',
+        'ai.faq': 'الأسئلة الشائعة', 'ai.lexique': 'القاموس: الكلمات الصعبة', 'ai.rechercheLabel': 'البحث عن كلمة في القاموس',
+        'ai.contactH': 'لم تجد إجابتك؟', 'ai.contactBtn': 'مراسلة البلدية'
+      }
+    });
+
+    NT.pret(() => {
+      const { echap } = NT.ui, t = NT.t;
+      const norm = s => String(s == null ? '' : s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+
+      /* FAQ : details/summary natifs, accessibles au clavier */
+      const faq = document.getElementById('ai-faq-liste');
+      faq.innerHTML = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => `<details class="ai-q">
+        <summary>${echap(t('ai.q' + i))}</summary>
+        <p>${t('ai.r' + i)}</p></details>`).join('');          // réponses : HTML de confiance écrit dans cette page
+      window.NT_activerGlossaire(faq);
+
+      /* Lexique */
+      const champ = document.getElementById('ai-q'), liste = document.getElementById('ai-lexique-liste'), compteur = document.getElementById('ai-compteur');
+      const locale = NT.i18n.langue === 'en' ? 'en' : 'fr';
+      const termes = window.NT_glossaireLangue().slice().sort((a, b) => a.terme.localeCompare(b.terme, locale));
+      const id = g => 'mot-' + norm(g.terme).replace(/[^a-z0-9]+/g, '-');
+      function rendre() {
+        const mots = norm(champ.value).split(/\s+/).filter(Boolean);
+        const l = termes.filter(g => { const x = norm([g.terme, g.synonymes.join(' '), g.definition].join(' ')); return mots.every(m => x.includes(m)); });
+        liste.innerHTML = l.map(g => {
+          const syn = g.synonymes.length ? `<span class="ai-syn">${echap(t('ai.aussi'))} ${g.synonymes.map(echap).join(', ')}</span>` : '';
+          return `<div class="ai-mot" id="${echap(id(g))}"><dt>${echap(g.terme)}</dt><dd>${echap(g.definition)}${syn}</dd></div>`;
+        }).join('');
+        compteur.textContent = l.length === 0 ? t('ai.nb0') : l.length === 1 ? t('ai.nb1') : t('ai.nbN', { n: l.length });
+      }
+      rendre();
+      champ.addEventListener('input', rendre);
+      document.getElementById('ai-form').addEventListener('submit', e => { e.preventDefault(); rendre(); });
+      // Arrivée sur un mot précis (#mot-...) : on le surligne
+      const h = location.hash.replace(/^#/, '');
+      if (h.startsWith('mot-')) { const el = document.getElementById(h); if (el) { el.classList.add('cible'); el.scrollIntoView({ block: 'center' }); } }
+    });
+  </script>
+</body>
+</html>

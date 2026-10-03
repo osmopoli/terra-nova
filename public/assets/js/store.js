@@ -1,0 +1,270 @@
+/* Terra Nova — couche de données côté navigateur, branchée sur le serveur (Express + SQLite).
+   Même interface qu'avant pour toutes les pages (NT.store, NT.auth, NT.demandes, NT.annonces, NT.services, NT.rdv, NT.notif, NT.audit).
+   Au chargement : l'état autorisé pour le profil connecté est lu en une requête (GET /api/etat) et gardé en mémoire.
+   Chaque écriture part au serveur, qui contrôle les droits (D09) et renvoie le document enregistré.
+   Les appels sont synchrones (XHR) pour garder une interface simple et identique dans toutes les pages.
+   Restent dans le navigateur : préférences d'affichage, langue, astuces vues (réglages propres à l'appareil). */
+(function () {
+  'use strict';
+  const NT = (window.NT = window.NT || {});
+  NT._attente = NT._attente || [];
+  NT.pret = fn => NT._attente.push(fn);
+  const PREFIXE = 'nt:';
+
+  /* ---------- Préférences d'affichage appliquées au plus tôt (évite le flash) ---------- */
+  function lire(cle, defaut) {
+    try { const v = localStorage.getItem(PREFIXE + cle); return v === null ? defaut : JSON.parse(v); }
+    catch (e) { return defaut; }
+  }
+  function ecrire(cle, val) {
+    try { localStorage.setItem(PREFIXE + cle, JSON.stringify(val)); } catch (e) { /* stockage plein ou bloqué */ }
+  }
+  const prefs = lire('prefs', {});
+  const html = document.documentElement;
+  if (prefs.taille) html.style.fontSize = prefs.taille + '%';
+  if ((prefs.taille || 100) >= 150) html.classList.add('grand');
+  ['contraste', 'espace', 'calme', 'souligne'].forEach(c => prefs[c] && html.classList.add(c));
+  const langue = lire('langue', 'fr');
+  html.lang = langue;
+  html.dir = langue === 'ar' ? 'rtl' : 'ltr';
+
+  const maintenant = () => new Date().toISOString();
+  const uid = p => (p || 'id') + '-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const copie = o => (o === undefined ? undefined : JSON.parse(JSON.stringify(o)));
+
+  /* ---------- Appels serveur ---------- */
+  function api(methode, url, corps) {
+    const x = new XMLHttpRequest();
+    x.open(methode, url, false);
+    x.setRequestHeader('Content-Type', 'application/json');
+    try { x.send(corps === undefined ? null : JSON.stringify(corps)); }
+    catch (e) { return { statut: 0, donnees: { erreur: 'Serveur injoignable. Vérifiez votre connexion.' } }; }
+    let donnees = null;
+    try { donnees = x.responseText ? JSON.parse(x.responseText) : null; } catch (e) { /* réponse non JSON */ }
+    return { statut: x.status, donnees };
+  }
+  NT.api = api;
+
+  // État en mémoire, rechargé depuis le serveur
+  let etat = {};
+  function recharger() {
+    const r = api('GET', '/api/etat');
+    etat = r.statut === 200 && r.donnees ? r.donnees : { moi: null };
+  }
+  recharger();
+  NT.recharger = recharger;
+  const liste = col => (etat[col] = etat[col] || []);
+  function remplacer(col, doc) {
+    const l = liste(col); const i = l.findIndex(x => x.id === doc.id);
+    if (i < 0) l.push(doc); else l[i] = doc;
+    if (col === 'utilisateurs' && etat.moi && etat.moi.id === doc.id) etat.moi = Object.assign({}, etat.moi, doc);
+    return doc;
+  }
+  function refus(r) {
+    const msg = (r.donnees && r.donnees.erreur) || 'Action impossible.';
+    console.warn('[Terra Nova]', msg);
+    if (NT.ui && NT.ui.toast) NT.ui.toast(msg, 'danger');
+    return null;
+  }
+
+  /* ---------- Store générique (même interface que la maquette) ---------- */
+  const store = {
+    get: col => copie(liste(col)),
+    find: (col, id) => { const o = liste(col).find(x => x.id === id); return o ? copie(o) : null; },
+    add(col, obj) {
+      const r = api('POST', '/api/docs/' + col, Object.assign({ cree: maintenant() }, obj));
+      return r.statut === 200 ? copie(remplacer(col, r.donnees)) : refus(r);
+    },
+    update(col, id, patch) {
+      const avant = liste(col).find(x => x.id === id); if (!avant) return null;
+      const p = typeof patch === 'function' ? patch(copie(avant)) : patch;
+      const r = api('PATCH', '/api/docs/' + col + '/' + encodeURIComponent(id), p);
+      return r.statut === 200 ? copie(remplacer(col, r.donnees)) : refus(r);
+    },
+    remove(col, id) {
+      const r = api('DELETE', '/api/docs/' + col + '/' + encodeURIComponent(id));
+      if (r.statut === 200) etat[col] = liste(col).filter(x => x.id !== id); else refus(r);
+    },
+    // Écrit une liste complète : seuls les éléments modifiés sont envoyés
+    set(col, nouvelle) {
+      const ancienne = liste(col);
+      nouvelle.forEach(o => {
+        const a = ancienne.find(x => x.id === o.id);
+        if (!a) store.add(col, o);
+        else if (JSON.stringify(a) !== JSON.stringify(o)) store.update(col, o.id, o);
+      });
+    },
+    lire(cle, defaut) { if (cle === 'session') return etat.moi ? { id: etat.moi.id, depuis: lire('depuis', '') } : null; return lire(cle, defaut); },
+    ecrire, uid, maintenant,
+    reset() { const r = api('POST', '/api/demo/reinitialiser'); if (r.statut === 200) recharger(); else refus(r); }
+  };
+  NT.store = store;
+
+  /* ---------- Constantes métier ---------- */
+  NT.QUARTIERS = ['Centre', 'Nord', 'Sud', 'Est', 'Ouest'];
+  NT.ROLES = { citoyen: 'Citoyen', agent: 'Agent municipal', admin: 'Administrateur' };
+  NT.STATUTS = { recue: 'Reçue', en_cours: 'En cours de traitement', traitee: 'Traitée', cloturee: 'Clôturée' };
+
+  /* ---------- Authentification + protection (D01, D03, D08, D09, F37) : décidées par le serveur ---------- */
+  const VIDE = { echecs: 0, verrouJusqu: 0, blocages: 0, echecsDepuisConnexion: 0 };
+  const auth = {
+    utilisateur: () => (etat.moi ? copie(etat.moi) : null),
+    aRole: (...roles) => !!etat.moi && roles.includes(etat.moi.role),
+    emailPris: email => !!(api('GET', '/api/auth/email-pris?email=' + encodeURIComponent(String(email).trim())).donnees || {}).pris,
+    validerMotDePasse(mdp) {
+      const manques = [];
+      if (mdp.length < 8) manques.push('8 caractères minimum');
+      if (!/[A-Z]/.test(mdp)) manques.push('une majuscule');
+      if (!/[0-9]/.test(mdp)) manques.push('un chiffre');
+      return manques;
+    },
+    inscrire(donnees) {
+      const r = api('POST', '/api/auth/inscrire', donnees);
+      const rep = r.donnees || { ok: false, erreur: 'Serveur injoignable.' };
+      if (rep.ok) { ecrire('depuis', maintenant()); recharger(); }
+      return rep;
+    },
+    connecter(email, motdepasse, verificationReussie) {
+      const r = api('POST', '/api/auth/connecter', { email, motdepasse, verificationReussie: !!verificationReussie });
+      const rep = r.donnees || { ok: false, erreur: 'Serveur injoignable.' };
+      if (rep.ok) { ecrire('depuis', maintenant()); recharger(); }
+      return rep;
+    },
+    deconnecter() { api('POST', '/api/auth/deconnecter'); recharger(); },
+    verifierMotDePasse(u, mdp) { return !!(api('POST', '/api/auth/verifier', { motdepasse: mdp || '' }).donnees || {}).ok; },
+    changerMotDePasse(u, mdp) { const r = api('POST', '/api/auth/mot-de-passe', { nouveau: mdp }); if (r.statut !== 200) refus(r); return r.statut === 200; },
+    supprimerCompte() { const r = api('POST', '/api/auth/supprimer'); if (r.statut === 200) recharger(); else refus(r); return r.statut === 200; },
+    debloquer(email) { api('POST', '/api/auth/debloquer', { email }); recharger(); },
+    etatSecurite: email => Object.assign({}, VIDE, (etat.securite || {})[String(email || '').toLowerCase()]),
+    journal: () => copie(etat.journal || []),
+    ecrireJournal(type, email, detail) { if (etat.moi) api('POST', '/api/journal', { type, email, detail }); },
+    SEUIL_VERIF: 3, SEUIL_BLOCAGE: 5
+  };
+  NT.auth = auth;
+
+  /* ---------- Journal d'audit (F47, F48) : l'auteur est fixé par le serveur ---------- */
+  NT.audit = {
+    log(entree) { return store.add('audit', Object.assign({ id: uid('aud') }, entree)); },
+    tous: () => copie(liste('audit')).sort((a, b) => String(b.date).localeCompare(String(a.date)))
+  };
+
+  /* ---------- Notifications (F30, F40, F49) ---------- */
+  const notif = {
+    ajouter(userId, titre, texte, lien, niveau) {
+      return store.add('notifications', { userId, titre, texte, lien: lien || '', niveau: niveau || 'info', lu: false });
+    },
+    // Envoi groupé (une seule requête) aux utilisateurs filtrés — réservé aux agents par le serveur
+    tous(titre, texte, lien, niveau, filtre) {
+      const cibles = liste('utilisateurs').filter(u => !filtre || filtre(u));
+      if (!cibles.length) return;
+      const r = api('POST', '/api/docs/notifications', cibles.map(u => ({ id: uid('not'), userId: u.id, titre, texte, lien: lien || '', niveau: niveau || 'info', lu: false })));
+      if (r.statut === 200) r.donnees.forEach(n => remplacer('notifications', n)); else refus(r);
+    },
+    pour: userId => copie(liste('notifications').filter(n => n.userId === userId)).sort((a, b) => b.cree.localeCompare(a.cree)),
+    nonLues: userId => liste('notifications').filter(n => n.userId === userId && !n.lu).length,
+    lire(id) { store.update('notifications', id, { lu: true }); },
+    toutLire() { api('POST', '/api/notifications/tout-lire'); liste('notifications').forEach(n => (n.lu = true)); }
+  };
+  NT.notif = notif;
+
+  /* ---------- Demandes citoyennes (D04, D11, D16, D17, F22, F25, F26) : numéro attribué par le serveur ---------- */
+  const demandes = {
+    creer(data) {
+      const u = auth.utilisateur();
+      const d = store.add('demandes', Object.assign({ type: 'contact', serviceId: '', objet: '', message: '', lieu: '', quartier: '', priorite: 'normale' }, data));
+      if (d && u) notif.ajouter(u.id, 'Demande ' + d.id + ' bien reçue', 'Votre demande « ' + d.objet + ' » a été enregistrée. Suivez son avancement dans votre espace.', 'suivi.html?id=' + d.id, 'info');
+      return d;
+    },
+    changerStatut(id, statut, note) {
+      const agent = auth.utilisateur();
+      const avant = store.find('demandes', id);
+      if (avant) NT.audit.log({ categorie: 'demande', action: 'Changement de statut', objetId: id, objetLibelle: avant.objet, avant: NT.STATUTS[avant.statut], apres: NT.STATUTS[statut], motif: note });
+      const d = store.update('demandes', id, x => ({ statut, agent: x.agent || (agent ? agent.prenom + ' ' + agent.nom : ''),
+        historique: x.historique.concat([{ date: maintenant(), statut, note: note || '', par: agent ? agent.prenom + ' ' + agent.nom : 'Service' }]) }));
+      // F49 : l'habitant est prévenu immédiatement, avec ce qu'il doit savoir ou faire
+      if (d && d.userId) notif.ajouter(d.userId, 'Votre demande ' + d.id + ' avance', 'Nouveau statut : ' + NT.STATUTS[statut] + (note ? ' — ' + note : ''), 'suivi.html?id=' + d.id, statut === 'traitee' ? 'importante' : 'info');
+      return d;
+    },
+    pour: userId => copie(liste('demandes').filter(d => d.userId === userId)).sort((a, b) => b.cree.localeCompare(a.cree)),
+    toutes: () => copie(liste('demandes')).sort((a, b) => b.cree.localeCompare(a.cree)),
+    enAttente: () => copie(liste('demandes').filter(d => d.statut === 'recue'))
+  };
+  NT.demandes = demandes;
+
+  /* ---------- Annonces & alertes (D06, D18, F29, F30, F31) ---------- */
+  const annonces = {
+    toutes: () => copie(liste('annonces')).sort((a, b) => b.cree.localeCompare(a.cree)),
+    publier(a) {
+      const o = store.add('annonces', Object.assign({ categorie: 'municipale', importance: 'info', zone: 'Toute la ville', active: true, consignes: [], publics: [] }, a));
+      if (!o) return null;
+      NT.audit.log({ categorie: 'annonce', action: o.importance === 'alerte' ? 'Diffusion d’une alerte' : 'Publication d’une annonce', objetId: o.id, objetLibelle: o.titre, apres: o.importance + ' · ' + o.zone });
+      if (o.importance !== 'info') {
+        const zone = o.zone;
+        notif.tous((o.importance === 'alerte' ? '⚠ Alerte : ' : 'Annonce importante : ') + o.titre, o.resume || '', 'annonces.html#' + o.id, o.importance, u => {
+          if (u.role !== 'citoyen') return true;
+          const dansZone = zone === 'Toute la ville' || u.quartier === zone;
+          if (o.importance === 'alerte') return dansZone;
+          const p = u.preferences;
+          if (!p) return dansZone;
+          if (p.quartierSeul && zone === 'Toute la ville') return false;
+          if (p.categories && p.categories.length && !p.categories.includes(o.categorie)) return false;
+          return dansZone;
+        });
+      }
+      return o;
+    },
+    actives() {
+      const u = auth.utilisateur(); const t = maintenant();
+      return annonces.toutes().filter(a => a.active && a.importance !== 'info' && (!a.expire || a.expire > t) &&
+        (a.zone === 'Toute la ville' || !u || u.role !== 'citoyen' || u.quartier === a.zone || a.importance === 'alerte'));
+    }
+  };
+  NT.annonces = annonces;
+
+  /* ---------- Services (D05, F28, F32, F38) ---------- */
+  NT.services = {
+    tous: () => store.get('services'),
+    get: id => store.find('services', id),
+    definirEtat(id, code, message, retour) {
+      const s = store.find('services', id);
+      if (s) NT.audit.log({ categorie: 'service', action: 'Changement d’état du service', objetId: id, objetLibelle: s.nom.fr, avant: s.etat.code, apres: code, motif: message });
+      return store.update('services', id, { etat: { code, message: message || '', retour: retour || '' } });
+    },
+    vue(id) { const r = api('PATCH', '/api/docs/services/' + encodeURIComponent(id), { vues: 1 }); if (r.statut === 200) remplacer('services', r.donnees); }
+  };
+
+  /* ---------- Rendez-vous (F39, F40) ---------- */
+  NT.rdv = {
+    pour: userId => copie(liste('rdv').filter(r => r.userId === userId)).sort((a, b) => a.debut.localeCompare(b.debut)),
+    // jour = 'AAAA-MM-JJ' en heure locale
+    pris: (serviceId, jour) => liste('rdv').filter(r => {
+      if (r.serviceId !== serviceId || r.statut === 'annule') return false;
+      const d = new Date(r.debut);
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0') === jour;
+    }).map(r => r.debut),
+    creer(data) {
+      const u = auth.utilisateur();
+      const r = store.add('rdv', Object.assign({ statut: 'confirme', rappel: { actif: true, avant: 24, envoye: false } }, data));
+      if (r && u) notif.ajouter(u.id, 'Rendez-vous confirmé', r.libelle || 'Votre rendez-vous est enregistré.', 'rendez-vous.html', 'info');
+      return r;
+    },
+    annuler: id => store.update('rdv', id, { statut: 'annule' }),
+    verifierRappels() {
+      const u = auth.utilisateur(); if (!u) return;
+      const t = Date.now();
+      NT.rdv.pour(u.id).forEach(r => {
+        if (r.statut !== 'confirme' || !r.rappel || !r.rappel.actif) return;
+        const debut = new Date(r.debut).getTime();
+        if (debut <= t) return;
+        const delais = (r.rappel.avants && r.rappel.avants.length ? r.rappel.avants : [r.rappel.avant]).slice().sort((a, b) => b - a);
+        const envoyes = r.rappel.envoyes || (r.rappel.envoye ? [r.rappel.avant] : []);
+        const dus = delais.filter(h => !envoyes.includes(h) && debut - t <= h * 3600 * 1000 && !(h === 2 && r.rappel.envoye2));
+        if (!dus.length) return;
+        notif.ajouter(u.id, '⏰ Rappel : rendez-vous ' + new Date(r.debut).toLocaleString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }),
+          (r.libelle || '') + (r.lieu ? ' — ' + r.lieu : '') + (r.pieces && r.pieces.length ? '. À apporter : ' + r.pieces.join(', ') : ''), 'rendez-vous.html', 'importante');
+        const tous = envoyes.concat(dus);
+        store.update('rdv', r.id, x => ({ rappel: Object.assign({}, x.rappel, { envoyes: tous, envoye: tous.includes(x.rappel.avant), envoye2: x.rappel.envoye2 || tous.includes(2) }) }));
+      });
+    }
+  };
+})();

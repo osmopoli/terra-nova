@@ -1,46 +1,58 @@
-# Terra Nova · Plateforme citoyenne (24H By Webcup)
+# Terra Nova · Plateforme citoyenne (24H By Webcup 2026)
 
-Node.js 22 + Express + SQLite intégré (`node:sqlite`), rendu HTML côté serveur, aucune autre dépendance.
+Node.js 22 + Express + SQLite intégré (`node:sqlite`). Le front (thème « Future Teal », FR / EN / ES / AR, accessible) est servi depuis `public/` ; toutes les données passent par l'API JSON du serveur, qui contrôle les droits de chaque profil.
 
 ## Démarrer
 
+### Avec Docker (recommandé)
+```bash
+cp .env.example .env        # puis collez votre WEBCUP_API_KEY
+docker compose up -d --build
+```
+→ http://localhost:3000 · la base SQLite est conservée dans le volume `terra-nova-data`.
+
+### Sans Docker
 ```bash
 npm install
-cp .env.example .env   # puis collez votre WEBCUP_API_KEY
-npm start              # http://localhost:3000
+cp .env.example .env        # puis collez votre WEBCUP_API_KEY
+npm start                   # http://localhost:3000
 ```
 
-Sans clé, l'app charge `data/initial-requests.json` (export de la vague 0) pour que l'espace agents fonctionne quand même.
+Sans clé, l'espace agents charge `data/initial-requests.json` pour rester démontrable.
 
-Comptes créés au premier démarrage (à changer dans `.env`) :
-- admin@terranova.fr / admin1234 (administrateur)
-- agent@terranova.fr / agent1234 (agent municipal)
+## Comptes de démonstration (créés au premier démarrage)
 
-## Couverture des demandes
-
-| Code | Demande | Où |
+| Profil | E-mail | Mot de passe |
 |---|---|---|
-| D01 | Création de compte | `src/modules/accounts.js` → `/inscription` |
-| D03 | Connexion + espace personnel | `accounts.js`, `espace.js` → `/connexion`, `/espace` |
-| D04 | Contacter la mairie + confirmation | `contact.js` → `/contact`, numéro de suivi TN-… |
-| D05 | Présentation des services | `services.js` → `/services`, recherche, fiche détaillée |
-| D06 | Publications de la ville | `news.js` → `/actualites`, filtres, publication agents |
-| D07 | Page d'accueil hiérarchisée | `home.js` → `/` |
-| D08 | Profils citoyen / agent / admin | `auth.js`, `admin.js` → `/admin` |
-| D09 | Contrôle d'accès | `requireRole()` dans `auth.js` : 403 pour les citoyens sur `/agent`, `/admin`, `/api/*`, publication |
-| D19 | Espace agents + données API Nova Terra | `agent.js`, `public/agent.js` → `/agent` |
-| F22 | Vue des demandes des habitants avec état | `agent.js` → `/agent?filtre=action` |
+| Citoyen | `citoyen@nova.test` | `Citoyen2026` |
+| Agent municipal | `agent@nova.test` | `Agent2026` |
+| Administrateur | `admin@nova.test` | `Admin2026` |
 
-## API Webcup
+Autres habitants : `marc@`, `amina@`, `jean@nova.test` (mot de passe `Citoyen2026`). La page de connexion propose de pré-remplir ces comptes.
+Comptes d'équipe supplémentaires possibles via `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `AGENT_EMAIL` / `AGENT_PASSWORD` dans `.env`.
+Réinitialiser les données de démonstration : connecté en admin, `POST /api/demo/reinitialiser` (ou console : `NT.store.reset()`).
 
-- `src/webcup.js` interroge l'API toutes les `POLL_INTERVAL_SECONDS` (15 à 120, défaut 20) avec l'en-tête `X-Webcup-Api-Key`. La clé ne quitte jamais le serveur.
-- Dédoublonnage sur `request_code` (table `api_requests`). Aucun nombre ni rythme de vagues n'est codé en dur.
-- Le navigateur interroge `/api/webcup/state` (agents/admin) et affiche un badge « Nouveau » sur chaque demande apparue depuis la dernière visite.
-- Les agents peuvent cocher « Fait » pour suivre l'avancement de l'équipe.
+## Architecture
 
-## Ajouter une demande d'une nouvelle vague
+- `server.js` — Express : API, fichiers statiques, polling de l'API Webcup.
+- `src/db.js` — schéma SQLite : `users` (identifiants scrypt + rôle), `sessions`, `docs` (documents métier JSON), `securite` (anti-intrusion), `api_requests` / `api_state` (API Webcup).
+- `src/auth.js` — sessions par cookie httpOnly, hachage scrypt, rôles, verrouillage progressif après échecs (F37).
+- `src/modules/api.js` — `GET /api/etat` (tout ce que le profil a le droit de voir), écritures `POST/PATCH /api/docs/:collection` contrôlées par règle (un citoyen ne voit et ne modifie que ses données ; seuls agents / admins traitent les demandes, diffusent les alertes, changent l'état des services ; seul l'admin change un rôle), soutiens (F52), contributions données (F51), indicateurs (F50), flux Webcup pour les agents (D19, clé jamais exposée).
+- `src/webcup.js` — interroge l'API toutes les `POLL_INTERVAL_SECONDS` (dédoublonnage sur `request_code`).
+- `public/assets/js/store.js` — client du serveur, même interface pour toutes les pages (`NT.store`, `NT.auth`, `NT.demandes`…).
+- `data/demo-seed.json` — données de démonstration (dates relatives).
 
-1. Créez `src/modules/<nom>.js` qui exporte un `express.Router()`.
-2. Ajoutez son nom dans la liste de `server.js`.
-3. Protégez les routes sensibles avec `requireRole('agent', 'admin')` ou `requireRole('admin')`.
-4. Si besoin, ajoutez la table dans `src/db.js` (`CREATE TABLE IF NOT EXISTS`).
+## Couverture des demandes (50)
+
+Le détail « où et comment le montrer au jury » est dans [`docs/RENDU-JURY.md`](docs/RENDU-JURY.md).
+
+| Thème | Demandes | Pages |
+|---|---|---|
+| Accueil, services, navigation | D05, D07, D15, F27, F28, F32, F38 | `index`, `services` |
+| Comptes, rôles, sécurité | D01, D03, D08, D09, D12, F33, F34, F35, F37 | `inscription`, `connexion`, `espace`, `compte`, `admin-comptes` |
+| Demandes citoyennes | D04, D11, D16, F25, F26, F49 | `demande`, `suivi`, `espace` |
+| Espace agents | D17, D19, F22, F47, F48, F50 | `agent`, `agent-tableau`, `agent-demandes`, `agent-journal` |
+| Alertes et annonces | D06, D18, F29, F30, F31 | `annonces`, `agent-alertes` |
+| Rendez-vous, transports, carte | F36, F39, F40, F45, F46 | `rendez-vous`, `transports`, `carte` |
+| Participation, données | F51, F52 | `soutenir`, `donnees` |
+| Accessibilité, langues, langage clair | D13, D14, D20, F21, F23, F24, F41, F42, F43, F44 | toutes (panneau ♿, touche `?`, `aide`) |

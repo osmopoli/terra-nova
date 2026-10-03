@@ -1,0 +1,92 @@
+/* Accueil — « la baie vitrée » : on lit à gauche, on regarde la colonie à droite. Lisibilité d'abord. */
+.accueil-haut{ display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr); gap:clamp(1.5rem,4vw,4rem); align-items:center;
+  padding-block:clamp(2rem,6vh,4.5rem) 2rem; }
+@media (max-width:920px){ .accueil-haut{ grid-template-columns:1fr; } }
+
+.accueil-texte .lieu{ display:inline-flex; align-items:center; gap:.45rem; color:var(--iono); font-weight:700; font-size:.95rem; margin-bottom:1rem; }
+.accueil-texte .lieu i{ font-size:1.15rem; }
+.accueil-texte h1{ font-size:clamp(2.1rem,4.4vw,3.6rem); line-height:1.08; letter-spacing:-.02em; max-width:16ch; text-wrap:balance; margin-bottom:1.1rem; color:#fff; }
+.accueil-texte .intro{ font-size:clamp(1.05rem,1.4vw,1.2rem); color:var(--brume); max-width:44ch; margin-bottom:1.8rem; }
+
+.recherche{ display:flex; align-items:center; gap:.4rem; max-width:34rem; padding:.4rem .4rem .4rem 1.1rem; border-radius:var(--r);
+  background:var(--verre-fort); border:1px solid var(--trait-2); transition:border-color 150ms ease, box-shadow 150ms ease; }
+.recherche:focus-within{ border-color:var(--iono); box-shadow:0 0 0 4px oklch(0.7040 0.1400 182.5 / .15); }
+.recherche > i{ font-size:1.3rem; color:var(--brume); }
+.recherche input{ border:0!important; background:transparent!important; outline:none!important; padding:.5rem .3rem!important; min-height:2.6rem!important; }
+.recherche .btn{ white-space:nowrap; }
+.raccourcis{ display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1rem; align-items:center; }
+.raccourcis span{ color:var(--brume); font-size:.9rem; margin-inline-end:.25rem; }
+.raccourcis a{ font-size:.9rem; color:var(--givre); text-decoration:none; padding:.35rem .85rem; border-radius:99px; border:1px solid var(--trait-2);
+  transition:border-color 150ms ease, background-color 150ms ease; }
+@media (hover:hover){ .raccourcis a:hover{ border-color:var(--iono); background:oklch(0.7040 0.1400 182.5 / .08); } }
+
+/* La baie vitrée */
+.baie{ position:relative; border-radius:32px; overflow:hidden; aspect-ratio:4/4.3; max-height:36rem; width:100%;
+  border:1px solid oklch(0.7040 0.1400 182.5 / .28); box-shadow:0 40px 90px -30px oklch(0.7040 0.1400 182.5 / .35), 0 30px 60px -30px rgba(0,0,0,.9); isolation:isolate; }
+@media (max-width:920px){ .baie{ aspect-ratio:16/10; max-height:none; } }
+.baie img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 70%;
+  animation:baie-entree 1400ms var(--ease-out) both; }
+@keyframes baie-entree{ from{ transform:scale(1.07); opacity:.4; } }
+.baie::after{ content:""; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+  background:linear-gradient(180deg, oklch(0.1396 0.0155 195.5 / 0) 45%, oklch(0.1396 0.0155 195.5 / .65) 100%); box-shadow:inset 0 0 0 1px rgba(255,255,255,.06); }
+html.contraste .baie::after{ background:none; }
+
+.baie img{ object-position:50% 45%; }
+.credit{ position:absolute; z-index:2; top:.9rem; inset-inline-end:1rem; font-size:.72rem; color:rgba(232,241,255,.7);
+  padding:.2rem .55rem; border-radius:99px; background:oklch(0.1396 0.0155 195.5 / .45); backdrop-filter:blur(6px); }
+
+/* Fiche de la colonie posée sur la vitre */
+.fiche-colonie{ position:absolute; z-index:2; inset-inline:1rem; bottom:1rem; display:grid; grid-template-columns:repeat(3,1fr);
+  border-radius:20px; background:oklch(0.1396 0.0155 195.5 / .72); backdrop-filter:blur(16px) saturate(140%); border:1px solid rgba(255,255,255,.12); }
+html.contraste .fiche-colonie{ background:#000; }
+.fiche-colonie > div{ padding:.85rem 1rem; }
+.fiche-colonie > div + div{ border-inline-start:1px solid rgba(255,255,255,.1); }
+.fiche-colonie dt{ display:flex; align-items:center; gap:.35rem; font-size:.8rem; color:var(--brume); }
+.fiche-colonie dt i{ font-size:1rem; color:var(--iono); }
+.fiche-colonie dd{ margin:.2rem 0 0; font-family:var(--titre); font-size:1.15rem; font-weight:600; color:#fff; }
+@media (max-width:480px){ .fiche-colonie{ grid-template-columns:1fr 1fr; } .fiche-colonie > div:last-child{ grid-column:span 2; border-inline-start:0; border-top:1px solid rgba(255,255,255,.1); } }
+
+/* Les quatre actions */
+.actions-principales{ display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; }
+@media (max-width:920px){ .actions-principales{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:480px){ .actions-principales{ grid-template-columns:1fr; } }
+.action{ display:flex; gap:1rem; align-items:flex-start; padding:1.25rem; border-radius:var(--r-l); text-decoration:none; color:inherit;
+  background:var(--verre); border:1px solid var(--trait); transition:border-color 150ms ease, transform 160ms var(--ease-out); }
+.action:active{ transform:scale(.98); }
+@media (hover:hover) and (pointer:fine){ .action:hover{ border-color:var(--iono); } }
+.action .icone{ width:3rem; height:3rem; flex:none; border-radius:14px; display:grid; place-items:center; font-size:1.65rem; color:var(--iono);
+  background:oklch(0.7040 0.1400 182.5 / .1); border:1px solid var(--trait-2); }
+.action.signaler .icone{ color:#FFB27A; background:rgba(255,154,92,.12); border-color:rgba(255,178,122,.3); }
+.action strong{ display:block; font-size:1.05rem; margin-bottom:.15rem; }
+.action span{ color:var(--brume); font-size:.92rem; line-height:1.45; }
+
+/* Services : liste à deux colonnes */
+.liste-services{ display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,26rem),1fr)); gap:0 2.5rem; margin:0; padding:0; list-style:none; }
+.liste-services a{ display:flex; align-items:center; gap:1rem; padding:1rem .25rem; border-bottom:1px solid var(--trait); text-decoration:none; color:inherit; }
+.liste-services .icone{ width:2.8rem; height:2.8rem; border-radius:50%; display:grid; place-items:center; flex:none; font-size:1.5rem; color:var(--iono);
+  background:oklch(0.7040 0.1400 182.5 / .08); border:1px solid var(--trait-2); }
+@media (hover:hover){ .liste-services a:hover strong{ color:var(--iono); } }
+.liste-services strong{ display:block; font-size:1.02rem; transition:color 150ms ease; }
+.liste-services span.doux{ font-size:.9rem; }
+.liste-services .statut{ margin-inline-start:auto; }
+
+/* Journal de la colonie (frise chronologique) */
+.journal{ list-style:none; margin:0 0 1.5rem; padding:0; position:relative; }
+.journal::before{ content:""; position:absolute; inset-inline-start:.45rem; top:.4rem; bottom:.4rem; width:2px; background:var(--trait-2); }
+.journal li{ position:relative; padding:0 0 1.6rem 2.2rem; }
+.journal li::before{ content:""; position:absolute; inset-inline-start:0; top:.35rem; width:1rem; height:1rem; border-radius:50%; background:var(--nuit); border:2px solid var(--iono); }
+.journal li.alerte::before{ border-color:var(--corail); background:var(--corail); }
+.journal time{ font-size:.85rem; color:var(--brume); }
+.journal h3{ margin:.15rem 0 .3rem; font-size:1.02rem; }
+.journal h3 a{ color:inherit; text-decoration:none; }
+@media (hover:hover){ .journal h3 a:hover{ color:var(--iono); } }
+.journal p{ color:var(--brume); margin:0; max-width:62ch; }
+.deux-colonnes{ display:grid; grid-template-columns:1.2fr .8fr; gap:3rem; align-items:start; }
+@media (max-width:920px){ .deux-colonnes{ grid-template-columns:1fr; } }
+
+/* Nouveaux arrivants (D12) — vraie séquence, donc numérotée */
+.arrivee{ border-radius:var(--r-l); padding:1.8rem; border:1px solid var(--trait-2); background:var(--verre); }
+.arrivee h2{ font-size:1.4rem; }
+.arrivee ol{ margin:1.1rem 0 1.5rem; padding:0; list-style:none; counter-reset:etape; }
+.arrivee li{ counter-increment:etape; display:flex; gap:.8rem; align-items:baseline; padding:.4rem 0; }
+.arrivee li::before{ content:counter(etape); font-family:var(--titre); font-size:.8rem; width:1.6rem; height:1.6rem; flex:none; display:grid; place-items:center; border-radius:50%; background:oklch(0.7040 0.1400 182.5 / .12); color:var(--iono); }

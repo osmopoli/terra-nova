@@ -1,0 +1,42 @@
+/* Terra Nova — journal des actions (F47, F48). Complète agent.css, mêmes jetons. */
+.jr-lecture{ display:flex; gap:.6rem; align-items:flex-start; margin:0 0 1.25rem; padding:.7rem .95rem; border:1px solid var(--trait-2); border-radius:var(--r); background:var(--verre); color:var(--brume); font-size:.92rem; }
+.jr-lecture i{ color:var(--iono); font-size:1.3rem; flex:none; margin-top:.1rem; }
+
+.jr-resume{ display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr)); margin-bottom:1.5rem; }
+.jr-resume .kpi .valeur{ font-size:2rem; }
+.jr-resume .kpi .intitule{ font-weight:700; margin:0 0 .5rem; font-size:.9rem; color:var(--brume); }
+.jr-par-cat{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:.4rem .9rem; font-size:.9rem; }
+.jr-par-cat li{ display:inline-flex; align-items:center; gap:.35rem; }
+.jr-par-cat i{ color:var(--iono); font-size:1.1rem; }
+.jr-par-cat strong{ font-variant-numeric:tabular-nums; }
+.jr-dernier{ display:flex; flex-wrap:wrap; gap:.4rem; align-items:center; font-weight:700; }
+.jr-dernier + .doux{ margin:.4rem 0 0; font-size:.88rem; }
+
+.jr-histo{ margin-bottom:1.5rem; }
+.jr-histo h2{ margin:0; font-size:1.15rem; }
+.jr-histo h2:focus{ outline:none; }
+.jr-histo h2:focus-visible{ outline:3px solid var(--iono); }
+.jr-histo .jr-id{ font-family:var(--mono); font-size:.85rem; color:var(--brume); font-weight:500; }
+.jr-histo .etapes{ margin-top:1rem; }
+.jr-histo .etapes li{ padding-bottom:.9rem; }
+.jr-histo .etapes .doux{ font-size:.88rem; }
+
+.jr-compte{ margin:0; }
+.jr-table{ min-width:56rem; }
+.jr-table td, .jr-table th[scope="row"]{ font-weight:400; font-size:.88rem; color:var(--givre); background:none; }
+.jr-quand strong{ display:block; font-weight:700; }
+.jr-quand .doux{ font-size:.8rem; }
+.jr-qui{ display:flex; flex-direction:column; gap:.3rem; align-items:flex-start; }
+.jr-cat{ display:inline-flex; align-items:center; gap:.35rem; font-size:.8rem; color:var(--brume); }
+.jr-cat i{ color:var(--iono); font-size:1.05rem; }
+.jr-action{ font-weight:700; display:block; margin-top:.15rem; }
+.jr-id-cell{ display:block; font-family:var(--mono); font-size:.78rem; color:var(--brume); overflow-wrap:anywhere; }
+.jr-lien{ font:inherit; font-weight:700; color:var(--iono); background:none; border:0; padding:0; cursor:pointer; text-decoration:underline; text-underline-offset:3px; text-align:start; }
+.jr-lien:active{ transform:scale(.97); }
+@media (hover:hover) and (pointer:fine){ .jr-lien:hover{ color:#fff; } }
+.jr-av-ap{ display:flex; flex-wrap:wrap; gap:.3rem .45rem; align-items:center; }
+.jr-av{ color:var(--brume); text-decoration:line-through; text-decoration-thickness:1px; }
+.jr-ap{ font-weight:700; }
+.jr-av-ap i{ color:var(--brume); }
+.jr-vide{ color:var(--brume); }
+.jr-note{ white-space:pre-line; }

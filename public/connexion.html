@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Se connecter — Terra Nova</title>
+  <meta name="description" content="Connectez-vous à votre espace personnel Terra Nova.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/comptes.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/comptes.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="" data-ariane="nav.accueil|index.html;nav.connexion">
+  <main id="contenu" class="conteneur">
+    <header class="titre-page">
+      <h1 data-i18n="c.con.titre">Se connecter à mon espace</h1>
+      <p data-i18n="c.con.sous">Retrouvez vos demandes, vos rendez-vous et vos notifications là où vous les avez laissés.</p>
+    </header>
+
+    <div class="auth-mise-en-page">
+      <div class="pile">
+        <section class="panneau" aria-labelledby="t-form">
+          <h2 id="t-form" class="sr-only" data-i18n="c.con.formTitre">Formulaire de connexion</h2>
+
+          <div id="deja-connecte" class="note-info" hidden>
+            <p><strong data-i18n="c.con.dejaTitre">Vous êtes déjà connecté.</strong></p>
+            <p id="deja-texte"></p>
+            <div class="ligne">
+              <a class="btn btn-primaire" id="deja-lien" href="espace.html" data-i18n="c.con.continuer">Continuer</a>
+              <button class="btn" type="button" id="deja-changer" data-i18n="c.con.changer">Changer de compte</button>
+            </div>
+          </div>
+
+          <div id="alerte-secu" class="note-alerte" role="status" tabindex="-1" hidden>
+            <p><strong><i class="ph-duotone ph-shield-warning" aria-hidden="true"></i> <span data-i18n="c.con.secuTitre">Connexion réussie, une information de sécurité</span></strong></p>
+            <p id="alerte-secu-texte"></p>
+            <p class="doux" data-i18n="c.con.secuAide">Si ce n’étaient pas vous, changez votre mot de passe depuis « Mon compte ».</p>
+            <a class="btn btn-primaire" id="alerte-secu-lien" href="espace.html" data-i18n="c.con.continuer">Continuer</a>
+          </div>
+
+          <div id="etat-verrou" class="note-verrou" role="alert" tabindex="-1" hidden>
+            <p><strong><i class="ph-duotone ph-lock-key" aria-hidden="true"></i> <span data-i18n="c.con.verrouTitre">Connexion suspendue quelques minutes</span></strong></p>
+            <p><span data-i18n="c.con.verrouRebours">Vous pourrez réessayer dans</span> <strong class="rebours" id="compte-rebours" aria-hidden="true">--:--</strong><span class="sr-only" id="rebours-sr"></span></p>
+            <p class="doux" data-i18n="c.con.verrouExplication">Pas d’inquiétude : votre compte et vos données sont intacts. Après plusieurs mots de passe incorrects, nous suspendons brièvement la connexion pour empêcher quelqu’un d’autre de deviner votre mot de passe. Un agent peut aussi débloquer votre compte à l’accueil de la mairie.</p>
+          </div>
+
+          <form id="form-connexion" novalidate>
+            <div class="resume-erreurs" role="alert"></div>
+            <fieldset class="sans-cadre" id="champs-connexion">
+              <legend class="sr-only" data-i18n="c.con.formTitre">Formulaire de connexion</legend>
+              <div class="champ">
+                <label for="email" data-i18n="c.con.email">Adresse e-mail</label>
+                <input id="email" name="email" type="email" autocomplete="username" inputmode="email" required>
+              </div>
+              <div class="champ">
+                <label for="motdepasse" data-i18n="c.con.mdp">Mot de passe</label>
+                <div class="mdp-ligne">
+                  <input id="motdepasse" name="motdepasse" type="password" autocomplete="current-password" required>
+                </div>
+              </div>
+              <div class="champ" id="bloc-verif" hidden>
+                <label for="verif" id="lbl-verif">Combien font 3 + 4 ?</label>
+                <input id="verif" name="verif" type="text" inputmode="numeric" autocomplete="off" aria-describedby="aide-verif">
+                <p class="aide" id="aide-verif" data-i18n="c.con.verifAide">Petite vérification pour protéger les comptes contre les programmes automatiques. Répondez avec un nombre.</p>
+              </div>
+              <div class="ligne entre">
+                <button class="btn btn-primaire" type="submit" id="btn-connexion" data-i18n="c.con.submit">Se connecter</button>
+                <button class="lien-bouton" type="button" id="btn-oublie" aria-expanded="false" aria-controls="aide-oubli" data-i18n="c.con.oublie">Mot de passe oublié ?</button>
+              </div>
+            </fieldset>
+          </form>
+
+          <div id="aide-oubli" class="note-info" hidden>
+            <p><strong data-i18n="c.con.oubliTitre">Réinitialiser votre mot de passe</strong></p>
+            <p data-i18n="c.con.oubliTexte">Pour votre sécurité, un mot de passe oublié se réinitialise auprès de la mairie : présentez-vous à l’accueil de l’hôtel de ville avec une pièce d’identité, ou écrivez-nous depuis la page de contact. Un agent vérifiera votre identité puis débloquera votre accès.</p>
+            <p class="doux" data-i18n="c.con.oubliDemo">Dans cette démonstration, un agent peut débloquer un compte verrouillé depuis la page « Comptes ».</p>
+            <a href="demande.html" data-i18n="c.con.oubliLien">Contacter la mairie</a>
+          </div>
+        </section>
+
+        <p class="doux"><span data-i18n="c.con.pasDeCompte">Pas encore de compte ?</span> <a href="inscription.html" data-i18n="c.con.creer">Créer un compte</a></p>
+      </div>
+
+      <aside class="auth-cote demo-comptes" id="demo-comptes" aria-labelledby="t-demo">
+        <h2 id="t-demo" data-i18n="c.con.demoTitre">Comptes de démonstration</h2>
+        <p class="doux" data-i18n="c.con.demoAide">Pour tester les trois profils : le bouton remplit le formulaire, il reste à valider.</p>
+        <ul class="liste-demo" id="liste-demo"></ul>
+      </aside>
+    </div>
+  </main>
+
+  <script>NT.pret(() => NT.comptes.connexion());</script>
+</body>
+</html>

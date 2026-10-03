@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mon espace — Terra Nova</title>
+  <meta name="description" content="Votre espace personnel : demandes en cours, historique, rendez-vous et notifications.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/comptes.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/comptes.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="espace" data-ariane="nav.accueil|index.html;nav.espace" data-roles="citoyen">
+  <main id="contenu" class="conteneur">
+    <header class="titre-page">
+      <h1 id="titre-espace">Bonjour</h1>
+      <p id="sous-titre-espace" data-i18n="c.esp.sous">Voici où en sont vos démarches et ce qui vous attend.</p>
+    </header>
+
+    <div id="astuces-haut" class="astuces"></div>
+
+    <!-- D12 : parcours d'accueil (affiché à la première connexion ou tant que le profil est incomplet) -->
+    <section class="panneau parcours" id="parcours" aria-labelledby="t-parcours" hidden></section>
+
+    <section class="kpis" aria-label="Résumé" id="kpis"></section>
+
+    <!-- Raccourcis -->
+    <nav class="raccourcis-espace" aria-labelledby="t-raccourcis">
+      <h2 id="t-raccourcis" class="sr-only" data-i18n="c.esp.raccourcis">Accès rapides</h2>
+      <a class="btn btn-primaire" href="demande.html?type=signalement"><i class="ph-duotone ph-map-pin" aria-hidden="true"></i><span data-i18n="c.esp.signaler">Signaler un problème</span></a>
+      <a class="btn" href="demande.html?type=demarche"><i class="ph-duotone ph-file-text" aria-hidden="true"></i><span data-i18n="c.esp.demarche">Nouvelle démarche</span></a>
+      <a class="btn" href="rendez-vous.html"><i class="ph-duotone ph-calendar-check" aria-hidden="true"></i><span data-i18n="c.esp.rdv">Prendre rendez-vous</span></a>
+      <a class="btn" href="compte.html"><i class="ph-duotone ph-user-gear" aria-hidden="true"></i><span data-i18n="c.esp.compte">Mon compte</span></a>
+    </nav>
+
+    <!-- D11 : demandes en cours -->
+    <section class="bloc" aria-labelledby="t-encours">
+      <div class="titre-section"><div><h2 id="t-encours" data-i18n="c.esp.encours">Mes demandes en cours</h2>
+        <p data-i18n="c.esp.encoursD">Chaque demande avec son état actuel et sa dernière étape réalisée.</p></div></div>
+      <ul class="liste-demandes" id="liste-encours"></ul>
+    </section>
+
+    <div class="grille-2 bloc">
+      <!-- Rendez-vous -->
+      <section aria-labelledby="t-rdv">
+        <div class="titre-section"><h2 id="t-rdv" data-i18n="c.esp.rdvTitre">Mes prochains rendez-vous</h2></div>
+        <div id="astuces-rdv" class="astuces"></div>
+        <div id="liste-rdv"></div>
+      </section>
+      <!-- Notifications -->
+      <section aria-labelledby="t-notifs">
+        <div class="titre-section"><h2 id="t-notifs" data-i18n="c.esp.notifs">Notifications récentes</h2>
+          <button class="btn" type="button" id="btn-tout-lu" data-i18n="c.esp.toutLu">Tout marquer comme lu</button></div>
+        <div id="astuces-notifs" class="astuces"></div>
+        <div id="liste-notifs"></div>
+      </section>
+    </div>
+
+    <!-- F26 : historique complet -->
+    <section class="bloc" aria-labelledby="t-hist" id="historique">
+      <div class="titre-section"><div><h2 id="t-hist" data-i18n="c.esp.hist">Historique de mes demandes</h2>
+        <p data-i18n="c.esp.histD">Toutes vos demandes depuis votre inscription, pour retrouver ce que vous avez déjà envoyé.</p></div></div>
+      <div id="astuces-hist" class="astuces"></div>
+      <div class="filtres">
+        <div class="champ">
+          <label for="f-statut" data-i18n="c.esp.fStatut">Statut</label>
+          <select id="f-statut"></select>
+        </div>
+        <div class="champ">
+          <label for="f-q" data-i18n="c.esp.fRech">Rechercher</label>
+          <input id="f-q" type="search" autocomplete="off" aria-describedby="aide-fq" data-i18n-attr="placeholder:c.esp.fRechPh" placeholder="Objet, numéro, service">
+        </div>
+        <div class="champ">
+          <label for="f-ordre" data-i18n="c.esp.fOrdre">Trier par date</label>
+          <select id="f-ordre">
+            <option value="desc" data-i18n="c.esp.recentes">Plus récentes d’abord</option>
+            <option value="asc" data-i18n="c.esp.anciennes">Plus anciennes d’abord</option>
+          </select>
+        </div>
+      </div>
+      <p class="aide" id="aide-fq" data-i18n="c.esp.fAide">Le tableau se met à jour pendant que vous saisissez.</p>
+      <p class="doux" id="f-resultat" aria-live="polite"></p>
+      <div class="table-defile">
+        <table class="table-empilee">
+          <caption class="sr-only" data-i18n="c.esp.histCap">Historique de toutes vos demandes, de la plus récente à la plus ancienne</caption>
+          <thead><tr>
+            <th scope="col" data-i18n="c.esp.cRef">Référence</th>
+            <th scope="col" data-i18n="c.esp.cObjet">Objet</th>
+            <th scope="col" data-i18n="c.esp.cType">Type</th>
+            <th scope="col" data-i18n="c.esp.cService">Service</th>
+            <th scope="col" data-i18n="c.esp.cDate">Envoyée le</th>
+            <th scope="col" data-i18n="c.esp.cStatut">Statut</th>
+          </tr></thead>
+          <tbody id="tbody-hist"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>NT.pret(() => NT.comptes.espace());</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+# Lancer : docker compose up -d --build   →   http://localhost:3000
+services:
+  terra-nova:
+    build: .
+    container_name: terra-nova
+    ports:
+      - "${PORT:-3000}:3000"
+    env_file:
+      - .env
+    environment:
+      PORT: 3000
+    volumes:
+      - terra-nova-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  terra-nova-data:

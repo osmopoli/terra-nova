@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Suivi de mes demandes — Terra Nova</title>
+  <meta name="description" content="Suivez vos demandes à la mairie de Nova Terra : statut, étapes réalisées et historique.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/demandes.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="espace" data-ariane="nav.accueil|index.html;nav.espace|espace.html;suivi.ariane" data-roles="connecte">
+  <main id="contenu" class="conteneur">
+    <header class="titre-page">
+      <h1 id="titre-suivi" data-i18n="suivi.titre">Suivi de mes demandes</h1>
+      <p id="intro-suivi" data-i18n="suivi.intro">Retrouvez l’état de chaque demande et les étapes déjà réalisées, sans contacter la mairie.</p>
+    </header>
+    <div id="contenu-suivi"></div>
+  </main>
+
+  <script>
+    const EN = {
+      'suivi.ariane': 'Request tracking', 'suivi.titre': 'Tracking my requests',
+      'suivi.intro': 'See the status of each request and the steps already completed, without contacting the city hall.'
+    };
+    NT.i18n.ajouter({ fr: { 'suivi.ariane': 'Suivi de la demande' }, en: EN, es: EN, ar: EN });
+
+    NT.pret(() => {
+      const { echap, $ } = NT.ui;
+      const bi = (fr, en) => (NT.i18n.langue === 'fr' ? fr : en);
+      const u = NT.auth.utilisateur();
+      const zone = $('#contenu-suivi');
+      const id = NT.ui.param('id');
+      const estAgent = u.role !== 'citoyen';
+      const ETAPES = ['recue', 'en_cours', 'traitee', 'cloturee'];
+      const ICONES = { recue: 'ph-envelope-simple-open', en_cours: 'ph-gear-six', traitee: 'ph-check-circle', cloturee: 'ph-lock-simple' };
+      const LIB = { recue: ['Reçue', 'Received'], en_cours: ['En cours', 'In progress'], traitee: ['Traitée', 'Resolved'], cloturee: ['Clôturée', 'Closed'] };
+      const TYPES = { contact: ['Contact', 'Contact'], signalement: ['Signalement', 'Problem report'], demarche: ['Démarche', 'Procedure'] };
+      const lib = c => bi(LIB[c][0], LIB[c][1]);
+      const nomService = sid => { const s = NT.services.get(sid); return s ? NT.i18n.choisir(s.nom) : bi('Service à déterminer', 'Service to be determined'); };
+      const badge = c => `<span class="statut statut-${echap(c)}"><i class="ph-duotone ${ICONES[c] || 'ph-circle'}" aria-hidden="true"></i>${echap(lib(c))}</span>`;
+      const dateLongue = iso => NT.ui.date(iso) + ' ' + bi('à', 'at') + ' ' + new Date(iso).toLocaleTimeString(NT.i18n.langue === 'fr' ? 'fr-FR' : 'en-GB', { hour: '2-digit', minute: '2-digit' });
+
+      /* ----- Sans identifiant : la liste de mes demandes ----- */
+      function liste() {
+        if (estAgent) {
+          zone.innerHTML = `<div class="vide"><p>${echap(bi('Les agents consultent les demandes dans l’espace de travail.', 'Staff members view requests in the work area.'))}</p>
+            <a class="btn btn-primaire" href="agent-demandes.html">${echap(bi('Ouvrir les demandes', 'Open the requests'))}</a></div>`;
+          return;
+        }
+        const l = NT.demandes.pour(u.id);
+        zone.innerHTML = `<div class="ligne entre" style="margin-bottom:1rem"><h2 style="margin:0">${echap(bi('Mes demandes', 'My requests'))} (${l.length})</h2>
+            <span class="ligne"><a class="btn btn-primaire" href="demande.html"><i class="ph ph-plus" aria-hidden="true"></i>${echap(bi('Nouvelle demande', 'New request'))}</a>
+            <a class="btn" href="espace.html">${echap(bi('Retour à mon espace', 'Back to my space'))}</a></span></div>` +
+          (l.length ? `<ul class="dm-liste-demandes">${l.map(d => `<li><a href="suivi.html?id=${encodeURIComponent(d.id)}">
+              <span><span class="ref">${echap(d.id)}</span><strong>${echap(d.objet)}</strong>
+              <span class="meta" style="display:block">${echap(bi(TYPES[d.type][0], TYPES[d.type][1]))} · ${echap(nomService(d.serviceId))} · ${echap(NT.ui.date(d.cree))}</span></span>
+              ${badge(d.statut)}</a></li>`).join('')}</ul>`
+            : `<p class="vide">${echap(bi('Vous n’avez pas encore fait de demande.', 'You have not made any request yet.'))}</p>`);
+      }
+
+      /* ----- Détail d'une demande ----- */
+      function detail(d) {
+        const idx = ETAPES.indexOf(d.statut);
+        const histo = Array.isArray(d.historique) ? d.historique : [];
+        const frise = ETAPES.map((e, i) => {
+          const faite = i <= idx, courante = i === idx;
+          const items = histo.filter(h => h.statut === e);
+          const etat = courante ? bi('Étape actuelle', 'Current step') : faite ? bi('Étape réalisée', 'Step completed') : bi('À venir', 'Upcoming');
+          const ic = faite ? 'ph-check-circle' : 'ph-circle-dashed';
+          return `<li class="${faite ? 'faite' : ''} ${courante ? 'courante' : ''}" ${courante ? 'aria-current="step"' : ''}>
+            <div class="dm-etape-titre"><strong>${echap(lib(e))}</strong><span class="dm-etape-etat"><i class="ph-duotone ${ic}" aria-hidden="true"></i>${echap(etat)}</span></div>
+            ${items.length ? `<ul class="dm-hist">${items.map(h => `<li class="${/^Complément du citoyen/.test(h.note || '') ? 'complement' : ''}">
+              <time datetime="${echap(h.date)}">${echap(dateLongue(h.date))}</time>
+              <p style="margin:.15rem 0">${echap(h.note || bi('Changement de statut', 'Status change'))}</p>
+              <span class="par"><i class="ph ph-user" aria-hidden="true"></i> ${echap(h.par || '')}</span></li>`).join('')}</ul>` : ''}
+          </li>`;
+        }).join('');
+
+        const haute = d.priorite === 'haute';
+        const peutCompleter = d.statut !== 'cloturee' && (!estAgent ? true : false);
+        zone.innerHTML = `
+          <div class="ligne" style="margin-bottom:1rem"><a class="btn" href="suivi.html"><i class="ph ph-arrow-left" aria-hidden="true"></i>${echap(bi('Toutes mes demandes', 'All my requests'))}</a></div>
+          <div class="dm-suivi">
+            <div>
+              <section class="panneau dm-panneau" aria-labelledby="h-objet">
+                <div class="dm-entete-demande">
+                  <div><span class="ref">${echap(d.id)}</span><h2 id="h-objet">${echap(d.objet)}</h2></div>
+                  <span class="dm-statut-grand statut-${echap(d.statut)}"><i class="ph-duotone ${ICONES[d.statut]}" aria-hidden="true"></i><span><span class="sr-only">${echap(bi('Statut actuel : ', 'Current status: '))}</span>${echap(lib(d.statut))}</span></span>
+                </div>
+                ${d.message ? `<p style="white-space:pre-line">${echap(d.message)}</p>` : ''}
+                <h3 style="margin-top:1.5rem">${echap(bi('Avancement', 'Progress'))}</h3>
+                <ol class="etapes dm-frise" aria-label="${echap(bi('Étapes de la demande', 'Request steps'))}">${frise}</ol>
+              </section>
+              ${peutCompleter ? `
+              <section class="panneau dm-panneau" style="margin-top:1.5rem" aria-labelledby="h-compl">
+                <h2 id="h-compl" style="font-size:1.2rem">${echap(bi('Ajouter un complément d’information', 'Add further information'))}</h2>
+                <form id="form-compl" novalidate>
+                  <div class="champ">
+                    <label for="compl">${echap(bi('Votre complément', 'Your addition'))}</label>
+                    <textarea id="compl" maxlength="1000" style="min-height:6rem" aria-describedby="aide-compl err-compl"></textarea>
+                    <p class="aide" id="aide-compl">${echap(bi('Il sera ajouté à l’historique et visible par l’agent qui traite votre demande.', 'It will be added to the history and visible to the agent handling your request.'))}</p>
+                    <p class="erreur dm-err" id="err-compl" hidden></p>
+                  </div>
+                  <button class="btn btn-primaire" type="submit"><i class="ph ph-paper-plane-tilt" aria-hidden="true"></i>${echap(bi('Envoyer le complément', 'Send the addition'))}</button>
+                </form>
+              </section>` : (d.statut === 'cloturee' ? `<p class="doux" style="margin-top:1rem">${echap(bi('Cette demande est clôturée : pour une nouvelle question, faites une nouvelle demande.', 'This request is closed: for a new question, make a new request.'))}</p>` : '')}
+            </div>
+            <aside class="panneau dm-panneau" aria-labelledby="h-fiche">
+              <h2 id="h-fiche" style="font-size:1.2rem">${echap(bi('Détails', 'Details'))}</h2>
+              <dl class="dm-fiche">
+                <dt>${echap(bi('Type', 'Type'))}</dt><dd>${echap(bi(TYPES[d.type][0], TYPES[d.type][1]))}</dd>
+                <dt>${echap(bi('Service', 'Service'))}</dt><dd>${echap(nomService(d.serviceId))}</dd>
+                ${d.lieu ? `<dt>${echap(bi('Lieu', 'Location'))}</dt><dd>${echap(d.lieu)}</dd>` : ''}
+                <dt>${echap(bi('Envoyée le', 'Sent on'))}</dt><dd>${echap(dateLongue(d.cree))}</dd>
+                <dt>${echap(bi('Priorité', 'Priority'))}</dt><dd>${haute ? `<span class="dm-prio-haute"><i class="ph-duotone ph-warning" aria-hidden="true"></i>${echap(bi('Haute (dangereux)', 'High (dangerous)'))}</span>` : echap(bi('Normale', 'Normal'))}</dd>
+                <dt>${echap(bi('Traitée par', 'Handled by'))}</dt><dd>${d.agent ? `<i class="ph ph-user-circle" aria-hidden="true"></i> ${echap(d.agent)}` : `<span class="doux">${echap(bi('Pas encore attribuée à un agent', 'Not yet assigned to an agent'))}</span>`}</dd>
+                ${d.photo ? `<dt>${echap(bi('Photo', 'Photo'))}</dt><dd><img src="${echap(d.photo)}" alt="${echap(bi('Photo jointe au signalement', 'Photo attached to the report'))}"></dd>` : ''}
+              </dl>
+            </aside>
+          </div>`;
+        const titre = $('#titre-suivi'); titre.textContent = bi('Demande ', 'Request ') + d.id;
+        $('#intro-suivi').textContent = bi('Statut actuel, étapes réalisées et historique de votre demande.', 'Current status, completed steps and history of your request.');
+        document.title = bi('Demande ', 'Request ') + d.id + ' — Terra Nova';
+
+        const f = $('#form-compl');
+        if (f) f.addEventListener('submit', e => {
+          e.preventDefault();
+          const champ = $('#compl'), err = $('#err-compl'), txt = champ.value.trim();
+          if (txt.length < 5) {
+            err.innerHTML = `<i class="ph ph-warning-circle" aria-hidden="true"></i><span>${echap(bi('Écrivez votre complément (5 caractères minimum).', 'Write your addition (5 characters minimum).'))}</span>`;
+            err.hidden = false; champ.setAttribute('aria-invalid', 'true'); champ.focus(); return;
+          }
+          const nom = u.prenom + ' ' + u.nom;
+          NT.store.update('demandes', d.id, x => ({ historique: (x.historique || []).concat([{ date: NT.store.maintenant(), statut: x.statut, note: 'Complément du citoyen : ' + txt, par: nom }]) }));
+          NT.ui.toast(bi('Complément ajouté à votre demande.', 'Addition added to your request.'), 'success');
+          detail(NT.store.find('demandes', d.id));
+          const h = $('#h-compl'); if (h) { h.setAttribute('tabindex', '-1'); h.focus(); }
+        });
+        const c = $('#compl'); if (c) c.addEventListener('input', () => { c.removeAttribute('aria-invalid'); $('#err-compl').hidden = true; });
+      }
+
+      if (!id) { liste(); return; }
+      const d = NT.store.find('demandes', id);
+      if (d && (estAgent || d.userId === u.id)) { detail(d); return; }
+      // Inexistante ou appartenant à quelqu'un d'autre : même message, on ne révèle pas son existence
+      $('#titre-suivi').textContent = (d || !estAgent) ? bi('Accès refusé', 'Access denied') : bi('Demande introuvable', 'Request not found');
+      $('#intro-suivi').textContent = '';
+      zone.innerHTML = `<div class="vide" role="alert"><i class="ph-duotone ph-lock-key" aria-hidden="true" style="font-size:2.5rem;color:var(--corail)"></i>
+        <p>${echap((d || !estAgent) ? bi('Vous ne pouvez consulter que vos propres demandes.', 'You can only view your own requests.') : bi('Aucune demande ne correspond à ce numéro.', 'No request matches this number.'))}</p>
+        <a class="btn btn-primaire" href="${estAgent ? 'agent-demandes.html' : 'espace.html'}">${echap(estAgent ? bi('Retour aux demandes', 'Back to requests') : bi('Retour à mon espace', 'Back to my space'))}</a>
+        <a class="btn" href="suivi.html">${echap(bi('Voir mes demandes', 'See my requests'))}</a></div>`;
+    });
+  </script>
+</body>
+</html>

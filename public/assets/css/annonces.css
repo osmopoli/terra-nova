@@ -1,0 +1,84 @@
+/* Annonces — alertes mises en forme distinctement, liste d'informations, bloc « Être prévenu ». */
+.an-mise{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,21rem); gap:2rem 3rem; align-items:start; }
+@media (max-width:980px){ .an-mise{ grid-template-columns:1fr; } }
+
+.an-outils{ display:grid; gap:.9rem; margin-bottom:1.5rem; }
+.an-recherche{ display:flex; align-items:center; gap:.4rem; max-width:34rem; padding:.35rem 1.1rem; border-radius:999px; background:var(--verre-fort); border:1px solid var(--trait-2);
+  transition:border-color 150ms ease, box-shadow 150ms ease; }
+.an-recherche:focus-within{ border-color:var(--iono); box-shadow:0 0 0 4px oklch(0.7040 0.1400 182.5 / .15); }
+.an-recherche > i{ font-size:1.3rem; color:var(--brume); }
+.an-recherche input{ border:0!important; background:transparent!important; outline:none!important; padding:.5rem .3rem!important; min-height:2.6rem!important; }
+.an-filtres{ display:flex; flex-wrap:wrap; gap:.5rem .75rem; align-items:center; color:var(--brume); font-size:.92rem; }
+.an-boutons{ display:flex; flex-wrap:wrap; gap:.45rem; }
+.an-filtre{ font:inherit; font-size:.9rem; font-weight:600; color:var(--givre); background:transparent; border:1px solid var(--trait-2); border-radius:999px; padding:.4rem .95rem; min-height:2.5rem; cursor:pointer;
+  transition:transform 160ms var(--ease-out), border-color 150ms ease, background-color 150ms ease; }
+.an-filtre:active{ transform:scale(.97); }
+@media (hover:hover) and (pointer:fine){ .an-filtre:hover{ border-color:var(--iono); } }
+.an-filtre[aria-pressed="true"]{ background:var(--iono); color:var(--sur-iono); border-color:var(--iono); }
+.an-filtre[aria-pressed="true"]::before{ content:"\2713"; margin-inline-end:.4rem; font-weight:800; }
+.an-compteur{ margin:0; color:var(--brume); font-size:.92rem; min-height:1.5rem; }
+
+.an-groupe{ margin-bottom:2.5rem; }
+.an-groupe > h2{ font-size:1.25rem; margin-bottom:1rem; }
+
+/* Carte commune */
+.an{ position:relative; scroll-margin-top:6rem; }
+.an header{ display:flex; flex-wrap:wrap; gap:.4rem .8rem; align-items:center; margin-bottom:.4rem; }
+.an h3{ margin:0; font-size:1.15rem; flex:1 1 14rem; }
+.an h4{ font-family:var(--police); font-size:.95rem; margin:1.1rem 0 .4rem; }
+.an-niveau{ display:inline-flex; align-items:center; gap:.4rem; font-weight:800; font-size:.82rem; padding:.2rem .7rem .2rem .5rem; border-radius:99px; border:1px solid currentColor; white-space:nowrap; }
+.an-niveau i{ font-size:1.15rem; }
+.an-niv-alerte{ color:var(--corail); }
+.an-niv-importante{ color:var(--soleil); }
+.an-niv-info{ color:var(--iono); }
+.an-niv-fin{ color:var(--brume); }
+.an-meta{ display:flex; flex-wrap:wrap; gap:.4rem 1rem; align-items:center; margin:0 0 .8rem; font-size:.88rem; color:var(--brume); }
+.an-meta i{ margin-inline-end:.25rem; vertical-align:-.12em; }
+.an-chip{ display:inline-flex; align-items:center; font-size:.8rem; font-weight:700; padding:.15rem .6rem; border-radius:99px; border:1px solid var(--trait-2); color:var(--brume); }
+.an-chip i{ margin-inline-end:.3rem; }
+.an-chip.an-oui{ color:var(--iono); border-color:var(--iono); }
+.an-texte{ margin:0 0 .5rem; }
+.an-petit{ font-size:.85rem; }
+
+/* Alertes : bandeau latéral fort, fond teinté */
+.an-alerte{ padding:1.3rem 1.4rem 1.4rem; margin-bottom:1.25rem; border-radius:var(--r-l); border:1px solid var(--corail); border-inline-start-width:7px; background:rgba(255,107,127,.07); }
+.an-alerte h3{ font-size:1.3rem; }
+.an-consignes{ margin:0; padding-inline-start:1.4rem; display:grid; gap:.4rem; }
+.an-consignes li::marker{ font-weight:800; color:var(--iono); }
+.an-alerte .an-consignes{ font-size:1.02rem; }
+.an-publics, .an-lieux{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:.5rem; }
+.an-publics li{ display:inline-flex; align-items:center; gap:.4rem; padding:.3rem .8rem; border-radius:99px; border:1px solid var(--soleil); color:#FFE3B5; background:rgba(255,196,107,.08); font-size:.92rem; font-weight:600; }
+.an-publics i{ font-size:1.2rem; color:var(--soleil); }
+.an-lieux{ flex-direction:column; gap:.3rem; }
+.an-lieux li{ padding-inline-start:1.5rem; position:relative; }
+.an-lieux li::before{ content:""; position:absolute; inset-inline-start:.35rem; top:.65em; width:.45rem; height:.45rem; border-radius:50%; background:var(--iono); }
+.an-urgences{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:.6rem; }
+.an-urgences .btn strong{ font-family:var(--titre); font-size:1.15rem; }
+.an-vous{ display:flex; gap:.8rem; align-items:flex-start; margin:0 0 1rem; padding:.85rem 1rem; border-radius:var(--r); border:1px solid var(--soleil); border-inline-start-width:5px; background:rgba(255,196,107,.09); }
+.an-vous > i{ font-size:1.8rem; color:var(--soleil); flex:none; }
+.an-vous p{ margin:.2rem 0 0; }
+
+/* Informations : liste à filet, pas de cartes */
+.an-info{ padding:1.1rem .25rem 1.1rem; border-bottom:1px solid var(--trait); }
+.an-g-infos, .an-g-arch{ border-top:0; }
+.an-importante{ border-inline-start:4px solid var(--soleil); padding-inline-start:1rem; }
+.an-fin{ opacity:.85; }
+.an-suite{ margin-top:.6rem; }
+.an-suite summary{ cursor:pointer; font-weight:700; color:var(--iono); padding:.35rem 0; }
+.an-suite > div{ padding:.5rem 0 0; }
+
+/* Surlignage à l'arrivée par ancre */
+.an.cible{ outline:3px solid var(--iono); outline-offset:6px; border-radius:var(--r); }
+.an.cible.an-alerte{ border-radius:var(--r-l); }
+
+/* Être prévenu */
+.an-prevenir{ background:var(--verre); border:1px solid var(--trait); border-radius:var(--r-l); padding:1.4rem; }
+@media (min-width:981px){ .an-prevenir{ position:sticky; top:6rem; } }
+.an-prevenir h2{ display:flex; gap:.5rem; align-items:center; font-size:1.15rem; }
+.an-prevenir h2 i{ color:var(--iono); font-size:1.5rem; }
+.an-prevenir fieldset{ margin-top:1rem; }
+.an-case{ display:flex; gap:.7rem; align-items:flex-start; padding:.35rem 0; }
+.an-case input{ width:1.3rem; height:1.3rem; margin-top:.2rem; flex:none; accent-color:var(--iono); }
+.an-case label{ font-weight:600; }
+.an-case-q{ margin-bottom:.5rem; }
+.an-prefs-actions{ margin:.75rem 0 1rem; }
