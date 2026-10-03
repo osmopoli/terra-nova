@@ -29,6 +29,7 @@ const AgentMessagesController = () => import('#controllers/agent_messages_contro
 const AlertsController = () => import('#controllers/alerts_controller')
 const DemandesController = () => import('#controllers/demandes_controller')
 const AgentDemandesController = () => import('#controllers/agent_demandes_controller')
+const SobrietyController = () => import('#controllers/sobriety_controller')
 
 router
   .group(() => {
@@ -152,6 +153,9 @@ router
     // Annuaire des services municipaux : public, lecture seule.
     router.get('/services', [ServicesController, 'index'])
     router.get('/services/:slug', [ServicesController, 'show']).where('slug', /^[a-z0-9-]{1,80}$/)
+
+    /** Sobriété numérique (F57) : poids et CO2 estimé des pages principales, public. */
+    router.get('/sobriete', [SobrietyController, 'show'])
 
     router.any('/*', async ({ response }) => {
       return response.notFound({ error: 'Route introuvable' })

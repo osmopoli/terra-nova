@@ -57,9 +57,14 @@ export default function Layout({ user, children }) {
       <footer className="border-t border-mist">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-4 text-sm text-ink-muted sm:px-6">
           <p>{APP_NAME}, la plateforme des services municipaux.</p>
-          <Link to="/accessibilite" className="font-semibold text-ink">
-            Accessibilité
-          </Link>
+          <div className="flex flex-wrap gap-4">
+            <Link to="/accessibilite" className="font-semibold text-ink">
+              Accessibilité
+            </Link>
+            <Link to="/sobriete" className="font-semibold text-ink">
+              Sobriété numérique
+            </Link>
+          </div>
         </div>
       </footer>
     </div>

@@ -10,6 +10,7 @@ const TITLES = {
   '/profil': 'Mon profil',
   '/contact': 'Contact',
   '/accessibilite': 'Accessibilité',
+  '/sobriete': 'Sobriété numérique',
   '/services': 'Services',
   '/actualites': 'Actualités',
   '/mes-demarches': 'Mes démarches',

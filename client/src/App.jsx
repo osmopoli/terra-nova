@@ -16,6 +16,7 @@ import ReportPage from './pages/ReportPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import ServicePage from './pages/ServicePage.jsx';
 import ServicesPage from './pages/ServicesPage.jsx';
+import SobrietyPage from './pages/SobrietyPage.jsx';
 import { api, getToken, setToken } from './api/client.js';
 import { loginPath, safeRedirect } from './lib/redirect.js';
 import { navigate, useLocation } from './lib/router.jsx';
@@ -35,6 +36,7 @@ function Route({ session }) {
   if (pathname === '/contact') return <ContactPage user={user} meta={meta} onExpired={expire} />;
   if (pathname === '/services') return <ServicesPage meta={meta} />;
   if (pathname === '/accessibilite') return <AccessibilityPage />;
+  if (pathname === '/sobriete') return <SobrietyPage />;
   const serviceMatch = pathname.match(/^\/services\/([a-z0-9-]+)$/);
   if (serviceMatch) return <ServicePage slug={serviceMatch[1]} meta={meta} user={user} />;
   if (pathname === '/signaler') {
