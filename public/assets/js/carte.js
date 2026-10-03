@@ -62,13 +62,79 @@
       'cm.annonce.sel': '{nom}, {st}. Details shown.', 'cm.annonce.ferme': 'Details closed.'
     },
     es: {
-      'cm.ariane': 'Mapa de servicios', 'cm.titre': 'Mapa de servicios', 'cm.planTitre': 'Plano de Terra Nova',
-      'cm.urgBtn': 'Urgencias y hospitales', 'cm.rechercheLabel': 'Buscar un lugar', 'cm.effacer': 'Borrar', 'cm.fermer': 'Cerrar',
-      'cm.st.ouvert': 'Abierto ahora', 'cm.st.ferme': 'Cerrado ahora', 'cm.h24': '24 h', 'cm.lieux': 'Lugares', 'cm.adresse': 'Dirección', 'cm.horaires': 'Horarios', 'cm.tel': 'Teléfono',
-      'cm.rdv': 'Pedir cita', 'cm.voirService': 'Ver el servicio', 'cm.svc.desactive': 'Servicio no disponible (desactivado)'
+      'cm.ariane': 'Mapa de servicios', 'cm.titre': 'Mapa de servicios',
+      'cm.intro': 'Encuentre un hospital, un servicio de urgencias o un servicio municipal, vea si está abierto y cómo llegar en lanzadera, sin cambiar de página.',
+      'cm.planTitre': 'Plano de Terra Nova', 'cm.planRegion': 'Plano de Terra Nova, desplazamiento horizontal posible en pantallas pequeñas', 'cm.asideLabel': 'Buscar y elegir un lugar', 'cm.saut': 'Ir a la lista de lugares',
+      'cm.urgBtn': 'Urgencias y hospitales', 'cm.urgSous': 'Números útiles, lugares abiertos 24 h, el más cercano a su casa',
+      'cm.rechercheLabel': 'Buscar un lugar', 'cm.recherchePh': 'Farmacia, ayuntamiento, Sur…', 'cm.effacer': 'Borrar',
+      'cm.types': 'Tipo de lugar', 'cm.options': 'Mostrar solo', 'cm.tous': 'Todos los lugares', 'cm.ouverts': 'Abiertos ahora', 'cm.pmrFiltre': 'Accesibles (movilidad reducida)',
+      'cm.proche': 'Cerca de mí: mi barrio', 'cm.prochePh': 'Elegir mi barrio', 'cm.procheAide': 'La lista se ordena del lugar más cercano al más lejano.',
+      'cm.lieux': 'Lugares', 'cm.nb0': 'Ningún lugar coincide con su búsqueda.', 'cm.nb1': '1 lugar mostrado.', 'cm.nbN': '{n} lugares mostrados.', 'cm.nbTri': ' Ordenados por cercanía al barrio {q}.',
+      'cm.legTypes': 'Tipos de lugares', 'cm.legLignes': 'Líneas de lanzadera', 'cm.legGare': 'Estación orbital', 'cm.canal': 'Canal Sur',
+      'cm.t.urgence': 'Urgencias', 'cm.t.sante': 'Salud', 'cm.t.administration': 'Administración', 'cm.t.social': 'Social y familia', 'cm.t.transport': 'Transporte', 'cm.t.autre': 'Otros lugares',
+      'cm.q.Centre': 'Centro', 'cm.q.Nord': 'Norte', 'cm.q.Sud': 'Sur', 'cm.q.Est': 'Este', 'cm.q.Ouest': 'Oeste',
+      'cm.ligne.N1': 'Centro – Norte', 'cm.ligne.N2': 'Sur – Estación orbital', 'cm.ligne.N3': 'Este – Oeste', 'cm.ligne.N4': 'Este – Estación orbital',
+      'cm.st.ouvert': 'Abierto ahora', 'cm.st.ferme': 'Cerrado ahora', 'cm.h24': '24 h', 'cm.jusqua': 'hasta las {h}',
+      'cm.ouvreAuj': 'abre hoy a las {h}', 'cm.ouvreDem': 'abre mañana a las {h}', 'cm.ouvreJour': 'abre el {j} a las {h}',
+      'cm.dansQuartier': 'En su barrio', 'cm.svc.maintenance': 'Servicio en mantenimiento', 'cm.svc.incident': 'Incidencia en el servicio', 'cm.svc.desactive': 'Servicio no disponible (desactivado)',
+      'cm.fermer': 'Cerrar', 'cm.fermerFiche': 'Cerrar la ficha del lugar', 'cm.adresse': 'Dirección', 'cm.horaires': 'Horarios', 'cm.tel': 'Teléfono', 'cm.acces': 'Accesibilidad',
+      'cm.pmrOui': 'Accesible para personas con movilidad reducida', 'cm.pmrNon': 'Acceso limitado por el momento: llame antes de venir.',
+      'cm.yAller': 'Ir en lanzadera', 'cm.arret': 'Parada más cercana', 'cm.lignes': 'Línea(s)', 'cm.trajet': 'Calcular mi trayecto', 'cm.voirService': 'Ver el servicio', 'cm.rdv': 'Pedir cita',
+      'cm.canalFerme': 'La parada {a} ya no tiene servicio (subida del agua): bájese en {r}.',
+      'cm.svcAlerte': 'El servicio «{s}» tiene incidencias actualmente.', 'cm.svcRetour': 'Vuelta prevista: ', 'cm.chaleur': 'Ver la alerta de calor', 'cm.chaleurNote': 'Espacio climatizado abierto durante la ola de calor.',
+      'cm.danger': 'En peligro vital: llame al', 'cm.ou': 'o al',
+      'cm.u.titre': 'Urgencias y hospitales', 'cm.u.note': 'En peligro vital, no espere: llame primero.', 'cm.u.n15': 'Urgencia médica (SAMU)', 'cm.u.n112': 'Todas las urgencias',
+      'cm.u.h24': 'Abiertos 24 h', 'cm.u.proche': 'El más cercano a su casa (barrio {q})', 'cm.u.proche24': 'El más cercano abierto 24 h', 'cm.u.choisirQ': 'Elija su barrio en «Cerca de mí» para ver el lugar más cercano.',
+      'cm.appeler': 'Llamar al {n}',
+      'cm.annonce.sel': '{nom}, {st}. Ficha mostrada.', 'cm.annonce.ferme': 'Ficha cerrada.'
     },
-    ar: { 'cm.svc.desactive': 'الخدمة غير متاحة (معطّلة)' }
+    ar: {
+      'cm.ariane': 'خريطة الخدمات', 'cm.titre': 'خريطة الخدمات',
+      'cm.intro': 'اعثر على مستشفى أو خدمة طوارئ أو خدمة بلدية، واعرف إن كانت مفتوحة وكيف تصل إليها بالحافلة، دون تغيير الصفحة.',
+      'cm.planTitre': 'مخطط تيرا نوفا', 'cm.planRegion': 'مخطط تيرا نوفا، يمكن التمرير أفقياً على الشاشات الصغيرة', 'cm.asideLabel': 'البحث عن مكان واختياره', 'cm.saut': 'الانتقال إلى قائمة الأماكن',
+      'cm.urgBtn': 'الطوارئ والمستشفيات', 'cm.urgSous': 'أرقام مفيدة، أماكن مفتوحة على مدار الساعة، الأقرب إلى منزلك',
+      'cm.rechercheLabel': 'البحث عن مكان', 'cm.recherchePh': 'صيدلية، بلدية، الجنوب…', 'cm.effacer': 'مسح',
+      'cm.types': 'نوع المكان', 'cm.options': 'عرض فقط', 'cm.tous': 'كل الأماكن', 'cm.ouverts': 'مفتوحة الآن', 'cm.pmrFiltre': 'ميسّرة لذوي الحركة المحدودة',
+      'cm.proche': 'بالقرب مني: حيّي', 'cm.prochePh': 'اختيار حيّي', 'cm.procheAide': 'القائمة مرتبة من الأقرب إلى الأبعد.',
+      'cm.lieux': 'الأماكن', 'cm.nb0': 'لا يوجد مكان يطابق بحثك.', 'cm.nb1': 'مكان واحد معروض.', 'cm.nbN': '{n} أماكن معروضة.', 'cm.nbTri': ' مرتبة حسب القرب من حي {q}.',
+      'cm.legTypes': 'أنواع الأماكن', 'cm.legLignes': 'خطوط الحافلات', 'cm.legGare': 'المحطة المدارية', 'cm.canal': 'القناة الجنوبية',
+      'cm.t.urgence': 'طوارئ', 'cm.t.sante': 'صحة', 'cm.t.administration': 'إدارة', 'cm.t.social': 'اجتماعي وأسرة', 'cm.t.transport': 'نقل', 'cm.t.autre': 'أماكن أخرى',
+      'cm.q.Centre': 'الوسط', 'cm.q.Nord': 'الشمال', 'cm.q.Sud': 'الجنوب', 'cm.q.Est': 'الشرق', 'cm.q.Ouest': 'الغرب',
+      'cm.ligne.N1': 'الوسط – الشمال', 'cm.ligne.N2': 'الجنوب – المحطة المدارية', 'cm.ligne.N3': 'الشرق – الغرب', 'cm.ligne.N4': 'الشرق – المحطة المدارية',
+      'cm.st.ouvert': 'مفتوح الآن', 'cm.st.ferme': 'مغلق الآن', 'cm.h24': 'على مدار الساعة', 'cm.jusqua': 'حتى {h}',
+      'cm.ouvreAuj': 'يفتح اليوم الساعة {h}', 'cm.ouvreDem': 'يفتح غداً الساعة {h}', 'cm.ouvreJour': 'يفتح يوم {j} الساعة {h}',
+      'cm.dansQuartier': 'في حيّك', 'cm.svc.maintenance': 'الخدمة قيد الصيانة', 'cm.svc.incident': 'عطل في الخدمة', 'cm.svc.desactive': 'الخدمة غير متاحة (معطّلة)',
+      'cm.fermer': 'إغلاق', 'cm.fermerFiche': 'إغلاق بطاقة المكان', 'cm.adresse': 'العنوان', 'cm.horaires': 'أوقات العمل', 'cm.tel': 'الهاتف', 'cm.acces': 'إمكانية الوصول',
+      'cm.pmrOui': 'ميسّر لذوي الحركة المحدودة', 'cm.pmrNon': 'الوصول محدود حالياً: اتصل قبل الحضور.',
+      'cm.yAller': 'الذهاب بالحافلة', 'cm.arret': 'أقرب محطة', 'cm.lignes': 'الخط (الخطوط)', 'cm.trajet': 'حساب رحلتي', 'cm.voirService': 'عرض الخدمة', 'cm.rdv': 'حجز موعد',
+      'cm.canalFerme': 'لم تعد محطة {a} مخدومة (ارتفاع المياه): انزل في {r}.',
+      'cm.svcAlerte': 'خدمة «{s}» مضطربة حالياً.', 'cm.svcRetour': 'العودة المتوقعة: ', 'cm.chaleur': 'عرض تنبيه الحر', 'cm.chaleurNote': 'فضاء مكيّف مفتوح خلال موجة الحر.',
+      'cm.danger': 'في حال خطر على الحياة، اتصل بالرقم', 'cm.ou': 'أو',
+      'cm.u.titre': 'الطوارئ والمستشفيات', 'cm.u.note': 'في حال خطر على الحياة لا تنتظر: اتصل أولاً.', 'cm.u.n15': 'طوارئ طبية (SAMU)', 'cm.u.n112': 'كل حالات الطوارئ',
+      'cm.u.h24': 'مفتوحة على مدار الساعة', 'cm.u.proche': 'الأقرب إلى منزلك (حي {q})', 'cm.u.proche24': 'الأقرب المفتوح على مدار الساعة', 'cm.u.choisirQ': 'اختر حيّك في «بالقرب مني» لرؤية أقرب مكان.',
+      'cm.appeler': 'الاتصال بالرقم {n}',
+      'cm.annonce.sel': '{nom}، {st}. البطاقة معروضة.', 'cm.annonce.ferme': 'تم إغلاق البطاقة.'
+    }
   });
+  /* Noms et horaires des lieux : FR et EN dans LIEUX ([fr, en]), ES et AR ici (clé = texte FR), repli sur EN */
+  const TR_LIEUX = {
+    'Hôtel de ville': ['Ayuntamiento', 'دار البلدية'], 'Lun–Ven 8h–17h, jeudi jusqu’à 19h': ['Lun–Vie 8:00–17:00, jueves hasta las 19:00', 'الاثنين–الجمعة 8:00–17:00، الخميس حتى 19:00'],
+    'Dispensaire central (urgences)': ['Dispensario central (urgencias)', 'المستوصف المركزي (طوارئ)'], '24h/24, 7j/7': ['24 h, 7 días', 'على مدار الساعة، طوال الأسبوع'],
+    'Hôpital de Nova (urgences)': ['Hospital de Nova (urgencias)', 'مستشفى نوفا (طوارئ)'], 'Urgences 24h/24, 7j/7': ['Urgencias 24 h, 7 días', 'طوارئ على مدار الساعة، طوال الأسبوع'],
+    'Poste de secours du dôme Sud': ['Puesto de socorro de la cúpula Sur', 'مركز الإسعاف بالقبة الجنوبية'], 'Tous les jours 8h–22h': ['Todos los días 8:00–22:00', 'كل يوم 8:00–22:00'],
+    'Centre de soins du quartier Nord': ['Centro de salud del barrio Norte', 'مركز الرعاية الصحية بالحي الشمالي'], 'Lun–Ven 8h–19h, samedi 9h–13h': ['Lun–Vie 8:00–19:00, sábado 9:00–13:00', 'الاثنين–الجمعة 8:00–19:00، السبت 9:00–13:00'],
+    'Centre de soins du quartier Ouest': ['Centro de salud del barrio Oeste', 'مركز الرعاية الصحية بالحي الغربي'], 'Lun–Sam 8h–18h': ['Lun–Sáb 8:00–18:00', 'الاثنين–السبت 8:00–18:00'],
+    'Pharmacie de garde': ['Farmacia de guardia', 'صيدلية المناوبة'], 'Tous les soirs 19h–8h, dimanche 24h/24': ['Todas las noches 19:00–8:00, domingo 24 h', 'كل مساء 19:00–8:00، الأحد على مدار الساعة'],
+    'Centre technique municipal': ['Centro técnico municipal', 'المركز التقني البلدي'], 'Lun–Ven 7h30–17h30': ['Lun–Vie 7:30–17:30', 'الاثنين–الجمعة 7:30–17:30'],
+    'Pôle habitat': ['Oficina de vivienda', 'قطب السكن'], 'Lun–Ven 9h–16h': ['Lun–Vie 9:00–16:00', 'الاثنين–الجمعة 9:00–16:00'],
+    'Maison de l’emploi': ['Casa del empleo', 'دار التشغيل'], 'Lun–Ven 9h–17h': ['Lun–Vie 9:00–17:00', 'الاثنين–الجمعة 9:00–17:00'],
+    'Centre social': ['Centro social', 'المركز الاجتماعي'], 'Maison de l’enfance': ['Casa de la infancia', 'دار الطفولة'], 'Lun–Ven 8h30–16h30': ['Lun–Vie 8:30–16:30', 'الاثنين–الجمعة 8:30–16:30'],
+    'Centre de tri': ['Centro de reciclaje', 'مركز الفرز'], 'Tous les jours 6h–20h': ['Todos los días 6:00–20:00', 'كل يوم 6:00–20:00'],
+    'Médiathèque du dôme culturel': ['Mediateca de la cúpula cultural', 'المكتبة الإعلامية بالقبة الثقافية'], 'Mar–Dim 10h–20h': ['Mar–Dom 10:00–20:00', 'الثلاثاء–الأحد 10:00–20:00'],
+    'Gare orbitale': ['Estación orbital', 'المحطة المدارية'], 'Tous les jours 5h–23h': ['Todos los días 5:00–23:00', 'كل يوم 5:00–23:00'],
+    'Espace rafraîchi, dôme des Pionniers': ['Espacio climatizado, cúpula de los Pioneros', 'فضاء مبرّد، قبة الروّاد'], 'Tous les jours 8h–22h pendant la vague de chaleur': ['Todos los días 8:00–22:00 durante la ola de calor', 'كل يوم 8:00–22:00 خلال موجة الحر'],
+    'Espace rafraîchi, Résidence Aurore': ['Espacio climatizado, Residencia Aurore', 'فضاء مبرّد، إقامة أورور'], 'Tous les jours 9h–21h pendant la vague de chaleur': ['Todos los días 9:00–21:00 durante la ola de calor', 'كل يوم 9:00–21:00 خلال موجة الحر']
+  };
 
   /* ---------- Réseau de navettes (mêmes arrêts et lignes que transports.html) ---------- */
   // arrêt : [nom, quartier, x, y] dans le plan (viewBox 800 x 560)
@@ -139,7 +205,7 @@
     const qa = (sel, r) => Array.from((r || document).querySelectorAll(sel));
     const LOC = { fr: 'fr-FR', en: 'en-GB', es: 'es-ES', ar: 'ar' };
     const lang = () => NT.i18n.langue;
-    const pick = a => (lang() === 'fr' ? a[0] : (a[1] || a[0]));
+    const pick = a => { const l = lang(); if (l === 'fr') return a[0]; const x = TR_LIEUX[a[0]]; return (l === 'es' && x && x[0]) || (l === 'ar' && x && x[1]) || a[1] || a[0]; };
     const pad = n => String(n).padStart(2, '0');
     const vm = s => { const p = s.split(':'); return (+p[0]) * 60 + (+p[1]); };
     const heure = m => { const h = Math.floor(m / 60) % 24, mi = m % 60; return lang() === 'fr' ? h + 'h' + pad(mi) : pad(h) + ':' + pad(mi); };

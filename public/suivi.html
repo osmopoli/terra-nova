@@ -30,11 +30,45 @@
   </main>
 
   <script>
-    const EN = {
-      'suivi.ariane': 'Request tracking', 'suivi.titre': 'Tracking my requests',
-      'suivi.intro': 'See the status of each request and the steps already completed, without contacting the city hall.'
+    NT.i18n.ajouter({
+      fr: { 'suivi.ariane': 'Suivi de la demande' },
+      en: { 'suivi.ariane': 'Request tracking', 'suivi.titre': 'Tracking my requests', 'suivi.intro': 'See the status of each request and the steps already completed, without contacting the city hall.' },
+      es: { 'suivi.ariane': 'Seguimiento de la solicitud', 'suivi.titre': 'Seguimiento de mis solicitudes', 'suivi.intro': 'Consulte el estado de cada solicitud y las etapas ya realizadas, sin contactar con el ayuntamiento.' },
+      ar: { 'suivi.ariane': 'متابعة الطلب', 'suivi.titre': 'متابعة طلباتي', 'suivi.intro': 'اطلع على حالة كل طلب والخطوات المنجزة، دون الاتصال بالبلدية.' }
+    });
+    /* Textes du script ci-dessous (bi(fr, en)) : traductions ES et AR indexées par le texte FR */
+    const TX = {
+      es: {
+        'Reçue': 'Recibida', 'En cours': 'En curso', 'Traitée': 'Resuelta', 'Clôturée': 'Cerrada', 'Contact': 'Contacto', 'Signalement': 'Aviso', 'Démarche': 'Trámite',
+        'Service à déterminer': 'Servicio por determinar', 'à': 'a las',
+        'Les agents consultent les demandes dans l’espace de travail.': 'Los agentes consultan las solicitudes en el espacio de trabajo.', 'Ouvrir les demandes': 'Abrir las solicitudes',
+        'Mes demandes': 'Mis solicitudes', 'Nouvelle demande': 'Nueva solicitud', 'Télécharger le récapitulatif': 'Descargar el resumen', 'Vous n’avez pas encore fait de demande.': 'Todavía no ha hecho ninguna solicitud.',
+        'Accès refusé': 'Acceso denegado', 'Vous ne pouvez consulter que vos propres demandes.': 'Solo puede consultar sus propias solicitudes.', 'Retour à mon espace': 'Volver a mi espacio',
+        'Demande introuvable': 'Solicitud no encontrada', 'Aucune demande ne correspond à ce numéro.': 'Ninguna solicitud corresponde a este número.', 'Voir mes demandes': 'Ver mis solicitudes', 'Retour aux demandes': 'Volver a las solicitudes',
+        'Demande ': 'Solicitud ', 'Statut actuel, étapes réalisées et historique de votre demande.': 'Estado actual, etapas realizadas e historial de su solicitud.', 'Statut actuel : ': 'Estado actual: ',
+        'Toutes mes demandes': 'Todas mis solicitudes', 'Avancement': 'Avance', 'Étapes de la demande': 'Etapas de la solicitud', 'Étape réalisée': 'Etapa realizada', 'Étape actuelle': 'Etapa actual', 'À venir': 'Pendiente',
+        'Détails': 'Detalles', 'Type': 'Tipo', 'Service': 'Servicio', 'Envoyée le': 'Enviada el', 'Lieu': 'Lugar', 'Priorité': 'Prioridad', 'Haute (dangereux)': 'Alta (peligroso)', 'Normale': 'Normal',
+        'Traitée par': 'Tramitada por', 'Pas encore attribuée à un agent': 'Aún no asignada a un agente', 'Photo': 'Foto', 'Photo jointe au signalement': 'Foto adjunta al aviso', 'Changement de statut': 'Cambio de estado',
+        'Ajouter un complément d’information': 'Añadir información complementaria', 'Il sera ajouté à l’historique et visible par l’agent qui traite votre demande.': 'Se añadirá al historial y lo verá el agente que tramita su solicitud.',
+        'Votre complément': 'Su información complementaria', 'Envoyer le complément': 'Enviar la información', 'Écrivez votre complément (5 caractères minimum).': 'Escriba su información complementaria (5 caracteres como mínimo).',
+        'Complément ajouté à votre demande.': 'Información añadida a su solicitud.', 'Cette demande est clôturée : pour une nouvelle question, faites une nouvelle demande.': 'Esta solicitud está cerrada: para una nueva pregunta, haga una nueva solicitud.'
+      },
+      ar: {
+        'Reçue': 'مستلم', 'En cours': 'قيد المعالجة', 'Traitée': 'تمت معالجته', 'Clôturée': 'مغلق', 'Contact': 'اتصال', 'Signalement': 'بلاغ', 'Démarche': 'إجراء',
+        'Service à déterminer': 'مصلحة تُحدد لاحقاً', 'à': 'الساعة',
+        'Les agents consultent les demandes dans l’espace de travail.': 'يطّلع الأعوان على الطلبات في فضاء العمل.', 'Ouvrir les demandes': 'فتح الطلبات',
+        'Mes demandes': 'طلباتي', 'Nouvelle demande': 'طلب جديد', 'Télécharger le récapitulatif': 'تنزيل الملخص', 'Vous n’avez pas encore fait de demande.': 'لم تقدم أي طلب بعد.',
+        'Accès refusé': 'الوصول مرفوض', 'Vous ne pouvez consulter que vos propres demandes.': 'لا يمكنك الاطلاع إلا على طلباتك الخاصة.', 'Retour à mon espace': 'العودة إلى فضائي',
+        'Demande introuvable': 'الطلب غير موجود', 'Aucune demande ne correspond à ce numéro.': 'لا يوجد طلب يطابق هذا الرقم.', 'Voir mes demandes': 'عرض طلباتي', 'Retour aux demandes': 'العودة إلى الطلبات',
+        'Demande ': 'الطلب ', 'Statut actuel, étapes réalisées et historique de votre demande.': 'الحالة الحالية والخطوات المنجزة وسجل طلبك.', 'Statut actuel : ': 'الحالة الحالية: ',
+        'Toutes mes demandes': 'جميع طلباتي', 'Avancement': 'التقدم', 'Étapes de la demande': 'خطوات الطلب', 'Étape réalisée': 'خطوة منجزة', 'Étape actuelle': 'الخطوة الحالية', 'À venir': 'قادمة',
+        'Détails': 'التفاصيل', 'Type': 'النوع', 'Service': 'المصلحة', 'Envoyée le': 'أُرسل في', 'Lieu': 'المكان', 'Priorité': 'الأولوية', 'Haute (dangereux)': 'عالية (خطر)', 'Normale': 'عادية',
+        'Traitée par': 'يعالجه', 'Pas encore attribuée à un agent': 'لم يُسند إلى عون بعد', 'Photo': 'صورة', 'Photo jointe au signalement': 'صورة مرفقة بالبلاغ', 'Changement de statut': 'تغيير الحالة',
+        'Ajouter un complément d’information': 'إضافة معلومات تكميلية', 'Il sera ajouté à l’historique et visible par l’agent qui traite votre demande.': 'سيُضاف إلى السجل وسيراه العون الذي يعالج طلبك.',
+        'Votre complément': 'معلوماتك التكميلية', 'Envoyer le complément': 'إرسال المعلومات', 'Écrivez votre complément (5 caractères minimum).': 'اكتب معلوماتك التكميلية (5 أحرف على الأقل).',
+        'Complément ajouté à votre demande.': 'أُضيفت المعلومات إلى طلبك.', 'Cette demande est clôturée : pour une nouvelle question, faites une nouvelle demande.': 'هذا الطلب مغلق: لسؤال جديد، قدّم طلباً جديداً.'
+      }
     };
-    NT.i18n.ajouter({ fr: { 'suivi.ariane': 'Suivi de la demande' }, en: EN, es: EN, ar: EN });
     // F75 : demande regroupée avec d'autres signalements du même problème
     NT.i18n.ajouter({
       fr: { 'sg.rattachee': 'D’autres habitants ont signalé le même problème : votre demande est traitée avec la demande {id}. Vous recevez les mêmes réponses, sans rien refaire.', 'sg.principale': '{n} autre(s) habitant(s) ont signalé le même problème : une seule réponse pour tous, chacun est prévenu.' },
@@ -45,7 +79,7 @@
 
     NT.pret(() => {
       const { echap, $ } = NT.ui;
-      const bi = (fr, en) => (NT.i18n.langue === 'fr' ? fr : en);
+      const bi = (fr, en) => ({ fr, en, es: TX.es[fr], ar: TX.ar[fr] }[NT.i18n.langue] || en);
       const u = NT.auth.utilisateur();
       const zone = $('#contenu-suivi');
       const id = NT.ui.param('id');

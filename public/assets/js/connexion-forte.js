@@ -35,9 +35,48 @@
       'f.cpt.appareils': 'Signed-in devices', 'f.cpt.appareilsAide': 'We notify you when a new device signs in to your account. Remove a device you don’t recognise: it is signed out immediately.',
       'f.cpt.actuel': 'This device', 'f.cpt.vuLe': 'last activity {d}', 'f.cpt.premiereFois': 'first sign-in {d}', 'f.cpt.appareilRetire': 'Device removed and signed out.',
       'f.cpt.mdpTitre': 'Confirm it’s you', 'f.cpt.mdpAide': 'For this security change, type your current password.', 'f.cpt.mdpFaux': 'Incorrect password.', 'f.cpt.continuer': 'Continue', 'f.cpt.annuler': 'Cancel'
+    },
+    es: {
+      'f.cle.titre': 'Iniciar sesión sin contraseña', 'f.cle.aide': 'Use la clave de acceso guardada en este dispositivo: huella, rostro, Windows Hello o el PIN de su teléfono.',
+      'f.cle.bouton': 'Iniciar sesión con una clave de acceso', 'f.cle.ou': 'o con su contraseña', 'f.cle.indispo': 'Este navegador no puede usar claves de acceso. Inicie sesión con su contraseña.',
+      'f.cle.annule': 'Inicio de sesión con clave de acceso cancelado. Puede volver a intentarlo o usar su contraseña.',
+      'f.code.titre': 'Segundo paso: código de verificación', 'f.code.aide': 'Abra su aplicación de autenticación y escriba el código de 6 cifras mostrado para Terra Nova. Cambia cada 30 segundos.',
+      'f.code.label': 'Código de verificación', 'f.code.valider': 'Verificar e iniciar sesión', 'f.code.secours': '¿Perdió su teléfono? Escriba en su lugar uno de sus códigos de respaldo (formato ABCDE-FGHIJ).',
+      'f.code.retour': 'Volver a empezar', 'f.code.restantes': '{n} intento(s) restante(s).', 'f.code.secoursRestants': 'Código de respaldo usado. Queda(n) {n} código(s): guárdelos bien.',
+      'f.cpt.titre': 'Seguridad del inicio de sesión', 'f.cpt.intro': 'Refuerce el acceso a su espacio. Cada opción puede retirarse en cualquier momento.',
+      'f.cpt.cles': 'Claves de acceso', 'f.cpt.clesAide': 'Inicie sesión sin contraseña, con el bloqueo de su dispositivo (huella, rostro, PIN). Nada que recordar, imposible de suplantar.',
+      'f.cpt.ajouterCle': 'Añadir una clave de acceso en este dispositivo', 'f.cpt.aucuneCle': 'Ninguna clave de acceso por el momento.', 'f.cpt.retirer': 'Retirar', 'f.cpt.creeLe': 'añadida el {d}', 'f.cpt.utiliseeLe': 'último uso el {d}', 'f.cpt.jamais': 'nunca usada',
+      'f.cpt.nomCle': 'Nombre de esta clave de acceso', 'f.cpt.nomCleAide': 'Para reconocerla más tarde, por ejemplo «Portátil del trabajo».', 'f.cpt.cleOk': 'Clave de acceso añadida. La próxima vez, elija «Iniciar sesión con una clave de acceso».',
+      'f.cpt.deux': 'Verificación en dos pasos', 'f.cpt.deuxAide': 'Después de su contraseña, se pide un código de una aplicación de su teléfono (Google Authenticator, Microsoft Authenticator, Aegis…). Quien conozca su contraseña seguirá sin poder entrar.',
+      'f.cpt.deuxActive': 'Activada desde el {d}. Queda(n) {n} código(s) de respaldo.', 'f.cpt.deuxInactive': 'No activada.', 'f.cpt.activer': 'Activar la verificación en dos pasos', 'f.cpt.desactiver': 'Desactivar',
+      'f.cpt.etape1': 'Escanee este código QR con su aplicación de autenticación.', 'f.cpt.manuel': '¿No puede escanear? Introduzca esta clave en la aplicación:', 'f.cpt.etape2': 'Escriba el código de 6 cifras que muestra la aplicación para confirmar.',
+      'f.cpt.confirmer': 'Confirmar', 'f.cpt.secoursTitre': 'Sus códigos de respaldo', 'f.cpt.secoursAide': 'Cada código funciona una sola vez, si pierde su teléfono. Anótelos o imprímalos ahora: no se volverán a mostrar.',
+      'f.cpt.imprimer': 'Imprimir los códigos', 'f.cpt.fini': 'Los he guardado', 'f.cpt.codeDesactiver': 'Escriba un código de su aplicación (o un código de respaldo) para desactivar.',
+      'f.cpt.appareils': 'Dispositivos conectados', 'f.cpt.appareilsAide': 'Le avisamos en cuanto un nuevo dispositivo inicia sesión en su cuenta. Retire un dispositivo que no reconozca: se desconecta de inmediato.',
+      'f.cpt.actuel': 'Este dispositivo', 'f.cpt.vuLe': 'última actividad el {d}', 'f.cpt.premiereFois': 'primer inicio de sesión el {d}', 'f.cpt.appareilRetire': 'Dispositivo retirado y desconectado.',
+      'f.cpt.mdpTitre': 'Confirme que es usted', 'f.cpt.mdpAide': 'Para este cambio de seguridad, escriba su contraseña actual.', 'f.cpt.mdpFaux': 'Contraseña incorrecta.', 'f.cpt.continuer': 'Continuar', 'f.cpt.annuler': 'Cancelar'
+    },
+    ar: {
+      'f.cle.titre': 'تسجيل الدخول بدون كلمة مرور', 'f.cle.aide': 'استخدم مفتاح الوصول المحفوظ على هذا الجهاز: البصمة أو الوجه أو Windows Hello أو رمز PIN لهاتفك.',
+      'f.cle.bouton': 'تسجيل الدخول بمفتاح وصول', 'f.cle.ou': 'أو بكلمة مرورك', 'f.cle.indispo': 'لا يستطيع هذا المتصفح استخدام مفاتيح الوصول. سجّل الدخول بكلمة مرورك.',
+      'f.cle.annule': 'أُلغي تسجيل الدخول بمفتاح الوصول. يمكنك المحاولة مجدداً أو استخدام كلمة مرورك.',
+      'f.code.titre': 'الخطوة الثانية: رمز التحقق', 'f.code.aide': 'افتح تطبيق المصادقة واكتب الرمز المكون من 6 أرقام المعروض لتيرا نوفا. يتغير كل 30 ثانية.',
+      'f.code.label': 'رمز التحقق', 'f.code.valider': 'التحقق وتسجيل الدخول', 'f.code.secours': 'فقدت هاتفك؟ اكتب بدلاً من ذلك أحد رموز الاحتياط (بالصيغة ABCDE-FGHIJ).',
+      'f.code.retour': 'البدء من جديد', 'f.code.restantes': '{n} محاولة متبقية.', 'f.code.secoursRestants': 'استُخدم رمز احتياط. بقي {n} رمز: احتفظ بها في مكان آمن.',
+      'f.cpt.titre': 'أمان تسجيل الدخول', 'f.cpt.intro': 'عزّز الوصول إلى فضائك. يمكن إزالة كل خيار في أي وقت.',
+      'f.cpt.cles': 'مفاتيح الوصول', 'f.cpt.clesAide': 'سجّل الدخول بدون كلمة مرور، بقفل جهازك (البصمة أو الوجه أو رمز PIN). لا شيء لتتذكره، ويستحيل تصيّده.',
+      'f.cpt.ajouterCle': 'إضافة مفتاح وصول على هذا الجهاز', 'f.cpt.aucuneCle': 'لا يوجد مفتاح وصول حالياً.', 'f.cpt.retirer': 'إزالة', 'f.cpt.creeLe': 'أُضيف في {d}', 'f.cpt.utiliseeLe': 'آخر استخدام في {d}', 'f.cpt.jamais': 'لم يُستخدم قط',
+      'f.cpt.nomCle': 'اسم مفتاح الوصول هذا', 'f.cpt.nomCleAide': 'للتعرف عليه لاحقاً، مثلاً «حاسوب العمل».', 'f.cpt.cleOk': 'أُضيف مفتاح الوصول. في المرة القادمة، اختر «تسجيل الدخول بمفتاح وصول».',
+      'f.cpt.deux': 'التحقق بخطوتين', 'f.cpt.deuxAide': 'بعد كلمة مرورك، يُطلب رمز من تطبيق على هاتفك (Google Authenticator أو Microsoft Authenticator أو Aegis…). من يعرف كلمة مرورك لن يتمكن من الدخول مع ذلك.',
+      'f.cpt.deuxActive': 'مفعّل منذ {d}. بقي {n} رمز احتياط.', 'f.cpt.deuxInactive': 'غير مفعّل.', 'f.cpt.activer': 'تفعيل التحقق بخطوتين', 'f.cpt.desactiver': 'تعطيل',
+      'f.cpt.etape1': 'امسح رمز QR هذا بتطبيق المصادقة.', 'f.cpt.manuel': 'لا يمكنك المسح؟ أدخل هذا المفتاح في التطبيق:', 'f.cpt.etape2': 'اكتب الرمز المكون من 6 أرقام الذي يعرضه التطبيق للتأكيد.',
+      'f.cpt.confirmer': 'تأكيد', 'f.cpt.secoursTitre': 'رموز الاحتياط الخاصة بك', 'f.cpt.secoursAide': 'يعمل كل رمز مرة واحدة، إذا فقدت هاتفك. دوّنها أو اطبعها الآن: لن تُعرض مرة أخرى.',
+      'f.cpt.imprimer': 'طباعة الرموز', 'f.cpt.fini': 'لقد حفظتها', 'f.cpt.codeDesactiver': 'اكتب رمزاً من تطبيقك (أو رمز احتياط) للتعطيل.',
+      'f.cpt.appareils': 'الأجهزة المتصلة', 'f.cpt.appareilsAide': 'نبلغك فور تسجيل دخول جهاز جديد إلى حسابك. أزل أي جهاز لا تتعرف عليه: يُسجَّل خروجه فوراً.',
+      'f.cpt.actuel': 'هذا الجهاز', 'f.cpt.vuLe': 'آخر نشاط في {d}', 'f.cpt.premiereFois': 'أول تسجيل دخول في {d}', 'f.cpt.appareilRetire': 'أُزيل الجهاز وسُجّل خروجه.',
+      'f.cpt.mdpTitre': 'أكّد أنك أنت', 'f.cpt.mdpAide': 'لهذا التغيير الأمني، اكتب كلمة مرورك الحالية.', 'f.cpt.mdpFaux': 'كلمة مرور غير صحيحة.', 'f.cpt.continuer': 'متابعة', 'f.cpt.annuler': 'إلغاء'
     }
   });
-  ['es', 'ar'].forEach(l => NT.i18n.ajouter({ [l]: {} }));
 
   /* Demande du mot de passe avant un changement de sécurité (même fenêtre de 10 min que F33) */
   function confirmerMotDePasse() {

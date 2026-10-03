@@ -26,7 +26,50 @@
     'jr.a.desactivation': 'Account deactivated', 'jr.a.reactivation': 'Account reactivated', 'jr.a.deblocage': 'Account unlocked', 'jr.a.suppression': 'Account deleted by its owner', 'jr.a.profil': 'Profile edited',
     'jr.a.levee': 'Alert lifted', 'jr.a.retrait': 'Announcement withdrawn',
     'jr.v.active': 'Active', 'jr.v.levee': 'Lifted', 'jr.v.actif': 'Active', 'jr.v.desactive': 'Deactivated', 'jr.v.verrouille': 'Locked', 'jr.v.supprime': 'Deleted',
-    'ag.derniers': 'Latest actions', 'ag.voirJournal': 'Open the action log', 'ag.aucuneAction': 'No action recorded yet.'
+    'ag.derniers': 'Latest actions', 'ag.voirJournal': 'Open the action log', 'ag.aucuneAction': 'No action recorded yet.', 'jr.ariane': 'Action log'
+  },
+  fr: { 'jr.ariane': 'Journal des actions' },
+  es: {
+    'jr.ariane': 'Registro de acciones',
+    'jr.titre': 'Registro de acciones', 'jr.intro': 'Cada acción sensible queda registrada: quién, qué, cuándo, antes / después y por qué. Así la ciudad puede justificar lo que se ha hecho en la plataforma.',
+    'jr.lectureSeule': 'Este registro es de solo lectura: ninguna entrada puede modificarse ni eliminarse desde la interfaz.', 'jr.resume': 'Resumen del día',
+    'jr.filtrer': 'Filtrar el registro', 'jr.categorie': 'Categoría', 'jr.intervenant': 'Persona', 'jr.periode': 'Período', 'jr.recherchePh': 'Elemento, acción, motivo, persona…',
+    'jr.exporter': 'Exportar (CSV)', 'jr.caption': 'Registro de acciones, de la más reciente a la más antigua', 'jr.cDate': 'Fecha y hora', 'jr.cQui': 'Quién', 'jr.cAction': 'Acción', 'jr.cObjet': 'Elemento', 'jr.cAvantApres': 'Antes / después', 'jr.cMotif': 'Motivo o nota',
+    'jr.plus': 'Mostrar más acciones', 'jr.toutes': 'Todas las categorías', 'jr.tous': 'Todas las personas', 'jr.pAujourdhui': 'Hoy', 'jr.p7': 'Últimos 7 días', 'jr.pTout': 'Todo',
+    'jr.c.demande': 'Solicitud', 'jr.c.annonce': 'Anuncio', 'jr.c.service': 'Servicio', 'jr.c.compte': 'Cuenta', 'jr.c.rdv': 'Cita',
+    'jr.kAujourdhui': 'Acciones hoy', 'jr.kParCat': 'Hoy, por categoría', 'jr.kDernier': 'Última persona en actuar', 'jr.aucuneAujourdhui': 'Ninguna acción registrada hoy.', 'jr.aucuneEntree': 'Ninguna acción registrada todavía.',
+    'jr.compte': '{n} acción(es) mostrada(s) de {total}', 'jr.aucune': 'Ninguna acción coincide con estos filtros.',
+    'jr.histoTitre': 'Historial de este elemento:', 'jr.histoNb': '{n} cambio(s), del más antiguo al más reciente.', 'jr.histoVide': 'Ningún cambio registrado para este elemento.',
+    'jr.fermerHisto': 'Volver al registro completo', 'jr.voirHisto': 'Historial', 'jr.voirHistoDe': 'Ver todo el historial de {nom}', 'jr.ouvrir': 'Abrir el elemento', 'jr.filtrerPar': 'Ver solo las acciones de {nom}',
+    'jr.par': 'por', 'jr.devient': 'pasa a', 'jr.nouvelleValeur': 'Fijado en', 'jr.systeme': 'Sistema', 'role.systeme': 'Sistema',
+    'jr.exporte': '{n} línea(s) exportada(s).', 'jr.exportVide': 'No hay nada que exportar con estos filtros.', 'jr.histoAnnonce': 'Historial de {nom} mostrado.', 'jr.histoRetour': 'Registro completo mostrado.',
+    'jr.csv.date': 'Fecha y hora', 'jr.csv.qui': 'Persona', 'jr.csv.role': 'Rol', 'jr.csv.cat': 'Categoría', 'jr.csv.action': 'Acción', 'jr.csv.id': 'Identificador', 'jr.csv.objet': 'Elemento', 'jr.csv.avant': 'Antes', 'jr.csv.apres': 'Después', 'jr.csv.motif': 'Motivo',
+    'jr.a.statut': 'Cambio de estado', 'jr.a.diffAlerte': 'Difusión de una alerta', 'jr.a.pubAnnonce': 'Publicación de un anuncio', 'jr.a.etatService': 'Cambio de estado del servicio', 'jr.a.role': 'Cambio de rol',
+    'jr.a.desactivation': 'Cuenta desactivada', 'jr.a.reactivation': 'Cuenta reactivada', 'jr.a.deblocage': 'Cuenta desbloqueada', 'jr.a.suppression': 'Cuenta eliminada por su titular', 'jr.a.profil': 'Perfil modificado',
+    'jr.a.levee': 'Alerta levantada', 'jr.a.retrait': 'Anuncio retirado',
+    'jr.v.active': 'Activa', 'jr.v.levee': 'Levantada', 'jr.v.actif': 'Activa', 'jr.v.desactive': 'Desactivada', 'jr.v.verrouille': 'Bloqueada', 'jr.v.supprime': 'Eliminada',
+    'ag.derniers': 'Últimas acciones', 'ag.voirJournal': 'Abrir el registro de acciones', 'ag.aucuneAction': 'Ninguna acción registrada todavía.'
+  },
+  ar: {
+    'jr.ariane': 'سجل الإجراءات',
+    'jr.titre': 'سجل الإجراءات', 'jr.intro': 'يُسجَّل كل إجراء حساس: من، وماذا، ومتى، وقبل / بعد، ولماذا. هكذا تستطيع المدينة تبرير ما تم على المنصة.',
+    'jr.lectureSeule': 'هذا السجل للقراءة فقط: لا يمكن تعديل أي إدخال أو حذفه من الواجهة.', 'jr.resume': 'ملخص اليوم',
+    'jr.filtrer': 'تصفية السجل', 'jr.categorie': 'الفئة', 'jr.intervenant': 'الشخص', 'jr.periode': 'الفترة', 'jr.recherchePh': 'عنصر، إجراء، سبب، شخص…',
+    'jr.exporter': 'تصدير (CSV)', 'jr.caption': 'سجل الإجراءات، من الأحدث إلى الأقدم', 'jr.cDate': 'التاريخ والوقت', 'jr.cQui': 'من', 'jr.cAction': 'الإجراء', 'jr.cObjet': 'العنصر', 'jr.cAvantApres': 'قبل / بعد', 'jr.cMotif': 'السبب أو الملاحظة',
+    'jr.plus': 'عرض المزيد من الإجراءات', 'jr.toutes': 'جميع الفئات', 'jr.tous': 'جميع الأشخاص', 'jr.pAujourdhui': 'اليوم', 'jr.p7': 'آخر 7 أيام', 'jr.pTout': 'الكل',
+    'jr.c.demande': 'طلب', 'jr.c.annonce': 'إعلان', 'jr.c.service': 'خدمة', 'jr.c.compte': 'حساب', 'jr.c.rdv': 'موعد',
+    'jr.kAujourdhui': 'إجراءات اليوم', 'jr.kParCat': 'اليوم، حسب الفئة', 'jr.kDernier': 'آخر من قام بإجراء', 'jr.aucuneAujourdhui': 'لم يُسجَّل أي إجراء اليوم.', 'jr.aucuneEntree': 'لم يُسجَّل أي إجراء بعد.',
+    'jr.compte': '{n} إجراء معروض من أصل {total}', 'jr.aucune': 'لا يوجد إجراء يطابق هذه الفلاتر.',
+    'jr.histoTitre': 'سجل هذا العنصر:', 'jr.histoNb': '{n} تغيير، من الأقدم إلى الأحدث.', 'jr.histoVide': 'لم يُسجَّل أي تغيير لهذا العنصر.',
+    'jr.fermerHisto': 'العودة إلى السجل الكامل', 'jr.voirHisto': 'السجل', 'jr.voirHistoDe': 'عرض السجل الكامل لـ {nom}', 'jr.ouvrir': 'فتح العنصر', 'jr.filtrerPar': 'عرض إجراءات {nom} فقط',
+    'jr.par': 'بواسطة', 'jr.devient': 'يصبح', 'jr.nouvelleValeur': 'حُدد على', 'jr.systeme': 'النظام', 'role.systeme': 'النظام',
+    'jr.exporte': 'تم تصدير {n} سطر.', 'jr.exportVide': 'لا يوجد ما يُصدَّر بهذه الفلاتر.', 'jr.histoAnnonce': 'تم عرض سجل {nom}.', 'jr.histoRetour': 'تم عرض السجل الكامل.',
+    'jr.csv.date': 'التاريخ والوقت', 'jr.csv.qui': 'الشخص', 'jr.csv.role': 'الدور', 'jr.csv.cat': 'الفئة', 'jr.csv.action': 'الإجراء', 'jr.csv.id': 'المعرّف', 'jr.csv.objet': 'العنصر', 'jr.csv.avant': 'قبل', 'jr.csv.apres': 'بعد', 'jr.csv.motif': 'السبب',
+    'jr.a.statut': 'تغيير الحالة', 'jr.a.diffAlerte': 'بث تنبيه', 'jr.a.pubAnnonce': 'نشر إعلان', 'jr.a.etatService': 'تغيير حالة الخدمة', 'jr.a.role': 'تغيير الدور',
+    'jr.a.desactivation': 'تعطيل حساب', 'jr.a.reactivation': 'إعادة تفعيل حساب', 'jr.a.deblocage': 'فتح قفل حساب', 'jr.a.suppression': 'حذف حساب من طرف صاحبه', 'jr.a.profil': 'تعديل الملف الشخصي',
+    'jr.a.levee': 'رفع تنبيه', 'jr.a.retrait': 'سحب إعلان',
+    'jr.v.active': 'نشط', 'jr.v.levee': 'مرفوع', 'jr.v.actif': 'نشط', 'jr.v.desactive': 'معطّل', 'jr.v.verrouille': 'مقفل', 'jr.v.supprime': 'محذوف',
+    'ag.derniers': 'آخر الإجراءات', 'ag.voirJournal': 'فتح سجل الإجراءات', 'ag.aucuneAction': 'لم يُسجَّل أي إجراء بعد.'
   } });
   // Vague 12 : actions de participation (consultations, projets, idées) dans le journal
   NT.i18n.ajouter({

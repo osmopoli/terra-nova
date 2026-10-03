@@ -334,7 +334,7 @@
         <a class="btn" style="margin-top:.8rem" href="annonces.html#${echap(a.id)}">${echap(t('ui.detail'))}</a>
       </article>`).join('') : (off.n || carteCharge ? '' : `<p class="vide">${echap(t('ui.aucuneAlerte'))}</p>`));
   }
-  balise.addEventListener('click', () => panneauAlertes.show());
+  balise.addEventListener('click', () => customElements.whenDefined('sl-drawer').then(() => panneauAlertes.show()));
   rendreAlertes();
   NT.ui.rafraichirAlertes = rendreAlertes;
   NT.ui.tiroirAlertes = panneauAlertes;
@@ -492,8 +492,10 @@
     const tiroir = document.createElement('sl-drawer');
     tiroir.label = t('ui.notifications');
     corps.append(tiroir);
+    // Seuls les liens relatifs internes sont suivis (pas de schéma « xxx: », pas de « // ») : un lien externe ou javascript: n'est pas affiché
+    const lienInterne = l => (typeof l === 'string' && l.trim() && !/^\s*[a-z][a-z0-9+.\-]*:/i.test(l) && !/^\s*[\\/]{2}/.test(l) ? l.trim() : '');
     function rendreNotifs() {
-      const l = NT.notif.pour(u.id);
+      const l = NT.notif.pour(u.id).map(n => Object.assign({}, n, { lien: lienInterne(n.lien) }));
       tiroir.innerHTML = (l.length ? `<ul style="list-style:none;margin:0;padding:0">${l.map(n => `
         <li style="padding:.85rem 0;border-bottom:1px solid var(--trait)${n.lu ? ';opacity:.7' : ''}">
           <div class="ligne entre"><strong>${n.lu ? '' : '<span class="sr-only">Non lu : </span>●&nbsp;'}${echap(n.titre)}</strong><span class="doux" style="font-size:.8rem">${echap(ui.depuis(n.cree))}</span></div>
@@ -505,7 +507,8 @@
     }
     function majCloche() { const b = entete.querySelector('.pastille-compte'); if (b && !NT.notif.nonLues(u.id)) b.remove(); }
     tiroir.addEventListener('click', e => { const id = e.target.closest('[data-lu]')?.dataset.lu; if (id) NT.notif.lire(id); });
-    entete.querySelector('#nt-btn-notif').addEventListener('click', () => { rendreNotifs(); tiroir.show(); });
+    // Shoelace peut ne pas être encore chargé au clic : on attend la définition de sl-drawer avant d'ouvrir
+    entete.querySelector('#nt-btn-notif').addEventListener('click', () => { rendreNotifs(); customElements.whenDefined('sl-drawer').then(() => tiroir.show()); });
     // Notifications importantes non encore présentées : toast immédiat
     const presentees = NT.store.lire('notifPresentees', []);
     const nouvelles = NT.notif.pour(u.id).filter(n => !n.lu && n.niveau !== 'info' && !presentees.includes(n.id));

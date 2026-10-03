@@ -4,8 +4,9 @@
   'use strict';
   const NT = window.NT;
   NT.i18n.ajouter({
-    fr: {},
+    fr: { 'sou.ariane': 'Soutenir un signalement' },
     en: {
+      'sou.ariane': 'Support a report',
       'sou.titre': 'Support a report', 'sou.sous': 'A problem has already been reported near you? Say you are affected: the more supporters, the more the city takes it into account.',
       'sou.mesSoutiens': 'My supports', 'sou.mesSoutiensD': 'The reports you already support. You are told about their progress in your notifications.',
       'sou.ouverts': 'Open reports', 'sou.quartier': 'Neighbourhood', 'sou.rech': 'Search', 'sou.rechPh': 'Street, streetlight, waste…',
@@ -24,7 +25,46 @@
       'sou.suivre': 'Follow my report', 'sou.erreur': 'Your support could not be saved. Please try again.', 'sou.depuis': 'Reported {d}',
       'sou.service': 'Service'
     },
-    es: {}, ar: {}
+    es: {
+      'sou.ariane': 'Apoyar un aviso',
+      'sou.titre': 'Apoyar un aviso', 'sou.sous': '¿Ya se ha señalado un problema cerca de su casa? Diga que le afecta: cuantos más apoyos, más lo tiene en cuenta el ayuntamiento.',
+      'sou.mesSoutiens': 'Mis apoyos', 'sou.mesSoutiensD': 'Los avisos que ya apoya. Se le informa de su avance en sus notificaciones.',
+      'sou.ouverts': 'Avisos abiertos', 'sou.quartier': 'Barrio', 'sou.rech': 'Buscar', 'sou.rechPh': 'Calle, farola, residuos…',
+      'sou.aideRech': 'La lista se actualiza mientras escribe. Los más apoyados aparecen primero.',
+      'sou.anonyme': 'Los avisos se muestran sin nombre ni datos de contacto. Nadie ve quién apoya qué, salvo los agentes municipales.',
+      'sou.tous': 'Todos los barrios', 'sou.je': 'Lo apoyo', 'sou.retirer': 'Retirar mi apoyo', 'sou.connexion': 'Iniciar sesión para apoyar',
+      'sou.vous': 'Su aviso', 'sou.vousSoutenez': 'Usted apoya este aviso', 'sou.com': 'Añadir un comentario (opcional)',
+      'sou.comAide': 'Por ejemplo: «Yo también paso por aquí cada día…» (280 caracteres como máximo)', 'sou.comPh': 'Yo también paso por aquí cada día…',
+      'sou.ok': 'Su apoyo se ha registrado: ya son {n} vecinos.', 'sou.ok1': 'Su apoyo se ha registrado: es el primer vecino.',
+      'sou.trace': 'Se ha añadido una notificación a su campana: se le avisará cuando este aviso avance.',
+      'sou.retire': 'Su apoyo se ha retirado. {n} vecinos siguen apoyando este aviso.',
+      'sou.n': '{n} apoyos', 'sou.n1': '1 apoyo', 'sou.n0': 'Ningún apoyo por el momento', 'sou.resultat': '{n} avisos abiertos', 'sou.resultat1': '1 aviso abierto',
+      'sou.aucun': 'Ningún aviso coincide. Pruebe con otro barrio u otra palabra.',
+      'sou.invit': 'Para apoyar un aviso, debe iniciar sesión con una cuenta de vecino.', 'sou.seConnecter': 'Iniciar sesión', 'sou.creer': 'Crear una cuenta',
+      'sou.personnel': 'El personal municipal no puede apoyar avisos: esta función es para los vecinos.', 'sou.propre': 'Usted presentó este aviso: ya cuenta. Sígalo en su espacio.',
+      'sou.suivre': 'Seguir mi aviso', 'sou.erreur': 'No se ha podido guardar su apoyo. Vuelva a intentarlo.', 'sou.depuis': 'Señalado {d}',
+      'sou.service': 'Servicio'
+    },
+    ar: {
+      'sou.ariane': 'دعم بلاغ',
+      'sou.titre': 'دعم بلاغ', 'sou.sous': 'هل سبق الإبلاغ عن مشكلة قرب منزلك؟ قل إنك معني بها: كلما زاد الدعم، زاد اهتمام البلدية بها.',
+      'sou.mesSoutiens': 'دعمي', 'sou.mesSoutiensD': 'البلاغات التي تدعمها بالفعل. تُبلَّغ بتقدمها في إشعاراتك.',
+      'sou.ouverts': 'البلاغات المفتوحة', 'sou.quartier': 'الحي', 'sou.rech': 'بحث', 'sou.rechPh': 'شارع، عمود إنارة، نفايات…',
+      'sou.aideRech': 'تتحدث القائمة أثناء الكتابة. تظهر البلاغات الأكثر دعماً أولاً.',
+      'sou.anonyme': 'تُعرض البلاغات دون أسماء أو بيانات اتصال. لا أحد يرى من يدعم ماذا، باستثناء الأعوان البلديين.',
+      'sou.tous': 'جميع الأحياء', 'sou.je': 'أدعم هذا البلاغ', 'sou.retirer': 'سحب دعمي', 'sou.connexion': 'سجّل الدخول للدعم',
+      'sou.vous': 'بلاغك', 'sou.vousSoutenez': 'أنت تدعم هذا البلاغ', 'sou.com': 'إضافة تعليق (اختياري)',
+      'sou.comAide': 'مثلاً: «أنا أيضاً أمر من هنا كل يوم…» (280 حرفاً كحد أقصى)', 'sou.comPh': 'أنا أيضاً أمر من هنا كل يوم…',
+      'sou.ok': 'تم تسجيل دعمك — أنتم {n} من السكان.', 'sou.ok1': 'تم تسجيل دعمك — أنت أول ساكن.',
+      'sou.trace': 'أُضيف إشعار إلى جرسك: ستُبلَّغ عندما يتقدم هذا البلاغ.',
+      'sou.retire': 'تم سحب دعمك. ما زال {n} من السكان يدعمون هذا البلاغ.',
+      'sou.n': '{n} داعماً', 'sou.n1': 'داعم واحد', 'sou.n0': 'لا يوجد داعم حالياً', 'sou.resultat': '{n} بلاغاً مفتوحاً', 'sou.resultat1': 'بلاغ واحد مفتوح',
+      'sou.aucun': 'لا يوجد بلاغ مطابق. جرّب حياً آخر أو كلمة أخرى.',
+      'sou.invit': 'لدعم بلاغ، يجب تسجيل الدخول بحساب ساكن.', 'sou.seConnecter': 'تسجيل الدخول', 'sou.creer': 'إنشاء حساب',
+      'sou.personnel': 'لا يمكن للموظفين البلديين دعم البلاغات: هذه الميزة مخصصة للسكان.', 'sou.propre': 'أنت من قدّم هذا البلاغ: فهو محسوب بالفعل. تابعه في فضائك.',
+      'sou.suivre': 'متابعة بلاغي', 'sou.erreur': 'تعذر حفظ دعمك. حاول مجدداً.', 'sou.depuis': 'أُبلغ عنه {d}',
+      'sou.service': 'المصلحة'
+    }
   });
   const L = (cle, fr, vars) => NT.t(cle, vars, fr);
   const E = s => NT.ui.echap(s);

@@ -15,7 +15,7 @@
 .resume-erreurs:not(:empty){ border:1px solid var(--corail); background:rgba(255,107,127,.08); padding:.9rem 1.1rem; margin-bottom:1.25rem; border-radius:var(--r); }
 .resume-erreurs p{ margin:0 0 .4rem; }
 .resume-erreurs ul{ margin:0; padding-inline-start:1.2rem; }
-.resume-erreurs a{ color:#FFD9DF; }
+.resume-erreurs a{ color:var(--corail-clair); }
 .champ .erreur::before{ content:"Erreur : "; }
 html[lang="en"] .champ .erreur::before,html[lang="es"] .champ .erreur::before{ content:"Error: "; }
 html[lang="ar"] .champ .erreur::before{ content:"خطأ: "; }

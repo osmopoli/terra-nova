@@ -33,7 +33,71 @@
     'inf.erreur': 'Your information could not be loaded. Please try again.', 'inf.modif': 'To correct something, go to', 'inf.monCompte': 'my account',
     'inf.recap': 'See the summary of my requests', 'inf.json.ok': 'File downloaded.'
   };
-  NT.i18n.ajouter({ fr: {}, en: EN, es: EN, ar: EN });
+  const ES = {
+    'inf.ariane': 'Mis datos',
+    'inf.titre': 'Mis datos personales', 'inf.sous': 'Todo lo que la ciudad conserva sobre usted, ordenado por tema. Para cada tema sabe por qué y durante cuánto tiempo.',
+    'inf.imprimer': 'Descargar (PDF / imprimir)', 'inf.json': 'Descargar el archivo (JSON)',
+    'inf.aidePdf': 'Para un PDF, elija «Guardar como PDF» en la ventana de impresión. El archivo JSON está pensado para programas; contiene la misma información.',
+    'inf.sommaire': 'En esta página', 'inf.pourquoi': 'Por qué lo conservamos:', 'inf.duree': 'Durante cuánto tiempo:',
+    'inf.generePar': 'Documento generado el {d} para {n}. Aquí solo aparece su propia información.',
+    'inf.s.profil': 'Quién es usted', 'inf.s.compte': 'Su cuenta y su seguridad', 'inf.s.demandes': 'Sus solicitudes', 'inf.s.rdv': 'Sus citas',
+    'inf.s.soutiens': 'Avisos que apoya', 'inf.s.contrib': 'Sus preguntas sobre sus datos', 'inf.s.notifs': 'Sus notificaciones', 'inf.s.prefs': 'Sus preferencias',
+    'inf.p.profil': 'Para reconocerle y escribirle sobre sus trámites.', 'inf.d.profil': 'Mientras exista su cuenta.',
+    'inf.p.compte': 'Para permitirle iniciar sesión y detectar intentos de pirateo. Su contraseña nunca se muestra y no puede leerse, ni siquiera por la ciudad: solo se guarda una versión cifrada.', 'inf.d.compte': 'Mientras exista su cuenta.',
+    'inf.p.demandes': 'Para tramitar sus solicitudes y mostrarle en qué punto están.', 'inf.d.demandes': 'Mientras exista su cuenta; después se borran con ella.',
+    'inf.p.rdv': 'Para reservar una hora y enviarle un recordatorio.', 'inf.d.rdv': 'Mientras exista su cuenta.',
+    'inf.p.soutiens': 'Para contar cuántos vecinos apoyan un problema, de modo que los más compartidos se traten primero.', 'inf.d.soutiens': 'Hasta que retire su apoyo o elimine su cuenta.',
+    'inf.p.contrib': 'Para responderle en un plazo de 15 días.', 'inf.d.contrib': 'Mientras exista su cuenta.',
+    'inf.p.notifs': 'Para mantenerle informado del avance de sus solicitudes.', 'inf.d.notifs': 'Mientras exista su cuenta.',
+    'inf.p.prefs': 'Para adaptar las alertas y los recordatorios a usted.', 'inf.d.prefs': 'Mientras exista su cuenta.',
+    'inf.f.nom': 'Nombre', 'inf.f.email': 'Correo', 'inf.f.tel': 'Teléfono', 'inf.f.quartier': 'Barrio', 'inf.f.profil': 'Tipo de cuenta', 'inf.role.citoyen': 'Vecino',
+    'inf.f.cree': 'Cuenta creada el', 'inf.f.derniere': 'Último inicio de sesión', 'inf.f.nbCo': 'Inicios de sesión registrados', 'inf.f.etat': 'Estado de la cuenta', 'inf.actif': 'Activa', 'inf.inactif': 'Desactivada',
+    'inf.f.mdp': 'Contraseña', 'inf.mdp': 'Protegida: guardada de forma cifrada, nunca se muestra', 'inf.inconnue': 'Desconocida', 'inf.nonRenseigne': 'No indicado',
+    'inf.c.ref': 'Número', 'inf.c.objet': 'Asunto', 'inf.c.date': 'Enviada el', 'inf.c.statut': 'Estado', 'inf.c.maj': 'Última actualización', 'inf.c.service': 'Servicio', 'inf.c.heure': 'Fecha y hora', 'inf.c.motif': 'Motivo', 'inf.c.rappel': 'Recordatorio',
+    'inf.c.sujet': 'Asunto', 'inf.c.reponse': 'Respuesta', 'inf.c.commentaire': 'Su comentario',
+    'inf.st.recue': 'Recibida, aún no tramitada', 'inf.st.en_cours': 'En tramitación', 'inf.st.traitee': 'Resuelta', 'inf.st.cloturee': 'Cerrada',
+    'inf.rdv.confirme': 'Confirmada', 'inf.rdv.annule': 'Cancelada', 'inf.oui': 'Sí', 'inf.non': 'No',
+    'inf.vide.demandes': 'No ha enviado ninguna solicitud.', 'inf.vide.rdv': 'Ninguna cita.', 'inf.vide.soutiens': 'No apoya ningún aviso.', 'inf.vide.contrib': 'No ha enviado ninguna pregunta.',
+    'inf.nbDemandes': '{n} solicitud(es) en total.', 'inf.nbRdv': '{n} cita(s) en total.',
+    'inf.dernier': 'Última respuesta', 'inf.aucuneRep': 'Todavía no hay respuesta de la ciudad.',
+    'inf.notifs': '{t} notificación(es) conservada(s), de las cuales {n} sin leer.',
+    'inf.f.langue': 'Idioma', 'inf.f.alertes': 'Alertas de mi barrio', 'inf.f.vuln': 'Seguimiento reforzado (persona vulnerable)', 'inf.f.rappels': 'Recordatorios de citas', 'inf.langueAuto': 'Elegido automáticamente',
+    'inf.erreur': 'No se ha podido cargar su información. Vuelva a intentarlo.', 'inf.modif': 'Para corregir algo, vaya a', 'inf.monCompte': 'mi cuenta',
+    'inf.recap': 'Ver el resumen de mis solicitudes', 'inf.json.ok': 'Archivo descargado.'
+  };
+  const AR = {
+    'inf.ariane': 'معلوماتي',
+    'inf.titre': 'معلوماتي الشخصية', 'inf.sous': 'كل ما تحتفظ به المدينة عنك، مرتباً حسب الموضوع. لكل موضوع تعرف السبب والمدة.',
+    'inf.imprimer': 'تنزيل (PDF / طباعة)', 'inf.json': 'تنزيل الملف (JSON)',
+    'inf.aidePdf': 'للحصول على PDF، اختر «حفظ بصيغة PDF» في نافذة الطباعة. ملف JSON مخصص للبرامج؛ ويحتوي على المعلومات نفسها.',
+    'inf.sommaire': 'في هذه الصفحة', 'inf.pourquoi': 'لماذا نحتفظ به:', 'inf.duree': 'لأي مدة:',
+    'inf.generePar': 'وثيقة أُنشئت في {d} لـ {n}. لا تظهر هنا سوى معلوماتك الخاصة.',
+    'inf.s.profil': 'من أنت', 'inf.s.compte': 'حسابك وأمانه', 'inf.s.demandes': 'طلباتك', 'inf.s.rdv': 'مواعيدك',
+    'inf.s.soutiens': 'البلاغات التي تدعمها', 'inf.s.contrib': 'أسئلتك حول بياناتك', 'inf.s.notifs': 'إشعاراتك', 'inf.s.prefs': 'تفضيلاتك',
+    'inf.p.profil': 'للتعرف عليك ومراسلتك بشأن إجراءاتك.', 'inf.d.profil': 'ما دام حسابك موجوداً.',
+    'inf.p.compte': 'لتمكينك من تسجيل الدخول وكشف محاولات الاختراق. لا تُعرض كلمة مرورك أبداً ولا يمكن قراءتها، حتى من طرف المدينة: لا تُحفظ سوى نسخة مشفرة منها.', 'inf.d.compte': 'ما دام حسابك موجوداً.',
+    'inf.p.demandes': 'لمعالجة طلباتك وإطلاعك على مآلها.', 'inf.d.demandes': 'ما دام حسابك موجوداً، ثم تُمحى معه.',
+    'inf.p.rdv': 'لحجز موعد وإرسال تذكير إليك.', 'inf.d.rdv': 'ما دام حسابك موجوداً.',
+    'inf.p.soutiens': 'لعدّ السكان الذين يدعمون مشكلة ما، حتى تُعالج المشكلات الأكثر مشاركة أولاً.', 'inf.d.soutiens': 'حتى تسحب دعمك أو تحذف حسابك.',
+    'inf.p.contrib': 'للرد عليك في غضون 15 يوماً.', 'inf.d.contrib': 'ما دام حسابك موجوداً.',
+    'inf.p.notifs': 'لإبقائك على اطلاع بتقدم طلباتك.', 'inf.d.notifs': 'ما دام حسابك موجوداً.',
+    'inf.p.prefs': 'لتكييف التنبيهات والتذكيرات معك.', 'inf.d.prefs': 'ما دام حسابك موجوداً.',
+    'inf.f.nom': 'الاسم', 'inf.f.email': 'البريد الإلكتروني', 'inf.f.tel': 'الهاتف', 'inf.f.quartier': 'الحي', 'inf.f.profil': 'نوع الحساب', 'inf.role.citoyen': 'ساكن',
+    'inf.f.cree': 'أُنشئ الحساب في', 'inf.f.derniere': 'آخر تسجيل دخول', 'inf.f.nbCo': 'تسجيلات الدخول المسجلة', 'inf.f.etat': 'حالة الحساب', 'inf.actif': 'نشط', 'inf.inactif': 'معطّل',
+    'inf.f.mdp': 'كلمة المرور', 'inf.mdp': 'محمية: محفوظة بشكل مشفر، ولا تُعرض أبداً', 'inf.inconnue': 'غير معروف', 'inf.nonRenseigne': 'غير مذكور',
+    'inf.c.ref': 'الرقم', 'inf.c.objet': 'الموضوع', 'inf.c.date': 'أُرسل في', 'inf.c.statut': 'الحالة', 'inf.c.maj': 'آخر تحديث', 'inf.c.service': 'المصلحة', 'inf.c.heure': 'التاريخ والوقت', 'inf.c.motif': 'السبب', 'inf.c.rappel': 'التذكير',
+    'inf.c.sujet': 'الموضوع', 'inf.c.reponse': 'الرد', 'inf.c.commentaire': 'تعليقك',
+    'inf.st.recue': 'مستلم، لم يُعالج بعد', 'inf.st.en_cours': 'قيد المعالجة', 'inf.st.traitee': 'تمت معالجته', 'inf.st.cloturee': 'مغلق',
+    'inf.rdv.confirme': 'مؤكد', 'inf.rdv.annule': 'ملغى', 'inf.oui': 'نعم', 'inf.non': 'لا',
+    'inf.vide.demandes': 'لم ترسل أي طلب.', 'inf.vide.rdv': 'لا يوجد موعد.', 'inf.vide.soutiens': 'لا تدعم أي بلاغ.', 'inf.vide.contrib': 'لم ترسل أي سؤال.',
+    'inf.nbDemandes': '{n} طلب في المجموع.', 'inf.nbRdv': '{n} موعد في المجموع.',
+    'inf.dernier': 'آخر رد', 'inf.aucuneRep': 'لا يوجد رد من المدينة بعد.',
+    'inf.notifs': '{t} إشعار محفوظ، منها {n} غير مقروء.',
+    'inf.f.langue': 'اللغة', 'inf.f.alertes': 'تنبيهات حيّي', 'inf.f.vuln': 'متابعة معززة (شخص هش)', 'inf.f.rappels': 'تذكيرات المواعيد', 'inf.langueAuto': 'محددة تلقائياً',
+    'inf.erreur': 'تعذر تحميل معلوماتك. حاول مجدداً.', 'inf.modif': 'لتصحيح شيء ما، انتقل إلى', 'inf.monCompte': 'حسابي',
+    'inf.recap': 'عرض ملخص طلباتي', 'inf.json.ok': 'تم تنزيل الملف.'
+  };
+  NT.i18n.ajouter({ fr: { 'inf.ariane': 'Mes informations' }, en: Object.assign({ 'inf.ariane': 'My information' }, EN), es: ES, ar: AR });
   const L = (cle, fr, vars) => NT.t(cle, vars, fr);
   const E = s => NT.ui.echap(s);
   const $ = (sel, r) => (r || document).querySelector(sel);
