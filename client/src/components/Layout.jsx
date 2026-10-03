@@ -20,6 +20,11 @@ export default function Layout({ user, children }) {
             <Link to="/" className={linkClass}>
               Accueil
             </Link>
+            {user?.role === 'citoyen' && (
+              <Link to="/mes-demarches" className={linkClass}>
+                Mes démarches
+              </Link>
+            )}
             <Link
               to={user ? '/profil' : '/connexion'}
               className="rounded-control bg-primary px-3 py-1.5 font-bold text-white hover:bg-primary-strong"

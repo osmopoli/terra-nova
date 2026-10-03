@@ -3,17 +3,33 @@ import Layout from './components/Layout.jsx';
 import AuthScreen from './components/AuthScreen.jsx';
 import ProfileScreen from './components/ProfileScreen.jsx';
 import HomePage from './pages/HomePage.jsx';
+import MyRequestsPage, { MyRequestPage } from './pages/MyRequestsPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import { api, getToken, setToken } from './api/client.js';
-import { safeRedirect } from './lib/redirect.js';
+import { loginPath, safeRedirect } from './lib/redirect.js';
 import { navigate, useLocation } from './lib/router.jsx';
+
+// Page réservée aux connectés : redirection vers la connexion, retour prévu après.
+function LoginRedirect({ to }) {
+  useEffect(() => navigate(loginPath(to), { replace: true }), [to]);
+  return null;
+}
 
 function Route({ session }) {
   const { pathname, searchParams } = useLocation();
-  const { user, setUser, logout } = session;
+  const { user, meta, setUser, logout } = session;
 
   if (pathname === '/') return <HomePage user={user} />;
   // Ajouter les routes métier ici (ex. /items, /items/:id).
+  if (pathname.startsWith('/mes-demarches')) {
+    if (!user) return <LoginRedirect to={pathname} />;
+    if (user.role !== 'citoyen') {
+      return <NotFoundPage message="Le suivi des démarches est réservé aux habitants." />;
+    }
+    const match = pathname.match(/^\/mes-demarches\/(\d+)$/);
+    if (match) return <MyRequestPage id={match[1]} meta={meta} />;
+    if (pathname === '/mes-demarches') return <MyRequestsPage meta={meta} />;
+  }
   if (pathname === '/connexion' || pathname === '/profil') {
     return (
       <div className="flex justify-center">
