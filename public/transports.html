@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Navettes municipales — Terra Nova</title>
+  <meta name="description" content="Horaires et informations des navettes municipales de Terra Nova : prochains départs, trajet d’un arrêt à l’autre, info trafic.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/transports.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="transports" data-ariane="nav.accueil|index.html;nav.transports" data-roles="">
+  <main id="contenu" class="conteneur">
+
+    <header class="titre-page">
+      <h1 data-i18n="tr.titre">Navettes municipales</h1>
+      <p data-i18n="tr.intro">Choisissez votre arrêt de départ et d’arrivée : la ligne à prendre et les prochains départs s’affichent tout de suite.</p>
+    </header>
+
+    <!-- F36 : info trafic en tête -->
+    <section class="tr-trafic" aria-labelledby="tr-h-trafic">
+      <h2 id="tr-h-trafic" data-i18n="tr.trafic">Info trafic</h2>
+      <div id="tr-trafic"></div>
+    </section>
+
+    <!-- F36 : Mon trajet -->
+    <section class="panneau tr-trajet" aria-labelledby="tr-h-trajet">
+      <h2 id="tr-h-trajet" data-i18n="tr.monTrajet">Mon trajet</h2>
+      <form id="tr-form" class="tr-form" novalidate>
+        <div class="champ">
+          <label for="tr-dep" data-i18n="tr.depart">Arrêt de départ</label>
+          <select id="tr-dep" aria-describedby="tr-note"></select>
+        </div>
+        <button type="button" class="btn tr-inverser" id="tr-inverser" aria-label="Inverser départ et arrivée" data-i18n-attr="aria-label:tr.inverser">
+          <i class="ph ph-arrows-down-up" aria-hidden="true"></i><span class="sr-only-sm" data-i18n="tr.inverserCourt">Inverser</span>
+        </button>
+        <div class="champ">
+          <label for="tr-arr" data-i18n="tr.arrivee">Arrêt d’arrivée</label>
+          <select id="tr-arr"></select>
+        </div>
+      </form>
+      <p class="aide tr-note" id="tr-note"></p>
+      <div id="tr-resultat" class="tr-resultat"></div>
+    </section>
+
+    <!-- F36 : horaires par ligne -->
+    <section class="section" aria-labelledby="tr-h-lignes">
+      <div class="titre-section"><div><h2 id="tr-h-lignes" data-i18n="tr.lignes">Horaires par ligne</h2>
+        <p data-i18n="tr.lignesD">Quatre lignes, tous les jours. Les heures sont celles du départ à chaque arrêt.</p></div></div>
+      <div id="tr-lignes"></div>
+    </section>
+  </main>
+
+  <script src="assets/js/transports.js" defer></script>
+</body>
+</html>

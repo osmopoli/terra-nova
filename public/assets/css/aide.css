@@ -1,0 +1,32 @@
+/* Aide et lexique */
+.ai-sauts{ display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.25rem; }
+.ai-sauts a{ font-size:.92rem; font-weight:600; color:var(--givre); text-decoration:none; padding:.45rem 1rem; border-radius:99px; border:1px solid var(--trait-2); min-height:2.5rem; display:inline-flex; align-items:center; }
+@media (hover:hover){ .ai-sauts a:hover{ border-color:var(--iono); background:oklch(0.7040 0.1400 182.5 / .08); } }
+
+.ai-faq{ max-width:50rem; }
+.ai-q{ border-bottom:1px solid var(--trait); }
+.ai-faq #ai-faq-liste{ border-top:1px solid var(--trait); }
+.ai-q summary{ cursor:pointer; padding:1.05rem .25rem; font-weight:700; font-size:1.05rem; list-style:none; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+.ai-q summary::-webkit-details-marker{ display:none; }
+.ai-q summary::after{ content:"+"; font-family:var(--titre); font-size:1.4rem; color:var(--iono); flex:none; transition:transform 200ms var(--ease-out); }
+.ai-q[open] summary::after{ transform:rotate(45deg); }
+.ai-q p{ margin:0; padding:0 .25rem 1.2rem; color:var(--brume); max-width:62ch; }
+
+.ai-lexique{ max-width:50rem; }
+.ai-recherche{ display:flex; align-items:center; gap:.4rem; max-width:34rem; padding:.35rem 1.1rem; border-radius:999px; background:var(--verre-fort); border:1px solid var(--trait-2);
+  transition:border-color 150ms ease, box-shadow 150ms ease; }
+.ai-recherche:focus-within{ border-color:var(--iono); box-shadow:0 0 0 4px oklch(0.7040 0.1400 182.5 / .15); }
+.ai-recherche > i{ font-size:1.3rem; color:var(--brume); }
+.ai-recherche input{ border:0!important; background:transparent!important; outline:none!important; padding:.5rem .3rem!important; min-height:2.6rem!important; }
+.ai-compteur{ margin:.75rem 0 1rem; color:var(--brume); font-size:.92rem; min-height:1.5rem; }
+.ai-liste{ margin:0; border-top:1px solid var(--trait); }
+.ai-mot{ display:grid; grid-template-columns:minmax(0,12rem) minmax(0,1fr); gap:.3rem 1.5rem; padding:1rem .25rem; border-bottom:1px solid var(--trait); scroll-margin-top:6rem; }
+.ai-mot dt{ font-family:var(--titre); font-weight:600; font-size:1rem; color:#fff; }
+.ai-mot dd{ margin:0; color:var(--brume); }
+.ai-syn{ display:block; margin-top:.35rem; font-size:.85rem; color:var(--brume); }
+.ai-mot.cible{ outline:3px solid var(--iono); outline-offset:2px; border-radius:var(--r-s); }
+@media (max-width:600px){ .ai-mot{ grid-template-columns:1fr; } }
+
+.ai-contact{ display:flex; gap:1.25rem; align-items:flex-start; max-width:50rem; padding:1.5rem; border-radius:var(--r-l); border:1px solid var(--iono); background:linear-gradient(135deg,oklch(0.7040 0.1400 182.5 / .08),rgba(157,123,255,.06)); }
+.ai-contact > i{ font-size:2.4rem; color:var(--iono); flex:none; }
+.ai-contact h2{ font-size:1.2rem; }

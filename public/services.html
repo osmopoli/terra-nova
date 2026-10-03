@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Services de la ville — Terra Nova</title>
+  <meta name="description" content="Les douze services municipaux de Terra Nova : recherche, démarches courantes, horaires, contact et état de disponibilité.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/services.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="services" data-ariane="nav.accueil|index.html;nav.services" data-roles="">
+  <main id="contenu" class="conteneur">
+
+    <header class="titre-page">
+      <h1 data-i18n="sv.titre">Les services de la ville</h1>
+      <p data-i18n="sv.intro">Trouvez le bon service, ses horaires, son contact et les démarches possibles. Les services indisponibles sont signalés avant que vous commenciez.</p>
+    </header>
+
+    <!-- D05 / F32 : recherche instantanée + filtres -->
+    <section class="sv-outils" aria-labelledby="sv-lbl-recherche">
+      <form class="sv-recherche" role="search" id="sv-form" action="services.html">
+        <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+        <label for="sv-q" class="sr-only" id="sv-lbl-recherche" data-i18n="sv.rechercheLabel">Rechercher un service</label>
+        <input id="sv-q" name="q" type="search" autocomplete="off" spellcheck="false" aria-describedby="sv-compteur" data-i18n-attr="placeholder:sv.recherchePh" placeholder="Santé, logement, acte de naissance…">
+        <button class="btn" type="button" id="sv-effacer" hidden data-i18n="sv.effacer">Effacer</button>
+      </form>
+      <div class="sv-filtres" role="group" aria-labelledby="sv-lbl-filtres">
+        <span id="sv-lbl-filtres" data-i18n="sv.filtrer">Filtrer par thème :</span>
+        <span id="sv-boutons" class="sv-boutons"></span>
+      </div>
+      <p class="sv-compteur" id="sv-compteur" role="status" aria-live="polite"></p>
+    </section>
+
+    <div id="sv-resultats"></div>
+
+    <!-- D05 : détail d'un service, ouvert via #id -->
+    <sl-drawer id="sv-detail" placement="end" label="Service" class="sv-tiroir"></sl-drawer>
+  </main>
+
+  <script src="assets/js/services.js" defer></script>
+</body>
+</html>

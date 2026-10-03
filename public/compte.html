@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mon compte — Terra Nova</title>
+  <meta name="description" content="Gérez votre profil, votre mot de passe, votre sécurité et la suppression de votre compte.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/comptes.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/comptes.js"></script>
+  <script src="assets/js/connexion-forte.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="compte" data-ariane="nav.accueil|index.html;nav.compte" data-roles="connecte">
+  <main id="contenu" class="conteneur">
+    <header class="titre-page">
+      <h1 data-i18n="c.cpt.titre">Mon compte</h1>
+      <p id="cpt-sous" data-i18n="c.cpt.sous">Votre profil, votre mot de passe et la sécurité de votre accès.</p>
+    </header>
+
+    <div class="compte-mise-en-page">
+      <nav class="compte-nav" aria-labelledby="t-cpt-nav">
+        <h2 id="t-cpt-nav" class="sr-only" data-i18n="c.cpt.nav">Sections de la page</h2>
+        <ul>
+          <li><a href="#profil" data-i18n="c.cpt.sProfil">Profil</a></li>
+          <li><a href="#motdepasse-section" data-i18n="c.cpt.sMdp">Mot de passe</a></li>
+          <li><a href="#securite" data-i18n="c.cpt.sSecu">Sécurité</a></li>
+          <li><a href="#securite-connexion" data-i18n="f.cpt.titre">Sécurité de connexion</a></li>
+          <li><a href="#suppression" data-i18n="c.cpt.sSuppr">Supprimer mon compte</a></li>
+        </ul>
+      </nav>
+
+      <div class="pile">
+        <!-- Profil -->
+        <section class="panneau" id="profil" aria-labelledby="t-profil">
+          <h2 id="t-profil" data-i18n="c.cpt.profil">Mon profil</h2>
+          <form id="form-profil" novalidate>
+            <div class="resume-erreurs" role="alert"></div>
+            <div class="champs-2">
+              <div class="champ"><label for="p-prenom" data-i18n="c.ins.prenom">Prénom</label><input id="p-prenom" type="text" autocomplete="given-name" required></div>
+              <div class="champ"><label for="p-nom" data-i18n="c.ins.nom">Nom</label><input id="p-nom" type="text" autocomplete="family-name" required></div>
+            </div>
+            <div class="champ">
+              <label for="p-email" data-i18n="c.ins.email">Adresse e-mail</label>
+              <input id="p-email" type="email" readonly aria-describedby="aide-p-email">
+              <p class="aide" id="aide-p-email" data-i18n="c.cpt.emailFixe">Votre identifiant de connexion ne peut pas être modifié ici.</p>
+            </div>
+            <div class="champs-2">
+              <div class="champ"><label for="p-tel" data-i18n="c.ins.tel">Téléphone</label><input id="p-tel" type="tel" autocomplete="tel" inputmode="tel"></div>
+              <div class="champ"><label for="p-quartier" data-i18n="c.ins.quartier">Votre quartier</label><select id="p-quartier" required></select></div>
+            </div>
+            <div class="champ">
+              <label for="p-langue" data-i18n="c.cpt.langue">Langue préférée</label>
+              <select id="p-langue" aria-describedby="aide-p-langue"></select>
+              <p class="aide" id="aide-p-langue" data-i18n="c.cpt.langueAide">L’interface s’affichera dans cette langue à chaque visite.</p>
+            </div>
+            <div class="case">
+              <input id="p-alertes" type="checkbox">
+              <label for="p-alertes" data-i18n="c.ins.alertes">Je souhaite recevoir les alertes de mon quartier</label>
+            </div>
+            <div class="case">
+              <input id="p-vulnerable" type="checkbox" aria-describedby="aide-p-vuln">
+              <label for="p-vulnerable" data-i18n="c.cpt.vulnerable">Je suis une personne vulnérable : recevoir les alertes sanitaires en priorité</label>
+            </div>
+            <p class="aide" id="aide-p-vuln" data-i18n="c.cpt.vulnerableAide">Cette information reste confidentielle. Elle sert uniquement à vous prévenir plus vite en cas de canicule, de pollution ou d’autre risque sanitaire.</p>
+            <button class="btn btn-primaire" type="submit" data-i18n="c.cpt.enregistrer">Enregistrer mon profil</button>
+          </form>
+        </section>
+
+        <!-- Mot de passe -->
+        <section class="panneau" id="motdepasse-section" aria-labelledby="t-mdp">
+          <h2 id="t-mdp" data-i18n="c.cpt.mdp">Changer mon mot de passe</h2>
+          <form id="form-mdp" novalidate>
+            <div class="resume-erreurs" role="alert"></div>
+            <div class="champ">
+              <label for="m-ancien" data-i18n="c.cpt.ancien">Mot de passe actuel</label>
+              <div class="mdp-ligne"><input id="m-ancien" type="password" autocomplete="current-password" required></div>
+            </div>
+            <div class="champ">
+              <label for="m-nouveau" data-i18n="c.cpt.nouveau">Nouveau mot de passe</label>
+              <div class="mdp-ligne"><input id="m-nouveau" type="password" autocomplete="new-password" required></div>
+            </div>
+            <div class="champ">
+              <label for="m-confirm" data-i18n="c.cpt.confirm">Confirmer le nouveau mot de passe</label>
+              <div class="mdp-ligne"><input id="m-confirm" type="password" autocomplete="new-password" required></div>
+            </div>
+            <button class="btn btn-primaire" type="submit" data-i18n="c.cpt.changerMdp">Changer mon mot de passe</button>
+          </form>
+        </section>
+
+        <!-- Sécurité -->
+        <section class="panneau" id="securite" aria-labelledby="t-secu">
+          <h2 id="t-secu" data-i18n="c.cpt.secu">Sécurité de mon accès</h2>
+          <dl class="fiche" id="secu-fiche"></dl>
+          <h3 data-i18n="c.cpt.protegeTitre">Comment votre compte est protégé</h3>
+          <ol class="liste-protection" id="secu-protection"></ol>
+          <h3 data-i18n="c.cpt.activite">Activité récente de votre compte</h3>
+          <ul class="liste-activite" id="secu-activite"></ul>
+        </section>
+
+        <!-- D02, F53, F54 : sécurité de connexion -->
+        <section class="panneau" id="securite-connexion" aria-labelledby="t-secu-cnx">
+          <h2 id="t-secu-cnx" data-i18n="f.cpt.titre">Sécurité de connexion</h2>
+          <p class="doux" data-i18n="f.cpt.intro">Renforcez l’accès à votre espace. Chaque option peut être retirée à tout moment.</p>
+          <div class="secu-bloc" id="bloc-cles"></div>
+          <div class="secu-bloc" id="bloc-deux"></div>
+          <div class="secu-bloc" id="appareils"></div>
+        </section>
+
+        <!-- F55 : mes informations -->
+        <section class="panneau" id="mes-informations" aria-labelledby="t-infos">
+          <h2 id="t-infos" data-i18n="c.cpt.infos">Les informations que la ville conserve sur moi</h2>
+          <p data-i18n="c.cpt.infosD">Consultez, imprimez ou téléchargez tout ce que la ville garde à votre sujet, expliqué simplement.</p>
+          <a class="btn" href="mes-informations.html"><i class="ph-duotone ph-identification-card" aria-hidden="true"></i><span data-i18n="c.cpt.infosLien">Voir mes informations</span></a>
+        </section>
+
+        <!-- Suppression F33 -->
+        <section class="panneau zone-danger" id="suppression" aria-labelledby="t-suppr">
+          <h2 id="t-suppr" data-i18n="c.cpt.suppr">Supprimer mon compte</h2>
+          <div id="suppr-contenu"></div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script>NT.pret(() => { NT.comptes.compte(); NT.forte.compte(); });</script>
+</body>
+</html>

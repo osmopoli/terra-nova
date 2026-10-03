@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Terra Nova — la mairie de Terra Nova en ligne</title>
+  <meta name="description" content="Terra Nova, la plateforme de la ville de Terra Nova : services municipaux, démarches, signalements, rendez-vous, annonces et alertes.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/accueil.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="accueil">
+  <main id="contenu" class="conteneur">
+
+    <!-- D07 : où suis-je, que puis-je faire -->
+    <section class="accueil-haut" aria-labelledby="titre-accueil">
+      <div class="accueil-texte">
+        <p class="lieu"><i class="ph-duotone ph-planet" aria-hidden="true"></i><span data-i18n="acc.lieu">Ville de Terra Nova</span></p>
+        <h1 id="titre-accueil" data-i18n="acc.titre">Votre mairie, ouverte jour et nuit.</h1>
+        <p class="intro" data-i18n="acc.intro">Faites vos démarches, signalez un problème, prenez rendez-vous et suivez vos demandes sans vous déplacer.</p>
+        <form class="recherche" role="search" action="services.html">
+          <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+          <label for="recherche" class="sr-only" data-i18n="acc.rechercheLabel">Rechercher un service</label>
+          <input id="recherche" name="q" type="search" autocomplete="off" data-i18n-attr="placeholder:acc.recherchePh" placeholder="Santé, logement, papiers d’identité…">
+          <button class="btn btn-primaire" type="submit" data-i18n="acc.chercher">Chercher</button>
+        </form>
+        <nav class="raccourcis" aria-labelledby="lbl-raccourcis">
+          <span id="lbl-raccourcis" data-i18n="acc.souvent">Souvent cherché :</span>
+          <a href="services.html?q=sant%C3%A9" data-i18n="acc.r1">Santé</a>
+          <a href="services.html?q=logement" data-i18n="acc.r2">Logement</a>
+          <a href="services.html?q=%C3%A9tat%20civil" data-i18n="acc.r3">Papiers d’identité</a>
+          <a href="transports.html" data-i18n="acc.r4">Navettes</a>
+        </nav>
+      </div>
+
+      <figure class="baie" style="margin:0">
+        <img data-src="assets/img/galaxie-800.webp" data-srcset="assets/img/galaxie-480.webp 480w, assets/img/galaxie-800.webp 800w, assets/img/galaxie-1280.webp 1280w" sizes="(max-width: 920px) calc(100vw - 2rem), 560px" width="1280" height="1340" decoding="async" alt="La galaxie spirale NGC 4639, photographiée par le télescope Hubble" data-i18n-attr="alt:acc.imgAlt" fetchpriority="high"><script>NT.leger.image(document.currentScript.previousElementSibling)</script>
+        <dl class="fiche-colonie">
+          <div><dt><i class="ph ph-clock" aria-hidden="true"></i><span data-i18n="acc.heure">Heure de Nova</span></dt><dd id="heure-nova">–</dd></div>
+          <div><dt><i class="ph ph-thermometer-simple" aria-hidden="true"></i><span data-i18n="acc.dome">Sous le dôme</span></dt><dd>21 °C</dd></div>
+          <div><dt><i class="ph ph-tram" aria-hidden="true"></i><span data-i18n="acc.navette">Navette N4</span></dt><dd><span id="navette-min">–</span> min</dd></div>
+        </dl>
+        <figcaption class="credit">NGC 4639 · NASA / ESA Hubble</figcaption>
+      </figure>
+    </section>
+
+    <!-- Les quatre gestes essentiels -->
+    <section aria-labelledby="titre-actions">
+      <h2 id="titre-actions" class="sr-only" data-i18n="acc.actions">Que voulez-vous faire ?</h2>
+      <div class="actions-principales">
+        <a class="action signaler" href="demande.html?type=signalement">
+          <span class="icone" aria-hidden="true"><i class="ph-duotone ph-map-pin"></i></span>
+          <div><strong data-i18n="acc.a1">Signaler un problème</strong><span data-i18n="acc.a1d">Éclairage, chaussée, déchets : dites quoi et où.</span></div>
+        </a>
+        <a class="action" href="services.html">
+          <span class="icone" aria-hidden="true"><i class="ph-duotone ph-compass"></i></span>
+          <div><strong data-i18n="acc.a2">Trouver un service</strong><span data-i18n="acc.a2d">Les douze services de la ville, expliqués simplement.</span></div>
+        </a>
+        <a class="action" href="espace.html">
+          <span class="icone" aria-hidden="true"><i class="ph-duotone ph-folder-open"></i></span>
+          <div><strong data-i18n="acc.a3">Suivre mes demandes</strong><span id="action-suivi" data-i18n="acc.a3d">Où en est votre dossier, étape par étape.</span></div>
+        </a>
+        <a class="action" href="rendez-vous.html">
+          <span class="icone" aria-hidden="true"><i class="ph-duotone ph-calendar-check"></i></span>
+          <div><strong data-i18n="acc.a4">Prendre rendez-vous</strong><span data-i18n="acc.a4d">Un créneau avec un agent, un rappel la veille.</span></div>
+        </a>
+      </div>
+    </section>
+
+    <!-- F28 / F32 : les services les plus utilisés en premier -->
+    <section class="section" aria-labelledby="titre-populaires">
+      <div class="titre-section">
+        <div><h2 id="titre-populaires" data-i18n="acc.populaires">Les services les plus demandés</h2>
+          <p data-i18n="acc.populairesD">Ce que les habitants cherchent le plus en ce moment.</p></div>
+        <a class="btn" href="services.html" data-i18n="acc.tous">Voir les douze services</a>
+      </div>
+      <ul class="liste-services" id="populaires"></ul>
+    </section>
+
+    <!-- D06 + D12 -->
+    <section class="section deux-colonnes">
+      <div>
+        <div class="titre-section"><div><h2 id="titre-journal" data-i18n="acc.journal">Dernières nouvelles de la ville</h2>
+          <p data-i18n="acc.journalD">Annonces de la mairie, changements de service et informations pratiques.</p></div></div>
+        <ol class="journal" id="journal" aria-labelledby="titre-journal"></ol>
+        <a class="btn" href="annonces.html" data-i18n="acc.toutes">Toutes les annonces</a>
+      </div>
+      <aside class="arrivee" aria-labelledby="titre-arrivee" id="bloc-arrivee">
+        <h2 id="titre-arrivee" data-i18n="acc.arrivee">Vous venez d’arriver ?</h2>
+        <p class="doux" data-i18n="acc.arriveeD">Trois étapes pour vous installer.</p>
+        <ol>
+          <li data-i18n="acc.e1">Créez votre compte habitant</li>
+          <li data-i18n="acc.e2">Indiquez votre quartier pour recevoir les bonnes alertes</li>
+          <li data-i18n="acc.e3">Lancez votre première démarche, on vous guide</li>
+        </ol>
+        <a class="btn btn-primaire" href="inscription.html"><i class="ph ph-user-plus" aria-hidden="true"></i><span data-i18n="acc.creer">Créer mon compte</span></a>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    NT.i18n.ajouter({
+      en: { 'acc.lieu': 'City of Terra Nova', 'acc.titre': 'Your city hall, open day and night.', 'acc.intro': 'Complete procedures, report a problem, book appointments and track your requests without travelling.', 'acc.rechercheLabel': 'Search for a service', 'acc.recherchePh': 'Health, housing, ID papers…', 'acc.chercher': 'Search', 'acc.souvent': 'Popular:', 'acc.r1': 'Health', 'acc.r2': 'Housing', 'acc.r3': 'ID papers', 'acc.r4': 'Shuttles', 'acc.imgAlt': 'The spiral galaxy NGC 4639, photographed by the Hubble telescope', 'acc.heure': 'Nova time', 'acc.dome': 'Under the dome', 'acc.navette': 'Shuttle N4', 'acc.actions': 'What would you like to do?', 'acc.a1': 'Report a problem', 'acc.a1d': 'Lighting, roads, waste: tell us what and where.', 'acc.a2': 'Find a service', 'acc.a2d': 'The city’s twelve services, explained simply.', 'acc.a3': 'Track my requests', 'acc.a3d': 'Where your file stands, step by step.', 'acc.a4': 'Book an appointment', 'acc.a4d': 'A slot with a staff member, a reminder the day before.', 'acc.populaires': 'Most requested services', 'acc.populairesD': 'What residents are looking for right now.', 'acc.tous': 'See all twelve services', 'acc.journal': 'Latest city news', 'acc.journalD': 'City notices, service changes and practical information.', 'acc.toutes': 'All notices', 'acc.arrivee': 'Just arrived?', 'acc.arriveeD': 'Three steps to settle in.', 'acc.e1': 'Create your resident account', 'acc.e2': 'Add your district to get the right alerts', 'acc.e3': 'Start your first procedure, we guide you', 'acc.creer': 'Create my account' },
+      es: { 'acc.lieu': 'Ciudad de Terra Nova', 'acc.titre': 'Su ayuntamiento, abierto día y noche.', 'acc.intro': 'Haga sus trámites, señale un problema, pida cita y siga sus solicitudes sin desplazarse.', 'acc.rechercheLabel': 'Buscar un servicio', 'acc.recherchePh': 'Salud, vivienda, documentos…', 'acc.chercher': 'Buscar', 'acc.souvent': 'Lo más buscado:', 'acc.r1': 'Salud', 'acc.r2': 'Vivienda', 'acc.r3': 'Documentos', 'acc.r4': 'Lanzaderas', 'acc.imgAlt': 'La galaxia espiral NGC 4639, fotografiada por el telescopio Hubble', 'acc.heure': 'Hora de Nova', 'acc.dome': 'Bajo la cúpula', 'acc.navette': 'Lanzadera N4', 'acc.actions': '¿Qué desea hacer?', 'acc.a1': 'Señalar un problema', 'acc.a1d': 'Alumbrado, calzada, residuos: diga qué y dónde.', 'acc.a2': 'Encontrar un servicio', 'acc.a2d': 'Los doce servicios de la ciudad, explicados con sencillez.', 'acc.a3': 'Seguir mis solicitudes', 'acc.a3d': 'En qué punto está su expediente, paso a paso.', 'acc.a4': 'Pedir cita', 'acc.a4d': 'Un horario con un agente y un recordatorio la víspera.', 'acc.populaires': 'Servicios más solicitados', 'acc.populairesD': 'Lo que más buscan ahora los habitantes.', 'acc.tous': 'Ver los doce servicios', 'acc.journal': 'Últimas noticias de la ciudad', 'acc.journalD': 'Anuncios, cambios de servicio e información práctica.', 'acc.toutes': 'Todos los anuncios', 'acc.arrivee': '¿Acaba de llegar?', 'acc.arriveeD': 'Tres pasos para instalarse.', 'acc.e1': 'Cree su cuenta de habitante', 'acc.e2': 'Indique su barrio para recibir las alertas adecuadas', 'acc.e3': 'Inicie su primer trámite, le guiamos', 'acc.creer': 'Crear mi cuenta' },
+      ar: { 'acc.lieu': 'مدينة تيرا نوفا', 'acc.titre': 'بلديتك مفتوحة ليلاً ونهاراً.', 'acc.intro': 'أنجز معاملاتك، أبلغ عن مشكلة، احجز موعداً وتابع طلباتك دون أن تتنقل.', 'acc.rechercheLabel': 'البحث عن خدمة', 'acc.recherchePh': 'الصحة، السكن، وثائق الهوية…', 'acc.chercher': 'بحث', 'acc.souvent': 'الأكثر بحثاً:', 'acc.r1': 'الصحة', 'acc.r2': 'السكن', 'acc.r3': 'وثائق الهوية', 'acc.r4': 'الحافلات', 'acc.imgAlt': 'المجرة الحلزونية NGC 4639 كما صورها تلسكوب هابل', 'acc.heure': 'توقيت نوفا', 'acc.dome': 'تحت القبة', 'acc.navette': 'الحافلة N4', 'acc.actions': 'ماذا تريد أن تفعل؟', 'acc.a1': 'الإبلاغ عن مشكلة', 'acc.a1d': 'الإنارة، الطريق، النفايات: قل ماذا وأين.', 'acc.a2': 'إيجاد خدمة', 'acc.a2d': 'خدمات المدينة الاثنتا عشرة بشرح بسيط.', 'acc.a3': 'متابعة طلباتي', 'acc.a3d': 'أين وصل ملفك، خطوة بخطوة.', 'acc.a4': 'حجز موعد', 'acc.a4d': 'موعد مع عون وتذكير في اليوم السابق.', 'acc.populaires': 'الخدمات الأكثر طلباً', 'acc.populairesD': 'ما يبحث عنه السكان الآن.', 'acc.tous': 'عرض الخدمات الاثنتي عشرة', 'acc.journal': 'آخر أخبار المدينة', 'acc.journalD': 'إعلانات البلدية وتغييرات الخدمات ومعلومات عملية.', 'acc.toutes': 'كل الإعلانات', 'acc.arrivee': 'وصلت للتو؟', 'acc.arriveeD': 'ثلاث خطوات للاستقرار.', 'acc.e1': 'أنشئ حساب الساكن', 'acc.e2': 'حدد حيّك لتصلك التنبيهات المناسبة', 'acc.e3': 'ابدأ أول معاملة، سنرشدك', 'acc.creer': 'إنشاء حسابي' }
+    });
+
+    NT.pret(() => {
+      const { echap } = NT.ui, choisir = NT.i18n.choisir;
+      const u = NT.auth.utilisateur();
+
+      /* Heure locale de Nova (sol de 24 h 39 min) et prochaine navette (toutes les 10 min) */
+      const SOL = 88775244, FONDATION = Date.UTC(2023, 3, 1);
+      function horloge() {
+        const frac = ((Date.now() - FONDATION) % SOL) / SOL, m = Math.floor(frac * 1440);
+        document.getElementById('heure-nova').textContent = String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+        document.getElementById('navette-min').textContent = 10 - (new Date().getMinutes() % 10);
+      }
+      horloge(); setInterval(horloge, 15000);
+
+      /* Suivi : chiffre réel si connecté */
+      if (u && u.role === 'citoyen') {
+        const enCours = NT.demandes.pour(u.id).filter(d => d.statut === 'recue' || d.statut === 'en_cours').length;
+        document.getElementById('action-suivi').textContent = enCours ? enCours + ' demande(s) en cours de traitement.' : 'Aucune demande en cours.';
+        document.getElementById('bloc-arrivee').querySelector('a').href = 'espace.html';
+      }
+
+      /* Services les plus demandés (prioritaires puis les plus consultés) */
+      document.getElementById('populaires').innerHTML = NT.services.tous().slice().sort((a, b) => (b.prioritaire - a.prioritaire) || (b.vues - a.vues)).slice(0, 6).map(s => `
+        <li><a href="${echap(s.lien || 'services.html#' + s.id)}">
+          <span class="icone" aria-hidden="true"><i class="ph-duotone ${echap(s.icone)}"></i></span>
+          <span><strong>${echap(choisir(s.nom))}</strong><span class="doux">${echap(choisir(s.description))}</span></span>
+          ${s.etat.code !== 'ok' ? NT.ui.niveauBadge(s) : ''}
+        </a></li>`).join('');
+
+      /* Dernières nouvelles */
+      document.getElementById('journal').innerHTML = NT.annonces.toutes().slice(0, 4).map(a => `
+        <li class="${a.importance === 'alerte' ? 'alerte' : ''}">
+          <time datetime="${a.cree}">${echap(NT.ui.depuis(a.cree))}</time>
+          <h3><a href="annonces.html#${echap(a.id)}">${a.importance === 'alerte' ? '<span class="sr-only">Alerte : </span>' : ''}${echap(a.titre)}</a></h3>
+          <p>${echap(a.resume)}</p>
+        </li>`).join('');
+    });
+  </script>
+</body>
+</html>

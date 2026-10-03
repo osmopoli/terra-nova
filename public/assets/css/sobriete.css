@@ -1,0 +1,35 @@
+/* F57 — sobriété numérique. Chiffres clés, tableau des pages, mesures du navigateur. Rem, lisible à 200 % et en 320 px. */
+[hidden]{ display:none!important; }
+.bloc-sob{ margin-top:2.5rem; }
+.bloc-sob h2{ font-size:clamp(1.25rem,2.2vw,1.6rem); margin-bottom:.75rem; }
+.panneau.bloc-sob h2{ margin-bottom:.5rem; }
+.chiffres{ list-style:none; margin:1.25rem 0 0; padding:0; display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr)); }
+.chiffre{ display:flex; flex-direction:column; gap:.2rem; background:var(--verre); border:1px solid var(--trait); border-radius:var(--r-l); padding:1.1rem 1.25rem; }
+.chiffre i{ font-size:1.6rem; color:var(--iono); }
+.chiffre .valeur{ font-family:var(--titre); font-size:clamp(1.8rem,4vw,2.4rem); font-weight:800; line-height:1.1; overflow-wrap:anywhere; }
+.chiffre .legende{ color:var(--brume); font-size:.92rem; }
+.chiffre-note{ border-color:var(--iono); }
+.methode{ margin-top:1.25rem; }
+.methode summary{ cursor:pointer; min-height:2.75rem; display:flex; align-items:center; color:var(--iono); font-weight:600; }
+.methode ul{ margin:.4rem 0 0; padding-inline-start:1.2rem; display:grid; gap:.5rem; color:var(--brume); }
+.table-sob{ width:100%; border-collapse:collapse; min-width:30rem; }
+.table-sob caption{ text-align:start; color:var(--brume); font-size:.9rem; padding:.8rem .9rem; }
+.table-sob th,.table-sob td{ text-align:start; vertical-align:middle; padding:.7rem .9rem; border-bottom:1px solid var(--trait); }
+.table-sob thead th{ color:var(--brume); font-size:.85rem; border-bottom:1px solid var(--trait-2); }
+.table-sob tbody th{ font-weight:700; }
+.table-sob td.num{ font-variant-numeric:tabular-nums; }
+.barre{ display:block; height:.4rem; margin-top:.35rem; background:var(--trait); border-radius:99px; overflow:hidden; min-width:6rem; }
+.barre i{ display:block; height:100%; background:var(--iono); border-radius:99px; }
+/* La note est écrite en lettre ET en mots : jamais la couleur seule. */
+.note{ display:inline-flex; align-items:center; gap:.4rem; font-weight:700; }
+.note b{ display:inline-grid; place-items:center; width:1.8rem; height:1.8rem; border-radius:.45rem; border:2px solid currentColor; font-family:var(--titre); }
+.note-bon{ color:var(--calme); } .note-moyen{ color:var(--soleil); } .note-mauvais{ color:var(--corail); }
+.mesures{ display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr)); margin:1rem 0; }
+.mesures div{ border-inline-start:3px solid var(--iono); padding:.2rem .9rem; }
+.mesures dt{ color:var(--brume); font-size:.88rem; }
+.mesures dd{ margin:0; font-family:var(--titre); font-size:1.5rem; font-weight:700; }
+.liste-claire{ list-style:none; margin:1rem 0 0; padding:0; display:grid; gap:.9rem; }
+.liste-claire li{ display:flex; gap:.8rem; align-items:flex-start; }
+.liste-claire i{ font-size:1.6rem; color:var(--iono); flex:none; }
+.lien-reglage{ display:flex; gap:.8rem; align-items:flex-start; margin-top:1.25rem; }
+.lien-reglage i{ font-size:1.6rem; color:var(--iono); flex:none; }

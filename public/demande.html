@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Faire une demande — Terra Nova</title>
+  <meta name="description" content="Contacter un service, signaler un problème ou faire une démarche auprès de la mairie de Terra Nova.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/demandes.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="services" data-ariane="nav.accueil|index.html;dem.ariane">
+  <main id="contenu" class="conteneur dm-etroit">
+
+    <header class="titre-page">
+      <h1 data-i18n="dem.titre">Faire une demande</h1>
+      <p data-i18n="dem.intro">Choisissez ce que vous voulez faire, nous vous guidons. Vous recevrez un numéro de suivi dès l’envoi.</p>
+    </header>
+
+    <!-- Formulaire guidé (D04, F25) -->
+    <div id="zone-formulaire" class="panneau dm-panneau">
+      <form id="form-demande" novalidate>
+        <div id="resume-erreurs" class="dm-erreurs" role="alert" tabindex="-1" hidden></div>
+
+        <fieldset class="champ" style="padding:0;border:0;margin-bottom:1.5rem">
+          <legend style="padding:0;margin-bottom:.6rem" data-i18n="dem.typeLegende">Que souhaitez-vous faire ?</legend>
+          <div class="dm-choix-liste">
+            <label class="dm-choix"><input type="radio" name="type" value="contact">
+              <span class="dm-choix-corps"><i class="ph-duotone ph-chat-circle-text dm-ico" aria-hidden="true"></i><strong data-i18n="dem.t.contact">Contacter un service</strong><span class="doux" data-i18n="dem.t.contactD">Poser une question ou expliquer une difficulté.</span></span>
+              <i class="ph-duotone ph-check-circle dm-coche" aria-hidden="true"></i></label>
+            <label class="dm-choix"><input type="radio" name="type" value="signalement">
+              <span class="dm-choix-corps"><i class="ph-duotone ph-map-pin dm-ico" aria-hidden="true"></i><strong data-i18n="dem.t.signalement">Signaler un problème</strong><span class="doux" data-i18n="dem.t.signalementD">Lampadaire cassé, déchets, fuite : nous trouvons le bon service.</span></span>
+              <i class="ph-duotone ph-check-circle dm-coche" aria-hidden="true"></i></label>
+            <label class="dm-choix"><input type="radio" name="type" value="demarche">
+              <span class="dm-choix-corps"><i class="ph-duotone ph-file-text dm-ico" aria-hidden="true"></i><strong data-i18n="dem.t.demarche">Faire une démarche</strong><span class="doux" data-i18n="dem.t.demarcheD">Acte, changement d’adresse, autorisation, aide.</span></span>
+              <i class="ph-duotone ph-check-circle dm-coche" aria-hidden="true"></i></label>
+          </div>
+        </fieldset>
+
+        <!-- ===== Contact (D04) ===== -->
+        <div class="dm-bloc" data-type="contact" hidden>
+          <div class="champ">
+            <label for="c-service" data-i18n="dem.service">Service concerné</label>
+            <select id="c-service" aria-describedby="aide-c-service err-c-service"></select>
+            <p class="aide" id="aide-c-service" data-i18n="dem.serviceAide">Si vous hésitez, choisissez « Je ne sais pas » : la mairie vous orientera.</p>
+            <p class="erreur dm-err" id="err-c-service" hidden></p>
+            <div class="dm-etat-service" id="etat-c-service" hidden></div>
+          </div>
+          <div class="champ">
+            <label for="c-objet" data-i18n="dem.objet">Objet</label>
+            <input id="c-objet" type="text" maxlength="120" autocomplete="off" aria-describedby="aide-c-objet err-c-objet">
+            <p class="aide" id="aide-c-objet" data-i18n="dem.objetAide">En quelques mots, par exemple « Question sur ma facture ».</p>
+            <p class="erreur dm-err" id="err-c-objet" hidden></p>
+          </div>
+          <div class="champ">
+            <label for="c-message" data-i18n="dem.message">Votre message</label>
+            <textarea id="c-message" maxlength="2000" aria-describedby="aide-c-message err-c-message"></textarea>
+            <p class="aide" id="aide-c-message" data-i18n="dem.messageAide">Expliquez votre question ou votre difficulté avec le plus de détails possible.</p>
+            <p class="erreur dm-err" id="err-c-message" hidden></p>
+          </div>
+          <div id="c-visiteur" hidden>
+            <div class="astuce" role="note" style="margin-bottom:1.1rem"><i class="ph-duotone ph-info" aria-hidden="true"></i>
+              <p data-i18n="dem.visiteur">Vous n’êtes pas connecté : indiquez votre nom et votre e-mail pour recevoir la réponse.</p></div>
+            <div class="grille-2">
+              <div class="champ">
+                <label for="c-nom" data-i18n="dem.nom">Nom et prénom</label>
+                <input id="c-nom" type="text" autocomplete="name" aria-describedby="err-c-nom">
+                <p class="erreur dm-err" id="err-c-nom" hidden></p>
+              </div>
+              <div class="champ">
+                <label for="c-email" data-i18n="dem.email">Adresse e-mail pour la réponse</label>
+                <input id="c-email" type="email" autocomplete="email" aria-describedby="aide-c-email err-c-email">
+                <p class="aide" id="aide-c-email" data-i18n="dem.emailAide">Exemple : prenom.nom@exemple.fr</p>
+                <p class="erreur dm-err" id="err-c-email" hidden></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== Signalement (F25) ===== -->
+        <div class="dm-bloc" data-type="signalement" hidden>
+          <fieldset class="champ" id="s-categorie" aria-describedby="aide-s-categorie err-s-categorie" style="padding:0;border:0">
+            <legend style="padding:0;margin-bottom:.5rem" data-i18n="dem.categorie">Quel est le problème ?</legend>
+            <div class="dm-choix-liste" id="s-categorie-liste"></div>
+            <p class="aide" id="aide-s-categorie" data-i18n="dem.categorieAide">Le service compétent est choisi automatiquement.</p>
+            <p class="erreur dm-err" id="err-s-categorie" hidden></p>
+          </fieldset>
+          <div class="dm-dest" id="s-dest" aria-live="polite"><i class="ph-duotone ph-paper-plane-tilt" aria-hidden="true"></i><p id="s-dest-texte"></p></div>
+
+          <div class="champ">
+            <label for="s-description" data-i18n="dem.description">Que s’est-il passé ?</label>
+            <textarea id="s-description" maxlength="2000" aria-describedby="aide-s-description err-s-description"></textarea>
+            <p class="aide" id="aide-s-description" data-i18n="dem.descriptionAide">Par exemple : « Le lampadaire devant le numéro 12 est éteint depuis trois jours. »</p>
+            <p class="erreur dm-err" id="err-s-description" hidden></p>
+          </div>
+
+          <fieldset class="champ" style="padding:0;border:0;margin-bottom:0">
+            <legend style="padding:0;margin-bottom:.5rem" data-i18n="dem.lieuLegende">Où se trouve le problème ?</legend>
+            <div class="champ">
+              <label for="s-adresse" data-i18n="dem.adresse">Adresse ou repère</label>
+              <input id="s-adresse" type="text" maxlength="160" autocomplete="street-address" aria-describedby="aide-s-adresse err-s-adresse">
+              <p class="aide" id="aide-s-adresse" data-i18n="dem.adresseAide">Numéro et rue, ou un lieu connu (arrêt de navette, place…).</p>
+              <p class="erreur dm-err" id="err-s-adresse" hidden></p>
+            </div>
+            <div class="dm-plan-bloc">
+              <div class="dm-plan" id="plan-quartiers"></div>
+              <div class="champ" style="margin:0">
+                <label for="s-quartier" data-i18n="dem.quartier">Quartier</label>
+                <select id="s-quartier" aria-describedby="aide-s-quartier err-s-quartier"></select>
+                <p class="aide" id="aide-s-quartier" data-i18n="dem.quartierAide">Choisissez dans la liste ou touchez un quartier sur le plan.</p>
+                <p class="erreur dm-err" id="err-s-quartier" hidden></p>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="champ" id="s-urgence" style="padding:0;border:0">
+            <legend style="padding:0;margin-bottom:.5rem" data-i18n="dem.urgence">Le problème est-il urgent ?</legend>
+            <div class="dm-choix-liste">
+              <label class="dm-choix compact"><input type="radio" name="urgence" value="normale" checked>
+                <span class="dm-choix-corps"><i class="ph-duotone ph-clock dm-ico" aria-hidden="true"></i><span><strong data-i18n="dem.urgNormale">Normale</strong><br><span class="doux" data-i18n="dem.urgNormaleD">Gênant, sans danger immédiat</span></span></span><i class="ph-duotone ph-check-circle dm-coche" aria-hidden="true"></i></label>
+              <label class="dm-choix compact danger"><input type="radio" name="urgence" value="dangereux">
+                <span class="dm-choix-corps"><i class="ph-duotone ph-warning dm-ico" aria-hidden="true"></i><span><strong data-i18n="dem.urgDanger">Dangereux</strong><br><span class="doux" data-i18n="dem.urgDangerD">Traité en priorité</span></span></span><i class="ph-duotone ph-check-circle dm-coche" aria-hidden="true"></i></label>
+            </div>
+          </fieldset>
+
+          <div class="champ">
+            <label for="s-photo" data-i18n="dem.photo">Photo (facultatif)</label>
+            <input id="s-photo" type="file" accept="image/*" aria-describedby="aide-s-photo err-s-photo">
+            <p class="aide" id="aide-s-photo" data-i18n="dem.photoAide">Une photo aide l’équipe à intervenir plus vite. Elle est réduite automatiquement.</p>
+            <p class="erreur dm-err" id="err-s-photo" hidden></p>
+            <div class="dm-photo" id="s-photo-apercu" hidden>
+              <img id="s-photo-img" alt="">
+              <button class="btn" type="button" id="s-photo-retirer"><i class="ph ph-trash" aria-hidden="true"></i><span data-i18n="dem.photoRetirer">Retirer la photo</span></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== Démarche ===== -->
+        <div class="dm-bloc" data-type="demarche" hidden>
+          <div class="champ">
+            <label for="d-service" data-i18n="dem.service">Service concerné</label>
+            <select id="d-service" aria-describedby="err-d-service"></select>
+            <p class="erreur dm-err" id="err-d-service" hidden></p>
+            <div class="dm-etat-service" id="etat-d-service" hidden></div>
+          </div>
+          <div class="champ">
+            <label for="d-nature" data-i18n="dem.nature">Nature de la démarche</label>
+            <select id="d-nature" aria-describedby="err-d-nature"></select>
+            <p class="erreur dm-err" id="err-d-nature" hidden></p>
+          </div>
+          <div class="champ">
+            <label for="d-precisions" data-i18n="dem.precisions">Précisions (facultatif)</label>
+            <textarea id="d-precisions" maxlength="2000" aria-describedby="aide-d-precisions"></textarea>
+            <p class="aide" id="aide-d-precisions" data-i18n="dem.precisionsAide">Indiquez tout ce qui peut aider le service : dates, numéro de dossier, situation.</p>
+          </div>
+        </div>
+
+        <div class="ligne" style="margin-top:.5rem">
+          <button class="btn btn-primaire" type="submit" id="btn-envoyer"><i class="ph ph-paper-plane-tilt" aria-hidden="true"></i><span id="btn-envoyer-txt" data-i18n="dem.envoyer">Envoyer la demande</span></button>
+          <a class="btn" href="index.html" data-i18n="dem.annuler">Annuler</a>
+        </div>
+      </form>
+    </div>
+
+    <!-- Confirmation immédiate (D16) -->
+    <section id="confirmation" class="panneau dm-panneau dm-confirm" aria-labelledby="conf-titre" hidden></section>
+  </main>
+
+  <script src="assets/js/demande.js" defer></script>
+</body>
+</html>

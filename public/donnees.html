@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vos données — Terra Nova</title>
+  <meta name="description" content="Comment Terra Nova utilise vos données, en langage clair, et comment poser une question ou signaler une inquiétude.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/donnees.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="donnees" data-ariane="nav.accueil|index.html;Vos données" data-roles="">
+  <main id="contenu" class="conteneur">
+    <header class="titre-page">
+      <h1 data-i18n="don.titre">Vos données, expliquées simplement</h1>
+      <p data-i18n="don.sous">Ce que Terra Nova garde sur vous, pourquoi, qui peut le voir, et comment nous poser une question ou nous dire une inquiétude.</p>
+    </header>
+
+    <nav class="sommaire-don" aria-labelledby="t-som">
+      <h2 id="t-som" class="sr-only" data-i18n="don.sommaire">Sur cette page</h2>
+      <ul>
+        <li><a href="#collecte" data-i18n="don.collecte">Ce que nous gardons</a></li>
+        <li><a href="#acces" data-i18n="don.acces">Qui peut le voir</a></li>
+        <li><a href="#droits" data-i18n="don.droits">Vos droits</a></li>
+        <li><a href="#question" data-i18n="don.question">Poser une question</a></li>
+        <li id="lien-mes" hidden><a href="#mes-contributions" data-i18n="don.mes">Mes contributions</a></li>
+      </ul>
+    </nav>
+
+    <section class="bloc-don" id="collecte" aria-labelledby="t-collecte">
+      <h2 id="t-collecte" data-i18n="don.collecte">Ce que nous gardons</h2>
+      <div class="table-defile">
+        <table class="table-don">
+          <caption class="sr-only" data-i18n="don.collecteCap">Les données conservées, la raison et la durée de conservation</caption>
+          <thead><tr>
+            <th scope="col" data-i18n="don.cDonnee">Donnée</th>
+            <th scope="col" data-i18n="don.cPourquoi">Pourquoi</th>
+            <th scope="col" data-i18n="don.cDuree">Combien de temps</th>
+          </tr></thead>
+          <tbody>
+            <tr><th scope="row" data-i18n="don.d1">Votre profil (nom, e-mail, téléphone)</th><td data-i18n="don.d1p">Vous reconnaître et vous écrire au sujet de vos démarches.</td><td data-i18n="don.d1d">Tant que votre compte existe.</td></tr>
+            <tr><th scope="row" data-i18n="don.d2">Votre quartier</th><td data-i18n="don.d2p">Vous envoyer les alertes qui concernent votre secteur.</td><td data-i18n="don.d2d">Tant que votre compte existe.</td></tr>
+            <tr><th scope="row" data-i18n="don.d3">Vos demandes et signalements</th><td data-i18n="don.d3p">Les traiter et vous montrer où ils en sont.</td><td data-i18n="don.d3d">Tant que votre compte existe, puis effacées avec lui.</td></tr>
+            <tr><th scope="row" data-i18n="don.d4">Vos rendez-vous</th><td data-i18n="don.d4p">Réserver un créneau et vous envoyer un rappel.</td><td data-i18n="don.d4d">Tant que votre compte existe.</td></tr>
+            <tr><th scope="row" data-i18n="don.d5">Vos notifications</th><td data-i18n="don.d5p">Vous tenir au courant de l’avancement de vos demandes.</td><td data-i18n="don.d5d">Tant que votre compte existe.</td></tr>
+            <tr><th scope="row" data-i18n="don.d6">Le journal de connexion</th><td data-i18n="don.d6p">Détecter les tentatives de piratage et protéger votre compte.</td><td data-i18n="don.d6d">Conservé pour la sécurité, effacé avec votre compte.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="liste-claire">
+        <li><i class="ph-duotone ph-prohibit" aria-hidden="true"></i><span><strong data-i18n="don.jamais1a">Jamais de revente</strong> <span data-i18n="don.jamais1b">: vos données ne sont vendues à personne.</span></span></li>
+        <li><i class="ph-duotone ph-prohibit" aria-hidden="true"></i><span><strong data-i18n="don.jamais2a">Jamais de publicité</strong> <span data-i18n="don.jamais2b">: aucun profil publicitaire n’est construit.</span></span></li>
+        <li><i class="ph-duotone ph-cookie" aria-hidden="true"></i><span><strong data-i18n="don.cookieA">Un seul cookie</strong><span data-i18n="don.cookieB">, celui de votre connexion. Aucune mesure d’audience, aucun traceur.</span></span></li>
+      </ul>
+    </section>
+
+    <section class="bloc-don" id="acces" aria-labelledby="t-acces">
+      <h2 id="t-acces" data-i18n="don.acces">Qui peut le voir</h2>
+      <div class="table-defile">
+        <table class="table-don">
+          <caption class="sr-only" data-i18n="don.accesCap">Qui a accès à quelles données</caption>
+          <thead><tr>
+            <th scope="col" data-i18n="don.cDonnee">Donnée</th>
+            <th scope="col" data-i18n="don.aVous">Vous</th>
+            <th scope="col" data-i18n="don.aAgents">Agents municipaux</th>
+            <th scope="col" data-i18n="don.aAdmins">Administrateurs</th>
+          </tr></thead>
+          <tbody>
+            <tr><th scope="row" data-i18n="don.r1">Profil et coordonnées</th><td data-i18n="don.oui">Oui</td><td data-i18n="don.agentsRaison">Oui, pour traiter vos demandes</td><td data-i18n="don.oui">Oui</td></tr>
+            <tr><th scope="row" data-i18n="don.r2">Demandes et rendez-vous</th><td data-i18n="don.oui">Oui</td><td data-i18n="don.agentsRaison">Oui, pour traiter vos demandes</td><td data-i18n="don.oui">Oui</td></tr>
+            <tr><th scope="row" data-i18n="don.r3">Notifications</th><td data-i18n="don.oui">Oui</td><td data-i18n="don.non">Non</td><td data-i18n="don.non">Non</td></tr>
+            <tr><th scope="row" data-i18n="don.r4">Journal de connexion</th><td data-i18n="don.oui">Oui</td><td data-i18n="don.non">Non</td><td data-i18n="don.oui">Oui, pour la sécurité</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="doux" data-i18n="don.audit">Chaque action d’un agent ou d’un administrateur est inscrite dans un journal de contrôle.</p>
+    </section>
+
+    <section class="bloc-don" id="droits" aria-labelledby="t-droits">
+      <h2 id="t-droits" data-i18n="don.droits">Vos droits</h2>
+      <ul class="liste-claire">
+        <li><i class="ph-duotone ph-eye" aria-hidden="true"></i><span><strong data-i18n="don.dAccesA">Voir</strong> <span data-i18n="don.dAccesB">ce que nous gardons : dans</span> <a href="compte.html" data-i18n="don.votreCompte">votre compte</a> <span data-i18n="don.dAccesC">ou avec le téléchargement ci-dessous.</span></span></li>
+        <li><i class="ph-duotone ph-pencil-simple" aria-hidden="true"></i><span><strong data-i18n="don.dRectifA">Corriger</strong> <span data-i18n="don.dRectifB">une information inexacte : dans</span> <a href="compte.html" data-i18n="don.votreCompte">votre compte</a>.</span></li>
+        <li><i class="ph-duotone ph-trash" aria-hidden="true"></i><span><strong data-i18n="don.dSupprA">Supprimer</strong> <span data-i18n="don.dSupprB">votre compte et vos données : dans</span> <a href="compte.html" data-i18n="don.votreCompte">votre compte</a>.</span></li>
+        <li><i class="ph-duotone ph-download-simple" aria-hidden="true"></i><span><strong data-i18n="don.dExportA">Emporter</strong> <span data-i18n="don.dExportB">vos données dans un fichier lisible (JSON).</span></span></li>
+      </ul>
+      <p id="zone-export"></p>
+    </section>
+
+    <section class="bloc-don panneau" id="question" aria-labelledby="t-question">
+      <h2 id="t-question" data-i18n="don.question">Poser une question ou signaler une inquiétude</h2>
+      <p data-i18n="don.questionD">Votre message est transmis au délégué à la protection des données. Vous recevez un numéro de suivi et une réponse sous 15 jours.</p>
+      <div id="confirmation" tabindex="-1" aria-live="polite"></div>
+      <form id="form-contrib" novalidate>
+        <div class="resume-erreurs" role="alert"></div>
+        <div class="champ">
+          <label for="c-sujet" data-i18n="don.sujet">Sujet</label>
+          <select id="c-sujet" required>
+            <option value="donnees" data-i18n="don.s1">Utilisation de mes données</option>
+            <option value="agents" data-i18n="don.s2">Accès des agents à mes données</option>
+            <option value="suppression" data-i18n="don.s3">Suppression de mes données</option>
+            <option value="securite" data-i18n="don.s4">Sécurité de mon compte</option>
+            <option value="autre" data-i18n="don.s5">Autre</option>
+          </select>
+        </div>
+        <div class="champ">
+          <label for="c-message" data-i18n="don.message">Votre message</label>
+          <textarea id="c-message" rows="5" required maxlength="2000" aria-describedby="aide-message"></textarea>
+          <p class="aide" id="aide-message" data-i18n="don.messageAide">Décrivez votre question ou votre inquiétude en quelques phrases (10 caractères minimum).</p>
+        </div>
+        <div class="champ" id="bloc-contact" hidden>
+          <label for="c-contact" data-i18n="don.contact">Votre e-mail de contact</label>
+          <input id="c-contact" type="email" autocomplete="email" aria-describedby="aide-contact">
+          <p class="aide" id="aide-contact" data-i18n="don.contactAide">Pour vous envoyer la réponse. Il n’est utilisé que pour cela.</p>
+        </div>
+        <button class="btn btn-primaire" type="submit" data-i18n="don.envoyer">Envoyer ma contribution</button>
+      </form>
+    </section>
+
+    <section class="bloc-don" id="mes-contributions" aria-labelledby="t-mes" hidden>
+      <h2 id="t-mes" data-i18n="don.mes">Mes contributions</h2>
+      <p class="doux" data-i18n="don.mesD">Chaque contribution garde son historique : vous voyez où elle en est et la réponse du délégué.</p>
+      <ul class="liste-contrib" id="liste-mes"></ul>
+    </section>
+
+    <section class="bloc-don" id="contributions-recues" aria-labelledby="t-recues" hidden>
+      <h2 id="t-recues" data-i18n="don.recues">Contributions reçues</h2>
+      <p class="doux" data-i18n="don.recuesD">Répondez à chaque habitant : il est prévenu par notification et votre réponse est inscrite au journal de contrôle.</p>
+      <ul class="liste-contrib" id="liste-recues"></ul>
+    </section>
+  </main>
+  <script src="assets/js/donnees.js" defer></script>
+</body>
+</html>

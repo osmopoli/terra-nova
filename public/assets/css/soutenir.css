@@ -1,0 +1,29 @@
+/* F52 — soutenir un signalement. Sobre, rem, lisible à 200 % et en 320 px. */
+[hidden]{ display:none!important; }
+.bloc-sou{ margin-top:2.25rem; }
+.bloc-sou h2{ font-size:clamp(1.25rem,2.2vw,1.6rem); }
+.note-sou{ border:1px solid var(--trait-2); border-radius:var(--r); padding:1rem 1.15rem; background:oklch(0.7040 0.1400 182.5 / .06); }
+.note-sou p{ margin:0 0 .6rem; }
+.note-sou p:last-child{ margin-bottom:0; }
+.filtres-sou{ display:grid; gap:0 1rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr)); margin-top:1rem; }
+.liste-sou{ list-style:none; margin:1rem 0 0; padding:0; display:grid; gap:1rem; }
+.sig{ border:1px solid var(--trait); border-radius:var(--r-l); padding:1.15rem 1.25rem; background:var(--verre); }
+.sig:target, .sig.cible{ border-color:var(--iono); box-shadow:0 0 0 3px oklch(0.7040 0.1400 182.5 / .25); }
+.sig.soutenu{ border-inline-start:4px solid var(--iono); }
+.sig-tete{ display:flex; flex-wrap:wrap; gap:.5rem .75rem; align-items:center; justify-content:space-between; }
+.sig h3{ margin:0; font-size:1.1rem; overflow-wrap:anywhere; }
+.sig-meta{ display:flex; flex-wrap:wrap; gap:.25rem 1rem; margin:.5rem 0; color:var(--brume); font-size:.9rem; }
+.sig-meta span{ display:inline-flex; gap:.35rem; align-items:center; }
+.sig-msg{ margin:.4rem 0 .8rem; overflow-wrap:anywhere; }
+.pastille-sou{ display:inline-flex; gap:.4rem; align-items:center; font-size:.8rem; font-weight:700; padding:.2rem .65rem; border-radius:99px; border:1px solid var(--iono); color:var(--iono); }
+.compteur{ font-weight:700; display:inline-flex; gap:.4rem; align-items:center; }
+.compteur i{ font-size:1.25rem; color:var(--iono); }
+.sig-actions{ display:flex; flex-wrap:wrap; gap:.75rem 1rem; align-items:center; justify-content:space-between; margin-top:.5rem; }
+.sig-form{ margin-top:.75rem; }
+.sig-form textarea{ min-height:4.5rem; }
+.confirm-sou{ margin-top:.9rem; border:1px solid var(--calme); background:rgba(120,200,160,.08); border-radius:var(--r); padding:.8rem 1rem; }
+.confirm-sou p{ margin:0 0 .35rem; }
+.confirm-sou p:last-child{ margin-bottom:0; }
+.confirm-sou i{ font-size:1.25em; vertical-align:-.2em; color:var(--calme); }
+.btn-soutien[aria-pressed="true"]{ border-color:var(--iono); color:var(--iono); }
+.pied-sou{ margin-top:2rem; }

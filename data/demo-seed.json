@@ -1,0 +1,1519 @@
+{
+ "genere": "2026-10-03T15:25:13.290Z",
+ "compteur": 1040,
+ "utilisateurs": [
+  {
+   "id": "usr-musjmvnmt9x1",
+   "cree": "@2592000008",
+   "prenom": "Léa",
+   "nom": "Martin",
+   "email": "citoyen@nova.test",
+   "role": "citoyen",
+   "quartier": "Sud",
+   "telephone": "06 00 00 00 00",
+   "actif": true,
+   "premiereConnexion": false,
+   "profilComplet": true,
+   "vulnerable": false,
+   "motdepasseDemo": "Citoyen2026"
+  },
+  {
+   "id": "usr-musjmvnrk9zx",
+   "cree": "@2592000003",
+   "prenom": "Karim",
+   "nom": "Benali",
+   "email": "agent@nova.test",
+   "role": "agent",
+   "quartier": "Centre",
+   "telephone": "06 00 00 00 00",
+   "actif": true,
+   "premiereConnexion": false,
+   "profilComplet": true,
+   "vulnerable": false,
+   "motdepasseDemo": "Agent2026"
+  },
+  {
+   "id": "usr-musjmvnrkscp",
+   "cree": "@2592000003",
+   "prenom": "Inès",
+   "nom": "Rousseau",
+   "email": "admin@nova.test",
+   "role": "admin",
+   "quartier": "Centre",
+   "telephone": "06 00 00 00 00",
+   "actif": true,
+   "premiereConnexion": false,
+   "profilComplet": true,
+   "vulnerable": false,
+   "motdepasseDemo": "Admin2026"
+  },
+  {
+   "id": "usr-musjmvnrxscz",
+   "cree": "@2592000003",
+   "prenom": "Marc",
+   "nom": "Delcourt",
+   "email": "marc@nova.test",
+   "role": "citoyen",
+   "quartier": "Nord",
+   "telephone": "06 00 00 00 00",
+   "actif": true,
+   "premiereConnexion": false,
+   "profilComplet": true,
+   "vulnerable": false,
+   "motdepasseDemo": "Citoyen2026"
+  },
+  {
+   "id": "usr-musjmvnr04t2",
+   "cree": "@2592000003",
+   "prenom": "Amina",
+   "nom": "Rahal",
+   "email": "amina@nova.test",
+   "role": "citoyen",
+   "quartier": "Est",
+   "telephone": "06 00 00 00 00",
+   "actif": true,
+   "premiereConnexion": false,
+   "profilComplet": true,
+   "vulnerable": true,
+   "motdepasseDemo": "Citoyen2026"
+  },
+  {
+   "id": "usr-musjmvnrzm4a",
+   "cree": "@2592000003",
+   "prenom": "Jean",
+   "nom": "Morel",
+   "email": "jean@nova.test",
+   "role": "citoyen",
+   "quartier": "Sud",
+   "telephone": "06 00 00 00 00",
+   "actif": true,
+   "premiereConnexion": false,
+   "profilComplet": true,
+   "vulnerable": true,
+   "motdepasseDemo": "Citoyen2026"
+  }
+ ],
+ "services": [
+  {
+   "id": "etat-civil",
+   "icone": "ph-identification-card",
+   "categorie": "Démarches",
+   "prioritaire": true,
+   "vues": 412,
+   "etat": {
+    "code": "ok",
+    "message": "",
+    "retour": ""
+   },
+   "nom": {
+    "fr": "État civil",
+    "en": "Civil registry",
+    "es": "Registro civil",
+    "ar": "الحالة المدنية"
+   },
+   "description": {
+    "fr": "Actes de naissance, mariage, changement d’adresse et papiers d’identité.",
+    "en": "Birth and marriage certificates, change of address and ID papers.",
+    "es": "Actas de nacimiento, matrimonio, cambio de domicilio y documentos de identidad.",
+    "ar": "شهادات الميلاد والزواج وتغيير العنوان ووثائق الهوية."
+   },
+   "rdv": true,
+   "horaires": "Lun–Ven 8h–17h",
+   "lieu": "Hôtel de ville, niveau 1",
+   "contact": "etatcivil@nova.test"
+  },
+  {
+   "id": "sante",
+   "icone": "ph-first-aid-kit",
+   "categorie": "Santé",
+   "prioritaire": true,
+   "vues": 389,
+   "etat": {
+    "code": "ok",
+    "message": "",
+    "retour": ""
+   },
+   "nom": {
+    "fr": "Santé & dispensaires",
+    "en": "Health & clinics",
+    "es": "Salud y dispensarios",
+    "ar": "الصحة والمستوصفات"
+   },
+   "description": {
+    "fr": "Centres de soins, vaccinations, urgences médicales et prévention.",
+    "en": "Care centres, vaccinations, medical emergencies and prevention.",
+    "es": "Centros de salud, vacunas, urgencias médicas y prevención.",
+    "ar": "مراكز العلاج والتطعيم والطوارئ الطبية والوقاية."
+   },
+   "rdv": true,
+   "horaires": "24h/24 pour les urgences",
+   "lieu": "Dispensaire central, dôme B",
+   "contact": "sante@nova.test"
+  },
+  {
+   "id": "logement",
+   "icone": "ph-house-line",
+   "categorie": "Vie quotidienne",
+   "prioritaire": true,
+   "vues": 301,
+   "etat": {
+    "code": "ok",
+    "message": "",
+    "retour": ""
+   },
+   "nom": {
+    "fr": "Logement & habitat",
+    "en": "Housing",
+    "es": "Vivienda",
+    "ar": "السكن"
+   },
+   "description": {
+    "fr": "Attribution de modules d’habitation, travaux et aides au logement.",
+    "en": "Housing module allocation, repairs and housing aid.",
+    "es": "Asignación de módulos de vivienda, obras y ayudas.",
+    "ar": "تخصيص وحدات السكن والأشغال ومساعدات السكن."
+   },
+   "rdv": true,
+   "horaires": "Lun–Ven 9h–16h",
+   "lieu": "Pôle habitat, quartier Est",
+   "contact": "logement@nova.test"
+  },
+  {
+   "id": "transports",
+   "icone": "ph-tram",
+   "categorie": "Mobilité",
+   "prioritaire": true,
+   "vues": 356,
+   "etat": {
+    "code": "ok",
+    "message": "",
+    "retour": ""
+   },
+   "nom": {
+    "fr": "Transports municipaux",
+    "en": "Public transport",
+    "es": "Transporte municipal",
+    "ar": "النقل البلدي"
+   },
+   "description": {
+    "fr": "Lignes de navettes, horaires, perturbations et abonnements.",
+    "en": "Shuttle lines, timetables, disruptions and passes.",
+    "es": "Líneas de lanzaderas, horarios, incidencias y abonos.",
+    "ar": "خطوط الحافلات والمواعيد والاضطرابات والاشتراكات."
+   },
+   "rdv": false,
+   "lien": "transports.html",
+   "horaires": "5h–23h",
+   "lieu": "Gare orbitale centrale",
+   "contact": "mobilite@nova.test"
+  },
+  {
+   "id": "eau-energie",
+   "icone": "ph-lightning",
+   "categorie": "Vie quotidienne",
+   "prioritaire": false,
+   "vues": 188,
+   "etat": {
+    "code": "ok",
+    "message": "",
+    "retour": ""
+   },
+   "nom": {
+    "fr": "Eau & énergie",
+    "en": "Water & energy",
+    "es": "Agua y energía",
+    "ar": "الماء والطاقة"
+   },
+   "description": {
+    "fr": "Raccordement, coupures programmées, consommation et factures.",
+    "en": "Connections, planned outages, consumption and bills.",
+    "es": "Conexiones, cortes programados, consumo y facturas.",
+    "ar": "التوصيل والانقطاعات المبرمجة والاستهلاك والفواتير."
+   },
+   "rdv": false,
+   "horaires": "Lun–Sam 8h–18h",
+   "lieu": "Centrale du dôme Nord",
+   "contact": "energie@nova.test"
+  },
+  {
+   "id": "voirie",
+   "icone": "ph-traffic-cone",
+   "categorie": "Vie quotidienne",
+   "prioritaire": true,
+   "vues": 274,
+   "etat": {
+    "code": "ok",
+    "message": "",
+    "retour": ""
+   },
+   "nom": {
+    "fr": "Voirie & éclairage",
+    "en": "Roads & lighting",
+    "es": "Vías y alumbrado",
+    "ar": "الطرق والإنارة"
+   },
+   "description": {
+    "fr": "Signaler une panne d’éclairage, un trou, un équipement abîmé.",
+    "en": "Report a broken streetlight, pothole or damaged equipment.",
+    "es": "Señalar una farola rota, un bache o un equipo dañado.",
+    "ar": "الإبلاغ عن عطل في الإنارة أو حفرة أو معدات تالفة."
+   },
+   "rdv": false,
+   "lien": "demande.html?type=signalement",
+   "horaires": "Intervention 7j/7",
+   "lieu": "Centre technique municipal",
+   "contact": "voirie@nova.test"
+  },
+  {
+   "id": "education",
+   "icone": "ph-graduation-cap",
+   "categorie": "Famille",
+   "prioritaire": false,
+   "vues": 203,
+   "etat": {
+    "code": "ok",
+    "message": "",
+    "retour": ""
+   },
+   "nom": {
+    "fr": "École & petite enfance",
+    "en": "School & childcare",
+    "es": "Escuela e infancia",
+    "ar": "المدرسة والطفولة"
+   },
+   "description": {
+    "fr": "Inscriptions scolaires, crèches, cantine et activités périscolaires.",
+    "en": "School enrolment, nurseries, canteen and after-school activities.",
+    "es": "Inscripciones escolares, guarderías, comedor y actividades.",
+    "ar": "التسجيل المدرسي والحضانات والمطعم والأنشطة."
+   },
+   "rdv": true,
+   "horaires": "Lun–Ven 8h30–16h30",
+   "lieu": "Maison de l’enfance",
+   "contact": "ecoles@nova.test"
+  },
+  {
+   "id": "dechets",
+   "icone": "ph-recycle",
+   "categorie": "Environnement",
+   "prioritaire": false,
+   "vues": 145,
+   "etat": {
+    "code": "ok",
+    "message": "",
+    "retour": ""
+   },
+   "nom": {
+    "fr": "Déchets & recyclage",
+    "en": "Waste & recycling",
+    "es": "Residuos y reciclaje",
+    "ar": "النفايات وإعادة التدوير"
+   },
+   "description": {
+    "fr": "Collectes, recyclage des matériaux et dépôts encombrants.",
+    "en": "Collection, material recycling and bulky waste.",
+    "es": "Recogida, reciclaje y objetos voluminosos.",
+    "ar": "الجمع وإعادة تدوير المواد والنفايات الكبيرة."
+   },
+   "rdv": false,
+   "horaires": "Collecte quotidienne",
+   "lieu": "Centre de tri, quartier Ouest",
+   "contact": "dechets@nova.test"
+  },
+  {
+   "id": "emploi",
+   "icone": "ph-briefcase",
+   "categorie": "Démarches",
+   "prioritaire": false,
+   "vues": 167,
+   "etat": {
+    "code": "ok",
+    "message": "",
+    "retour": ""
+   },
+   "nom": {
+    "fr": "Emploi & formation",
+    "en": "Jobs & training",
+    "es": "Empleo y formación",
+    "ar": "العمل والتكوين"
+   },
+   "description": {
+    "fr": "Offres de la colonie, formations et accompagnement des nouveaux arrivants.",
+    "en": "Colony job offers, training and newcomer support.",
+    "es": "Ofertas de la colonia, formación y acompañamiento.",
+    "ar": "عروض عمل المستعمرة والتكوين ومرافقة الوافدين الجدد."
+   },
+   "rdv": true,
+   "horaires": "Lun–Ven 9h–17h",
+   "lieu": "Maison de l’emploi",
+   "contact": "emploi@nova.test"
+  },
+  {
+   "id": "social",
+   "icone": "ph-hand-heart",
+   "categorie": "Solidarité",
+   "prioritaire": false,
+   "vues": 132,
+   "etat": {
+    "code": "ok",
+    "message": "",
+    "retour": ""
+   },
+   "nom": {
+    "fr": "Aide sociale",
+    "en": "Social support",
+    "es": "Ayuda social",
+    "ar": "المساعدة الاجتماعية"
+   },
+   "description": {
+    "fr": "Accompagnement, aides d’urgence et soutien aux personnes vulnérables.",
+    "en": "Guidance, emergency aid and support for vulnerable people.",
+    "es": "Acompañamiento, ayudas de urgencia y apoyo a personas vulnerables.",
+    "ar": "المرافقة والمساعدات العاجلة ودعم الفئات الهشة."
+   },
+   "rdv": true,
+   "horaires": "Lun–Ven 9h–17h",
+   "lieu": "Centre social, quartier Sud",
+   "contact": "social@nova.test"
+  },
+  {
+   "id": "culture",
+   "icone": "ph-mask-happy",
+   "categorie": "Loisirs",
+   "prioritaire": false,
+   "vues": 98,
+   "etat": {
+    "code": "maintenance",
+    "message": "Médiathèque fermée pour maintenance du système de pressurisation.",
+    "retour": "Réouverture prévue lundi 9h"
+   },
+   "nom": {
+    "fr": "Culture & loisirs",
+    "en": "Culture & leisure",
+    "es": "Cultura y ocio",
+    "ar": "الثقافة والترفيه"
+   },
+   "description": {
+    "fr": "Médiathèque, observatoire, salles de sport et événements.",
+    "en": "Library, observatory, sports halls and events.",
+    "es": "Mediateca, observatorio, gimnasios y eventos.",
+    "ar": "المكتبة والمرصد والقاعات الرياضية والفعاليات."
+   },
+   "rdv": false,
+   "horaires": "Mar–Dim 10h–20h",
+   "lieu": "Dôme culturel",
+   "contact": "culture@nova.test"
+  },
+  {
+   "id": "urbanisme",
+   "icone": "ph-compass-tool",
+   "categorie": "Démarches",
+   "prioritaire": false,
+   "vues": 76,
+   "etat": {
+    "code": "incident",
+    "message": "Le dépôt de dossiers en ligne est indisponible suite à un incident technique.",
+    "retour": "Rétablissement estimé dans 2 h — en attendant, déposez votre dossier à l’accueil de l’hôtel de ville."
+   },
+   "nom": {
+    "fr": "Urbanisme",
+    "en": "Urban planning",
+    "es": "Urbanismo",
+    "ar": "التعمير"
+   },
+   "description": {
+    "fr": "Permis d’extension de module, plans du dôme et autorisations de travaux.",
+    "en": "Module extension permits, dome plans and building permits.",
+    "es": "Permisos de ampliación, planos de la cúpula y autorizaciones.",
+    "ar": "رخص توسيع الوحدات ومخططات القبة وتراخيص الأشغال."
+   },
+   "rdv": true,
+   "horaires": "Mar et Jeu 9h–12h",
+   "lieu": "Hôtel de ville, niveau 2",
+   "contact": "urbanisme@nova.test"
+  }
+ ],
+ "demandes": [
+  {
+   "id": "NT-1031",
+   "userId": "usr-musjmvnmt9x1",
+   "type": "signalement",
+   "serviceId": "voirie",
+   "objet": "Lampadaire éteint allée des Comètes",
+   "message": "Le lampadaire devant le n°12 ne s’allume plus depuis 3 jours.",
+   "lieu": "12 allée des Comètes, quartier Sud",
+   "quartier": "Sud",
+   "priorite": "normale",
+   "statut": "traitee",
+   "agent": "Karim Benali",
+   "cree": "@777600001",
+   "historique": [
+    {
+     "date": "@777600001",
+     "statut": "recue",
+     "note": "Demande enregistrée.",
+     "par": "Système"
+    },
+    {
+     "date": "@691200001",
+     "statut": "en_cours",
+     "note": "Intervention planifiée avec l’équipe éclairage.",
+     "par": "Karim Benali"
+    },
+    {
+     "date": "@518400001",
+     "statut": "traitee",
+     "note": "Ampoule et module remplacés.",
+     "par": "Karim Benali"
+    }
+   ]
+  },
+  {
+   "id": "NT-1036",
+   "userId": "usr-musjmvnmt9x1",
+   "type": "demarche",
+   "serviceId": "etat-civil",
+   "objet": "Changement d’adresse",
+   "message": "J’ai emménagé dans un nouveau module, merci de mettre à jour mon adresse.",
+   "lieu": "",
+   "quartier": "",
+   "priorite": "normale",
+   "statut": "en_cours",
+   "agent": "Karim Benali",
+   "cree": "@259200001",
+   "historique": [
+    {
+     "date": "@259200001",
+     "statut": "recue",
+     "note": "Demande enregistrée.",
+     "par": "Système"
+    },
+    {
+     "date": "@172800001",
+     "statut": "en_cours",
+     "note": "Pièce justificative reçue, vérification en cours.",
+     "par": "Karim Benali"
+    }
+   ]
+  },
+  {
+   "id": "NT-1039",
+   "userId": "usr-musjmvnmt9x1",
+   "type": "contact",
+   "serviceId": "eau-energie",
+   "objet": "Question sur ma facture d’énergie",
+   "message": "Ma facture de ce cycle est deux fois plus élevée que d’habitude.",
+   "lieu": "",
+   "quartier": "",
+   "priorite": "normale",
+   "statut": "recue",
+   "agent": "",
+   "cree": "@86400001",
+   "historique": [
+    {
+     "date": "@86400001",
+     "statut": "recue",
+     "note": "Demande enregistrée.",
+     "par": "Système"
+    }
+   ]
+  },
+  {
+   "id": "NT-1037",
+   "userId": "usr-musjmvnrxscz",
+   "type": "signalement",
+   "serviceId": "voirie",
+   "objet": "Trou dans la chaussée",
+   "message": "Un trou dangereux s’est formé près de l’arrêt de navette.",
+   "lieu": "Arrêt Orion, quartier Nord",
+   "quartier": "Sud",
+   "priorite": "normale",
+   "statut": "recue",
+   "agent": "",
+   "cree": "@172800001",
+   "historique": [
+    {
+     "date": "@172800001",
+     "statut": "recue",
+     "note": "Demande enregistrée.",
+     "par": "Système"
+    }
+   ]
+  },
+  {
+   "id": "NT-1038",
+   "userId": "usr-musjmvnr04t2",
+   "type": "contact",
+   "serviceId": "social",
+   "objet": "Aide pour remplir un dossier",
+   "message": "J’ai besoin d’aide pour compléter mon dossier d’aide au logement.",
+   "lieu": "",
+   "quartier": "",
+   "priorite": "normale",
+   "statut": "recue",
+   "agent": "",
+   "cree": "@86400001",
+   "historique": [
+    {
+     "date": "@86400001",
+     "statut": "recue",
+     "note": "Demande enregistrée.",
+     "par": "Système"
+    }
+   ]
+  },
+  {
+   "id": "NT-1040",
+   "userId": "usr-musjmvnrzm4a",
+   "type": "signalement",
+   "serviceId": "dechets",
+   "objet": "Conteneur de tri plein",
+   "message": "Le conteneur de tri déborde depuis hier.",
+   "lieu": "Place des Pionniers, quartier Sud",
+   "quartier": "Sud",
+   "priorite": "normale",
+   "statut": "en_cours",
+   "agent": "Karim Benali",
+   "cree": "@86400001",
+   "historique": [
+    {
+     "date": "@86400001",
+     "statut": "recue",
+     "note": "Demande enregistrée.",
+     "par": "Système"
+    },
+    {
+     "date": "@43200001",
+     "statut": "en_cours",
+     "note": "Collecte supplémentaire programmée.",
+     "par": "Karim Benali"
+    }
+   ]
+  }
+ ],
+ "annonces": [
+  {
+   "id": "ann-crue",
+   "cree": "@3600001",
+   "titre": "Montée des eaux dans le quartier Sud",
+   "categorie": "alerte",
+   "importance": "alerte",
+   "zone": "Sud",
+   "active": true,
+   "resume": "Le niveau de l’eau monte anormalement près du canal Sud. Évitez les niveaux inférieurs et suivez les consignes.",
+   "contenu": "Le centre de surveillance environnementale observe une montée inhabituelle du niveau de l’eau dans le quartier Sud. Les équipes sont mobilisées.",
+   "consignes": [
+    "Ne descendez pas dans les niveaux inférieurs et les parkings",
+    "Mettez en hauteur vos objets de valeur",
+    "Rejoignez le point de regroupement : Dôme des Pionniers",
+    "En cas de danger, appelez le 112"
+   ],
+   "publics": []
+  },
+  {
+   "id": "ann-chaleur",
+   "cree": "@10800001",
+   "titre": "Vague de chaleur extrême",
+   "categorie": "sanitaire",
+   "importance": "alerte",
+   "zone": "Toute la ville",
+   "active": true,
+   "resume": "Températures extrêmes dans plusieurs secteurs. Personnes âgées, enfants et malades : protégez-vous.",
+   "contenu": "L’agence sanitaire de Terra Nova déclenche le niveau d’alerte chaleur dans les secteurs Sud, Est et Centre.",
+   "consignes": [
+    "Buvez de l’eau régulièrement, sans attendre d’avoir soif",
+    "Restez dans les espaces climatisés (liste ci-dessous)",
+    "Prenez des nouvelles de vos proches isolés",
+    "Malaise : appelez le 15"
+   ],
+   "publics": [
+    "Personnes âgées",
+    "Femmes enceintes",
+    "Jeunes enfants",
+    "Personnes malades"
+   ]
+  },
+  {
+   "id": "ann-1",
+   "cree": "@172800001",
+   "titre": "Nouveaux horaires de la mairie",
+   "categorie": "municipale",
+   "importance": "importante",
+   "zone": "Toute la ville",
+   "active": true,
+   "resume": "L’accueil de l’hôtel de ville ouvre désormais jusqu’à 19h le jeudi.",
+   "contenu": "Pour faciliter vos démarches, l’accueil de l’hôtel de ville est ouvert jusqu’à 19h tous les jeudis à compter de cette semaine.",
+   "consignes": [],
+   "publics": []
+  },
+  {
+   "id": "ann-2",
+   "cree": "@345600001",
+   "titre": "Ouverture de la ligne de navette N4",
+   "categorie": "pratique",
+   "importance": "info",
+   "zone": "Toute la ville",
+   "active": true,
+   "resume": "La ligne N4 relie désormais le quartier Est à la gare orbitale.",
+   "contenu": "La nouvelle ligne N4 dessert 8 arrêts entre le quartier Est et la gare orbitale centrale, toutes les 10 minutes.",
+   "consignes": [],
+   "publics": []
+  },
+  {
+   "id": "ann-3",
+   "cree": "@518400001",
+   "titre": "Collecte des encombrants",
+   "categorie": "pratique",
+   "importance": "info",
+   "zone": "Ouest",
+   "active": true,
+   "resume": "Collecte des objets encombrants samedi dans le quartier Ouest.",
+   "contenu": "Déposez vos encombrants devant votre module samedi avant 8h.",
+   "consignes": [],
+   "publics": []
+  }
+ ],
+ "audit": [
+  {
+   "id": "aud-musjmvntc0r9",
+   "date": "@3600001",
+   "categorie": "annonce",
+   "action": "Diffusion d’une alerte",
+   "objetId": "ann-crue",
+   "objetLibelle": "Montée des eaux dans le quartier Sud",
+   "avant": null,
+   "apres": "alerte · Sud",
+   "motif": "",
+   "acteurId": null,
+   "acteurNom": "Karim Benali",
+   "acteurRole": "agent"
+  },
+  {
+   "id": "aud-musjmvntw28m",
+   "date": "@10800001",
+   "categorie": "annonce",
+   "action": "Diffusion d’une alerte",
+   "objetId": "ann-chaleur",
+   "objetLibelle": "Vague de chaleur extrême",
+   "avant": null,
+   "apres": "alerte · Toute la ville",
+   "motif": "",
+   "acteurId": null,
+   "acteurNom": "Inès Rousseau",
+   "acteurRole": "admin"
+  },
+  {
+   "id": "aud-musjmvnt5a72",
+   "date": "@43200001",
+   "categorie": "demande",
+   "action": "Changement de statut",
+   "objetId": "NT-1040",
+   "objetLibelle": "Conteneur de tri plein",
+   "avant": "Reçue",
+   "apres": "En cours de traitement",
+   "motif": "Collecte supplémentaire programmée.",
+   "acteurId": null,
+   "acteurNom": "Karim Benali",
+   "acteurRole": "agent"
+  },
+  {
+   "id": "aud-musjmvntk56b",
+   "date": "@93600001",
+   "categorie": "service",
+   "action": "Changement d’état du service",
+   "objetId": "urbanisme",
+   "objetLibelle": "Urbanisme",
+   "avant": "ok",
+   "apres": "incident",
+   "motif": "Dépôt en ligne indisponible.",
+   "acteurId": null,
+   "acteurNom": "Inès Rousseau",
+   "acteurRole": "admin"
+  },
+  {
+   "id": "aud-musjmvntwfd6",
+   "date": "@172800001",
+   "categorie": "demande",
+   "action": "Changement de statut",
+   "objetId": "NT-1036",
+   "objetLibelle": "Changement d’adresse",
+   "avant": "Reçue",
+   "apres": "En cours de traitement",
+   "motif": "Pièce justificative reçue, vérification en cours.",
+   "acteurId": null,
+   "acteurNom": "Karim Benali",
+   "acteurRole": "agent"
+  },
+  {
+   "id": "aud-musjmvnur5tm",
+   "date": "@190800000",
+   "categorie": "service",
+   "action": "Changement d’état du service",
+   "objetId": "culture",
+   "objetLibelle": "Culture & loisirs",
+   "avant": "ok",
+   "apres": "maintenance",
+   "motif": "Maintenance de la pressurisation.",
+   "acteurId": null,
+   "acteurNom": "Inès Rousseau",
+   "acteurRole": "admin"
+  },
+  {
+   "id": "aud-musjmvnuvzwk",
+   "date": "@259200000",
+   "categorie": "compte",
+   "action": "Changement de rôle",
+   "objetId": "agent@nova.test",
+   "objetLibelle": "Karim Benali",
+   "avant": "Citoyen",
+   "apres": "Agent municipal",
+   "motif": "Recrutement au centre technique.",
+   "acteurId": null,
+   "acteurNom": "Inès Rousseau",
+   "acteurRole": "admin"
+  },
+  {
+   "id": "aud-musjmvnub5ar",
+   "date": "@518400000",
+   "categorie": "demande",
+   "action": "Changement de statut",
+   "objetId": "NT-1031",
+   "objetLibelle": "Lampadaire éteint allée des Comètes",
+   "avant": "En cours de traitement",
+   "apres": "Traitée",
+   "motif": "Ampoule et module remplacés.",
+   "acteurId": null,
+   "acteurNom": "Karim Benali",
+   "acteurRole": "agent"
+  },
+  {
+   "id": "aud-v12-con1",
+   "date": "@1728000000",
+   "categorie": "consultation",
+   "action": "Publication d’une décision",
+   "objetId": "CON-0001",
+   "objetLibelle": "Éclairage des rues la nuit",
+   "avant": "Close",
+   "apres": "Décision publiée",
+   "motif": "Intensité réduite de 70 % entre 1 h et 5 h, aucune rue éteinte.",
+   "acteurId": null,
+   "acteurNom": "Inès Rousseau",
+   "acteurRole": "admin"
+  },
+  {
+   "id": "aud-v12-idee1",
+   "date": "@691200000",
+   "categorie": "idee",
+   "action": "Traitement d’une idée",
+   "objetId": "IDE-0001",
+   "objetLibelle": "Boîtes à livres aux arrêts de navette",
+   "avant": "À l’étude",
+   "apres": "Retenue",
+   "motif": "5 boîtes seront installées d’ici deux mois.",
+   "acteurId": null,
+   "acteurNom": "Karim Benali",
+   "acteurRole": "agent"
+  },
+  {
+   "id": "aud-v12-prj1",
+   "date": "@259200000",
+   "categorie": "projet",
+   "action": "Mise à jour d’un projet",
+   "objetId": "PRJ-1",
+   "objetLibelle": "Serres partagées du quartier Est",
+   "avant": "En travaux · 40 %",
+   "apres": "En travaux · 65 %",
+   "motif": "Structures des trois serres montées.",
+   "acteurId": null,
+   "acteurNom": "Karim Benali",
+   "acteurRole": "agent"
+  },
+  {
+   "id": "aud-v12-con4",
+   "date": "@172800000",
+   "categorie": "consultation",
+   "action": "Clôture d’une consultation",
+   "objetId": "CON-0004",
+   "objetLibelle": "Récupérateurs d’eau de pluie sur les bâtiments publics",
+   "avant": "Ouverte",
+   "apres": "Close",
+   "motif": "4 avis reçus",
+   "acteurId": null,
+   "acteurNom": "Karim Benali",
+   "acteurRole": "agent"
+  }
+ ],
+ "projets": [
+  {
+   "id": "PRJ-1",
+   "cree": "@10368000000",
+   "titre": "Serres partagées du quartier Est",
+   "resume": "Trois serres où les habitants cultivent fruits et légumes ensemble, arrosées avec l’eau de pluie récupérée.",
+   "quartier": "Est",
+   "serviceId": "urbanisme",
+   "statut": "travaux",
+   "budget": 420000,
+   "avancement": 65,
+   "prochaineEtape": "Pose des bacs de culture et raccordement à l’eau de pluie.",
+   "debut": "@7776000000",
+   "finPrevue": "@-5184000000",
+   "majLe": "@259200000",
+   "historique": [
+    {
+     "date": "@10368000000",
+     "statut": "etude",
+     "avancement": 0,
+     "note": "Projet présenté au Haut Conseil.",
+     "par": "Service Projets"
+    },
+    {
+     "date": "@7776000000",
+     "statut": "travaux",
+     "avancement": 10,
+     "note": "Début du chantier : terrassement.",
+     "par": "Karim Benali"
+    },
+    {
+     "date": "@259200000",
+     "statut": "travaux",
+     "avancement": 65,
+     "note": "Structures des trois serres montées.",
+     "par": "Karim Benali"
+    }
+   ]
+  },
+  {
+   "id": "PRJ-2",
+   "cree": "@2160000000",
+   "titre": "Navette électrique de nuit Nord – Centre",
+   "resume": "Une navette toutes les 30 minutes de 22 h à 2 h entre le quartier Nord et le Centre, pour rentrer en sécurité.",
+   "quartier": "Nord",
+   "serviceId": "transports",
+   "statut": "etude",
+   "budget": 180000,
+   "avancement": 15,
+   "prochaineEtape": "Recueillir l’avis des habitants, puis choix du trajet par le Haut Conseil.",
+   "debut": "@1728000000",
+   "finPrevue": "@-15552000000",
+   "majLe": "@432000000",
+   "historique": [
+    {
+     "date": "@2160000000",
+     "statut": "etude",
+     "avancement": 5,
+     "note": "Idée retenue après plusieurs demandes d’habitants du Nord.",
+     "par": "Service Projets"
+    },
+    {
+     "date": "@432000000",
+     "statut": "etude",
+     "avancement": 15,
+     "note": "Deux trajets possibles étudiés ; consultation des habitants ouverte.",
+     "par": "Karim Benali"
+    }
+   ]
+  },
+  {
+   "id": "PRJ-3",
+   "cree": "@17280000000",
+   "titre": "Rénovation de l’école des Dunes",
+   "resume": "Isolation des classes contre la chaleur, nouvelle cantine et cour plus ombragée.",
+   "quartier": "Sud",
+   "serviceId": "education",
+   "statut": "travaux",
+   "budget": 1250000,
+   "avancement": 40,
+   "prochaineEtape": "Travaux de la cantine pendant les vacances scolaires.",
+   "debut": "@12960000000",
+   "finPrevue": "@-20736000000",
+   "majLe": "@1036800000",
+   "historique": [
+    {
+     "date": "@17280000000",
+     "statut": "etude",
+     "avancement": 0,
+     "note": "Diagnostic du bâtiment.",
+     "par": "Service Projets"
+    },
+    {
+     "date": "@12960000000",
+     "statut": "travaux",
+     "avancement": 5,
+     "note": "Début de l’isolation des classes.",
+     "par": "Karim Benali"
+    },
+    {
+     "date": "@1036800000",
+     "statut": "travaux",
+     "avancement": 40,
+     "note": "Toutes les classes sont isolées.",
+     "par": "Karim Benali"
+    }
+   ]
+  },
+  {
+   "id": "PRJ-4",
+   "cree": "@36288000000",
+   "titre": "Parc de la Lagune",
+   "resume": "Un parc de 3 hectares au bord de la lagune : aire de jeux couverte, points d’eau potable, sentier accessible en fauteuil.",
+   "quartier": "Ouest",
+   "serviceId": "urbanisme",
+   "statut": "termine",
+   "budget": 610000,
+   "avancement": 100,
+   "prochaineEtape": "Projet terminé : le parc est ouvert tous les jours de 7 h à 21 h.",
+   "debut": "@32832000000",
+   "finPrevue": "@2592000000",
+   "majLe": "@2592000000",
+   "historique": [
+    {
+     "date": "@36288000000",
+     "statut": "etude",
+     "avancement": 0,
+     "note": "Projet présenté aux habitants.",
+     "par": "Service Projets"
+    },
+    {
+     "date": "@25920000000",
+     "statut": "travaux",
+     "avancement": 20,
+     "note": "Début des plantations.",
+     "par": "Karim Benali"
+    },
+    {
+     "date": "@2592000000",
+     "statut": "termine",
+     "avancement": 100,
+     "note": "Parc inauguré et ouvert au public.",
+     "par": "Inès Rousseau"
+    }
+   ]
+  },
+  {
+   "id": "PRJ-5",
+   "cree": "@3456000000",
+   "titre": "Récupérateurs d’eau de pluie sur les bâtiments publics",
+   "resume": "Des cuves sur les toits de la mairie, des écoles et du gymnase pour arroser les espaces verts sans eau potable.",
+   "quartier": "Centre",
+   "serviceId": "eau-energie",
+   "statut": "etude",
+   "budget": 95000,
+   "avancement": 10,
+   "prochaineEtape": "Décision du Haut Conseil après la consultation des habitants.",
+   "debut": "@2592000000",
+   "finPrevue": "@-10368000000",
+   "majLe": "@172800000",
+   "historique": [
+    {
+     "date": "@3456000000",
+     "statut": "etude",
+     "avancement": 5,
+     "note": "Étude des toitures adaptées.",
+     "par": "Service Projets"
+    },
+    {
+     "date": "@172800000",
+     "statut": "etude",
+     "avancement": 10,
+     "note": "Consultation close, décision attendue.",
+     "par": "Karim Benali"
+    }
+   ]
+  },
+  {
+   "id": "PRJ-6",
+   "cree": "@13824000000",
+   "titre": "Piste cyclable du front de mer",
+   "resume": "4 km de piste séparée des voitures le long du front de mer, avec éclairage et stationnements vélo.",
+   "quartier": "Ouest",
+   "serviceId": "voirie",
+   "statut": "travaux",
+   "budget": 340000,
+   "avancement": 80,
+   "prochaineEtape": "Marquage au sol et installation des arceaux vélo.",
+   "debut": "@9504000000",
+   "finPrevue": "@-2160000000",
+   "majLe": "@518400000",
+   "historique": [
+    {
+     "date": "@13824000000",
+     "statut": "etude",
+     "avancement": 0,
+     "note": "Tracé validé.",
+     "par": "Service Projets"
+    },
+    {
+     "date": "@9504000000",
+     "statut": "travaux",
+     "avancement": 10,
+     "note": "Début du chantier.",
+     "par": "Karim Benali"
+    },
+    {
+     "date": "@518400000",
+     "statut": "travaux",
+     "avancement": 80,
+     "note": "3,2 km sur 4 terminés.",
+     "par": "Karim Benali"
+    }
+   ]
+  }
+ ],
+ "consultations": [
+  {
+   "id": "CON-0001",
+   "cree": "@4320000000",
+   "type": "decision",
+   "titre": "Éclairage des rues la nuit",
+   "question": "Que faire de l’éclairage public entre 1 h et 5 h du matin dans les rues résidentielles ?",
+   "contexte": "L’éclairage public représente un quart de la facture d’énergie de la ville. Plusieurs villes réduisent la lumière au cœur de la nuit pour économiser l’énergie et protéger la faune. Les grands axes et les arrêts de navette ne sont pas concernés.",
+   "options": [
+    {
+     "id": "o1",
+     "libelle": "Éteindre complètement de 1 h à 5 h"
+    },
+    {
+     "id": "o2",
+     "libelle": "Garder la lumière mais baisser son intensité"
+    },
+    {
+     "id": "o3",
+     "libelle": "Ne rien changer"
+    }
+   ],
+   "projetId": "",
+   "quartier": "Toute la ville",
+   "decideur": "Haut Conseil de la Ville",
+   "ouverture": "@4320000000",
+   "echeance": "@2592000000",
+   "statut": "close",
+   "clotureLe": "@2592000000",
+   "decision": {
+    "texte": "À partir du mois prochain, l’intensité de l’éclairage est réduite de 70 % entre 1 h et 5 h dans les rues résidentielles. Aucune rue n’est éteinte complètement.",
+    "priseEnCompte": "La majorité des habitants a choisi de baisser l’intensité plutôt que d’éteindre. Les commentaires sur la sécurité des trajets à pied nous ont fait écarter l’extinction totale, et les abords des arrêts de navette restent éclairés à 100 %.",
+    "date": "@1728000000",
+    "par": "Inès Rousseau"
+   }
+  },
+  {
+   "id": "CON-0002",
+   "cree": "@432000000",
+   "type": "projet",
+   "titre": "Navette électrique de nuit Nord – Centre",
+   "question": "Êtes-vous favorable à une navette de nuit entre le Nord et le Centre, de 22 h à 2 h ?",
+   "contexte": "Après 22 h, il n’y a plus de transport entre le Nord et le Centre. La navette passerait toutes les 30 minutes. Coût estimé : 180 000 € la première année. Votre avis aide le Haut Conseil à choisir le trajet et les horaires.",
+   "options": [
+    {
+     "id": "favorable",
+     "libelle": "Favorable"
+    },
+    {
+     "id": "mitige",
+     "libelle": "Mitigé"
+    },
+    {
+     "id": "defavorable",
+     "libelle": "Défavorable"
+    }
+   ],
+   "projetId": "PRJ-2",
+   "quartier": "Nord",
+   "decideur": "Haut Conseil de la Ville",
+   "ouverture": "@432000000",
+   "echeance": "@-777600000",
+   "statut": "ouverte",
+   "decision": null
+  },
+  {
+   "id": "CON-0003",
+   "cree": "@259200000",
+   "type": "decision",
+   "titre": "Que doit devenir l’ancienne halle du Centre ?",
+   "question": "Quel usage préférez-vous pour l’ancienne halle des dirigeables, place du Centre ?",
+   "contexte": "La halle est vide depuis deux ans. Le bâtiment est solide et peut accueillir environ 400 personnes. Le Haut Conseil choisira un usage après avoir lu vos avis, puis lancera une étude de coût.",
+   "options": [
+    {
+     "id": "o1",
+     "libelle": "Un marché couvert de producteurs locaux"
+    },
+    {
+     "id": "o2",
+     "libelle": "Un espace de sport et de loisirs"
+    },
+    {
+     "id": "o3",
+     "libelle": "Un lieu culturel (expositions, concerts)"
+    },
+    {
+     "id": "o4",
+     "libelle": "Des logements"
+    }
+   ],
+   "projetId": "",
+   "quartier": "Toute la ville",
+   "decideur": "Haut Conseil de la Ville",
+   "ouverture": "@259200000",
+   "echeance": "@-1209600000",
+   "statut": "ouverte",
+   "decision": null
+  },
+  {
+   "id": "CON-0004",
+   "cree": "@2592000000",
+   "type": "projet",
+   "titre": "Récupérateurs d’eau de pluie sur les bâtiments publics",
+   "question": "Êtes-vous favorable à l’installation de récupérateurs d’eau de pluie sur la mairie, les écoles et le gymnase ?",
+   "contexte": "L’arrosage des espaces verts utilise aujourd’hui de l’eau potable. Les cuves permettraient d’économiser environ 2 millions de litres par an. Coût : 95 000 €.",
+   "options": [
+    {
+     "id": "favorable",
+     "libelle": "Favorable"
+    },
+    {
+     "id": "mitige",
+     "libelle": "Mitigé"
+    },
+    {
+     "id": "defavorable",
+     "libelle": "Défavorable"
+    }
+   ],
+   "projetId": "PRJ-5",
+   "quartier": "Centre",
+   "decideur": "Haut Conseil de la Ville",
+   "ouverture": "@2592000000",
+   "echeance": "@172800000",
+   "statut": "close",
+   "clotureLe": "@172800000",
+   "decision": null
+  },
+  {
+   "id": "CON-0005",
+   "cree": "@28512000000",
+   "type": "projet",
+   "titre": "Parc de la Lagune",
+   "question": "Êtes-vous favorable au projet de parc au bord de la lagune ?",
+   "contexte": "Un parc de 3 hectares avec aire de jeux, sentier accessible et points d’eau. Coût : 610 000 €.",
+   "options": [
+    {
+     "id": "favorable",
+     "libelle": "Favorable"
+    },
+    {
+     "id": "mitige",
+     "libelle": "Mitigé"
+    },
+    {
+     "id": "defavorable",
+     "libelle": "Défavorable"
+    }
+   ],
+   "projetId": "PRJ-4",
+   "quartier": "Ouest",
+   "decideur": "Haut Conseil de la Ville",
+   "ouverture": "@28512000000",
+   "echeance": "@26784000000",
+   "statut": "close",
+   "clotureLe": "@26784000000",
+   "decision": {
+    "texte": "Le Haut Conseil approuve le parc de la Lagune, avec une aire de jeux couverte et des points d’eau potable.",
+    "priseEnCompte": "Les avis mitigés portaient surtout sur le manque d’ombre : 40 arbres supplémentaires ont été prévus et l’aire de jeux sera couverte. Le sentier a été élargi pour les fauteuils et les poussettes, comme demandé dans plusieurs commentaires.",
+    "date": "@25920000000",
+    "par": "Inès Rousseau"
+   }
+  }
+ ],
+ "avis": [
+  {
+   "id": "AVI-0001",
+   "cree": "@28080000000",
+   "maj": "@28080000000",
+   "consultationId": "CON-0005",
+   "userId": "usr-musjmvnrzm4a",
+   "option": "favorable",
+   "commentaire": "Enfin un grand espace vert à l’Ouest.",
+   "modifications": 0
+  },
+  {
+   "id": "AVI-0002",
+   "cree": "@27648000000",
+   "maj": "@27648000000",
+   "consultationId": "CON-0005",
+   "userId": "usr-musjmvnmt9x1",
+   "option": "mitige",
+   "commentaire": "Bonne idée, mais il faudra beaucoup d’ombre pour les enfants.",
+   "modifications": 0
+  },
+  {
+   "id": "AVI-0003",
+   "cree": "@3888000000",
+   "maj": "@3888000000",
+   "consultationId": "CON-0001",
+   "userId": "usr-musjmvnmt9x1",
+   "option": "o2",
+   "commentaire": "Je rentre à pied du travail tard : éteindre complètement me ferait peur.",
+   "modifications": 0
+  },
+  {
+   "id": "AVI-0004",
+   "cree": "@3801600000",
+   "maj": "@3801600000",
+   "consultationId": "CON-0001",
+   "userId": "usr-musjmvnrxscz",
+   "option": "o2",
+   "commentaire": "",
+   "modifications": 0
+  },
+  {
+   "id": "AVI-0005",
+   "cree": "@3456000000",
+   "maj": "@3456000000",
+   "consultationId": "CON-0001",
+   "userId": "usr-musjmvnr04t2",
+   "option": "o1",
+   "commentaire": "Les étoiles sont magnifiques quand tout est éteint.",
+   "modifications": 0
+  },
+  {
+   "id": "AVI-0006",
+   "cree": "@3283200000",
+   "maj": "@3283200000",
+   "consultationId": "CON-0001",
+   "userId": "usr-musjmvnrzm4a",
+   "option": "o3",
+   "commentaire": "",
+   "modifications": 0
+  },
+  {
+   "id": "AVI-0007",
+   "cree": "@1728000000",
+   "maj": "@1728000000",
+   "consultationId": "CON-0004",
+   "userId": "usr-musjmvnmt9x1",
+   "option": "favorable",
+   "commentaire": "",
+   "modifications": 0
+  },
+  {
+   "id": "AVI-0008",
+   "cree": "@1555200000",
+   "maj": "@1555200000",
+   "consultationId": "CON-0004",
+   "userId": "usr-musjmvnrxscz",
+   "option": "favorable",
+   "commentaire": "À faire aussi sur la médiathèque.",
+   "modifications": 0
+  },
+  {
+   "id": "AVI-0009",
+   "cree": "@1296000000",
+   "maj": "@1296000000",
+   "consultationId": "CON-0004",
+   "userId": "usr-musjmvnr04t2",
+   "option": "favorable",
+   "commentaire": "",
+   "modifications": 0
+  },
+  {
+   "id": "AVI-0010",
+   "cree": "@864000000",
+   "maj": "@864000000",
+   "consultationId": "CON-0004",
+   "userId": "usr-musjmvnrzm4a",
+   "option": "defavorable",
+   "commentaire": "Le budget serait plus utile pour les routes.",
+   "modifications": 0
+  },
+  {
+   "id": "AVI-0011",
+   "cree": "@345600000",
+   "maj": "@345600000",
+   "consultationId": "CON-0002",
+   "userId": "usr-musjmvnrxscz",
+   "option": "favorable",
+   "commentaire": "Je travaille au Centre jusqu’à minuit, ça changerait tout.",
+   "modifications": 0
+  },
+  {
+   "id": "AVI-0012",
+   "cree": "@259200000",
+   "maj": "@259200000",
+   "consultationId": "CON-0002",
+   "userId": "usr-musjmvnr04t2",
+   "option": "mitige",
+   "commentaire": "Utile, mais 2 h c’est un peu tôt le week-end.",
+   "modifications": 0
+  },
+  {
+   "id": "AVI-0013",
+   "cree": "@172800000",
+   "maj": "@172800000",
+   "consultationId": "CON-0003",
+   "userId": "usr-musjmvnmt9x1",
+   "option": "o1",
+   "commentaire": "Pour acheter local près de chez nous.",
+   "modifications": 0
+  },
+  {
+   "id": "AVI-0014",
+   "cree": "@86400000",
+   "maj": "@86400000",
+   "consultationId": "CON-0003",
+   "userId": "usr-musjmvnrzm4a",
+   "option": "o3",
+   "commentaire": "",
+   "modifications": 0
+  }
+ ],
+ "idees": [
+  {
+   "id": "IDE-0001",
+   "cree": "@3456000000",
+   "userId": "usr-musjmvnmt9x1",
+   "titre": "Boîtes à livres aux arrêts de navette",
+   "description": "Installer de petites boîtes où chacun peut déposer et prendre des livres gratuitement, pour lire en attendant la navette.",
+   "quartier": "Sud",
+   "categorie": "culture",
+   "statut": "retenue",
+   "motif": "5 boîtes seront installées d’ici deux mois, en commençant par le quartier Sud. Merci pour cette idée !",
+   "historique": [
+    {
+     "date": "@3456000000",
+     "statut": "recue",
+     "note": "Idée enregistrée et transmise au Service Projets.",
+     "par": "Système"
+    },
+    {
+     "date": "@2592000000",
+     "statut": "etude",
+     "note": "Étude avec le réseau de navettes.",
+     "par": "Karim Benali"
+    },
+    {
+     "date": "@691200000",
+     "statut": "retenue",
+     "note": "5 boîtes seront installées d’ici deux mois, en commençant par le quartier Sud. Merci pour cette idée !",
+     "par": "Karim Benali"
+    }
+   ]
+  },
+  {
+   "id": "IDE-0002",
+   "cree": "@1036800000",
+   "userId": "usr-musjmvnmt9x1",
+   "titre": "Fontaine d’eau fraîche place des Comètes",
+   "description": "Pendant les fortes chaleurs, il n’y a aucun point d’eau sur la place des Comètes. Une fontaine aiderait les enfants et les personnes âgées.",
+   "quartier": "Sud",
+   "categorie": "cadre",
+   "statut": "etude",
+   "motif": "",
+   "historique": [
+    {
+     "date": "@1036800000",
+     "statut": "recue",
+     "note": "Idée enregistrée et transmise au Service Projets.",
+     "par": "Système"
+    },
+    {
+     "date": "@518400000",
+     "statut": "etude",
+     "note": "Étude de faisabilité avec le service Eau & énergie.",
+     "par": "Karim Benali"
+    }
+   ]
+  },
+  {
+   "id": "IDE-0003",
+   "cree": "@172800000",
+   "userId": "usr-musjmvnrxscz",
+   "titre": "Atelier solidaire de réparation de vélos",
+   "description": "Un atelier ouvert le samedi où des bénévoles aident à réparer son vélo, avec des outils en prêt.",
+   "quartier": "Nord",
+   "categorie": "mobilite",
+   "statut": "recue",
+   "motif": "",
+   "historique": [
+    {
+     "date": "@172800000",
+     "statut": "recue",
+     "note": "Idée enregistrée et transmise au Service Projets.",
+     "par": "Système"
+    }
+   ]
+  },
+  {
+   "id": "IDE-0004",
+   "cree": "@3024000000",
+   "userId": "usr-musjmvnr04t2",
+   "titre": "Navette à la demande pour les personnes âgées",
+   "description": "Une navette qu’on pourrait réserver par téléphone pour aller au marché ou chez le médecin.",
+   "quartier": "Est",
+   "categorie": "solidarite",
+   "statut": "non_retenue",
+   "motif": "Ce service existe déjà : le transport à la demande se réserve depuis la page Transports ou à l’accueil de la mairie. Nous allons mieux le faire connaître dans le quartier Est.",
+   "historique": [
+    {
+     "date": "@3024000000",
+     "statut": "recue",
+     "note": "Idée enregistrée et transmise au Service Projets.",
+     "par": "Système"
+    },
+    {
+     "date": "@1728000000",
+     "statut": "non_retenue",
+     "note": "Ce service existe déjà : le transport à la demande se réserve depuis la page Transports ou à l’accueil de la mairie. Nous allons mieux le faire connaître dans le quartier Est.",
+     "par": "Karim Benali"
+    }
+   ]
+  },
+  {
+   "id": "IDE-0005",
+   "cree": "@1555200000",
+   "userId": "usr-musjmvnrzm4a",
+   "titre": "Compost collectif dans chaque résidence",
+   "description": "Des bacs à compost partagés au pied des immeubles, avec une formation simple pour les habitants.",
+   "quartier": "Sud",
+   "categorie": "environnement",
+   "statut": "etude",
+   "motif": "",
+   "historique": [
+    {
+     "date": "@1555200000",
+     "statut": "recue",
+     "note": "Idée enregistrée et transmise au Service Projets.",
+     "par": "Système"
+    },
+    {
+     "date": "@777600000",
+     "statut": "etude",
+     "note": "Recherche des résidences volontaires.",
+     "par": "Karim Benali"
+    }
+   ]
+  },
+  {
+   "id": "IDE-0006",
+   "cree": "@86400000",
+   "userId": "usr-musjmvnrxscz",
+   "titre": "Wi-Fi public dans les jardins",
+   "description": "Un accès Internet gratuit dans les jardins publics pour les étudiants et les télétravailleurs.",
+   "quartier": "Nord",
+   "categorie": "numerique",
+   "statut": "recue",
+   "motif": "",
+   "historique": [
+    {
+     "date": "@86400000",
+     "statut": "recue",
+     "note": "Idée enregistrée et transmise au Service Projets.",
+     "par": "Système"
+    }
+   ]
+  }
+ ],
+ "compteurs": {
+  "consultations": 5,
+  "avis": 14,
+  "idees": 6
+ }
+}

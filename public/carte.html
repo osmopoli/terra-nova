@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carte des services — Terra Nova</title>
+  <meta name="description" content="Plan de Terra Nova : où se trouvent les services municipaux, les hôpitaux et les urgences, avec horaires, accès et navette la plus proche.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/carte.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="carte" data-ariane="nav.accueil|index.html;cm.ariane" data-roles="">
+  <main id="contenu" class="conteneur">
+
+    <header class="titre-page">
+      <h1 data-i18n="cm.titre">Carte des services</h1>
+      <p data-i18n="cm.intro">Trouvez un hôpital, un service d’urgence ou un service de la mairie, voyez s’il est ouvert et comment y aller en navette, sans changer de page.</p>
+    </header>
+
+    <div class="cm-grille" id="cm-grille">
+
+      <!-- Plan -->
+      <section class="cm-colonne-carte" aria-labelledby="cm-h-plan">
+        <h2 class="sr-only" id="cm-h-plan" data-i18n="cm.planTitre">Plan de Terra Nova</h2>
+        <a class="cm-saut" href="#cm-h-liste" id="cm-saut" data-i18n="cm.saut">Aller à la liste des lieux</a>
+        <div class="cm-defile" tabindex="0" role="region" aria-label="Plan de Terra Nova, défilement horizontal possible sur petit écran" data-i18n-attr="aria-label:cm.planRegion">
+          <div class="cm-carte" id="cm-carte">
+            <svg id="cm-plan" viewBox="0 0 800 560" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false"></svg>
+            <ul class="cm-marqueurs" id="cm-marqueurs"></ul>
+          </div>
+        </div>
+        <div id="cm-legende" class="cm-legende"></div>
+        <noscript><p class="vide">La carte nécessite JavaScript.</p></noscript>
+      </section>
+
+      <!-- Panneau : recherche, filtres, liste, fiche -->
+      <aside class="cm-aside" id="cm-aside" aria-label="Rechercher et choisir un lieu" data-i18n-attr="aria-label:cm.asideLabel">
+
+        <button type="button" class="cm-urgence-btn" id="cm-urgence" aria-pressed="false">
+          <span class="cm-urgence-ic" aria-hidden="true"><span class="cm-croix"></span></span>
+          <span class="cm-urgence-txt">
+            <strong data-i18n="cm.urgBtn">Urgences et hôpitaux</strong>
+            <span class="cm-urgence-sous" data-i18n="cm.urgSous">Numéros utiles, lieux ouverts 24h/24, le plus proche de chez vous</span>
+          </span>
+        </button>
+
+        <form id="cm-form" class="cm-form" role="search" novalidate>
+          <div class="champ">
+            <label for="cm-q" data-i18n="cm.rechercheLabel">Rechercher un lieu</label>
+            <div class="cm-champ-q">
+              <input id="cm-q" type="search" autocomplete="off" placeholder="Pharmacie, mairie, Sud…" data-i18n-attr="placeholder:cm.recherchePh">
+              <button type="button" class="btn" id="cm-effacer" hidden data-i18n="cm.effacer">Effacer</button>
+            </div>
+          </div>
+        </form>
+
+        <div class="cm-filtres" role="group" aria-labelledby="cm-lbl-types">
+          <span class="cm-lbl" id="cm-lbl-types" data-i18n="cm.types">Type de lieu</span>
+          <div class="cm-chips" id="cm-chips"></div>
+        </div>
+        <div class="cm-filtres" role="group" aria-labelledby="cm-lbl-opts">
+          <span class="cm-lbl" id="cm-lbl-opts" data-i18n="cm.options">Afficher seulement</span>
+          <div class="cm-chips" id="cm-opts"></div>
+        </div>
+
+        <div class="champ cm-champ-proche">
+          <label for="cm-quartier" data-i18n="cm.proche">Près de chez moi : mon quartier</label>
+          <select id="cm-quartier" aria-describedby="cm-quartier-aide"></select>
+          <p class="aide" id="cm-quartier-aide" data-i18n="cm.procheAide">La liste est triée du lieu le plus proche au plus éloigné.</p>
+        </div>
+
+        <p class="cm-compteur" id="cm-compteur" role="status" aria-live="polite"></p>
+
+        <!-- Fiche du lieu choisi (bloc sous le plan sur mobile, remplace la liste sur grand écran) -->
+        <section class="cm-fiche" id="cm-fiche" tabindex="-1" aria-labelledby="cm-fiche-t" hidden></section>
+
+        <div class="cm-zone-liste" id="cm-zone-liste">
+          <div id="cm-urgence-carte"></div>
+          <h2 class="cm-h-liste" id="cm-h-liste" tabindex="-1" data-i18n="cm.lieux">Lieux</h2>
+          <ul class="cm-liste" id="cm-liste"></ul>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script src="assets/js/carte.js" defer></script>
+</body>
+</html>

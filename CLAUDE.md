@@ -1,72 +1,65 @@
 # Conventions du projet (lu automatiquement par les agents)
 
-Projet d'équipe pour le **24h by Webcup 2026** (3-4 octobre, Mayotte). 24 h, 3 humains + agents Multica.
-Ce fichier fait foi. En cas de doute : demander dans la tâche Multica, ne pas deviner.
+Projet d'équipe pour le **24h by Webcup 2026** (3-4 octobre, Mayotte). Ce fichier fait foi.
+Le chef de projet a validé (3 octobre, soir) la **maquette Terra Nova** comme application de production :
+l'ancienne base React + AdonisJS reste dans l'historique git, elle n'est plus développée.
 
 ## Stack figée (ne pas changer sans validation du chef de projet)
 
-| Couche | Version |
+| Couche | Choix |
 |---|---|
-| Front | React 19 + Vite 7 + Tailwind CSS 4 (`client/`) |
-| Back | AdonisJS **6** + Lucid 21 + VineJS + auth `access_tokens` (`server/`) |
-| Base | MySQL (MariaDB en local accepté) |
-| Runtime | Node.js 22 |
-| Hébergement | HODI, déployé par Hodifly (Passenger, `loader.cjs`) à chaque push sur `main` |
+| Serveur | Node.js 22 (≥ 22.13) + Express 4 (`server.js`, `src/`) |
+| Base | SQLite intégré à Node (`node:sqlite`), aucune dépendance native |
+| Front | HTML + CSS + JavaScript sans build (`public/`), Shoelace et Phosphor par CDN |
+| Langues | FR / EN / ES / AR (`public/assets/js/i18n.js`) |
+| Hébergement | HODI, déployé par Hodifly (Passenger, `server/build/loader.cjs`) à chaque push sur `main` |
 
 Interdits absolus :
-- AdonisJS 7, `npm audit fix --force`, changement de framework ou ajout d'une lib lourde sans validation ;
-- `response.redirect().back()` / `redirect('back')` : uniquement des chemins explicites ;
-- `/spike` ou tout sous-chemin codé en dur dans les routes ;
-- supprimer ou modifier `GET /api/health` (utilisé pour surveiller la prod) ;
-- secret, mot de passe ou token dans le code, un commentaire Multica ou une PR (`.env` uniquement) ;
-- `@faker-js/faker` reste forcé en `10.5.0` (overrides).
+- changer de framework, ajouter une étape de build front ou une lib lourde sans validation ;
+- supprimer ou modifier `GET /api/health` (surveillance de la prod) ;
+- secret, clé ou token dans le code, une PR ou un commentaire Multica (`.env` uniquement) ;
+- exposer `WEBCUP_API_KEY` au navigateur : l'API Webcup est interrogée par le serveur seulement ;
+- `npm audit fix --force`.
 
-## Source de vérité unique
+## Architecture
 
-- **Constantes métier** : `server/app/constants/domain.ts` uniquement (clés ASCII snake_case, libellés pour l'UI).
-  Elles sont exposées par `GET /api/meta` (ajouter la liste dans `META`). Le front ne les recopie jamais.
-- **Design** : tokens dans `client/src/index.css` (`@theme`). Aucune couleur, police, rayon ou ombre codée en dur
-  dans les composants : utiliser `bg-primary`, `text-ink`, `rounded-card`, etc.
-- **Nommage des champs** : camelCase côté JSON/JS (`fullName`), snake_case en base (`full_name`), comme Lucid le fait.
+- `server.js` : Express, ordre des middlewares, polling Webcup. `src/db.js` : schéma SQLite (tables créées avec
+  `CREATE TABLE IF NOT EXISTS` au démarrage, **pas de migration à lancer**). Les données métier sont des documents JSON
+  (table `docs`, collections) manipulés par `src/donnees.js`.
+- `src/modules/api.js` : `GET /api/etat` (tout ce que le profil a le droit de voir) et écritures
+  `POST/PATCH /api/docs/:collection` contrôlées par règle de rôle. Nouveau module = un fichier dans `src/modules/`
+  monté dans `server.js`.
+- `src/auth.js` (sessions cookie httpOnly, scrypt, rôles citoyen / agent / admin), `src/renfort.js` (clés d'accès,
+  deux étapes, appareils), `src/statique.js` (compression, cache).
+- `public/assets/js/store.js` : seul client de l'API côté navigateur (`NT.store`, `NT.auth`…). `ui.js` : en-tête, balise
+  Alertes, tiroir, accessibilité, mode léger. Une page = `public/<page>.html` + `assets/js/<page>.js` + `assets/css/<page>.css`.
+- `data/demo-seed.json` : données de démonstration (dates relatives), chargées si la base est vide.
+
+## Direction artistique (validée, ne pas dériver)
+
+- Nom : toujours **Terra Nova** (jamais « Nova Terra »), logo à côté du nom.
+- Thème « Future Teal » : fond sarcelle sombre, accents bleu / sarcelle, police Inter. Tokens dans
+  `public/assets/css/theme.css` : aucune couleur codée en dur dans les autres feuilles.
+- Interdits : orange, images pixelisées, effets de lettres qui se décryptent ou de texte courbé, bandeaux d'alerte
+  envahissants (les alertes passent par la balise lumineuse « Alertes » et le tiroir).
+- Mobile d'abord (360 px), focus visible, contraste AA, `prefers-reduced-motion` respecté, textes traduits dans les 4 langues.
+
+## Ajouter une demande Webcup (vague suivante)
+
+1. Lire la demande (`/agent`, données de l'API). Vérifier dans `docs/RENDU-JURY.md` qu'elle n'est pas déjà couverte.
+2. Implémenter dans la page qui sert l'usage (pas de page fourre-tout), réutiliser `NT.store` et les composants de `ui.js`.
+3. Ajouter la ligne de la demande dans `docs/RENDU-JURY.md` (où et comment la montrer au jury) et dans le tableau du README.
+4. Vérifier : `npm start`, parcours au clavier, 360 px, FR + AR (sens de lecture), puis `npm run build` doit réussir.
 
 ## Git et PR
 
-- Une tâche Multica = une branche = une PR. L'identifiant de la tâche (ex. `WEBC-12`, préfixe de l'espace Multica) est **dans le nom de branche
-  et dans le titre de la PR**, et la description contient `Closes WEBC-12` : sinon la tâche ne se ferme pas.
-- Branche : `WEBC-12-courte-description` (ou la branche `agent/...` créée par Multica, avec l'identifiant).
-- Titre : `WEBC-12: verbe + objet` (ex. `WEBC-12: API création de réservation`).
+- Une tâche Multica = une branche `WEBC-12-courte-description` = une PR `WEBC-12: verbe + objet`, description avec `Closes WEBC-12`.
 - Commits en français, au présent, courts. Pas de commit direct sur `main`.
-- PR petite (idéalement < 400 lignes), un seul sujet. Description : quoi, pourquoi, comment tester, captures si UI.
-- **Merge : uniquement PR Guardian** (après verdict MERGER, remarques traitées, build et tests OK) ou le chef de projet.
-  Aucun autre agent ne merge. Chaque merge sur `main` redéploie la prod : en cas de doute, ne pas merger.
+- **Merge : uniquement PR Guardian ou le chef de projet.** Chaque merge sur `main` redéploie la prod.
 
-## API
+## Déploiement HODI
 
-- Toutes les routes sous `/api` (`server/start/routes.ts`). Contrôleurs fins, validation VineJS systématique.
-- Erreurs : 422 `{ errors: [{ field, message }] }` (validation), 401 sans token, 403/404/409 `{ error: "..." }`.
-- Messages d'erreur en français, compréhensibles par un utilisateur.
-- Toute nouvelle table = une migration Lucid. Ne jamais modifier une migration déjà mergée : en créer une nouvelle.
-- Après merge d'une migration, prévenir le chef de projet : il lance `node ace migration:run --force` sur HODI.
-
-## Front
-
-- Mobile d'abord (tester à 360 px), puis desktop. Accessibilité : labels, focus visible, contraste AA.
-- Routage : mini-routeur `client/src/lib/router.jsx` (pas de React Router sauf validation).
-- Appels API uniquement via `client/src/api/client.js`.
-- Textes de l'interface en français, ton cohérent avec la direction artistique. Pas d'emojis décoratifs ni de
-  « texte d'IA » générique : chaque mot doit servir le sujet.
-
-## Tests et vérification avant PR
-
-- `cd server && npx tsc --noEmit && npx eslint . && node ace test` (base MySQL de test requise).
-- `npm run build` à la racine doit passer.
-- Vérifier le parcours touché dans le navigateur (360 px et desktop) et le dire dans la PR.
-
-## Coordination des agents (Multica)
-
-- Un agent ne travaille que sur la tâche qui lui est assignée et ne modifie pas le périmètre d'un autre.
-- Pour commenter sans réveiller d'agent : `/note`. Ne mentionner un agent (@) que pour lui confier une action précise.
-- Condition d'arrêt : après avoir livré (PR ouverte + commentaire de synthèse), l'agent s'arrête. Il ne relance pas
-  un autre agent pour « vérifier » sauf si sa fiche le prévoit. Deux allers-retours sans progrès = demander à un humain.
-- Bloqué (accès, décision produit, conflit) : passer la tâche en `blocked`, écrire la question en une phrase, s'arrêter.
-- Ne jamais changer le statut, l'assignation ou la priorité d'une autre tâche sans demande d'un humain.
+Commande de build Hodifly (inchangée) : `npm ci && npm run build && cd server/build && npm ci --omit=dev && printenv … > .env`.
+`npm run build` (`tools/build-hodi.js`) copie l'application dans `server/build/` avec `tools/loader.cjs`.
+La base de production vit dans `~/terranova-data/terranova.db` (hors du dossier de release, conservée entre deux
+déploiements) ; `DB_PATH` peut la déplacer. Aucune migration ni seed à lancer : tout est fait au démarrage.

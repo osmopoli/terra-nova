@@ -1,0 +1,52 @@
+/* F55 / F56 — mes informations et récapitulatif des demandes : lisible à l'écran, propre à l'impression. */
+[hidden]{ display:none!important; }
+.entete-doc{ display:flex; flex-wrap:wrap; gap:.75rem 1.5rem; align-items:center; justify-content:space-between; margin-top:1.25rem; }
+.actions-doc{ display:flex; flex-wrap:wrap; gap:.75rem; }
+.mention-doc{ color:var(--brume); font-size:.9rem; margin:.5rem 0 0; }
+.sommaire-info ul{ list-style:none; margin:1.25rem 0 0; padding:0; display:flex; flex-wrap:wrap; gap:.25rem 1.25rem; }
+.sommaire-info a{ display:inline-block; padding:.5rem 0; min-height:2.75rem; }
+.info-bloc{ margin-top:2rem; border:1px solid var(--trait); border-radius:var(--r-l); background:var(--verre); padding:1.25rem 1.4rem; }
+.info-bloc h2{ font-size:clamp(1.15rem,2vw,1.4rem); margin:0 0 .35rem; display:flex; gap:.6rem; align-items:center; }
+.info-bloc h2 i{ color:var(--iono); font-size:1.5rem; flex:none; }
+.info-pourquoi{ margin:0 0 1rem; color:var(--brume); font-size:.92rem; border-inline-start:3px solid var(--iono); padding-inline-start:.8rem; }
+.info-pourquoi strong{ color:var(--givre); }
+.info-fiche{ display:grid; grid-template-columns:minmax(9rem,14rem) 1fr; gap:.55rem 1.25rem; margin:0; }
+.info-fiche dt{ color:var(--brume); font-size:.9rem; }
+.info-fiche dd{ margin:0; font-weight:600; overflow-wrap:anywhere; }
+.info-vide{ margin:0; color:var(--brume); }
+.table-info{ width:100%; border-collapse:collapse; }
+.table-info th,.table-info td{ text-align:start; vertical-align:top; padding:.65rem .8rem; border-bottom:1px solid var(--trait); }
+.table-info thead th{ color:var(--brume); font-size:.85rem; border-bottom:1px solid var(--trait-2); }
+.table-info td.num,.table-info th.num{ white-space:nowrap; font-family:var(--titre); }
+.table-info .rep{ display:block; color:var(--brume); font-size:.88rem; margin-top:.25rem; }
+.chiffres{ list-style:none; margin:1rem 0 0; padding:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(9rem,1fr)); gap:.9rem; }
+.chiffres li{ border:1px solid var(--trait); border-radius:var(--r-l); padding:.9rem 1rem; }
+.chiffres .val{ display:block; font-family:var(--titre); font-size:1.8rem; line-height:1.1; }
+.chiffres .lib{ display:block; margin-top:.35rem; color:var(--brume); font-size:.88rem; line-height:1.35; }
+.chiffres .val{ font-variant-numeric:tabular-nums; }
+.liste-resume{ list-style:none; margin:0; padding:0; display:grid; gap:.7rem; }
+.liste-resume li{ border-bottom:1px solid var(--trait); padding-bottom:.7rem; }
+.liste-resume li:last-child{ border-bottom:0; padding-bottom:0; }
+.liste-resume .meta{ color:var(--brume); font-size:.88rem; display:block; }
+.doc-seulement-impression{ display:none; }
+@media (max-width:640px){ .info-fiche{ grid-template-columns:1fr; gap:.1rem; } .info-fiche dd{ margin-bottom:.6rem; } }
+
+/* Impression : fond blanc, texte noir, sans en-tête ni pied du site ni boutons */
+@media print{
+  @page{ margin:1.5cm; }
+  html,body{ background:#fff!important; color:#000!important; font-size:11pt; }
+  body > *:not(main){ display:none!important; }
+  main{ padding:0!important; margin:0!important; max-width:none!important; }
+  .actions-doc,.sommaire-info,.sans-impression,.mention-doc{ display:none!important; }
+  .doc-seulement-impression{ display:block; margin:.4rem 0 1rem; font-size:10pt; }
+  h1,h2,h3,p,li,dd,dt,td,th,caption,strong,span,a{ color:#000!important; text-shadow:none!important; }
+  .info-bloc,.chiffres li{ background:#fff!important; border:1px solid #888!important; border-radius:0!important; backdrop-filter:none!important; box-shadow:none!important; break-inside:avoid; }
+  .info-bloc{ margin-top:1rem; }
+  .info-bloc h2 i{ display:none; }
+  .info-pourquoi{ border-inline-start:3px solid #000!important; }
+  .table-info th,.table-info td{ border-bottom:1px solid #888!important; padding:.3rem .4rem; }
+  .table-info tr{ break-inside:avoid; }
+  .statut{ border:1px solid #000!important; background:#fff!important; }
+  .statut::before{ display:none; }
+  a{ text-decoration:none; }
+}
