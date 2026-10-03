@@ -22,6 +22,8 @@ export const LIMITS = {
   newsTitle: 160,
   newsSummary: 300,
   newsBody: 10000,
+  alertTitle: 120,
+  alertMessage: 2000,
 } as const
 
 /** Catégories des actualités de la ville (colonne news_posts.category). */
@@ -125,6 +127,17 @@ export const CONTENT_LANGUAGES = {
 export type ContentLanguage = keyof typeof CONTENT_LANGUAGES
 export const CONTENT_LANGUAGE_VALUES = Object.keys(CONTENT_LANGUAGES) as ContentLanguage[]
 export const DEFAULT_CONTENT_LANGUAGE: ContentLanguage = 'fr'
+/**
+ * Niveaux des alertes diffusées à tous les habitants (colonne alerts.level),
+ * du moins au plus critique : l'ordre sert au tri des bannières.
+ */
+export const ALERT_LEVELS = {
+  info: 'Information',
+  important: 'Important',
+  urgent: 'Urgent',
+} as const
+export type AlertLevel = keyof typeof ALERT_LEVELS
+export const ALERT_LEVEL_VALUES = Object.keys(ALERT_LEVELS) as AlertLevel[]
 
 /** Listes fermées exposées au front par GET /api/meta (clé -> libellé). */
 export const META: Record<string, Record<string, string>> = {
@@ -136,4 +149,5 @@ export const META: Record<string, Record<string, string>> = {
   loginOutcomes: LOGIN_OUTCOMES,
   loginBlockScopes: LOGIN_BLOCK_SCOPES,
   contentLanguages: CONTENT_LANGUAGES,
+  alertLevels: ALERT_LEVELS,
 }
