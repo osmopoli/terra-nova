@@ -22,7 +22,7 @@ export default function ListState({ state, isEmpty, loadingLabel = 'Chargement..
 
   if (status === 'error') {
     return (
-      <div role="alert" className="mt-4 rounded-control border border-danger/30 bg-danger/5 p-4">
+      <div role="alert" className="mt-4 rounded-control border border-danger/30 bg-surface p-4">
         <p className="font-semibold text-danger">Affichage impossible pour le moment</p>
         <p className="mt-1 text-sm text-ink">{error?.message}</p>
         {reload && (
@@ -40,7 +40,7 @@ export default function ListState({ state, isEmpty, loadingLabel = 'Chargement..
 
   if (isEmpty) {
     return (
-      <div className="mt-4 flex flex-col items-center rounded-control border border-dashed border-line px-4 py-8 text-center">
+      <div className="mt-4 flex flex-col items-center rounded-control border border-dashed border-line bg-surface px-4 py-8 text-center">
         <svg
           aria-hidden="true"
           viewBox="0 0 24 24"

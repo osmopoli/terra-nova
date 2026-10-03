@@ -37,7 +37,7 @@ export default function MyMessages({ meta }) {
           action: (
             <Link
               to="/contact"
-              className="inline-block rounded-control bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-strong"
+              className="inline-block rounded-control bg-primary px-4 py-2 text-sm font-semibold text-surface hover:bg-primary-strong"
             >
               Écrire aux services
             </Link>

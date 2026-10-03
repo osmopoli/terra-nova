@@ -2,10 +2,12 @@ import { api } from '../api/client.js';
 import { labelOf } from '../lib/constants.js';
 import { Link } from '../lib/router.jsx';
 import { useAsync } from '../lib/useAsync.js';
+import ListState from '../components/ListState.jsx';
 
 // Annuaire des services municipaux (D05) : liste publique, fiche par service.
 export default function ServicesPage({ meta }) {
-  const { status, data: services } = useAsync(() => api('/services'), []);
+  const state = useAsync(() => api('/services'), []);
+  const services = Array.isArray(state.data) ? state.data : [];
 
   return (
     <section>
@@ -14,17 +16,23 @@ export default function ServicesPage({ meta }) {
         Trouvez le service qui correspond à votre besoin : horaires, contact et démarches utiles.
       </p>
 
-      {status === 'loading' && <p className="mt-8 text-ink-muted">Chargement des services...</p>}
-      {status === 'error' && (
-        <p role="alert" className="mt-8 text-danger">
-          Impossible de charger l'annuaire pour le moment. Réessayez dans quelques instants.
-        </p>
-      )}
-      {status === 'success' && services.length === 0 && (
-        <p className="mt-8 text-ink-muted">Aucun service n'est encore référencé.</p>
-      )}
-
-      {status === 'success' && services.length > 0 && (
+      <ListState
+        state={state}
+        isEmpty={!services.length}
+        loadingLabel="Chargement des services..."
+        empty={{
+          title: 'Aucun service référencé',
+          text: 'L’annuaire de Nova Terra se complète au fil des ouvertures. En attendant, la mairie répond à vos questions.',
+          action: (
+            <Link
+              to="/contact"
+              className="inline-block rounded-control bg-primary px-4 py-2 text-sm font-semibold text-surface hover:bg-primary-strong"
+            >
+              Contacter la mairie
+            </Link>
+          ),
+        }}
+      >
         <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service) => (
             <li key={service.slug}>
@@ -42,7 +50,7 @@ export default function ServicesPage({ meta }) {
             </li>
           ))}
         </ul>
-      )}
+      </ListState>
     </section>
   );
 }
