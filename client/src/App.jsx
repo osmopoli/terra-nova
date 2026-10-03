@@ -4,6 +4,7 @@ import AuthScreen from './components/AuthScreen.jsx';
 import ProfileScreen from './components/ProfileScreen.jsx';
 import HomePage from './pages/HomePage.jsx';
 import MyRequestsPage, { MyRequestPage } from './pages/MyRequestsPage.jsx';
+import NewRequestPage from './pages/NewRequestPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import { api, getToken, setToken } from './api/client.js';
 import { loginPath, safeRedirect } from './lib/redirect.js';
@@ -29,6 +30,7 @@ function Route({ session }) {
     const match = pathname.match(/^\/mes-demarches\/(\d+)$/);
     if (match) return <MyRequestPage id={match[1]} meta={meta} />;
     if (pathname === '/mes-demarches') return <MyRequestsPage meta={meta} />;
+    if (pathname === '/mes-demarches/nouvelle') return <NewRequestPage meta={meta} />;
   }
   if (pathname === '/connexion' || pathname === '/profil') {
     return (

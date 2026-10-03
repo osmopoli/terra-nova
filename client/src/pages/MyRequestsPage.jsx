@@ -30,10 +30,20 @@ export default function MyRequestsPage({ meta }) {
 
   return (
     <div className="mx-auto max-w-3xl">
-      <h1 className="font-display text-3xl font-bold">Mes démarches</h1>
-      <p className="mt-1 text-ink-muted">
-        Retrouvez ici chaque demande envoyée à la ville, son état et ses étapes.
-      </p>
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 className="font-display text-3xl font-bold">Mes démarches</h1>
+          <p className="mt-1 text-ink-muted">
+            Retrouvez ici chaque demande envoyée à la ville, son état et ses étapes.
+          </p>
+        </div>
+        <Link
+          to="/mes-demarches/nouvelle"
+          className="rounded-control bg-primary px-4 py-2.5 font-semibold text-white hover:bg-primary-strong"
+        >
+          Nouvelle démarche
+        </Link>
+      </div>
 
       {list.status === 'loading' && <p className="mt-6 text-ink-muted">Chargement...</p>}
       {list.status === 'error' && <p className="mt-6 text-danger">{list.error.message}</p>}
