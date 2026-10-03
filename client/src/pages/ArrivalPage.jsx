@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import orbite from '../assets/planete-orbite.svg';
 import { APP_NAME } from '../lib/constants.js';
-import { navigate } from '../lib/router.jsx';
+import { Link, navigate } from '../lib/router.jsx';
 
 const TRAVEL_MS = 3000;
 
@@ -95,6 +95,12 @@ export default function ArrivalPage() {
             >
               Initier l’approche
             </button>
+            <Link
+              to="/services"
+              className="mt-4 block w-fit font-semibold text-star-muted underline-offset-4 hover:text-glow hover:underline sm:ml-6 sm:mt-0 sm:inline-block"
+            >
+              Découvrir les services municipaux
+            </Link>
           </div>
         </section>
 

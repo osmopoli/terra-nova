@@ -9,14 +9,22 @@ export default function HomePage({ user }) {
       <p className="mt-4 text-ink-muted">
         La plateforme des services municipaux de Nova Terra : créez votre compte pour suivre vos démarches.
       </p>
-      {!user && (
+      <div className="mt-8 flex flex-wrap justify-center gap-3">
         <Link
-          to="/connexion"
-          className="mt-8 inline-block rounded-control bg-primary px-5 py-3 font-semibold text-white hover:bg-primary-strong"
+          to="/services"
+          className="inline-block rounded-control border border-primary px-5 py-3 font-semibold text-primary hover:bg-mist"
         >
-          Créer un compte
+          Découvrir les services municipaux
         </Link>
-      )}
+        {!user && (
+          <Link
+            to="/connexion"
+            className="inline-block rounded-control bg-primary px-5 py-3 font-semibold text-white hover:bg-primary-strong"
+          >
+            Créer un compte
+          </Link>
+        )}
+      </div>
     </section>
   );
 }
