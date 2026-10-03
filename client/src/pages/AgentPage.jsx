@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { api } from '../api/client.js';
 import { APP_NAME } from '../lib/constants.js';
+import ListState from '../components/ListState.jsx';
 
 const FALLBACK_POLL_SECONDS = 20;
 
@@ -171,13 +172,23 @@ export default function AgentPage({ onExpired }) {
         </p>
       </div>
 
-      {error && (
+      {/* Échec d'un rafraîchissement : la dernière liste reçue reste affichée sous l'alerte. */}
+      {error && data && (
         <p role="alert" className="rounded-card bg-surface p-4 font-semibold text-danger shadow-card">
           {error}
         </p>
       )}
 
-      {!data && !error && <p className="text-ink-muted">Chargement des demandes...</p>}
+      {!data && (
+        <ListState
+          state={{
+            status: error ? 'error' : 'loading',
+            error: { message: error },
+            reload: () => setReload((n) => n + 1),
+          }}
+          loadingLabel="Chargement des demandes..."
+        />
+      )}
 
       {data && (
         <>
@@ -209,17 +220,24 @@ export default function AgentPage({ onExpired }) {
             )}
           </div>
 
-          {requests.length ? (
+          <ListState
+            state={{ status: 'success' }}
+            isEmpty={!requests.length}
+            empty={
+              onlyNew
+                ? { title: 'Toutes les demandes ont été vues', text: 'Les prochaines arriveront ici automatiquement.' }
+                : {
+                    title: 'Aucune demande reçue pour le moment',
+                    text: 'La liste se met à jour seule à chaque synchronisation avec la ville.',
+                  }
+            }
+          >
             <ul className="grid gap-4 md:grid-cols-2">
               {requests.map((request) => (
                 <RequestCard key={request.request_code} request={request} onSeen={markSeen} />
               ))}
             </ul>
-          ) : (
-            <p className="rounded-card bg-surface p-4 text-ink-muted shadow-card">
-              {onlyNew ? 'Toutes les demandes ont été vues.' : 'Aucune demande reçue pour le moment.'}
-            </p>
-          )}
+          </ListState>
         </>
       )}
     </div>

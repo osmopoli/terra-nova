@@ -2,12 +2,14 @@ import { api } from '../api/client.js';
 import { labelOf } from '../lib/constants.js';
 import { Link } from '../lib/router.jsx';
 import { useAsync } from '../lib/useAsync.js';
+import ListState from './ListState.jsx';
 
 const dateFormat = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium', timeStyle: 'short' });
 
 /** « Mon espace » : messages envoyés aux services municipaux et leur statut. */
 export default function MyMessages({ meta }) {
-  const { status, data, error } = useAsync(() => api('/contact-messages'), []);
+  const state = useAsync(() => api('/contact-messages'), []);
+  const messages = Array.isArray(state.data) ? state.data : [];
 
   return (
     <section
@@ -25,14 +27,25 @@ export default function MyMessages({ meta }) {
           Nouveau message
         </Link>
       </div>
-      {status === 'loading' && <p className="mt-4 text-sm text-ink-muted">Chargement...</p>}
-      {status === 'error' && <p className="mt-4 text-sm text-danger">{error.message}</p>}
-      {status === 'success' && data.length === 0 && (
-        <p className="mt-4 text-sm text-ink-muted">Vous n’avez encore envoyé aucun message.</p>
-      )}
-      {status === 'success' && data.length > 0 && (
+      <ListState
+        state={state}
+        isEmpty={!messages.length}
+        loadingLabel="Chargement de vos messages..."
+        empty={{
+          title: 'Aucun message envoyé',
+          text: 'Une question pour la mairie de Nova Terra ? Écrivez au service concerné et suivez sa réponse ici.',
+          action: (
+            <Link
+              to="/contact"
+              className="inline-block rounded-control bg-primary px-4 py-2 text-sm font-semibold text-surface hover:bg-primary-strong"
+            >
+              Écrire aux services
+            </Link>
+          ),
+        }}
+      >
         <ul className="mt-4 divide-y divide-mist">
-          {data.map((m) => (
+          {messages.map((m) => (
             <li key={m.trackingCode} className="py-3">
               <div className="flex items-start justify-between gap-3">
                 <p className="min-w-0 font-medium text-ink">{m.subject}</p>
@@ -47,7 +60,7 @@ export default function MyMessages({ meta }) {
             </li>
           ))}
         </ul>
-      )}
+      </ListState>
     </section>
   );
 }
