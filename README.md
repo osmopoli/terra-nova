@@ -1,6 +1,6 @@
-# Nova Terra (24h by Webcup 2026)
+# Terra Nova (24h by Webcup 2026)
 
-Plateforme municipale de la ville fictive **Nova Terra** (citoyens, agents municipaux, administrateurs), réalisée pendant le
+Plateforme municipale de la ville fictive **Terra Nova** (citoyens, agents municipaux, administrateurs), réalisée pendant le
 **24h by Webcup 2026**. API AdonisJS 6 + MySQL, front React 19 / Vite 7 / Tailwind 4, PWA, déploiement HODI (Hodifly / Passenger).
 
 Conventions d'équipe et règles des agents : **[`CLAUDE.md`](CLAUDE.md)**. Checklists : [`docs/CHECKLISTS.md`](docs/CHECKLISTS.md).
@@ -72,7 +72,7 @@ Chaque demande Webcup a un code (D…, F…) et une tâche `WEBC-n` (branche et 
 | D04 | Contacter les services municipaux | WEBC-6 | en prod |
 | D05 | Annuaire des services municipaux | WEBC-7 | en prod |
 | D06 | Actualités et annonces de la ville | WEBC-8 | en revue |
-| D07 | Page d'accueil Nova Terra | WEBC-9 | en revue |
+| D07 | Page d'accueil Terra Nova | WEBC-9 | en revue |
 | D08 | Profils citoyen / agent / admin | WEBC-10 | en prod |
 | D09 | Contrôle d'accès par profil | WEBC-11 | en prod |
 | D11 | Suivi de mes démarches et de leur état | WEBC-21 | en revue |
@@ -96,7 +96,7 @@ Chaque demande Webcup a un code (D…, F…) et une tâche `WEBC-n` (branche et 
 | F31 | Alerte canicule avec recommandations pour personnes vulnérables | WEBC-34 | en revue |
 | F32 | Recherche et filtre des services | WEBC-35 | en revue |
 
-Socle (sans code Webcup) : synchro de l'API Webcup (WEBC-2), direction artistique Nova Terra (WEBC-3), finitions 404 / titres
+Socle (sans code Webcup) : synchro de l'API Webcup (WEBC-2), direction artistique Terra Nova (WEBC-3), finitions 404 / titres
 d'onglet / manifest (WEBC-45), parcours d'arrivée immersif (WEBC-17), PWA (manifest + icône), `GET /api/health`, `GET /api/meta`.
 
 ## Installation locale

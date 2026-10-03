@@ -88,7 +88,7 @@ export default function ReportPage({ meta }) {
               setForm(EMPTY);
               setPosition(null);
             }}
-            className="rounded-control bg-primary px-5 py-2.5 font-semibold text-white hover:bg-primary-strong"
+            className="rounded-control bg-primary px-5 py-2.5 font-semibold text-on-primary hover:bg-primary-strong"
           >
             Signaler un autre problème
           </button>
@@ -161,7 +161,7 @@ export default function ReportPage({ meta }) {
         <button
           type="submit"
           disabled={sending}
-          className="w-full rounded-control bg-primary py-3 font-semibold text-white hover:bg-primary-strong disabled:opacity-60"
+          className="w-full rounded-control bg-primary py-3 font-semibold text-on-primary hover:bg-primary-strong disabled:opacity-60"
         >
           {sending ? 'Envoi...' : 'Envoyer le signalement'}
         </button>

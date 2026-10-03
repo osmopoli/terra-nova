@@ -29,7 +29,7 @@ export default function ListState({ state, isEmpty, loadingLabel = 'Chargement..
           <button
             type="button"
             onClick={reload}
-            className="mt-3 rounded-control border border-ink-muted/40 bg-surface px-4 py-2 text-sm font-semibold text-ink hover:bg-mist"
+            className="mt-3 rounded-control border border-line-strong bg-surface px-4 py-2 text-sm font-semibold text-ink hover:bg-mist"
           >
             Réessayer
           </button>

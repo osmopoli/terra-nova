@@ -1,6 +1,7 @@
 import { Link, NavLink } from '../lib/router.jsx';
 import Breadcrumb from './Breadcrumb.jsx';
 import { APP_NAME } from '../lib/constants.js';
+import Brand from './Brand.jsx';
 import TextSizeControl from './TextSizeControl.jsx';
 import ContrastControl from './ContrastControl.jsx';
 import SkipLink from './SkipLink.jsx';
@@ -8,16 +9,16 @@ import SkipLink from './SkipLink.jsx';
 export default function Layout({ user, children }) {
   // Entrée active : soulignée en couleur primaire (aria-current posé par NavLink).
   const linkClass =
-    'font-bold text-ink underline-offset-4 hover:underline aria-[current=page]:text-primary aria-[current=page]:underline aria-[current=page]:decoration-2';
+    'font-semibold text-ink-muted underline-offset-4 hover:text-ink hover:underline aria-[current=page]:text-primary aria-[current=page]:underline aria-[current=page]:decoration-2';
   // Agents et admins travaillent dans l'ambiance « outil » (tokens redéfinis dans index.css).
   const space = user && user.role !== 'citoyen' ? 'agent' : 'citoyen';
   return (
-    <div data-space={space} className="min-h-screen bg-canvas font-sans text-ink">
+    <div data-space={space} className="ciel min-h-screen font-sans text-ink">
       <SkipLink />
-      <header className="border-b border-line bg-surface">
+      <header className="border-b border-line bg-surface/85 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-3 sm:px-6">
-          <Link to="/" className="font-display text-xl font-bold leading-none text-ink sm:text-2xl">
-            {APP_NAME}
+          <Link to="/" className="rounded-control text-ink">
+            <Brand />
           </Link>
           <nav aria-label="Navigation principale" className="ml-auto flex flex-wrap items-center gap-3 sm:gap-4">
             <TextSizeControl className="text-ink" />
@@ -43,7 +44,7 @@ export default function Layout({ user, children }) {
             )}
             <NavLink
               to={user ? '/profil' : '/connexion'}
-              className="rounded-control bg-primary px-3 py-1.5 font-bold text-white hover:bg-primary-strong aria-[current=page]:bg-primary-strong aria-[current=page]:ring-2 aria-[current=page]:ring-accent aria-[current=page]:ring-offset-2"
+              className="rounded-control bg-primary px-3 py-1.5 font-bold text-on-primary hover:bg-primary-strong aria-[current=page]:bg-primary-strong aria-[current=page]:ring-2 aria-[current=page]:ring-primary-strong aria-[current=page]:ring-offset-2 aria-[current=page]:ring-offset-surface"
             >
               {user ? 'Mon profil' : 'Se connecter'}
             </NavLink>
@@ -54,7 +55,7 @@ export default function Layout({ user, children }) {
         <Breadcrumb />
         {children}
       </main>
-      <footer className="border-t border-mist">
+      <footer className="border-t border-line">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-4 text-sm text-ink-muted sm:px-6">
           <p>{APP_NAME}, la plateforme des services municipaux.</p>
           <Link to="/accessibilite" className="font-semibold text-ink">

@@ -29,11 +29,11 @@ export default function ServicesPage({ meta }) {
         loadingLabel="Chargement des services..."
         empty={{
           title: 'Aucun service référencé',
-          text: 'L’annuaire de Nova Terra se complète au fil des ouvertures. En attendant, la mairie répond à vos questions.',
+          text: 'L’annuaire de Terra Nova se complète au fil des ouvertures. En attendant, la mairie répond à vos questions.',
           action: (
             <Link
               to="/contact"
-              className="inline-block rounded-control bg-primary px-4 py-2 text-sm font-semibold text-surface hover:bg-primary-strong"
+              className="inline-block rounded-control bg-primary px-4 py-2 text-sm font-semibold text-on-primary hover:bg-primary-strong"
             >
               Contacter la mairie
             </Link>

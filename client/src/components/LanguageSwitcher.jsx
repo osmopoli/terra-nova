@@ -12,7 +12,7 @@ export default function LanguageSwitcher({ options = [], value, onChange }) {
           lang={o.value}
           aria-pressed={value === o.value}
           onClick={() => onChange(o.value)}
-          className="rounded-control border border-primary px-3 py-1.5 text-sm font-semibold text-primary aria-pressed:bg-primary aria-pressed:text-white"
+          className="rounded-control border border-primary px-3 py-1.5 text-sm font-semibold text-primary aria-pressed:bg-primary aria-pressed:text-on-primary"
         >
           {o.label}
         </button>

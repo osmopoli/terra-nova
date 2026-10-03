@@ -40,7 +40,7 @@ export default function HomePage({ user }) {
                 to={action.to}
                 className={`flex h-full flex-col rounded-card p-5 shadow-card ${
                   i === 0
-                    ? 'bg-primary text-white hover:bg-primary-strong'
+                    ? 'bg-primary text-on-primary hover:bg-primary-strong'
                     : 'bg-surface text-ink hover:ring-2 hover:ring-primary/40'
                 }`}
               >

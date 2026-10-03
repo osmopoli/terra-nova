@@ -6,7 +6,7 @@ const dateFormat = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium', timeS
 
 // Teinte du badge de statut ; le libellé reste toujours affiché (pas d'info portée par la couleur seule).
 const STATUS_STYLE = {
-  nouveau: 'bg-accent text-ink',
+  nouveau: 'bg-accent text-on-primary',
   en_cours: 'bg-mist text-warning',
   traite: 'bg-mist text-success',
 };
@@ -90,7 +90,7 @@ export default function AgentMessages({ onExpired }) {
               aria-pressed={filter === value}
               onClick={() => setFilter(value)}
               className={`rounded-control px-3 py-1.5 text-sm font-bold ${
-                filter === value ? 'bg-primary text-surface' : 'bg-surface text-ink shadow-card'
+                filter === value ? 'bg-primary text-on-primary' : 'bg-surface text-ink shadow-card'
               }`}
             >
               {label}

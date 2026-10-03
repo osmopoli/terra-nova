@@ -127,7 +127,7 @@ export default function AuthScreen({ onAuthenticated }) {
           type="submit"
           disabled={loading}
           aria-busy={loading}
-          className="w-full rounded-control bg-primary py-3 font-semibold text-white hover:bg-primary-strong disabled:opacity-60"
+          className="w-full rounded-control bg-primary py-3 font-semibold text-on-primary hover:bg-primary-strong disabled:opacity-60"
         >
           {loading ? 'Patientez...' : isRegister ? 'Créer mon compte' : 'Se connecter'}
         </button>

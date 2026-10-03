@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import orbite from '../assets/planete-orbite.svg';
 import { APP_NAME } from '../lib/constants.js';
+import Brand from '../components/Brand.jsx';
+import GalaxyImage from '../components/GalaxyImage.jsx';
 import SkipLink from '../components/SkipLink.jsx';
 import TextSizeControl from '../components/TextSizeControl.jsx';
 import ContrastControl from '../components/ContrastControl.jsx';
@@ -13,20 +14,6 @@ const warpRings = {
   backgroundImage:
     'repeating-radial-gradient(ellipse at center, transparent 0 20px, color-mix(in srgb, var(--color-glow) 10%, transparent) 22px 23px, transparent 25px 46px)',
 };
-
-export function Brand() {
-  return (
-    <span className="flex items-center gap-3 font-display font-extrabold uppercase tracking-[0.12em]">
-      <span
-        aria-hidden="true"
-        className="grid size-10 place-items-center rounded-card border border-glow/40 shadow-glow"
-      >
-        <span className="size-5 rounded-full border-2 border-glow" />
-      </span>
-      {APP_NAME}
-    </span>
-  );
-}
 
 function Ship() {
   return (
@@ -88,19 +75,23 @@ export default function ArrivalPage() {
     <div className="min-h-dvh bg-space font-sans text-star">
       <div
         inert={travelling}
-        className="relative isolate flex min-h-dvh flex-col overflow-hidden bg-cover bg-[center_42%]"
-        style={{ backgroundImage: `url(${orbite})` }}
+        className="relative isolate flex min-h-dvh flex-col overflow-hidden"
       >
         <SkipLink />
+        <GalaxyImage
+          priority
+          sizes="(min-width: 768px) 60vw, 100vw"
+          className="absolute inset-x-0 top-0 -z-20 h-[70dvh] w-full object-cover object-center opacity-80 md:inset-x-auto md:right-0 md:h-full md:w-[60vw] md:opacity-90"
+        />
         <div
           aria-hidden="true"
-          className="absolute inset-0 -z-10 bg-linear-to-t from-space/90 to-space/30 md:bg-linear-to-r md:from-space/95 md:via-space/70 md:to-space/10"
+          className="absolute inset-0 -z-10 bg-linear-to-t from-space from-30% to-space/20 md:bg-linear-to-r md:from-space md:from-40% md:via-space/70 md:to-space/0"
         />
-        <header className="flex min-h-[4.625rem] flex-wrap items-center justify-between gap-3 border-b border-glow/20 px-6 py-3 backdrop-blur-md md:min-h-[5.625rem] md:px-[clamp(24px,6vw,92px)]">
-          <Brand />
+        <header className="flex min-h-[4.625rem] flex-wrap items-center justify-between gap-3 border-b border-line px-6 py-3 backdrop-blur-md md:min-h-[5.625rem] md:px-[clamp(24px,6vw,92px)]">
+          <Brand size="lg" />
           <p className="hidden text-xs font-semibold uppercase tracking-[0.12em] text-star-muted md:block">
             <b className="block text-glow">Système localisé</b>
-            Coordonnées NT-01 · Liaison stable
+            Coordonnées TN-01 · Liaison stable
           </p>
           <div className="flex flex-wrap items-center gap-2">
             <Link to="/accessibilite" className="mr-2 text-sm font-bold text-star underline underline-offset-4">
@@ -130,7 +121,7 @@ export default function ArrivalPage() {
               type="button"
               onClick={() => setTravelling(true)}
               disabled={travelling}
-              className="min-h-14 rounded-control border border-glow/60 bg-glow/15 px-6 font-bold tracking-wide shadow-glow transition hover:-translate-y-0.5 hover:bg-glow/25 disabled:opacity-60"
+              className="min-h-14 rounded-control bg-glow px-6 font-bold text-on-primary shadow-glow hover:bg-primary-strong disabled:opacity-60"
             >
               Initier l’approche
             </button>
@@ -143,7 +134,7 @@ export default function ArrivalPage() {
           </div>
         </main>
 
-        <footer className="absolute inset-x-5 bottom-6 rounded-card border border-glow/20 bg-space/60 px-4 py-3 text-[0.625rem] uppercase tracking-[0.08em] text-star-muted backdrop-blur-md md:inset-x-auto md:right-[clamp(24px,5vw,72px)] md:bottom-10 md:text-xs">
+        <footer className="absolute inset-x-5 bottom-6 rounded-card border border-line bg-space-panel/80 px-4 py-3 text-[0.625rem] uppercase tracking-[0.08em] text-star-muted backdrop-blur-md md:inset-x-auto md:right-[clamp(24px,5vw,72px)] md:bottom-10 md:text-xs">
           <dl className="flex flex-wrap justify-between gap-x-3 gap-y-2 md:gap-6">
             <div>
               <dt>Destination</dt>

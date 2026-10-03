@@ -47,7 +47,7 @@ export default function ProfileScreen({ user, onUpdated, onLogout, onDeleted }) 
         <button
           type="button"
           onClick={onLogout}
-          className="shrink-0 rounded-control border border-ink-muted/40 px-3 py-2 text-sm font-medium text-ink hover:bg-mist"
+          className="shrink-0 rounded-control border border-line-strong px-3 py-2 text-sm font-medium text-ink hover:bg-mist"
         >
           Se déconnecter
         </button>
@@ -70,7 +70,7 @@ export default function ProfileScreen({ user, onUpdated, onLogout, onDeleted }) 
         </p>
         <button
           type="submit"
-          className="w-full rounded-control bg-primary py-3 font-semibold text-white hover:bg-primary-strong"
+          className="w-full rounded-control bg-primary py-3 font-semibold text-on-primary hover:bg-primary-strong"
         >
           Enregistrer
         </button>
@@ -101,7 +101,7 @@ export default function ProfileScreen({ user, onUpdated, onLogout, onDeleted }) 
               <button
                 type="submit"
                 disabled={deleting || !password}
-                className="flex-1 rounded-control bg-danger py-3 font-semibold text-white disabled:opacity-60"
+                className="flex-1 rounded-control bg-danger py-3 font-semibold text-on-primary disabled:opacity-60"
               >
                 {deleting ? 'Suppression…' : 'Supprimer définitivement'}
               </button>
@@ -112,7 +112,7 @@ export default function ProfileScreen({ user, onUpdated, onLogout, onDeleted }) 
                   setPassword('');
                   setDeleteError(null);
                 }}
-                className="rounded-control border border-ink-muted/40 px-4 py-3 font-medium text-ink hover:bg-mist"
+                className="rounded-control border border-line-strong px-4 py-3 font-medium text-ink hover:bg-mist"
               >
                 Annuler
               </button>

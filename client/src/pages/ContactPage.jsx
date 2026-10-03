@@ -74,14 +74,14 @@ export default function ContactPage({ user, meta, onExpired }) {
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
           <Link
             to="/profil"
-            className="flex-1 rounded-control bg-primary py-3 text-center font-semibold text-white hover:bg-primary-strong"
+            className="flex-1 rounded-control bg-primary py-3 text-center font-semibold text-on-primary hover:bg-primary-strong"
           >
             Voir mes messages
           </Link>
           <button
             type="button"
             onClick={() => setSent(null)}
-            className="flex-1 rounded-control border border-ink-muted/40 py-3 font-semibold text-ink hover:bg-mist"
+            className="flex-1 rounded-control border border-line-strong py-3 font-semibold text-ink hover:bg-mist"
           >
             Écrire un autre message
           </button>
@@ -133,7 +133,7 @@ export default function ContactPage({ user, meta, onExpired }) {
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-control bg-primary py-3 font-semibold text-white hover:bg-primary-strong disabled:opacity-60"
+          className="w-full rounded-control bg-primary py-3 font-semibold text-on-primary hover:bg-primary-strong disabled:opacity-60"
         >
           {loading ? 'Envoi...' : 'Envoyer le message'}
         </button>

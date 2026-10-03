@@ -42,7 +42,7 @@ function SessionPanel({ data, now }) {
       <p className="mt-4 text-sm text-ink-muted">
         {data.syncedAt
           ? `Dernière synchronisation à ${timeFormat.format(new Date(data.syncedAt))}`
-          : 'Pas encore synchronisé avec l’API Nova Terra.'}{' '}
+          : 'Pas encore synchronisé avec l’API Terra Nova.'}{' '}
         · Mise à jour automatique toutes les {data.pollIntervalSeconds} s.
       </p>
       {data.lastError && (
@@ -65,7 +65,7 @@ function RequestCard({ request, onSeen }) {
       <div className="flex flex-wrap items-center gap-2">
         <h3 className="font-display text-lg font-bold">{request.request_code}</h3>
         {request.isNew && (
-          <span className="rounded-control bg-accent px-2 py-0.5 text-xs font-bold uppercase text-ink">
+          <span className="rounded-control bg-accent px-2 py-0.5 text-xs font-bold uppercase text-on-primary">
             Nouvelle
           </span>
         )}
@@ -169,7 +169,7 @@ export default function AgentPage({ onExpired }) {
       <div>
         <h1 className="font-display text-2xl font-bold sm:text-3xl">Demandes de la ville</h1>
         <p className="mt-1 text-ink-muted">
-          Les besoins transmis par l’API Nova Terra, mis à jour en continu.
+          Les besoins transmis par l’API Terra Nova, mis à jour en continu.
         </p>
       </div>
 
@@ -216,7 +216,7 @@ export default function AgentPage({ onExpired }) {
               <button
                 type="button"
                 onClick={() => markSeen()}
-                className="ml-auto rounded-control bg-primary px-3 py-1.5 text-sm font-bold text-surface hover:bg-primary-strong"
+                className="ml-auto rounded-control bg-primary px-3 py-1.5 text-sm font-bold text-on-primary hover:bg-primary-strong"
               >
                 Tout marquer comme vu
               </button>
