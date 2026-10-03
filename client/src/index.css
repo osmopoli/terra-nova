@@ -17,9 +17,14 @@
   --color-canvas: #f6f3ec;
   --color-mist: #e9f1ef;
   --color-line: #d6dfdc;
+  /* Bordure de contrôle (champ, bouton secondaire) : ≥ 3:1 sur surface, canvas et mist (WCAG 1.4.11).
+     `line` reste réservé aux séparateurs décoratifs. */
+  --color-line-strong: #6f7c86;
   --color-primary: #0b6a6b;
   --color-primary-strong: #074b4e;
   --color-accent: #f08a4b;
+  /* Latérite lisible : texte ou pictogramme accent sur fond clair. `accent` seul = fond ou décor. */
+  --color-accent-strong: #a8501d;
   --color-success: #1d6b3a;
   --color-warning: #8a4b00;
   --color-danger: #b42318;
@@ -95,6 +100,7 @@
     --color-canvas: #f1f3f7;
     --color-mist: #e4e8ef;
     --color-line: #d0d5dd;
+    --color-line-strong: #6c7689;
     --color-primary: #3046b0;
     --color-primary-strong: #1f2f80;
     --radius-card: 8px;
@@ -106,6 +112,30 @@
   :focus-visible {
     outline: 3px solid var(--color-primary);
     outline-offset: 2px;
+  }
+
+  /*
+   * Information non portée par la couleur seule (WCAG 1.4.1).
+   * Dans le contenu, un lien texte est toujours souligné, pas seulement au survol.
+   * Les liens-boutons (fond plein) et la navigation d'en-tête en sont exclus.
+   */
+  :where(main, footer) a:not([class*="bg-"]) {
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+  :where(main, footer) a:not([class*="bg-"]):hover {
+    text-decoration-thickness: 2px;
+  }
+}
+
+@layer utilities {
+  /* Champ en erreur : bordure épaissie en plus de la couleur ; le message texte reste obligatoire. */
+  input[aria-invalid="true"],
+  select[aria-invalid="true"],
+  textarea[aria-invalid="true"] {
+    border-color: var(--color-danger);
+    border-width: 2px;
   }
 }
 
