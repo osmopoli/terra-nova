@@ -43,6 +43,15 @@ CREATE TABLE IF NOT EXISTS api_state (
   last_error TEXT
 );
 
+-- Journal de veille : chaque nouveauté détectée dans les données de l'API
+CREATE TABLE IF NOT EXISTS api_events (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  kind TEXT NOT NULL CHECK (kind IN ('nouvelle','modifiee','vague')),
+  request_code TEXT,
+  details TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 -- Messages / demandes des habitants (D04, traités par les agents F22)
 CREATE TABLE IF NOT EXISTS messages (
   id INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -11,7 +11,7 @@ function nav(user, active) {
   const link = (href, label, key) => safe`<a href="${href}" class="${active === key ? 'active' : ''}">${label}</a>`;
   const items = [link('/', 'Accueil', 'home'), link('/services', 'Services', 'services'), link('/actualites', 'Actualités', 'news'), link('/contact', 'Contact', 'contact')];
   if (user) items.push(link('/espace', 'Mon espace', 'espace'));
-  if (user && ['agent', 'admin'].includes(user.role)) items.push(link('/agent', 'Espace agents', 'agent'));
+  if (user && ['agent', 'admin'].includes(user.role)) items.push(link('/agent', 'Espace agents', 'agent'), link('/veille', 'Veille API', 'veille'));
   if (user && user.role === 'admin') items.push(link('/admin', 'Administration', 'admin'));
   return items;
 }

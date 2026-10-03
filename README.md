@@ -33,7 +33,9 @@ Comptes créés au premier démarrage (à changer dans `.env`) :
 
 ## API Webcup
 
-- `src/webcup.js` interroge l'API toutes les `POLL_INTERVAL_SECONDS` (15 à 120, défaut 20) avec l'en-tête `X-Webcup-Api-Key`. La clé ne quitte jamais le serveur.
+- `src/webcup.js` interroge l'API toutes les `POLL_INTERVAL_SECONDS` (15 à 120, défaut 30) avec l'en-tête `X-Webcup-Api-Key`. La clé ne quitte jamais le serveur.
+- Chaque nouveauté est journalisée dans `api_events` : nouvelle demande, contenu modifié (hors champs XP qui varient avec le temps), changement de vague.
+- L'onglet **Veille API** (`/veille`, agents/admin, `src/modules/veille.js` + `public/veille.js`) relit ce journal toutes les 30 s via `/api/webcup/events` et signale les nouveautés non vues (badge « Nouveau », compteur dans le titre de l'onglet).
 - Dédoublonnage sur `request_code` (table `api_requests`). Aucun nombre ni rythme de vagues n'est codé en dur.
 - Le navigateur interroge `/api/webcup/state` (agents/admin) et affiche un badge « Nouveau » sur chaque demande apparue depuis la dernière visite.
 - Les agents peuvent cocher « Fait » pour suivre l'avancement de l'équipe.

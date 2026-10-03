@@ -5,8 +5,10 @@ const path = require('node:path');
 const db = require('./db');
 
 const API_URL = process.env.WEBCUP_API_URL || 'https://24h.webcup.fr/wp-json/webcup/v1/requests';
-const INTERVAL = Math.min(Math.max(Number(process.env.POLL_INTERVAL_SECONDS) || 20, 15), 120) * 1000;
+const INTERVAL = Math.min(Math.max(Number(process.env.POLL_INTERVAL_SECONDS) || 30, 15), 120) * 1000;
 const FALLBACK = path.join(__dirname, '..', 'data', 'initial-requests.json');
+// Champs qui bougent tout seuls avec le temps (bonus XP) : ignorés pour détecter un vrai changement de contenu.
+const VOLATILE = new Set(['xp_available', 'xp_time_bonus', 'xp_total', 'sort_order']);
 
 db.prepare('INSERT OR IGNORE INTO api_state (id) VALUES (1)').run();
 
@@ -14,17 +16,35 @@ const upsert = db.prepare(`INSERT INTO api_requests (request_code, payload, diff
   VALUES (?, ?, ?, ?, ?)
   ON CONFLICT(request_code) DO UPDATE SET payload = excluded.payload, difficulty_level = excluded.difficulty_level,
     xp_total = excluded.xp_total, wave = excluded.wave`);
+const logEvent = db.prepare('INSERT INTO api_events (kind, request_code, details) VALUES (?, ?, ?)');
+
+function changedFields(prev, next) {
+  const keys = new Set([...Object.keys(prev), ...Object.keys(next)]);
+  return [...keys].filter((k) => !VOLATILE.has(k) && JSON.stringify(prev[k]) !== JSON.stringify(next[k]));
+}
 
 function ingest(json) {
-  const before = new Set(db.prepare('SELECT request_code FROM api_requests').all().map((r) => r.request_code));
+  const before = new Map(db.prepare('SELECT request_code, payload FROM api_requests').all().map((r) => [r.request_code, JSON.parse(r.payload)]));
+  const prevSession = JSON.parse(db.prepare('SELECT session_json FROM api_state WHERE id = 1').get()?.session_json || 'null');
   const fresh = [];
   for (const r of json.requests || []) {
     if (!r.request_code) continue;
-    if (!before.has(r.request_code)) fresh.push(r.request_code);
+    const prev = before.get(r.request_code);
+    if (!prev) {
+      fresh.push(r.request_code);
+      logEvent.run('nouvelle', r.request_code, JSON.stringify({ requester_name: r.requester_name, message_public: r.message_public }));
+    } else {
+      const fields = changedFields(prev, r);
+      if (fields.length) logEvent.run('modifiee', r.request_code, JSON.stringify({ fields, requester_name: r.requester_name, message_public: r.message_public }));
+    }
     upsert.run(r.request_code, JSON.stringify(r), r.difficulty_level ?? null, r.xp_total ?? null, r.visible_since_wave ?? r.wave_number ?? null);
   }
+  const session = json.session || {};
+  if (prevSession && session.current_wave != null && session.current_wave !== prevSession.current_wave) {
+    logEvent.run('vague', null, JSON.stringify({ from: prevSession.current_wave ?? null, to: session.current_wave }));
+  }
   db.prepare("UPDATE api_state SET session_json = ?, last_poll_at = datetime('now'), last_error = NULL WHERE id = 1")
-    .run(JSON.stringify(json.session || {}));
+    .run(JSON.stringify(session));
   if (fresh.length) console.log(`[webcup] ${fresh.length} nouvelle(s) demande(s) : ${fresh.join(', ')}`);
   return fresh;
 }
@@ -68,4 +88,19 @@ function setDone(code, done) {
   return db.prepare('UPDATE api_requests SET done = ? WHERE request_code = ?').run(done ? 1 : 0, code).changes;
 }
 
-module.exports = { startPolling, pollOnce, getState, setDone, ingest };
+// Journal de veille : les 100 derniers événements, ou ceux postérieurs à `since` (id).
+function getEvents(since = 0) {
+  const state = db.prepare('SELECT * FROM api_state WHERE id = 1').get();
+  const events = db.prepare('SELECT * FROM api_events WHERE id > ? ORDER BY id DESC LIMIT 100').all(Number(since) || 0);
+  return {
+    server_now: new Date().toISOString(),
+    last_poll_at: state.last_poll_at,
+    last_error: state.last_error,
+    poll_interval_seconds: INTERVAL / 1000,
+    session: state.session_json ? JSON.parse(state.session_json) : null,
+    request_count: db.prepare('SELECT COUNT(*) n FROM api_requests').get().n,
+    events: events.map((e) => ({ ...e, details: e.details ? JSON.parse(e.details) : null })),
+  };
+}
+
+module.exports = { startPolling, pollOnce, getState, getEvents, setDone, ingest };
