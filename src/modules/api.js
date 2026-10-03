@@ -93,9 +93,14 @@ router.post('/api/auth/debloquer', A.exigerRole('agent', 'admin'), (req, res) =>
   journal('deblocage', req.body.email, `par ${req.user.email}`);
   res.json({ ok: true });
 });
+// Événements que le navigateur peut consigner : un citoyen ne peut ni fabriquer une connexion ni un verrouillage
+const TYPES_JOURNAL_CITOYEN = ['acces_refuse', 'echec_mdp'];
+const TYPES_JOURNAL_PERSONNEL = [...TYPES_JOURNAL_CITOYEN, 'desactivation', 'reactivation', 'changement_role', 'deblocage', 'evenement'];
 router.post('/api/journal', A.exigerRole(...A.ROLES), (req, res) => {
   const b = req.body || {};
-  journal(String(b.type || 'evenement').slice(0, 40), personnel(req) ? b.email : req.user.email, String(b.detail || '').slice(0, 200));
+  const type = String(b.type || 'evenement');
+  if (!(personnel(req) ? TYPES_JOURNAL_PERSONNEL : TYPES_JOURNAL_CITOYEN).includes(type)) return erreur(res, 400, 'Type d’événement non autorisé.');
+  journal(type, personnel(req) ? b.email : req.user.email, String(b.detail || '').slice(0, 200));
   res.json({ ok: true });
 });
 
@@ -107,15 +112,21 @@ function regleCreation(col, req, doc) {
   switch (col) {
     case 'demandes': {
       const n = docs.prochainNumero('demandes', 1040);
-      return Object.assign(sans(doc, 'statut', 'agent', 'historique', 'anonymise'), {
+      // F52 : les soutiens ne s'ajoutent que par /api/demandes/:id/soutenir ; l'auteur est fixé par la session
+      return Object.assign(sans(doc, 'statut', 'agent', 'historique', 'anonymise', 'soutiens', 'userId'), {
         id: `NT-${n}`, cree: maintenant(), userId: u ? u.id : null, statut: 'recue', agent: '',
         historique: [{ date: maintenant(), statut: 'recue', note: 'Demande enregistrée et transmise au service concerné.', par: 'Système' }]
       });
     }
     case 'annonces': return personnel(req) ? Object.assign(doc, { cree: maintenant(), auteurId: u.id }) : null;
-    case 'rdv': return u ? Object.assign(doc, { userId: u.id, cree: maintenant() }) : null;
+    case 'rdv': return u ? Object.assign(personnel(req) ? doc : Object.assign(sans(doc, 'agent'), { statut: 'confirme' }), { userId: u.id, cree: maintenant() }) : null;
     case 'notifications': return u && (personnel(req) || doc.userId === u.id) ? Object.assign(doc, { lu: false, cree: maintenant() }) : null;
-    case 'audit': return u ? Object.assign(doc, { date: maintenant(), acteurId: u.id, acteurNom: `${u.prenom} ${u.nom}`, acteurRole: u.role, cree: maintenant() }) : null;
+    case 'audit': {
+      // F47 / F48 : un citoyen ne consigne que les actions sur son propre compte ; le personnel est libre
+      if (!u) return null;
+      if (!personnel(req) && !(doc.categorie === 'compte' && (doc.objetId === u.id || doc.objetId === u.email))) return null;
+      return Object.assign(doc, { date: maintenant(), acteurId: u.id, acteurNom: `${u.prenom} ${u.nom}`, acteurRole: u.role, cree: maintenant() });
+    }
     default: return null;
   }
 }
@@ -140,9 +151,13 @@ function reglePatch(col, req, avant, patch) {
     }
     case 'demandes': {
       if (staff) return sans(patch, 'id', 'userId', 'cree');
-      // le citoyen ne peut qu'ajouter un complément à l'historique de SA demande
-      if (u && avant.userId === u.id && Array.isArray(patch.historique) && patch.historique.length > avant.historique.length
-        && JSON.stringify(patch.historique.slice(0, avant.historique.length)) === JSON.stringify(avant.historique)) return { historique: patch.historique };
+      // le citoyen ne peut qu'ajouter UN complément à l'historique de SA demande : statut, auteur et date sont fixés ici
+      const histo = Array.isArray(avant.historique) ? avant.historique : [];
+      if (u && avant.userId === u.id && Array.isArray(patch.historique) && patch.historique.length === histo.length + 1
+        && JSON.stringify(patch.historique.slice(0, histo.length)) === JSON.stringify(histo)) {
+        const ajout = patch.historique[histo.length] && typeof patch.historique[histo.length] === 'object' ? patch.historique[histo.length] : {};
+        return { historique: histo.concat([{ date: maintenant(), statut: avant.statut, par: `${u.prenom} ${u.nom}`, note: String(ajout.note || '').slice(0, 2000) }]) };
+      }
       return null;
     }
     case 'annonces': return staff ? sans(patch, 'id', 'cree') : null;
@@ -167,6 +182,14 @@ function reglePatch(col, req, avant, patch) {
 }
 
 const serviceDesactive = (id) => { const s = id ? docs.get('services', String(id)) : null; return s && s.etat && s.etat.code === 'desactive' ? s : null; };
+// Rendez-vous : créneau lisible et à venir, un seul rendez-vous actif par service et par créneau
+function controlerRdv(brut) {
+  const debut = Date.parse(brut.debut);
+  if (!Number.isFinite(debut)) return { code: 400, msg: 'Date du rendez-vous invalide.' };
+  if (debut < Date.now()) return { code: 400, msg: 'Ce créneau est déjà passé : choisissez un créneau à venir.' };
+  if (docs.tous('rdv').some((r) => r.serviceId === brut.serviceId && r.statut !== 'annule' && Date.parse(r.debut) === debut)) return { code: 409, msg: 'Ce créneau vient d’être réservé : choisissez-en un autre.' };
+  return null;
+}
 
 /* ---------- F63 : désactiver / réactiver rapidement un service défectueux (administrateur uniquement) ---------- */
 const TYPES_ALTERNATIVE = ['telephone', 'guichet', 'en-ligne', 'date', 'autre'];
@@ -209,6 +232,8 @@ router.post('/api/docs/:col', (req, res) => {
     // F63 : un service désactivé ne peut pas être utilisé pour commencer une démarche ou réserver un rendez-vous
     const bloque = (col === 'rdv' || (col === 'demandes' && brut.type === 'demarche')) && serviceDesactive(brut.serviceId);
     if (bloque) return res.status(409).json({ erreur: `Ce service est momentanément indisponible : ${bloque.etat.message || 'démarches suspendues'}. ${(bloque.etat.alternative && bloque.etat.alternative.texte) || 'Vous pouvez écrire au service.'}`, etat: bloque.etat });
+    const creneau = col === 'rdv' && req.user ? controlerRdv(brut) : null;
+    if (creneau) return erreur(res, creneau.code, creneau.msg);
     const d = regleCreation(col, req, Object.assign({}, brut, col === 'demandes' ? {} : { id: brut.id || uid(col.slice(0, 3)) }));
     if (!d) return erreur(res, req.user ? 403 : 401, 'Action non autorisée pour votre profil.');
     crees.push(docs.put(col, d));
