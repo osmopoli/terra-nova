@@ -73,12 +73,12 @@ export default function ArrivalPage() {
             <b className="block text-glow">Système localisé</b>
             Coordonnées NT-01 · Liaison stable
           </p>
-<div className="flex flex-wrap items-center gap-2">
-  <Link to="/accessibilite" className="mr-2 text-sm font-bold text-star underline underline-offset-4">
-    Accessibilité
-  </Link>
-  <TextSizeControl className="text-star" />
-  <ContrastControl className="text-star" />
+          <div className="flex flex-wrap items-center gap-2">
+            <Link to="/accessibilite" className="mr-2 text-sm font-bold text-star underline underline-offset-4">
+              Accessibilité
+            </Link>
+            <TextSizeControl className="text-star" />
+            <ContrastControl className="text-star" />
           </div>
         </header>
 

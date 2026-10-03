@@ -8,6 +8,7 @@ const SECTIONS = [
     title: 'Contrastes et couleurs',
     items: [
       'Tous les textes respectent un contraste d’au moins 4,5:1 avec leur fond (niveau AA), 3:1 pour les bordures de champs et de boutons.',
+      'Le bouton « Contraste élevé » en haut de chaque page assombrit les textes et marque les bordures. Il s’active seul si votre appareil demande plus de contraste, et votre choix est mémorisé.',
       'Une information n’est jamais portée par la seule couleur : les liens du contenu sont soulignés, un champ en erreur a une bordure épaissie et un message écrit.',
       'L’entrée de menu de la page en cours est soulignée en plus d’être colorée.',
     ],
