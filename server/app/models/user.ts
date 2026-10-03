@@ -4,7 +4,7 @@ import { compose } from '@adonisjs/core/helpers'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
-import type { Role } from '#constants/domain'
+import { ROLE_VALUES, type Role } from '#constants/domain'
 
 // Hasher par défaut de config/hash.ts (bcrypt).
 const AuthFinder = withAuthFinder(() => hash.use(), {
@@ -35,4 +35,22 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare updatedAt: DateTime | null
 
   static accessTokens = DbAccessTokensProvider.forModel(User)
+
+  /** Nombre de comptes par rôle (tous les rôles présents, 0 par défaut). */
+  static async countByRole(): Promise<Record<Role, number>> {
+    const rows = await User.query().select('role').count('* as total').groupBy('role')
+    const counts = Object.fromEntries(ROLE_VALUES.map((role) => [role, 0])) as Record<Role, number>
+    for (const row of rows) {
+      if (row.role in counts) counts[row.role] = Number(row.$extras.total)
+    }
+    return counts
+  }
+
+  /** Change le rôle d'un compte et révoque ses jetons pour appliquer les nouveaux droits. */
+  async changeRole(role: Role) {
+    this.role = role
+    await this.save()
+    const tokens = await User.accessTokens.all(this)
+    await Promise.all(tokens.map((token) => User.accessTokens.delete(this, token.identifier)))
+  }
 }
