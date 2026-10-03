@@ -3,6 +3,7 @@ import { api } from '../api/client.js';
 import AgentMessages from '../components/AgentMessages.jsx';
 import { APP_NAME } from '../lib/constants.js';
 import ListState from '../components/ListState.jsx';
+import { pollFactor } from '../lib/lightMode.js';
 
 const FALLBACK_POLL_SECONDS = 20;
 
@@ -114,14 +115,15 @@ export default function AgentPage({ onExpired }) {
     let cancelled = false;
     let timer;
     async function load() {
-      let delay = FALLBACK_POLL_SECONDS;
+      // Version légère : rafraîchissement 4 fois moins fréquent (moins de données échangées).
+      let delay = FALLBACK_POLL_SECONDS * pollFactor();
       try {
         const next = await api('/agent/webcup/requests');
         if (cancelled) return;
         setData(next);
         setError(null);
         setNow(Date.now());
-        delay = next.pollIntervalSeconds || FALLBACK_POLL_SECONDS;
+        delay = (next.pollIntervalSeconds || FALLBACK_POLL_SECONDS) * pollFactor();
       } catch (e) {
         if (cancelled) return;
         if (e.status === 401) return expired.current();

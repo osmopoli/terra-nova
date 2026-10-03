@@ -22,6 +22,15 @@ const SECTIONS = [
     ],
   },
   {
+    id: 'leger',
+    title: 'Version légère',
+    items: [
+      'Le bouton « Version légère » en haut de chaque page affiche moins d’images et d’animations : les pages s’ouvrent plus vite sur une connexion lente ou un téléphone ancien.',
+      'Toutes les informations et actions restent disponibles. L’annuaire des services, les fiches de service et l’accueil passent en listes simples : horaires, contact et démarches d’abord.',
+      'Elle s’active seule si votre appareil signale une connexion très lente ou le mode économie de données, avec un message pour revenir à la version complète. Votre choix est mémorisé.',
+    ],
+  },
+  {
     id: 'clavier',
     title: 'Navigation au clavier',
     items: [

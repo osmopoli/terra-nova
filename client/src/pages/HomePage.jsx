@@ -2,6 +2,7 @@ import { api } from '../api/client.js';
 import { APP_NAME } from '../lib/constants.js';
 import { Link } from '../lib/router.jsx';
 import { useAsync } from '../lib/useAsync.js';
+import { useLightMode } from '../lib/lightMode.js';
 
 const formatDate = (iso) => new Date(iso).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
 
@@ -23,6 +24,8 @@ export default function HomePage({ user }) {
   const news = useAsync(() => api('/news?perPage=3'), []);
   const firstName = user?.fullName?.split(' ')[0];
   const posts = news.data?.data ?? [];
+  // Version légère (F62) : mêmes accès et informations, en listes de liens sur une colonne.
+  const light = useLightMode();
 
   return (
     <div className="space-y-10">
@@ -33,26 +36,34 @@ export default function HomePage({ user }) {
         </h1>
         <p className="mt-2 max-w-2xl text-lg text-ink-muted">Que souhaitez-vous faire aujourd’hui ?</p>
 
-        <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <ul
+          className={
+            light ? 'mt-4 divide-y divide-line border-y border-line' : 'mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4'
+          }
+        >
           {actionsFor(user).map((action, i) => (
             <li key={action.to}>
               <Link
                 to={action.to}
-                className={`flex h-full flex-col rounded-card p-5 shadow-card ${
-                  i === 0
-                    ? 'bg-primary text-on-primary hover:bg-primary-strong'
-                    : 'bg-surface text-ink hover:ring-2 hover:ring-primary/40'
+                className={`flex h-full flex-col ${
+                  light
+                    ? 'py-3 text-ink'
+                    : i === 0
+                      ? 'rounded-card bg-primary p-5 text-on-primary shadow-card hover:bg-primary-strong'
+                      : 'rounded-card bg-surface p-5 text-ink shadow-card hover:ring-2 hover:ring-primary/40'
                 }`}
               >
-                <span className="font-display text-lg font-bold">{action.title}</span>
-                <span className={`mt-1 text-sm ${i === 0 ? '' : 'text-ink-muted'}`}>{action.text}</span>
+                <span className={`font-display text-lg font-bold ${light ? 'text-primary underline' : ''}`}>
+                  {action.title}
+                </span>
+                <span className={`mt-1 text-sm ${i === 0 && !light ? '' : 'text-ink-muted'}`}>{action.text}</span>
               </Link>
             </li>
           ))}
         </ul>
       </section>
 
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+      <div className={light ? 'space-y-8' : 'grid gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]'}>
         {highlights.data?.length > 0 && (
           <section aria-labelledby="accueil-demarches">
             <h2 id="accueil-demarches" className="font-display text-xl font-bold">

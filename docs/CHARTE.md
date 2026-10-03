@@ -115,6 +115,20 @@ La couleur renforce, elle ne porte jamais seule une information :
   statuts en pastilles `rounded-full px-2 text-xs font-semibold` avec `bg-success/10 text-success`, `bg-warning/10 text-warning`, `bg-danger/10 text-danger`.
 - Fond de page : `.ciel` (citoyen) ou `bg-canvas` (agent).
 
+## Version légère (connexion lente, appareil modeste)
+
+Bouton « Version légère » à côté des préférences d’affichage (`lib/lightMode.js`, attribut `data-light="on"` sur `<html>`).
+Mêmes couleurs, mêmes informations et actions ; on retire seulement ce qui coûte :
+
+- polices de l’appareil (`system-ui`) : Inter n’est pas téléchargée (`index.html`) ;
+- ni ombre, ni flou (`backdrop-filter`), ni animation, ni transition, ni ciel étoilé `.ciel` (`index.css`, bloc hors `@layer`) ;
+- galaxie (`GalaxyImage`) non affichée et non téléchargée ; le voyage animé est sauté (l’emblème reste) ;
+- accueil, annuaire et fiche service en listes texte sur une colonne (horaires, contact, démarches d’abord) ;
+- rafraîchissement automatique 4 fois moins fréquent.
+
+Activation automatique (message unique) si l’appareil signale l’économie de données ou une connexion 2g.
+Un nouveau composant décoratif doit se masquer avec `useLightMode()`.
+
 ## Logo, images, icône et PWA
 
 - **Emblème** (`client/src/assets/logo-embleme-96.webp` et `-192.webp`) : silhouette utilisée comme masque CSS (`.logo-embleme`),

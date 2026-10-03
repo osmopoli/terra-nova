@@ -270,3 +270,30 @@
     border-width: 2px;
   }
 }
+
+/*
+ * Version légère (F59/F62) : posée sur <html> par LightModeControl (data-light="on").
+ * Hors @layer pour primer sur les utilitaires Tailwind. Aucune couleur modifiée :
+ * polices de l'appareil (Inter n'est pas téléchargée, voir index.html), ni ombre, ni flou,
+ * ni animation, ni transition, ni ciel étoilé. La galaxie est retirée côté React (GalaxyImage :
+ * fichier non téléchargé).
+ */
+:root[data-light="on"] {
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: var(--font-sans);
+  scroll-behavior: auto;
+}
+:root[data-light="on"] .ciel {
+  background-image: none;
+}
+:root[data-light="on"] [class*="shadow-"] {
+  --tw-shadow: 0 0 #0000;
+}
+:root[data-light="on"] *,
+:root[data-light="on"] ::before,
+:root[data-light="on"] ::after {
+  animation: none !important;
+  transition: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}

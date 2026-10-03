@@ -8,20 +8,46 @@
     <meta name="description" content="Terra Nova, la plateforme des services municipaux" />
     <link rel="icon" href="/icon.svg" type="image/svg+xml" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Inter chargée sans bloquer le rendu (repli system-ui le temps du chargement). -->
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    <meta
+      name="webfonts"
+      content="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
     />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      media="print"
-      onload="this.media='all'"
-    />
+    <script>
+      // Inter chargée sans bloquer le rendu (repli system-ui le temps du chargement).
+      // Version légère (F59) décidée avant tout téléchargement : en version légère, les polices
+      // de l'appareil suffisent et Inter n'est pas chargée. Même règle que src/lib/lightMode.js.
+      (function () {
+        var light = false;
+        try {
+          var saved = localStorage.getItem('light_mode');
+          var c = navigator.connection || {};
+          light =
+            saved === 'on' ||
+            (saved === null &&
+              (c.saveData || /(^|-)2g$/.test(c.effectiveType || '') || matchMedia('(prefers-reduced-data: reduce)').matches));
+        } catch (e) {}
+        if (light) {
+          document.documentElement.dataset.light = 'on';
+          return;
+        }
+        ['https://fonts.googleapis.com', 'https://fonts.gstatic.com'].forEach(function (href) {
+          var pre = document.createElement('link');
+          pre.rel = 'preconnect';
+          pre.href = href;
+          pre.crossOrigin = '';
+          document.head.appendChild(pre);
+        });
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.id = 'webfonts';
+        link.href = document.querySelector('meta[name="webfonts"]').content;
+        link.media = 'print';
+        link.onload = function () {
+          link.media = 'all';
+        };
+        document.head.appendChild(link);
+      })();
+    </script>
     <noscript>
       <link
         rel="stylesheet"
