@@ -1,9 +1,15 @@
 import { DateTime } from 'luxon'
 import type { HttpContext } from '@adonisjs/core/http'
 import hash from '@adonisjs/core/services/hash'
-import { DEFAULT_ROLE } from '#constants/domain'
+import User from '#models/user'
+import LoginDevice from '#models/login_device'
+import { DEFAULT_ROLE, RECENT_DEVICES_LIMIT } from '#constants/domain'
 import { checkLock, lockMessage, recordAttempt } from '#services/login_guard'
-import { deleteAccountValidator, updateProfileValidator } from '#validators/auth'
+import {
+  changePasswordValidator,
+  deleteAccountValidator,
+  updateProfileValidator,
+} from '#validators/auth'
 
 export default class ProfileController {
   async show({ auth }: HttpContext) {
@@ -27,6 +33,47 @@ export default class ProfileController {
       await user.save()
     }
     return user
+  }
+
+  /** Appareils récents du compte (WEBC-80), le plus récent d'abord. */
+  async devices({ auth }: HttpContext) {
+    const user = auth.getUserOrFail()
+    const devices = await LoginDevice.query()
+      .where('user_id', user.id)
+      .orderBy('last_seen_at', 'desc')
+      .limit(RECENT_DEVICES_LIMIT)
+    return { devices }
+  }
+
+  /** Changement de mot de passe : exige l'ancien (même verrou que la connexion), révoque les autres sessions. */
+  async changePassword({ auth, request, response }: HttpContext) {
+    const user = auth.getUserOrFail()
+    const { currentPassword, password } = await request.validateUsing(changePasswordValidator)
+
+    const key = `mdp:${user.email}`
+    const ip = request.ip()
+    const lock = await checkLock(key, ip)
+    if (lock) {
+      response.header('Retry-After', String(Math.ceil((lock.until - Date.now()) / 1000)))
+      return response.tooManyRequests({ error: lockMessage(lock.until) })
+    }
+    if (!(await hash.verify(user.password, currentPassword))) {
+      await recordAttempt(key, ip, 'echec')
+      return response.unprocessableEntity({
+        errors: [{ field: 'currentPassword', message: 'Mot de passe actuel incorrect.' }],
+      })
+    }
+
+    await recordAttempt(key, ip, 'succes')
+    user.password = password
+    await user.save()
+    const tokens = await User.accessTokens.all(user)
+    await Promise.all(
+      tokens
+        .filter((token) => token.identifier !== user.currentAccessToken.identifier)
+        .map((token) => User.accessTokens.delete(user, token.identifier))
+    )
+    return response.noContent()
   }
 
   /**

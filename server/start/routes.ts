@@ -87,6 +87,9 @@ router
         router.get('/me', [ProfileController, 'show'])
         router.patch('/me', [ProfileController, 'update'])
         router.post('/me/onboarding', [ProfileController, 'completeOnboarding'])
+        /** Sécurité du compte (WEBC-80) : appareils récents et changement de mot de passe. */
+        router.get('/me/devices', [ProfileController, 'devices'])
+        router.put('/me/password', [ProfileController, 'changePassword'])
         router.delete('/me', [ProfileController, 'destroy'])
 
         /** Vérification en deux étapes (F53) : état, activation guidée, désactivation. */

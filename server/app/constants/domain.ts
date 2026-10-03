@@ -227,6 +227,15 @@ export const ISSUE_SERVICE: Record<IssueCategory, Service> = {
   autre: 'autre',
 }
 
+/** Page du front pour changer son mot de passe (lien des alertes de nouvelle connexion, WEBC-80). */
+export const PASSWORD_CHANGE_PATH = '/profil#mot-de-passe'
+
+/** Plafonds anti-abus des appareils et alertes de connexion (WEBC-80). */
+export const DEVICE_LIMITS = { maxPerAccount: 20, maxAlertsPerHour: 5 } as const
+
+/** Nombre d'appareils récents listés dans le profil. */
+export const RECENT_DEVICES_LIMIT = 10
+
 /** Listes fermées exposées au front par GET /api/meta (clé -> libellé). */
 export const META: Record<string, Record<string, string>> = {
   roles: ROLES,

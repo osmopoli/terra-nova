@@ -6,6 +6,7 @@ import { confirmPassword } from '#services/password_confirmation'
 import { recordAttempt } from '#services/login_guard'
 import { issueChallenge, takeChallenge } from '#services/auth_challenges'
 import { issueAccessToken } from '#services/session'
+import { noteDevice } from '#services/device_guard'
 import {
   ALGORITHMS,
   CHALLENGE_CREATE,
@@ -183,6 +184,7 @@ export default class PasskeysController {
       passkey.lastUsedAt = DateTime.now()
       await passkey.save()
       await recordAttempt(user.email, request.ip(), 'succes')
+      await noteDevice(user.id, request)
       return { user, token: await issueAccessToken(user), method: 'cle' }
     } catch (error) {
       if (error instanceof WebAuthnError) return response.badRequest({ error: error.message })

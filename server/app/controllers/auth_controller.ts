@@ -6,6 +6,7 @@ import { DEFAULT_ROLE } from '#constants/domain'
 import { checkLock, lockMessage, recordAttempt } from '#services/login_guard'
 import { activeSetting, startLoginChallenge } from '#services/two_factor'
 import { TOKEN_TTL } from '#services/session'
+import { noteDevice } from '#services/device_guard'
 
 export default class AuthController {
   async register({ request, response }: HttpContext) {
@@ -13,6 +14,8 @@ export default class AuthController {
     // Inscription publique : toujours citoyen, le rôle n'est jamais lu depuis le corps.
     const user = await User.create({ ...payload, role: DEFAULT_ROLE })
     const token = await User.accessTokens.create(user, ['*'], { expiresIn: TOKEN_TTL })
+    // L'appareil d'inscription est connu d'emblée : pas d'alerte à la première connexion.
+    await noteDevice(user.id, request, false)
 
     return response.created({ user, token: token.value!.release() })
   }
@@ -37,6 +40,7 @@ export default class AuthController {
       // F53 : mot de passe correct mais code demandé ; le jeton d'accès attend la 2e étape.
       if (await activeSetting(user.id)) return await startLoginChallenge(user.id)
       await recordAttempt(email, ip, 'succes')
+      await noteDevice(user.id, request)
       const token = await User.accessTokens.create(user, ['*'], { expiresIn: TOKEN_TTL })
       return { user, token: token.value!.release() }
     } catch (error) {

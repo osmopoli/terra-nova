@@ -10,14 +10,28 @@ export default class Notification extends BaseModel {
   @column({ serializeAs: null })
   declare userId: number
 
+  /** `statut` : changement d'état d'une demande ; `securite` : alerte de compte (WEBC-80). */
   @column()
-  declare trackingCode: string
+  declare kind: 'statut' | 'securite'
 
   @column()
-  declare subject: string
+  declare trackingCode: string | null
 
   @column()
-  declare status: ContactStatus
+  declare subject: string | null
+
+  @column()
+  declare status: ContactStatus | null
+
+  @column()
+  declare title: string | null
+
+  @column()
+  declare message: string | null
+
+  /** Chemin du front vers l'action à mener (ex. changer son mot de passe). */
+  @column()
+  declare actionPath: string | null
 
   @column.dateTime()
   declare readAt: DateTime | null
@@ -26,10 +40,10 @@ export default class Notification extends BaseModel {
   declare createdAt: DateTime
 
   get statusLabel() {
-    return CONTACT_STATUSES[this.status] ?? this.status
+    return this.status ? (CONTACT_STATUSES[this.status] ?? this.status) : ''
   }
 
   get action() {
-    return CONTACT_STATUS_ACTIONS[this.status] ?? ''
+    return this.status ? (CONTACT_STATUS_ACTIONS[this.status] ?? '') : ''
   }
 }
