@@ -107,6 +107,12 @@ const SCHEMA = [
   'INSERT IGNORE INTO api_state (id) VALUES (1)',
 ];
 
+// Colonnes ajoutées après la création des tables : [table, colonne, définition]. Ajout idempotent au démarrage.
+const COLUMNS = [
+  // WEBC-2 : NULL tant qu'aucun agent n'a vu la demande (indicateur « nouvelle demande »)
+  ['api_requests', 'seen_at', 'DATETIME NULL'],
+];
+
 // Crée la base si besoin (ignoré si l'utilisateur MySQL n'en a pas le droit) puis les tables manquantes.
 async function init() {
   if (!process.env.DATABASE_URL && config.database) {
@@ -120,6 +126,10 @@ async function init() {
     }
   }
   for (const sql of SCHEMA) await pool.query(`${sql}${sql.startsWith('CREATE') ? ' ENGINE=InnoDB DEFAULT CHARSET=utf8mb4' : ''}`);
+  for (const [table, column, definition] of COLUMNS) {
+    const exists = await get('SELECT 1 AS ok FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name = ? AND column_name = ?', [table, column]);
+    if (!exists) await pool.query(`ALTER TABLE \`${table}\` ADD COLUMN \`${column}\` ${definition}`);
+  }
 }
 
 const ping = async () => (await get('SELECT 1 AS ok')).ok === 1;

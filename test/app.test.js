@@ -127,3 +127,33 @@ test('D19 : état et journal de l’API Nova Terra, sans fuite de clé', async (
   assert.ok(events.events.some((e) => e.kind === 'nouvelle'));
   assert.equal(events.request_count, state.requests.length);
 });
+
+test('WEBC-2 : demandes synchronisées, session et indicateur « nouvelle »', async () => {
+  assert.equal((await req('/api/webcup/requests')).status, 401);
+  const signup = await req('/inscription', { body: { name: 'Tom Citoyen', email: 'tom@test.local', password: 'motdepasse', password2: 'motdepasse' } });
+  const citoyen = signup.headers.get('set-cookie').split(';')[0];
+  assert.equal((await req('/api/webcup/requests', { cookie: citoyen })).status, 403);
+  assert.equal((await req('/api/webcup/requests/seen', { cookie: citoyen, json: {} })).status, 403);
+
+  const agent = await login('agent@test.local', 'agent-test-1234');
+  assert.equal((await req('/api/webcup/requests?only_new=peut-etre', { cookie: agent })).status, 422);
+  const data = await (await req('/api/webcup/requests', { cookie: agent })).json();
+  assert.ok(data.requests.length > 0);
+  assert.equal(new Set(data.requests.map((r) => r.request_code)).size, data.requests.length);
+  assert.ok(data.poll_interval_seconds >= 15 && data.poll_interval_seconds <= 30);
+  assert.ok('current_wave' in data.session && 'minutes_until_next_wave' in data.session);
+  assert.ok(!JSON.stringify(data).includes('X-Webcup-Api-Key'));
+
+  // Ré-ingérer les mêmes données ne crée aucun doublon ; une demande inconnue arrive marquée « nouvelle ».
+  const fixture = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'initial-requests.json'), 'utf8'));
+  const [code] = data.requests.map((r) => r.request_code);
+  assert.equal((await req('/api/webcup/requests/seen', { cookie: agent, json: { codes: 'D01' } })).status, 422);
+  assert.ok((await (await req('/api/webcup/requests/seen', { cookie: agent, json: {} })).json()).marked > 0);
+  await webcup.ingest({ ...fixture, requests: [...fixture.requests, { ...fixture.requests[0], request_code: 'TEST99' }] });
+  const after = await (await req('/api/webcup/requests?only_new=true', { cookie: agent })).json();
+  assert.deepEqual(after.requests.map((r) => r.request_code), ['TEST99']);
+  assert.equal(after.new_count, 1);
+  assert.equal((await db.get('SELECT COUNT(*) n FROM api_requests')).n, data.requests.length + 1);
+  assert.deepEqual(await (await req('/api/webcup/requests/seen', { cookie: agent, json: { codes: ['TEST99', code] } })).json(), { marked: 1 });
+  assert.equal((await (await req('/api/webcup/requests', { cookie: agent })).json()).new_count, 0);
+});

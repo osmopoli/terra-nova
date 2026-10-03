@@ -5,7 +5,8 @@ const path = require('node:path');
 const db = require('./db');
 
 const API_URL = process.env.WEBCUP_API_URL || 'https://24h.webcup.fr/wp-json/webcup/v1/requests';
-const INTERVAL = Math.min(Math.max(Number(process.env.POLL_INTERVAL_SECONDS) || 30, 15), 120) * 1000;
+// Borné à 15-30 s : une nouvelle demande doit apparaître chez nous en moins de 30 s.
+const INTERVAL = Math.min(Math.max(Number(process.env.POLL_INTERVAL_SECONDS) || 20, 15), 30) * 1000;
 const FALLBACK = path.join(__dirname, '..', 'data', 'initial-requests.json');
 // Champs qui bougent tout seuls avec le temps (bonus XP) : ignorés pour détecter un vrai changement de contenu.
 const VOLATILE = new Set(['xp_available', 'xp_time_bonus', 'xp_total', 'sort_order']);
@@ -91,6 +92,51 @@ async function getState() {
   };
 }
 
+const utc = (s) => (s ? new Date(`${s.replace(' ', 'T')}Z`) : null);
+
+// Cache : si le timer a pris du retard (serveur endormi, redémarrage), on resynchronise avant de répondre.
+async function ensureFresh() {
+  const state = await db.get('SELECT last_poll_at FROM api_state WHERE id = 1');
+  const last = utc(state?.last_poll_at);
+  if (!last || Date.now() - last.getTime() > INTERVAL) await pollOnce();
+}
+
+// Session enrichie : minutes avant la prochaine vague recalculées à l'instant T depuis la dernière synchro.
+function liveSession(session, syncedAt) {
+  if (!session) return null;
+  const out = { ...session, next_wave_at: null };
+  if (syncedAt && session.minutes_until_next_wave != null) {
+    const next = new Date(syncedAt.getTime() + Number(session.minutes_until_next_wave) * 60000);
+    out.next_wave_at = next.toISOString();
+    out.minutes_until_next_wave = Math.max(0, Math.ceil((next.getTime() - Date.now()) / 60000));
+  }
+  return out;
+}
+
+// WEBC-2 : demandes dédoublonnées + infos de session. is_new = jamais marquée comme vue par un agent.
+async function getRequests({ onlyNew = false } = {}) {
+  await ensureFresh();
+  const state = await db.get('SELECT * FROM api_state WHERE id = 1');
+  const rows = await db.all(`SELECT * FROM api_requests ${onlyNew ? 'WHERE seen_at IS NULL' : ''}
+    ORDER BY seen_at IS NULL DESC, done ASC, difficulty_level DESC, xp_total DESC, request_code ASC`);
+  const syncedAt = utc(state.last_poll_at);
+  return {
+    session: liveSession(state.session_json ? JSON.parse(state.session_json) : null, syncedAt),
+    synced_at: syncedAt ? syncedAt.toISOString() : null,
+    last_error: state.last_error,
+    poll_interval_seconds: INTERVAL / 1000,
+    new_count: (await db.get('SELECT COUNT(*) n FROM api_requests WHERE seen_at IS NULL')).n,
+    requests: rows.map((r) => ({ ...JSON.parse(r.payload), first_seen_at: utc(r.first_seen_at).toISOString(), done: !!r.done, is_new: !r.seen_at })),
+  };
+}
+
+// Retire l'indicateur « nouvelle » : codes donnés, ou toutes les demandes si aucun code.
+async function markSeen(codes) {
+  const where = codes ? 'AND request_code IN (?)' : '';
+  if (codes && !codes.length) return 0;
+  return (await db.run(`UPDATE api_requests SET seen_at = CURRENT_TIMESTAMP WHERE seen_at IS NULL ${where}`, codes ? [codes] : [])).changes;
+}
+
 async function setDone(code, done) {
   return (await db.run('UPDATE api_requests SET done = ? WHERE request_code = ?', [done ? 1 : 0, code])).changes;
 }
@@ -110,4 +156,4 @@ async function getEvents(since = 0) {
   };
 }
 
-module.exports = { startPolling, stopPolling, pollOnce, getState, getEvents, setDone, ingest };
+module.exports = { startPolling, stopPolling, pollOnce, getState, getRequests, markSeen, getEvents, setDone, ingest };

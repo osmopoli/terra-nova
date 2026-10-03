@@ -70,6 +70,23 @@ router.post('/api/webcup/:code/done', staff, ah(async (req, res) => {
   const changed = await webcup.setDone(req.params.code, !!req.body.done);
   res.status(changed ? 200 : 404).json({ ok: !!changed });
 }));
+
+// WEBC-2 : demandes de l'API Webcup synchronisées (cache serveur, dédoublonnées sur request_code)
+const BOOL = { true: true, 1: true, false: false, 0: false };
+router.get('/api/webcup/requests', staff, ah(async (req, res) => {
+  const onlyNew = req.query.only_new ?? 'false';
+  if (typeof onlyNew !== 'string' || !Object.hasOwn(BOOL, onlyNew)) {
+    return res.status(422).json({ errors: [{ field: 'only_new', message: 'only_new doit valoir true ou false' }] });
+  }
+  res.json(await webcup.getRequests({ onlyNew: BOOL[onlyNew] }));
+}));
+router.post('/api/webcup/requests/seen', staff, ah(async (req, res) => {
+  const codes = req.body?.codes;
+  const valid = codes === undefined
+    || (Array.isArray(codes) && codes.length <= 500 && codes.every((c) => typeof c === 'string' && c.length >= 1 && c.length <= 64));
+  if (!valid) return res.status(422).json({ errors: [{ field: 'codes', message: 'codes doit être une liste de codes de demande (texte, 64 caractères max)' }] });
+  res.json({ marked: await webcup.markSeen(codes) });
+}));
 router.post('/api/webcup/refresh', requireRole('admin'), ah(async (req, res) => {
   await webcup.pollOnce();
   res.json(await webcup.getState());
