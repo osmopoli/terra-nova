@@ -59,6 +59,10 @@ export default class Service extends BaseModel {
   @column()
   declare availabilityMessage: string | null
 
+  /** Prochaine action proposée à l'habitant quand le service est désactivé. */
+  @column()
+  declare availabilityAction: string | null
+
   /** Date de retour prévue (AAAA-MM-JJ), sans heure. */
   @column({
     consume: (value: Date | string | null) =>

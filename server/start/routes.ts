@@ -113,6 +113,8 @@ router
         router.patch('/users/:id/role', [AdminUsersController, 'updateRole'])
         router.get('/login-attempts', [AdminUsersController, 'loginAttempts'])
         router.post('/webcup/refresh', [WebcupController, 'refresh'])
+        router.put('/services/:slug/disable', [ServicesController, 'disable'])
+        router.put('/services/:slug/enable', [ServicesController, 'enable'])
         // F27 : traduction des contenus d'un service (ex. version EN).
         router.get('/services/:slug/translations/:lang', [
           AdminServiceTranslationsController,

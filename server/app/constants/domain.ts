@@ -30,6 +30,7 @@ export const LIMITS = {
   demandeNote: 1000,
 
   availabilityMessage: 300,
+  availabilityAction: 300,
 } as const
 
 /** Catégories des actualités de la ville (colonne news_posts.category). */
@@ -201,6 +202,7 @@ export const SERVICE_AVAILABILITIES = {
   disponible: 'Disponible',
   maintenance: 'En maintenance',
   incident: 'Incident en cours',
+  desactive: 'Désactivé',
 } as const
 export type ServiceAvailability = keyof typeof SERVICE_AVAILABILITIES
 export const SERVICE_AVAILABILITY_VALUES = Object.keys(

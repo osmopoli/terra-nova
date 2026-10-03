@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Demande from '#models/demande'
+import Service from '#models/service'
 import { ISSUE_CATEGORIES, ISSUE_SERVICE } from '#constants/domain'
 import {
   createDemandeValidator,
@@ -26,7 +27,16 @@ export default class DemandesController {
   }
 
   async store({ auth, request, response }: HttpContext) {
-    const payload = await request.validateUsing(createDemandeValidator)
+    const { serviceSlug, ...payload } = await request.validateUsing(createDemandeValidator)
+    if (serviceSlug) {
+      const target = await Service.findBy('slug', serviceSlug)
+      if (target?.availability === 'desactive') {
+        const next = target.availabilityAction ? ` ${target.availabilityAction}` : ''
+        return response.conflict({
+          error: `Ce service est désactivé : ${target.availabilityMessage ?? 'indisponible'}.${next}`,
+        })
+      }
+    }
     const demande = await Demande.submit(auth.getUserOrFail().id, payload)
     await demande.load('steps')
     return response.created(demande)

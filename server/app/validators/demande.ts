@@ -12,6 +12,7 @@ const messages = new SimpleMessagesProvider(
     withoutDecimals: 'La valeur doit être un entier.',
     enum: 'Valeur non autorisée.',
     max: 'La valeur doit être au plus {{ max }}.',
+    regex: 'Format invalide.',
   },
   {
     'subject': 'objet',
@@ -28,6 +29,11 @@ export const createDemandeValidator = vine.compile(
     subject: vine.string().trim().minLength(3).maxLength(LIMITS.demandeSubject),
     service: vine.enum(SERVICE_VALUES),
     message: vine.string().trim().minLength(10).maxLength(LIMITS.demandeMessage),
+    serviceSlug: vine
+      .string()
+      .trim()
+      .regex(/^[a-z0-9-]{1,80}$/)
+      .optional(),
   })
 )
 createDemandeValidator.messagesProvider = messages

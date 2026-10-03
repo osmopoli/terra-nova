@@ -71,7 +71,7 @@ const availabilityMessages = new SimpleMessagesProvider(
 
 export const serviceAvailabilityValidator = vine.compile(
   vine.object({
-    status: vine.enum(SERVICE_AVAILABILITY_VALUES),
+    status: vine.enum(SERVICE_AVAILABILITY_VALUES.filter((value) => value !== 'desactive')),
     message: vine
       .string()
       .trim()
@@ -87,3 +87,26 @@ export const serviceAvailabilityValidator = vine.compile(
   })
 )
 serviceAvailabilityValidator.messagesProvider = availabilityMessages
+
+/** Désactivation d'un service par un administrateur (WEBC-91). */
+export const serviceDisableValidator = vine.compile(
+  vine.object({
+    reason: vine.string().trim().minLength(3).maxLength(LIMITS.availabilityMessage),
+    action: vine.string().trim().minLength(3).maxLength(LIMITS.availabilityAction),
+    returnDate: vine
+      .string()
+      .trim()
+      .regex(/^\d{4}-\d{2}-\d{2}$/)
+      .optional(),
+  })
+)
+serviceDisableValidator.messagesProvider = new SimpleMessagesProvider(
+  {
+    required: 'Ce champ est obligatoire.',
+    string: 'Ce champ doit être un texte.',
+    minLength: 'Au moins {{ min }} caractères.',
+    maxLength: 'Au plus {{ max }} caractères.',
+    regex: 'Date invalide (format AAAA-MM-JJ).',
+  },
+  { reason: 'motif', action: 'action alternative', returnDate: 'date de retour' }
+)
