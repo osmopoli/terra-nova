@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { api } from '../api/client.js';
+import AgentMessages from '../components/AgentMessages.jsx';
 import { APP_NAME } from '../lib/constants.js';
 
 const FALLBACK_POLL_SECONDS = 20;
@@ -170,6 +171,8 @@ export default function AgentPage({ onExpired }) {
           Les besoins transmis par l’API Nova Terra, mis à jour en continu.
         </p>
       </div>
+
+      <AgentMessages onExpired={onExpired} />
 
       {error && (
         <p role="alert" className="rounded-card bg-surface p-4 font-semibold text-danger shadow-card">
