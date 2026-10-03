@@ -145,7 +145,6 @@
   const auth = {
     utilisateur: () => (etat.moi ? copie(etat.moi) : null),
     aRole: (...roles) => !!etat.moi && roles.includes(etat.moi.role),
-    emailPris: email => !!(api('GET', '/api/auth/email-pris?email=' + encodeURIComponent(String(email).trim())).donnees || {}).pris,
     validerMotDePasse(mdp) {
       const manques = [];
       if (mdp.length < 8) manques.push('8 caractères minimum');

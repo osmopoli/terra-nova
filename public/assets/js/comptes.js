@@ -198,7 +198,6 @@
       if (!v('nom')) err.push({ id: 'nom', msg: L('c.e.nom', 'Indiquez votre nom.') });
       if (!v('email')) err.push({ id: 'email', msg: L('c.e.email', 'Indiquez votre adresse e-mail.') });
       else if (!EMAIL.test(v('email'))) err.push({ id: 'email', msg: L('c.e.emailFormat', 'L’adresse e-mail doit ressembler à prenom@exemple.fr.') });
-      else if (NT.auth.emailPris(v('email'))) err.push({ id: 'email', msg: L('c.e.emailPris', 'Un compte existe déjà avec cette adresse. Connectez-vous ou utilisez une autre adresse.') });
       const mdp = $('#motdepasse').value;
       const manques = NT.auth.validerMotDePasse(mdp);
       if (!mdp) err.push({ id: 'motdepasse', msg: L('c.e.mdp', 'Choisissez un mot de passe.') });
