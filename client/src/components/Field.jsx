@@ -59,7 +59,7 @@ export function OptionSelect({ options = [], placeholder = 'Choisissez', ...prop
 export function FormError({ error }) {
   if (!error || Object.keys(error.fields ?? {}).length > 0) return null;
   return (
-    <p role="alert" className="rounded-control bg-danger/10 p-3 text-sm text-danger">
+    <p role="alert" tabIndex={-1} className="rounded-control bg-danger/10 p-3 text-sm text-danger">
       {error.message}
     </p>
   );

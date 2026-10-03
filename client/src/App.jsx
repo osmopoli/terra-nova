@@ -5,6 +5,7 @@ import AuthScreen from './components/AuthScreen.jsx';
 import ProfileScreen from './components/ProfileScreen.jsx';
 import MyMessages from './components/MyMessages.jsx';
 import OnboardingGuide from './components/OnboardingGuide.jsx';
+import AccessibilityPage from './pages/AccessibilityPage.jsx';
 import AgentPage from './pages/AgentPage.jsx';
 import ArrivalPage from './pages/ArrivalPage.jsx';
 import ContactPage from './pages/ContactPage.jsx';
@@ -25,6 +26,7 @@ function Route({ session }) {
   // Ajouter les routes métier ici (ex. /items, /items/:id).
   if (pathname === '/contact') return <ContactPage user={user} meta={meta} onExpired={expire} />;
   if (pathname === '/services') return <ServicesPage meta={meta} />;
+  if (pathname === '/accessibilite') return <AccessibilityPage />;
   const serviceMatch = pathname.match(/^\/services\/([a-z0-9-]+)$/);
   if (serviceMatch) return <ServicePage slug={serviceMatch[1]} meta={meta} />;
   if (pathname === '/connexion' || pathname === '/profil') {

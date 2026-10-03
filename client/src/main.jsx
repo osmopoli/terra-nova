@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.jsx';
+import RouteAnnouncer from './components/RouteAnnouncer.jsx';
 import { TitleSync } from './lib/title.js';
 import { applyTextSize, getTextSize } from './lib/textSize.js';
 import { getHighContrast, setContrastAttribute } from './lib/contrast.js';
@@ -17,5 +18,6 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <TitleSync />
     <App />
+    <RouteAnnouncer />
   </StrictMode>,
 );

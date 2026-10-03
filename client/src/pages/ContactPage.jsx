@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { api } from '../api/client.js';
 import Field, { FormError, OptionSelect, inputClass } from '../components/Field.jsx';
 import { labelOf } from '../lib/constants.js';
+import { focusFirstError } from '../lib/focusError.js';
 import { loginPath } from '../lib/redirect.js';
 import { Link, navigate } from '../lib/router.jsx';
 
@@ -14,10 +15,15 @@ export default function ContactPage({ user, meta, onExpired }) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(null);
+  const confirmTitle = useRef(null);
 
   useEffect(() => {
     if (!user) navigate(loginPath('/contact'), { replace: true });
   }, [user]);
+  // Confirmation : le focus va sur son titre, lu aussitôt par le lecteur d'écran.
+  useEffect(() => {
+    if (sent) confirmTitle.current?.focus();
+  }, [sent]);
   if (!user) return null;
 
   const update = (key) => (e) => setForm({ ...form, [key]: e.target.value });
@@ -33,6 +39,7 @@ export default function ContactPage({ user, meta, onExpired }) {
     } catch (err) {
       if (err.status === 401) onExpired();
       setError(err);
+      focusFirstError(e.target);
     } finally {
       setLoading(false);
     }
@@ -42,10 +49,17 @@ export default function ContactPage({ user, meta, onExpired }) {
     return (
       <section
         className="mx-auto w-full max-w-lg rounded-card bg-surface p-5 shadow-card sm:p-8"
-        aria-live="polite"
+        aria-labelledby="confirmation-titre"
       >
         <p className="text-sm font-semibold text-primary">Message envoyé</p>
-        <h1 className="mt-1 font-display text-2xl font-bold text-ink">Votre demande est bien transmise</h1>
+        <h1
+          id="confirmation-titre"
+          ref={confirmTitle}
+          tabIndex={-1}
+          className="mt-1 font-display text-2xl font-bold text-ink"
+        >
+          Votre demande est bien transmise
+        </h1>
         <p className="mt-3 text-ink-muted">
           Le service <strong className="text-ink">{labelOf(meta.contactServices, sent.service)}</strong> a
           reçu votre message « {sent.subject} ». Conservez ce numéro pour suivre son traitement.
