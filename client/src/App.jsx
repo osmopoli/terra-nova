@@ -15,6 +15,7 @@ const AccessibilityPage = lazy(() => import('./pages/AccessibilityPage.jsx'));
 const AgentPage = lazy(() => import('./pages/AgentPage.jsx'));
 const ContactPage = lazy(() => import('./pages/ContactPage.jsx'));
 const AgentDemandesPage = lazy(() => import('./pages/AgentDemandesPage.jsx'));
+const AgentDashboardPage = lazy(() => import('./pages/AgentDashboardPage.jsx'));
 const LoginPage = lazy(() => import('./pages/LoginPage.jsx'));
 const ReportPage = lazy(() => import('./pages/ReportPage.jsx'));
 const ServicePage = lazy(() => import('./pages/ServicePage.jsx'));
@@ -56,6 +57,12 @@ function Route({ session }) {
       return <NotFoundPage message="Le signalement est réservé aux habitants." />;
     }
     return <ReportPage meta={meta} />;
+  }
+  if (pathname === '/agent/tableau-de-bord') {
+    if (!user || user.role === 'citoyen') {
+      return <NotFoundPage message="Page réservée aux agents municipaux." />;
+    }
+    return <AgentDashboardPage meta={meta} onExpired={expire} />;
   }
   if (pathname === '/agent/demandes') {
     if (!user || user.role === 'citoyen') {

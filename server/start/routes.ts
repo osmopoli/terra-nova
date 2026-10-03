@@ -33,6 +33,7 @@ const AgentDemandesController = () => import('#controllers/agent_demandes_contro
 const SobrietyController = () => import('#controllers/sobriety_controller')
 const TwoFactorController = () => import('#controllers/two_factor_controller')
 const PasskeysController = () => import('#controllers/passkeys_controller')
+const AgentDashboardController = () => import('#controllers/agent_dashboard_controller')
 
 router
   .group(() => {
@@ -118,6 +119,8 @@ router
     router
       .group(() => {
         router.get('/overview', [AgentController, 'overview'])
+        /** Tableau de bord (F50) : compteurs d'activité. */
+        router.get('/dashboard', [AgentDashboardController, 'show'])
         router.get('/webcup/requests', [WebcupController, 'index'])
         router.post('/webcup/requests/seen', [WebcupController, 'markSeen'])
         /** Messages des habitants (F22) : liste, filtre « à traiter », changement de statut. */
