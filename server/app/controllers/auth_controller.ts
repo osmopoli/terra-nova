@@ -34,6 +34,12 @@ export default class AuthController {
 
     try {
       const user = await User.verifyCredentials(email, password)
+      if (user.disabledAt) {
+        await recordAttempt(email, ip, 'echec')
+        return response.forbidden({
+          error: 'Ce compte est désactivé. Contactez la mairie pour le réactiver.',
+        })
+      }
       await recordAttempt(email, ip, 'succes')
       const token = await User.accessTokens.create(user, ['*'], { expiresIn: TOKEN_TTL })
       return { user, token: token.value!.release() }

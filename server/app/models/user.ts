@@ -32,6 +32,10 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column.dateTime()
   declare onboardedAt: DateTime | null
 
+  /** Compte désactivé par un agent (F34) : connexion refusée tant que non null. */
+  @column.dateTime()
+  declare disabledAt: DateTime | null
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
@@ -50,11 +54,27 @@ export default class User extends compose(BaseModel, AuthFinder) {
     return counts
   }
 
+  /** Désactive le compte et révoque ses jetons : les sessions ouvertes tombent immédiatement. */
+  async disable() {
+    this.disabledAt = this.disabledAt ?? DateTime.now()
+    await this.save()
+    await this.revokeTokens()
+  }
+
+  async enable() {
+    this.disabledAt = null
+    await this.save()
+  }
+
+  private async revokeTokens() {
+    const tokens = await User.accessTokens.all(this)
+    await Promise.all(tokens.map((token) => User.accessTokens.delete(this, token.identifier)))
+  }
+
   /** Change le rôle d'un compte et révoque ses jetons pour appliquer les nouveaux droits. */
   async changeRole(role: Role) {
     this.role = role
     await this.save()
-    const tokens = await User.accessTokens.all(this)
-    await Promise.all(tokens.map((token) => User.accessTokens.delete(this, token.identifier)))
+    await this.revokeTokens()
   }
 }

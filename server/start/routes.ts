@@ -19,6 +19,7 @@ const NewsController = () => import('#controllers/news_controller')
 const AuthController = () => import('#controllers/auth_controller')
 const ProfileController = () => import('#controllers/profile_controller')
 const AgentController = () => import('#controllers/agent_controller')
+const CitizensController = () => import('#controllers/citizens_controller')
 const AdminUsersController = () => import('#controllers/admin_users_controller')
 const WebcupController = () => import('#controllers/webcup_controller')
 const ContactMessagesController = () => import('#controllers/contact_messages_controller')
@@ -94,6 +95,10 @@ router
         router
           .patch('/contact-messages/:code', [AgentMessagesController, 'updateStatus'])
           .where('code', /^NT-[A-Za-z0-9]{6}$/)
+        /** Comptes citoyens (F34) : recherche, désactivation, réactivation. */
+        router.get('/citizens', [CitizensController, 'index'])
+        router.post('/citizens/:id/disable', [CitizensController, 'disable'])
+        router.post('/citizens/:id/enable', [CitizensController, 'enable'])
       })
       .prefix('/agent')
       .use([middleware.auth(), middleware.role({ roles: ACCESS.agent })])

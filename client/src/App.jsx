@@ -6,6 +6,7 @@ import ProfileScreen from './components/ProfileScreen.jsx';
 import MyMessages from './components/MyMessages.jsx';
 import OnboardingGuide from './components/OnboardingGuide.jsx';
 import AgentPage from './pages/AgentPage.jsx';
+import CitizensPage from './pages/CitizensPage.jsx';
 import ArrivalPage from './pages/ArrivalPage.jsx';
 import ContactPage from './pages/ContactPage.jsx';
 import HomePage from './pages/HomePage.jsx';
@@ -72,7 +73,7 @@ export default function App() {
 
   // /agent sans session : connexion, puis retour explicite vers l'espace agents.
   useEffect(() => {
-    if (pathname === '/agent' && !loading && !user) navigate(loginPath('/agent'), { replace: true });
+    if (pathname.startsWith('/agent') && !loading && !user) navigate(loginPath(pathname), { replace: true });
   }, [pathname, loading, user]);
 
   async function logout() {
@@ -108,13 +109,15 @@ export default function App() {
   }
 
   // Back-office agents : layout distinct. Le rôle est vérifié par l'API (403 pour un citoyen).
-  if (pathname === '/agent') {
+  if (pathname === '/agent' || pathname === '/agent/citoyens') {
     return (
       <AgentLayout user={user} onLogout={logout}>
         {loading || !user ? (
           <p className="text-ink-muted">Chargement...</p>
-        ) : (
+        ) : pathname === '/agent' ? (
           <AgentPage onExpired={expire} />
+        ) : (
+          <CitizensPage onExpired={expire} />
         )}
       </AgentLayout>
     );

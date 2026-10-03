@@ -8,6 +8,7 @@ export const SECTION_LABELS = {
   '/demandes': 'Mes demandes',
   '/admin/alertes': 'Alertes',
   '/agent': 'Espace agent',
+  '/agent/citoyens': 'Comptes citoyens',
   '/profil': 'Mon profil',
   '/connexion': 'Connexion',
 };

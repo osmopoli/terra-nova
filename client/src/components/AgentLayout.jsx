@@ -1,10 +1,11 @@
-import { Link } from '../lib/router.jsx';
+import { Link, useLocation } from '../lib/router.jsx';
 import { APP_NAME } from '../lib/constants.js';
 import ContrastControl from './ContrastControl.jsx';
 import SkipLink from './SkipLink.jsx';
 
 // Layout du back-office agents : bandeau sombre, distinct de l'espace citoyen.
 export default function AgentLayout({ user, onLogout, children }) {
+  const { pathname } = useLocation();
   return (
     <div className="min-h-screen bg-mist font-sans text-ink">
       <SkipLink />
@@ -17,6 +18,16 @@ export default function AgentLayout({ user, onLogout, children }) {
             </span>
           </Link>
           <nav aria-label="Navigation agents" className="ml-auto flex flex-wrap items-center gap-3 text-sm">
+            <Link to="/agent" aria-current={pathname === '/agent' ? 'page' : undefined} className="font-bold text-surface underline-offset-4 hover:underline aria-[current=page]:underline">
+              Demandes
+            </Link>
+            <Link
+              to="/agent/citoyens"
+              aria-current={pathname === '/agent/citoyens' ? 'page' : undefined}
+              className="font-bold text-surface underline-offset-4 hover:underline aria-[current=page]:underline"
+            >
+              Comptes citoyens
+            </Link>
             {user && <span className="hidden text-mist sm:inline">{user.fullName}</span>}
             <ContrastControl className="text-surface" />
             <Link to="/" className="font-bold text-surface underline-offset-4 hover:underline">
