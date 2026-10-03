@@ -96,12 +96,13 @@
       opacity: 0;
     }
   }
+  /* Transform seulement (pas de width) : animé par le GPU, sans recalcul de mise en page. */
   @keyframes load {
     from {
-      width: 0;
+      transform: scaleX(0);
     }
     to {
-      width: 100%;
+      transform: scaleX(1);
     }
   }
 }

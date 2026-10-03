@@ -1,22 +1,33 @@
-import { useEffect, useState } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import Layout from './components/Layout.jsx';
 import AgentLayout from './components/AgentLayout.jsx';
-import AuthScreen from './components/AuthScreen.jsx';
-import ProfileScreen from './components/ProfileScreen.jsx';
-import MyMessages from './components/MyMessages.jsx';
-import OnboardingGuide from './components/OnboardingGuide.jsx';
-import AccessibilityPage from './pages/AccessibilityPage.jsx';
-import AgentPage from './pages/AgentPage.jsx';
 import ArrivalPage from './pages/ArrivalPage.jsx';
-import ContactPage from './pages/ContactPage.jsx';
-import AgentDemandesPage from './pages/AgentDemandesPage.jsx';
 import HomePage from './pages/HomePage.jsx';
-import LoginPage from './pages/LoginPage.jsx';
-import ReportPage from './pages/ReportPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
-import ServicePage from './pages/ServicePage.jsx';
-import ServicesPage from './pages/ServicesPage.jsx';
-import SobrietyPage from './pages/SobrietyPage.jsx';
+
+// F61 (appareils modestes) : seules les pages d'entrée (arrivée, accueil) sont dans le bundle
+// initial ; les autres sont téléchargées à la première visite (un fichier JS par page).
+const AuthScreen = lazy(() => import('./components/AuthScreen.jsx'));
+const ProfileScreen = lazy(() => import('./components/ProfileScreen.jsx'));
+const MyMessages = lazy(() => import('./components/MyMessages.jsx'));
+const OnboardingGuide = lazy(() => import('./components/OnboardingGuide.jsx'));
+const AccessibilityPage = lazy(() => import('./pages/AccessibilityPage.jsx'));
+const AgentPage = lazy(() => import('./pages/AgentPage.jsx'));
+const ContactPage = lazy(() => import('./pages/ContactPage.jsx'));
+const AgentDemandesPage = lazy(() => import('./pages/AgentDemandesPage.jsx'));
+const LoginPage = lazy(() => import('./pages/LoginPage.jsx'));
+const ReportPage = lazy(() => import('./pages/ReportPage.jsx'));
+const ServicePage = lazy(() => import('./pages/ServicePage.jsx'));
+const ServicesPage = lazy(() => import('./pages/ServicesPage.jsx'));
+const SobrietyPage = lazy(() => import('./pages/SobrietyPage.jsx'));
+
+function Loading({ className = 'text-ink-muted' }) {
+  return (
+    <p role="status" className={className}>
+      Chargement...
+    </p>
+  );
+}
 import { api, getToken, setToken } from './api/client.js';
 import { loginPath, safeRedirect } from './lib/redirect.js';
 import { navigate, useLocation } from './lib/router.jsx';
@@ -132,12 +143,14 @@ export default function App() {
     return pathname === '/' ? (
       <ArrivalPage />
     ) : (
-      <LoginPage
-        onAuthenticated={(u) => {
-          setUser(u);
-          navigate(safeRedirect(searchParams.get('redirect')), { replace: true });
-        }}
-      />
+      <Suspense fallback={<Loading className="min-h-dvh bg-space p-6 text-star-muted" />}>
+        <LoginPage
+          onAuthenticated={(u) => {
+            setUser(u);
+            navigate(safeRedirect(searchParams.get('redirect')), { replace: true });
+          }}
+        />
+      </Suspense>
     );
   }
 
@@ -146,9 +159,11 @@ export default function App() {
     return (
       <AgentLayout user={user} onLogout={logout}>
         {loading || !user ? (
-          <p className="text-ink-muted">Chargement...</p>
+          <Loading />
         ) : (
-          <AgentPage onExpired={expire} />
+          <Suspense fallback={<Loading />}>
+            <AgentPage onExpired={expire} />
+          </Suspense>
         )}
       </AgentLayout>
     );
@@ -168,17 +183,15 @@ export default function App() {
         </p>
       )}
       {loading ? (
-        <p role="status" className="text-ink-muted">
-          Chargement...
-        </p>
+        <Loading />
       ) : (
-        <>
+        <Suspense fallback={<Loading />}>
           {/* D12 : guide de première connexion, pour les habitants uniquement. */}
           {user?.role === 'citoyen' && !user.onboardedAt && (
             <OnboardingGuide user={user} onDone={setUser} />
           )}
           <Route session={{ user, meta, setUser, logout, expire, accountDeleted }} />
-        </>
+        </Suspense>
       )}
     </Layout>
   );
