@@ -121,3 +121,36 @@ test.group('Demandes : citoyen', (group) => {
     assert.isString(response.body().error)
   })
 })
+
+test.group('Demandes : récapitulatif', (group) => {
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+
+  test('401 sans token, 403 pour un agent', async ({ client }) => {
+    const anonymous = await client.get('/api/demandes/recapitulatif')
+    anonymous.assertStatus(401)
+    const { token } = await login('agent')
+    const forbidden = await client.get('/api/demandes/recapitulatif').bearerToken(token)
+    forbidden.assertStatus(403)
+  })
+
+  test('synthèse chiffrée et lignes limitées au citoyen connecté', async ({ client, assert }) => {
+    const { user, token } = await login('citoyen')
+    const other = await login('citoyen', 'autre@test.local')
+    await Demande.submit(user.id, PAYLOAD)
+    const done = await Demande.submit(user.id, { ...PAYLOAD, subject: 'Acte de naissance' })
+    await done.related('steps').create({ status: 'traite' })
+    done.status = 'traite'
+    await done.save()
+    await Demande.submit(other.user.id, PAYLOAD)
+
+    const response = await client.get('/api/demandes/recapitulatif').bearerToken(token)
+    response.assertStatus(200)
+    const body = response.body()
+    assert.equal(body.summary.total, 2)
+    assert.equal(body.summary.nouveau, 1)
+    assert.equal(body.summary.traite, 1)
+    assert.isNumber(body.summary.averageDelayDays)
+    assert.lengthOf(body.data, 2)
+    assert.isString(body.data[0].statusLabel)
+  })
+})
