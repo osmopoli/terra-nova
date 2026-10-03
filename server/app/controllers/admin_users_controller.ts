@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
+import AuditService from '#services/audit_service'
 import { listUsersValidator, updateRoleValidator } from '#validators/admin'
 
 const PER_PAGE = 20
@@ -16,7 +17,8 @@ export default class AdminUsersController {
     return users.toJSON()
   }
 
-  async updateRole({ auth, request, response }: HttpContext) {
+  async updateRole(ctx: HttpContext) {
+    const { auth, request, response } = ctx
     const { role, params } = await request.validateUsing(updateRoleValidator)
     const target = await User.find(params.id)
     if (!target) {
@@ -26,7 +28,15 @@ export default class AdminUsersController {
       return response.conflict({ error: 'Vous ne pouvez pas modifier votre propre rôle.' })
     }
 
+    const previousRole = target.role
     await target.changeRole(role)
+    await AuditService.log(ctx, {
+      action: 'role_changed',
+      objectType: 'account',
+      objectId: target.id,
+      before: { role: previousRole, email: target.email },
+      after: { role },
+    })
     return target
   }
 }

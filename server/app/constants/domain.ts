@@ -77,10 +77,38 @@ export const SERVICE_CATEGORIES = {
 export type ServiceCategory = keyof typeof SERVICE_CATEGORIES
 export const SERVICE_CATEGORY_VALUES = Object.keys(SERVICE_CATEGORIES) as ServiceCategory[]
 
+/**
+ * Opérations sensibles tracées dans le journal d'audit (colonne audit_logs.action).
+ * Les actions des fonctionnalités à venir (alertes, actualités, suppression de compte,
+ * statut des demandes) sont déjà déclarées : il suffit d'appeler AuditService.log.
+ */
+export const AUDIT_ACTIONS = {
+  role_changed: 'Rôle d’un compte modifié',
+  account_created: 'Compte créé',
+  account_deleted: 'Compte supprimé',
+  request_status_changed: 'Statut d’une demande modifié',
+  alert_broadcast: 'Alerte ou message diffusé',
+  news_published: 'Actualité publiée',
+} as const
+export type AuditAction = keyof typeof AUDIT_ACTIONS
+export const AUDIT_ACTION_VALUES = Object.keys(AUDIT_ACTIONS) as AuditAction[]
+
+/** Type d'objet concerné par une entrée d'audit (colonne audit_logs.object_type). */
+export const AUDIT_OBJECT_TYPES = {
+  account: 'Compte',
+  contact_message: 'Demande d’habitant',
+  alert: 'Alerte',
+  news: 'Actualité',
+} as const
+export type AuditObjectType = keyof typeof AUDIT_OBJECT_TYPES
+export const AUDIT_OBJECT_TYPE_VALUES = Object.keys(AUDIT_OBJECT_TYPES) as AuditObjectType[]
+
 /** Listes fermées exposées au front par GET /api/meta (clé -> libellé). */
 export const META: Record<string, Record<string, string>> = {
   roles: ROLES,
   contactServices: CONTACT_SERVICES,
   contactStatuses: CONTACT_STATUSES,
   serviceCategories: SERVICE_CATEGORIES,
+  auditActions: AUDIT_ACTIONS,
+  auditObjectTypes: AUDIT_OBJECT_TYPES,
 }
