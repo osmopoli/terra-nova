@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { api } from '../api/client.js';
 import Field, { FormError, inputClass } from './Field.jsx';
+import TwoFactorSettings from './TwoFactorSettings.jsx';
 
 export default function ProfileScreen({ user, onUpdated, onLogout, onDeleted }) {
   const [form, setForm] = useState({ fullName: user.fullName ?? '' });
@@ -75,6 +76,13 @@ export default function ProfileScreen({ user, onUpdated, onLogout, onDeleted }) 
           Enregistrer
         </button>
       </form>
+
+      <section aria-labelledby="titre-securite" className="mt-6 space-y-6 border-t border-mist pt-6">
+        <h2 id="titre-securite" className="font-semibold text-ink">
+          Sécurité de connexion
+        </h2>
+        <TwoFactorSettings />
+      </section>
 
       {user.role === 'citoyen' && (
       <section aria-labelledby="titre-suppression" className="mt-6 border-t border-mist pt-6">

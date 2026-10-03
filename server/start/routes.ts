@@ -29,6 +29,7 @@ const AgentMessagesController = () => import('#controllers/agent_messages_contro
 const AlertsController = () => import('#controllers/alerts_controller')
 const DemandesController = () => import('#controllers/demandes_controller')
 const AgentDemandesController = () => import('#controllers/agent_demandes_controller')
+const TwoFactorController = () => import('#controllers/two_factor_controller')
 
 router
   .group(() => {
@@ -71,6 +72,8 @@ router
 
     router.post('/auth/register', [AuthController, 'register'])
     router.post('/auth/login', [AuthController, 'login'])
+    /** F53 : deuxième étape de connexion (jeton intermédiaire + code). */
+    router.post('/auth/two-factor', [TwoFactorController, 'login'])
 
     router
       .group(() => {
@@ -79,6 +82,12 @@ router
         router.patch('/me', [ProfileController, 'update'])
         router.post('/me/onboarding', [ProfileController, 'completeOnboarding'])
         router.delete('/me', [ProfileController, 'destroy'])
+
+        /** Vérification en deux étapes (F53) : état, activation guidée, désactivation. */
+        router.get('/me/two-factor', [TwoFactorController, 'show'])
+        router.post('/me/two-factor/setup', [TwoFactorController, 'setup'])
+        router.post('/me/two-factor/confirm', [TwoFactorController, 'confirm'])
+        router.delete('/me/two-factor', [TwoFactorController, 'destroy'])
 
         /** Messages aux services municipaux (WEBC-6) : chaque habitant ne voit que les siens. */
         router.get('/contact-messages', [ContactMessagesController, 'index'])
