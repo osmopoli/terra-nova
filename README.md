@@ -29,6 +29,7 @@ Synchro de l'API Webcup (WEBC-2) : `server/app/services/webcup_sync.ts`. Le serv
 (jamais exposée au navigateur), dédoublonne sur `request_code` et stocke les demandes en base (`webcup_requests`). Routes :
 `GET /api/agent/webcup/requests[?onlyNew=true]` (demandes, session, `newCount`, `isNew`), `POST /api/agent/webcup/requests/seen`
 (`{ codes?: string[] }`, sans `codes` tout est marqué vu) et `POST /api/admin/webcup/refresh` (polling immédiat, admin).
+Back-office agents (WEBC-12) : page `/agent` (layout distinct `AgentLayout`), rafraîchie automatiquement au rythme de la synchro.
 
 Contrôle d'accès par profil : middleware `role` (`server/app/middleware/role_middleware.ts`), profils autorisés dans `ACCESS`
 (`server/app/constants/domain.ts`). `/api/agent/*` : agent et admin ; `/api/admin/*` : admin seul. 401 sans token, 403 `{ error }` sinon.
