@@ -8,6 +8,8 @@ import ContactPage from './pages/ContactPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
+import ServicePage from './pages/ServicePage.jsx';
+import ServicesPage from './pages/ServicesPage.jsx';
 import { api, getToken, setToken } from './api/client.js';
 import { safeRedirect } from './lib/redirect.js';
 import { navigate, useLocation } from './lib/router.jsx';
@@ -19,6 +21,9 @@ function Route({ session }) {
   if (pathname === '/') return <HomePage user={user} />;
   // Ajouter les routes métier ici (ex. /items, /items/:id).
   if (pathname === '/contact') return <ContactPage user={user} meta={meta} onExpired={expire} />;
+  if (pathname === '/services') return <ServicesPage meta={meta} />;
+  const serviceMatch = pathname.match(/^\/services\/([a-z0-9-]+)$/);
+  if (serviceMatch) return <ServicePage slug={serviceMatch[1]} meta={meta} />;
   if (pathname === '/connexion' || pathname === '/profil') {
     return (
       <div className="flex flex-col items-center gap-6">

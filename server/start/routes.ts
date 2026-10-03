@@ -21,6 +21,7 @@ const AgentController = () => import('#controllers/agent_controller')
 const AdminUsersController = () => import('#controllers/admin_users_controller')
 const WebcupController = () => import('#controllers/webcup_controller')
 const ContactMessagesController = () => import('#controllers/contact_messages_controller')
+const ServicesController = () => import('#controllers/services_controller')
 
 router
   .group(() => {
@@ -87,6 +88,10 @@ router
       .use([middleware.auth(), middleware.role({ roles: ACCESS.admin })])
 
     // Routes métier : à ajouter ici (préfixe /api déjà appliqué, jamais de /spike).
+
+    // Annuaire des services municipaux : public, lecture seule.
+    router.get('/services', [ServicesController, 'index'])
+    router.get('/services/:slug', [ServicesController, 'show']).where('slug', /^[a-z0-9-]{1,80}$/)
 
     router.any('/*', async ({ response }) => {
       return response.notFound({ error: 'Route introuvable' })

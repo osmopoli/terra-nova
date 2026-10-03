@@ -65,9 +65,22 @@ export type ContactStatus = keyof typeof CONTACT_STATUSES
 export const CONTACT_STATUS_VALUES = Object.keys(CONTACT_STATUSES) as ContactStatus[]
 export const DEFAULT_CONTACT_STATUS: ContactStatus = 'nouveau'
 
+/** Thématiques de l'annuaire des services municipaux (colonne services.category). */
+export const SERVICE_CATEGORIES = {
+  demarches: 'Démarches administratives',
+  famille: 'Famille et éducation',
+  solidarite: 'Solidarité et santé',
+  cadre_de_vie: 'Cadre de vie',
+  urbanisme: 'Urbanisme et logement',
+  culture_sport: 'Culture et sport',
+} as const
+export type ServiceCategory = keyof typeof SERVICE_CATEGORIES
+export const SERVICE_CATEGORY_VALUES = Object.keys(SERVICE_CATEGORIES) as ServiceCategory[]
+
 /** Listes fermées exposées au front par GET /api/meta (clé -> libellé). */
 export const META: Record<string, Record<string, string>> = {
   roles: ROLES,
   contactServices: CONTACT_SERVICES,
   contactStatuses: CONTACT_STATUSES,
+  serviceCategories: SERVICE_CATEGORIES,
 }
