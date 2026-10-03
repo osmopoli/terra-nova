@@ -6,6 +6,8 @@ import ListState from '../components/ListState.jsx';
 
 const FALLBACK_POLL_SECONDS = 20;
 
+const isHidden = () => document.visibilityState === 'hidden';
+
 const timeFormat = new Intl.DateTimeFormat('fr-FR', { timeStyle: 'medium' });
 
 // Minutes avant la prochaine vague, recalculées localement entre deux synchros.
@@ -110,9 +112,22 @@ export default function AgentPage({ onExpired }) {
   expired.current = onExpired;
 
   // Rafraîchissement automatique au rythme de la synchro serveur, sans recharger la page.
+  // Onglet caché : la synchro suivante attend le retour de l'agent (rien n'est chargé pour rien,
+  // la batterie et le forfait des appareils modestes sont épargnés), puis reprend aussitôt.
   useEffect(() => {
     let cancelled = false;
     let timer;
+    let paused = false;
+    function next() {
+      if (isHidden()) paused = true;
+      else load();
+    }
+    function onVisibility() {
+      if (!isHidden() && paused) {
+        paused = false;
+        load();
+      }
+    }
     async function load() {
       let delay = FALLBACK_POLL_SECONDS;
       try {
@@ -129,18 +144,20 @@ export default function AgentPage({ onExpired }) {
         if (e.status === 403) return setError('Cet espace est réservé aux agents municipaux.');
         setError(e.message);
       }
-      timer = setTimeout(load, delay * 1000);
+      timer = setTimeout(next, delay * 1000);
     }
     load();
+    document.addEventListener('visibilitychange', onVisibility);
     return () => {
       cancelled = true;
       clearTimeout(timer);
+      document.removeEventListener('visibilitychange', onVisibility);
     };
   }, [reload]);
 
   // Le compte à rebours de la prochaine vague avance entre deux synchros.
   useEffect(() => {
-    const tick = setInterval(() => setNow(Date.now()), 30_000);
+    const tick = setInterval(() => !isHidden() && setNow(Date.now()), 30_000);
     return () => clearInterval(tick);
   }, []);
 

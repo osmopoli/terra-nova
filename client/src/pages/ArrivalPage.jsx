@@ -183,7 +183,7 @@ export default function ArrivalPage() {
               Traversée du corridor orbital
             </p>
             <div aria-hidden="true" className="mx-auto mt-4 h-0.5 overflow-hidden bg-star/10">
-              <div className="h-full w-0 animate-load bg-linear-to-r from-glow via-star to-flare motion-reduce:w-full motion-reduce:animate-none" />
+              <div className="h-full origin-left animate-load bg-linear-to-r from-glow via-star to-flare motion-reduce:animate-none" />
             </div>
             <button
               ref={cancelRef}
