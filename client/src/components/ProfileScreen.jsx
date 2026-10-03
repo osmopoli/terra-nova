@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { api } from '../api/client.js';
+import { useI18n } from '../lib/i18n.js';
 import Field, { FormError, inputClass } from './Field.jsx';
 
 export default function ProfileScreen({ user, onUpdated, onLogout }) {
+  const { t } = useI18n();
   const [form, setForm] = useState({ fullName: user.fullName ?? '' });
   const [error, setError] = useState(null);
   const [saved, setSaved] = useState(false);
@@ -23,7 +25,7 @@ export default function ProfileScreen({ user, onUpdated, onLogout }) {
     <div className="w-full max-w-md rounded-card bg-surface p-5 shadow-card sm:p-8">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-sm text-ink-muted">Bonjour</p>
+          <p className="text-sm text-ink-muted">{t('profile.hello')}</p>
           <h1 className="truncate text-xl font-bold text-ink">{user.fullName}</h1>
           <p className="truncate text-sm text-ink-muted">{user.email}</p>
         </div>
@@ -32,13 +34,13 @@ export default function ProfileScreen({ user, onUpdated, onLogout }) {
           onClick={onLogout}
           className="shrink-0 rounded-control border border-ink-muted/40 px-3 py-2 text-sm font-medium text-ink hover:bg-mist"
         >
-          Se déconnecter
+          {t('profile.logout')}
         </button>
       </div>
 
       <form onSubmit={save} className="mt-6 space-y-4 border-t border-mist pt-6" noValidate>
-        <h2 className="font-semibold text-ink">Mon profil</h2>
-        <Field label="Nom" error={error?.fields?.fullName}>
+        <h2 className="font-semibold text-ink">{t('profile.title')}</h2>
+        <Field label={t('auth.name')} error={error?.fields?.fullName}>
           <input
             className={inputClass}
             value={form.fullName}
@@ -46,12 +48,12 @@ export default function ProfileScreen({ user, onUpdated, onLogout }) {
           />
         </Field>
         <FormError error={error} />
-        {saved && <p className="text-sm text-primary">Profil enregistré.</p>}
+        {saved && <p className="text-sm text-primary">{t('profile.saved')}</p>}
         <button
           type="submit"
           className="w-full rounded-control bg-primary py-3 font-semibold text-white hover:bg-primary-strong"
         >
-          Enregistrer
+          {t('profile.save')}
         </button>
       </form>
     </div>

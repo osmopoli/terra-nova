@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import { api, getToken, setToken } from './api/client.js';
+import { useI18n } from './lib/i18n.js';
 import { safeRedirect } from './lib/redirect.js';
 import { navigate, useLocation } from './lib/router.jsx';
 
@@ -41,6 +42,7 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(Boolean(getToken()));
   const { pathname, searchParams } = useLocation();
+  const { t } = useI18n();
 
   useEffect(() => {
     // Listes fermées (constantes métier) servies par l'API.
@@ -91,7 +93,7 @@ export default function App() {
   return (
     <Layout user={user}>
       {loading ? (
-        <p className="text-ink-muted">Chargement...</p>
+        <p className="text-ink-muted">{t('common.loading')}</p>
       ) : (
         <Route session={{ user, meta, setUser, logout, expire }} />
       )}

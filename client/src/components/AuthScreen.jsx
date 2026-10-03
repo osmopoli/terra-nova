@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { api, setToken } from '../api/client.js';
 import { APP_NAME } from '../lib/constants.js';
+import { useI18n } from '../lib/i18n.js';
 import Field, { FormError, inputClass } from './Field.jsx';
 
 const EMPTY = { fullName: '', email: '', password: '' };
 
 export default function AuthScreen({ onAuthenticated }) {
+  const { t } = useI18n();
   const [mode, setMode] = useState('login');
   const [form, setForm] = useState(EMPTY);
   const [error, setError] = useState(null);
@@ -52,13 +54,13 @@ export default function AuthScreen({ onAuthenticated }) {
       </h1>
 
       <div className="mt-6 flex gap-1 rounded-control bg-mist p-1">
-        {tab('login', 'Connexion')}
-        {tab('register', 'Inscription')}
+        {tab('login', t('auth.tab.login'))}
+        {tab('register', t('auth.tab.register'))}
       </div>
 
       <form onSubmit={submit} className="mt-6 space-y-4" noValidate>
         {isRegister && (
-          <Field label="Nom" error={error?.fields?.fullName}>
+          <Field label={t('auth.name')} error={error?.fields?.fullName}>
             <input
               className={inputClass}
               value={form.fullName}
@@ -67,7 +69,7 @@ export default function AuthScreen({ onAuthenticated }) {
             />
           </Field>
         )}
-        <Field label="E-mail" error={error?.fields?.email}>
+        <Field label={t('auth.email')} error={error?.fields?.email}>
           <input
             className={inputClass}
             type="email"
@@ -77,9 +79,9 @@ export default function AuthScreen({ onAuthenticated }) {
           />
         </Field>
         <Field
-          label="Mot de passe"
+          label={t('auth.password')}
           error={error?.fields?.password}
-          hint={isRegister ? '8 caractères minimum.' : null}
+          hint={isRegister ? t('auth.passwordHint') : null}
         >
           <input
             className={inputClass}
@@ -97,7 +99,11 @@ export default function AuthScreen({ onAuthenticated }) {
           disabled={loading}
           className="w-full rounded-control bg-primary py-3 font-semibold text-white hover:bg-primary-strong disabled:opacity-60"
         >
-          {loading ? 'Patientez...' : isRegister ? 'Créer mon compte' : 'Se connecter'}
+          {loading
+            ? t('common.wait')
+            : isRegister
+              ? t('auth.submit.register')
+              : t('auth.submit.login')}
         </button>
       </form>
     </div>
