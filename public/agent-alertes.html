@@ -18,6 +18,7 @@
   <script src="assets/js/store.js"></script>
   <script src="assets/js/agent.js"></script>
   <script src="assets/js/ui.js" defer></script>
+  <script src="assets/js/agent-officiel.js" defer></script>
 </head>
 <body data-page="alertes" data-ariane="nav.agent|agent.html;nav.alertes" data-roles="agent,admin">
   <main id="contenu" class="conteneur ag">
@@ -101,6 +102,9 @@
         <div id="apercu"></div>
       </aside>
     </div>
+
+    <!-- F73 : message officiel du Haut Conseil (formulaire et liste dessinés par assets/js/agent-officiel.js) -->
+    <section class="section" id="officiel-agent" aria-labelledby="t-officiel" style="margin-top:3rem"></section>
 
     <!-- Alertes actives -->
     <section class="section" aria-labelledby="t-actives" style="margin-top:3rem">

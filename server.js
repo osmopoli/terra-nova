@@ -28,6 +28,10 @@ app.use(require('./src/modules/simple'));   // vague 11 : version simple et rapi
 app.use(require('./src/modules/participation'));   // vague 12 : consultations, avis, projets, idées (F65-F68)
 app.use(require('./src/modules/securite'));   // vague 13 : centre de sécurité, habilitations (F69, F70)
 app.use(require('./src/modules/accueil'));   // vague 13 : comptes sans e-mail, guide d'arrivée (F71, F72)
+app.use(require('./src/modules/officiel'));   // vague 14 : message officiel du Haut Conseil (F73)
+app.use(require('./src/modules/associations'));   // vague 14 : associations partenaires (F74)
+app.use(require('./src/modules/doublons'));   // vague 14 : demandes semblables, rattachement, attention (F75)
+app.use(require('./src/modules/avis-services'));   // vague 14 : avis après un service, reçu COM-xxxx (F76)
 app.use(require('./src/statique').statique(path.join(__dirname, 'public')));   // F58 : fichiers compressés + cache navigateur
 app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
 

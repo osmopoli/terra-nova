@@ -182,3 +182,10 @@
   .cm-fiche{ position:fixed; left:0; right:0; bottom:0; z-index:70; max-height:62vh; overflow-y:auto; border-radius:var(--r-l) var(--r-l) 0 0; border-bottom:0;
     box-shadow:0 -14px 40px -10px rgba(0,0,0,.75); background:var(--verre); }
 }
+
+/* Vague 14 (F74) : associations partenaires sur le plan */
+.cm-t-association{ --mc:var(--givre); }
+.cm-asso{ margin-top:1rem; padding:.8rem 1rem; border:1px solid var(--trait-2); border-radius:var(--r); }
+.cm-asso h3{ font-size:.95rem; margin:0 0 .3rem; }
+.cm-asso ul{ margin:0 0 .6rem; padding-inline-start:1.2rem; }
+.cm-asso li{ margin:.2rem 0; }
