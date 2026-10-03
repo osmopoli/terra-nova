@@ -23,6 +23,11 @@ export default function Layout({ user, children }) {
             <Link to="/contact" className={linkClass}>
               Contact
             </Link>
+            {user?.role === 'admin' && (
+              <Link to="/admin/comptes" className={linkClass}>
+                Comptes
+              </Link>
+            )}
             <Link
               to={user ? '/profil' : '/connexion'}
               className="rounded-control bg-primary px-3 py-1.5 font-bold text-white hover:bg-primary-strong"

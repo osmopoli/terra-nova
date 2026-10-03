@@ -3,14 +3,20 @@ import Layout from './components/Layout.jsx';
 import AuthScreen from './components/AuthScreen.jsx';
 import ProfileScreen from './components/ProfileScreen.jsx';
 import MyMessages from './components/MyMessages.jsx';
+import AdminUsersPage from './pages/AdminUsersPage.jsx';
 import ArrivalPage from './pages/ArrivalPage.jsx';
 import ContactPage from './pages/ContactPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import { api, getToken, setToken } from './api/client.js';
-import { safeRedirect } from './lib/redirect.js';
+import { loginPath, safeRedirect } from './lib/redirect.js';
 import { navigate, useLocation } from './lib/router.jsx';
+
+function RedirectToLogin({ to }) {
+  useEffect(() => navigate(loginPath(to), { replace: true }), [to]);
+  return null;
+}
 
 function Route({ session }) {
   const { pathname, searchParams } = useLocation();
@@ -18,6 +24,12 @@ function Route({ session }) {
 
   if (pathname === '/') return <HomePage user={user} />;
   // Ajouter les routes métier ici (ex. /items, /items/:id).
+  if (pathname === '/admin/comptes') {
+    // Réservé aux administrateurs (l'API renvoie 403 sinon) : page introuvable pour les autres.
+    if (!user) return <RedirectToLogin to={pathname} />;
+    if (user.role !== 'admin') return <NotFoundPage />;
+    return <AdminUsersPage user={user} meta={meta} onExpired={expire} />;
+  }
   if (pathname === '/contact') return <ContactPage user={user} meta={meta} onExpired={expire} />;
   if (pathname === '/connexion' || pathname === '/profil') {
     return (
