@@ -1,5 +1,6 @@
 import horizon from '../assets/planete-horizon.svg';
 import AuthScreen from '../components/AuthScreen.jsx';
+import TextSizeControl from '../components/TextSizeControl.jsx';
 import { APP_NAME } from '../lib/constants.js';
 import { Link } from '../lib/router.jsx';
 import { Brand } from './ArrivalPage.jsx';
@@ -17,9 +18,12 @@ export default function LoginPage({ onAuthenticated }) {
           aria-hidden="true"
           className="absolute inset-0 -z-10 bg-linear-to-t from-space/95 via-space/50 to-space/20"
         />
-        <Link to="/" aria-label={`${APP_NAME}, retour à l’arrivée`}>
-          <Brand />
-        </Link>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <Link to="/" aria-label={`${APP_NAME}, retour à l’arrivée`}>
+            <Brand />
+          </Link>
+          <TextSizeControl className="text-star" />
+        </div>
         <div className="max-w-2xl">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-glow">
             Portail citoyen sécurisé
