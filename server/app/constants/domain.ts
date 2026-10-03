@@ -121,6 +121,18 @@ export const SERVICE_CATEGORIES = {
 export type ServiceCategory = keyof typeof SERVICE_CATEGORIES
 export const SERVICE_CATEGORY_VALUES = Object.keys(SERVICE_CATEGORIES) as ServiceCategory[]
 
+/** Quartiers de Nova Terra (colonne services.quartier), pour localiser les services physiques. */
+export const QUARTIERS = {
+  centre_ville: 'Centre-ville',
+  horizon: 'Horizon',
+  port: 'Le Port',
+  littoral: 'Littoral',
+  brisants: 'Les Brisants',
+  fougeres: 'Les Fougères',
+} as const
+export type Quartier = keyof typeof QUARTIERS
+export const QUARTIER_VALUES = Object.keys(QUARTIERS) as Quartier[]
+
 /** Protection contre les connexions abusives (WEBC-60) : seuils et durée de verrouillage. */
 export const LOGIN_LIMITS = {
   maxFailuresPerAccount: 5,
@@ -202,6 +214,7 @@ export const META: Record<string, Record<string, string>> = {
   contactServices: CONTACT_SERVICES,
   contactStatuses: CONTACT_STATUSES,
   serviceCategories: SERVICE_CATEGORIES,
+  quartiers: QUARTIERS,
   newsCategories: NEWS_CATEGORIES,
   loginOutcomes: LOGIN_OUTCOMES,
   loginBlockScopes: LOGIN_BLOCK_SCOPES,
