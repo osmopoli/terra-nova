@@ -5,7 +5,7 @@ import Field, { FormError, inputClass } from './Field.jsx';
 import QrCode from './QrCode.jsx';
 
 const primaryButton =
-  'rounded-control bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-strong disabled:opacity-60';
+  'rounded-control bg-primary px-4 py-2.5 text-sm font-semibold text-on-primary hover:bg-primary-strong disabled:opacity-60';
 const secondaryButton =
   'rounded-control border border-line-strong px-4 py-2.5 text-sm font-medium text-ink hover:bg-mist';
 
@@ -230,7 +230,7 @@ export default function TwoFactorSettings() {
             <button
               type="submit"
               disabled={busy || !password}
-              className="rounded-control bg-danger px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-60"
+              className="rounded-control bg-danger px-4 py-2.5 text-sm font-semibold text-on-primary disabled:opacity-60"
             >
               Désactiver
             </button>

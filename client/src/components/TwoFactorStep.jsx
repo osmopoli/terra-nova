@@ -61,7 +61,7 @@ export default function TwoFactorStep({ challengeToken, onAuthenticated, onResta
         <button
           type="button"
           onClick={onRestart}
-          className="w-full rounded-control bg-primary py-3 font-semibold text-white hover:bg-primary-strong"
+          className="w-full rounded-control bg-primary py-3 font-semibold text-on-primary hover:bg-primary-strong"
         >
           Reprendre la connexion
         </button>
@@ -71,7 +71,7 @@ export default function TwoFactorStep({ challengeToken, onAuthenticated, onResta
             type="submit"
             disabled={loading || !code.trim()}
             aria-busy={loading}
-            className="w-full rounded-control bg-primary py-3 font-semibold text-white hover:bg-primary-strong disabled:opacity-60"
+            className="w-full rounded-control bg-primary py-3 font-semibold text-on-primary hover:bg-primary-strong disabled:opacity-60"
           >
             {loading ? 'Vérification…' : 'Valider et me connecter'}
           </button>
