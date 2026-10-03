@@ -12,9 +12,14 @@ import app from '@adonisjs/core/services/app'
 import router from '@adonisjs/core/services/router'
 import db from '@adonisjs/lucid/services/db'
 import { middleware } from '#start/kernel'
+<<<<<<< HEAD
 import { ACCESS, META } from '#constants/domain'
+=======
+import { META, NEWS_PUBLISHER_ROLES } from '#constants/domain'
+>>>>>>> 7e8acfd (WEBC-8: ajoute l'API des actualités de la ville)
 import env from '#start/env'
 
+const NewsController = () => import('#controllers/news_controller')
 const AuthController = () => import('#controllers/auth_controller')
 const ProfileController = () => import('#controllers/profile_controller')
 const AgentController = () => import('#controllers/agent_controller')
@@ -50,6 +55,17 @@ router
         ])
       )
     )
+
+    /** Actualités de la ville : lecture publique, publication agent / admin. */
+    router.get('/news', [NewsController, 'index'])
+    router.get('/news/:id', [NewsController, 'show'])
+    router
+      .group(() => {
+        router.post('/news', [NewsController, 'store'])
+        router.patch('/news/:id', [NewsController, 'update'])
+        router.delete('/news/:id', [NewsController, 'destroy'])
+      })
+      .use([middleware.auth(), middleware.role({ roles: ACCESS.agent })])
 
     router.post('/auth/register', [AuthController, 'register'])
     router.post('/auth/login', [AuthController, 'login'])
