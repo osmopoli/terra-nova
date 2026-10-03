@@ -1,6 +1,5 @@
 /* Terra Nova — accueil (index.html), vague 13
-   F71 : au tout premier passage (aucune langue choisie sur cet appareil), un encart discret propose les 4 langues,
-         chacune écrite dans sa propre langue. Une seule fois : le choix (ou la fermeture) est mémorisé.
+   F71 : la langue se choisit dans l'en-tête et, en grand, sur bienvenue.html (l'encart du premier passage est retiré : il repoussait l'accueil).
    F72 : « Je viens d'arriver » accessible depuis l'accueil (raccourci sous la recherche + bloc « Vous venez d'arriver ? »). */
 (function () {
   'use strict';
@@ -13,32 +12,11 @@
   });
   const L = (cle, fr) => NT.t(cle, null, fr);
   const E = s => NT.ui.echap(s);
-  const LANGUES = [['fr', 'Français', 'Bonjour'], ['en', 'English', 'Hello'], ['es', 'Español', 'Hola'], ['ar', 'العربية', 'مرحباً']];
-  let langueChoisie = true;
-  try { langueChoisie = localStorage.getItem('nt:langue') !== null; } catch (e) { /* stockage bloqué */ }
 
   NT.pret(() => {
     const u = NT.auth.utilisateur();
-    const main = document.getElementById('contenu');
 
-    // Premier passage : choix de la langue (multilingue, puisqu'on ne sait pas encore laquelle la personne lit)
-    if (!langueChoisie && main) {
-      const encart = document.createElement('section');
-      encart.className = 'panneau premiere-langue';
-      encart.setAttribute('aria-labelledby', 'nv-langue-titre');
-      encart.innerHTML = `<div class="tete"><h2 id="nv-langue-titre"><i class="ph-duotone ph-translate" aria-hidden="true"></i>
-          <span lang="fr">Choisissez votre langue</span> · <span lang="en">Choose your language</span> · <span lang="es">Elija su idioma</span> · <span lang="ar" dir="rtl">اختر لغتك</span></h2>
-          <button type="button" class="bouton-rond" id="nv-fermer" title="${E(L('nv.fermer', 'Rester en français'))}"><i class="ph ph-x" aria-hidden="true"></i><span class="sr-only">${E(L('nv.fermer', 'Rester en français'))}</span></button></div>
-        <div class="langues">${LANGUES.map(([c, nom, salut]) => `<button type="button" class="langue-choix" lang="${c}" dir="${c === 'ar' ? 'rtl' : 'ltr'}" data-langue="${c}">
-          <span class="nom"><i class="ph ph-chat-circle-text" aria-hidden="true"></i>${E(nom)}</span><span class="salut">${E(salut)}</span></button>`).join('')}</div>`;
-      main.prepend(encart);
-      encart.addEventListener('click', e => {
-        const b = e.target.closest('[data-langue]');
-        if (b) { if (b.dataset.langue === NT.i18n.langue) { NT.store.ecrire('langue', b.dataset.langue); encart.remove(); } else NT.i18n.changer(b.dataset.langue); }
-        if (e.target.closest('#nv-fermer')) { NT.store.ecrire('langue', NT.i18n.langue); encart.remove(); document.getElementById('recherche').focus(); }
-      });
-    }
-
+    // Le choix de la langue reste dans l'en-tête (et en grand sur bienvenue.html) : plus d'encart au premier passage
     // Raccourci visible sans défiler, sous la recherche
     const raccourcis = document.querySelector('.raccourcis');
     if (raccourcis) raccourcis.insertAdjacentHTML('beforeend', `<a class="raccourci-arrivee" href="bienvenue.html"><i class="ph-duotone ph-suitcase-rolling" aria-hidden="true"></i> ${E(L('nv.raccourci', 'Je viens d’arriver'))}</a>`);
