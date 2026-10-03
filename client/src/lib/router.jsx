@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from 'react';
+import { isActivePath } from './breadcrumbs.js';
 
 // Mini-routeur basé sur l'History API : AdonisJS renvoie déjà index.html pour
 // toute route hors /api, ce qui évite d'ajouter une dépendance.
@@ -59,4 +60,11 @@ export function Link({ to, onClick, ...props }) {
   }
 
   return <a href={withBase(to)} onClick={handleClick} {...props} />;
+}
+
+// Lien de menu : signale l'entrée active (aria-current) sur sa page et ses sous-pages.
+export function NavLink({ to, ...props }) {
+  const { pathname } = useLocation();
+  const active = isActivePath(pathname, to);
+  return <Link to={to} aria-current={active ? 'page' : undefined} {...props} />;
 }
