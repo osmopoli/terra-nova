@@ -154,6 +154,50 @@ export const SERVICE_TRANSLATIONS: Record<
       ],
     },
   },
+  'sante': {
+    en: {
+      name: 'Municipal health centre',
+      summary: 'General practitioners, vaccinations, mother and child health (PMI).',
+      description:
+        'The municipal health centre welcomes all residents for general medical consultations, with no extra fees. It provides vaccinations, care for pregnant women and young children (PMI) and prevention programmes. In a life-threatening emergency, call 15.',
+      hours: 'Monday to Friday: 7:30 am – 6 pm\nSaturday: 8 am – 12 pm (walk-in consultations)',
+      procedures: [
+        {
+          title: 'Book an appointment with a doctor',
+          detail: 'By phone or at the front desk; bring your health insurance card.',
+        },
+        {
+          title: 'Have your child vaccinated',
+          detail: 'Free vaccinations at the PMI, with the child’s health record.',
+        },
+        {
+          title: 'Pregnancy follow-up',
+          detail: 'Consultations and birth preparation classes with a midwife.',
+        },
+      ],
+    },
+    es: {
+      name: 'Centro municipal de salud',
+      summary: 'Médicos generales, vacunación y protección maternoinfantil (PMI).',
+      description:
+        'El centro municipal de salud atiende a todos los vecinos en consultas de medicina general, sin recargos. Se encarga de la vacunación, el seguimiento de embarazadas y niños pequeños (PMI) y de acciones de prevención. En caso de urgencia vital, llame al 15.',
+      hours: 'Lunes a viernes: 7 h 30 – 18 h\nSábado: 8 h – 12 h (consultas sin cita)',
+      procedures: [
+        {
+          title: 'Pedir cita con un médico',
+          detail: 'Por teléfono o en la recepción; traiga su tarjeta sanitaria.',
+        },
+        {
+          title: 'Vacunar a su hijo',
+          detail: 'Vacunación gratuita en la PMI, con la cartilla de salud.',
+        },
+        {
+          title: 'Seguimiento del embarazo',
+          detail: 'Consultas y talleres de preparación al parto con una matrona.',
+        },
+      ],
+    },
+  },
   'proprete-dechets': {
     en: {
       name: 'Street cleaning and waste',

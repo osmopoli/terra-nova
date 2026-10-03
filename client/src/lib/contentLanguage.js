@@ -38,6 +38,11 @@ export const SERVICE_UI = {
     contact: 'Contact',
     language: 'Langue du contenu',
     notTranslated: 'Ce service n’est pas encore traduit : le contenu est affiché en français.',
+    search: 'Rechercher un service',
+    searchHint: 'Ex. santé, école, déchets, passeport',
+    category: 'Catégorie',
+    allCategories: 'Toutes les catégories',
+    results: (n) => (n > 1 ? `${n} services trouvés` : n === 1 ? '1 service trouvé' : 'Aucun service ne correspond à votre recherche.'),
   },
   en: {
     title: 'City services',
@@ -50,6 +55,11 @@ export const SERVICE_UI = {
     contact: 'Contact',
     language: 'Content language',
     notTranslated: 'This service is not translated yet: the content is shown in French.',
+    search: 'Search for a service',
+    searchHint: 'E.g. health, school, waste, passport',
+    category: 'Category',
+    allCategories: 'All categories',
+    results: (n) => (n > 1 ? `${n} services found` : n === 1 ? '1 service found' : 'No service matches your search.'),
   },
   es: {
     title: 'Servicios municipales',
@@ -62,6 +72,11 @@ export const SERVICE_UI = {
     contact: 'Contacto',
     language: 'Idioma del contenido',
     notTranslated: 'Este servicio aún no está traducido: el contenido se muestra en francés.',
+    search: 'Buscar un servicio',
+    searchHint: 'Ej. salud, escuela, residuos, pasaporte',
+    category: 'Categoría',
+    allCategories: 'Todas las categorías',
+    results: (n) => (n > 1 ? `${n} servicios encontrados` : n === 1 ? '1 servicio encontrado' : 'Ningún servicio corresponde a su búsqueda.'),
   },
 };
 export const serviceUi = (lang) => SERVICE_UI[lang] ?? SERVICE_UI.fr;

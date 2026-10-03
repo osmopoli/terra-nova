@@ -107,6 +107,34 @@ export const DEMO_SERVICES: ServiceSeed[] = [
     ],
   },
   {
+    slug: 'sante',
+    name: 'Centre municipal de santé',
+    category: 'solidarite',
+    summary: 'Médecins généralistes, vaccinations, protection maternelle et infantile (PMI).',
+    description:
+      'Le centre municipal de santé accueille tous les habitants pour des consultations de médecine générale, sans dépassement d’honoraires. Il assure les vaccinations, le suivi des femmes enceintes et des jeunes enfants (PMI) et des actions de prévention. En cas d’urgence vitale, appelez le 15.',
+    hours:
+      'Lundi au vendredi : 7 h 30 – 18 h\nSamedi : 8 h – 12 h (consultations sans rendez-vous)',
+    phone: '02 69 61 10 90',
+    email: 'sante@novaterra.test',
+    address: '6 rue des Badamiers, Nova Terra',
+    procedures: [
+      {
+        title: 'Prendre rendez-vous avec un médecin',
+        detail:
+          'Par téléphone ou à l’accueil ; apportez votre carte Vitale et votre attestation de droits.',
+      },
+      {
+        title: 'Faire vacciner son enfant',
+        detail: 'Vaccinations gratuites à la PMI, sur présentation du carnet de santé.',
+      },
+      {
+        title: 'Suivi de grossesse',
+        detail: 'Consultations et ateliers de préparation à la naissance avec une sage-femme.',
+      },
+    ],
+  },
+  {
     slug: 'proprete-dechets',
     name: 'Propreté et déchets',
     category: 'cadre_de_vie',
