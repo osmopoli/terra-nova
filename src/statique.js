@@ -15,7 +15,8 @@ function statique(racine) {
   const memoire = new Map();   // chemin → { mtime, etag, brut, br, gz }
   return (req, res, next) => {
     if (req.method !== 'GET' && req.method !== 'HEAD') return next();
-    let rel = decodeURIComponent(req.path);
+    let rel;
+    try { rel = decodeURIComponent(req.path); } catch { return next(); }   // %E0%A4%A… : chemin indécodable, pas un fichier
     if (rel.endsWith('/')) rel += 'index.html';
     let fichier = path.join(racine, path.normalize(rel));
     if (!fichier.startsWith(racine)) return next();

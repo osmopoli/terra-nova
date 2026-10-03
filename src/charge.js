@@ -198,7 +198,7 @@ function memo(req, res, next) {
   if (!regle) return next();
   const gz = /\bgzip\b/.test(String(req.headers['accept-encoding'] || '')) ? 1 : 0;
   const qui = regle.public ? '*' : req.user ? `${req.user.id}:${req.user.role}` : 'visiteur';
-  const cle = `${req.originalUrl}|${qui}|${gz}`;
+  const cle = `${req.path}|${qui}|${gz}`;   // les règles testent req.path : la query ne doit pas multiplier les entrées
   const v = version();
   const e = memoire.get(cle);
   if (e && e.v === v && Date.now() - e.t < regle.ttl) {
