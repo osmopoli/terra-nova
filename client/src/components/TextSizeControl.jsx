@@ -21,7 +21,7 @@ export default function TextSizeControl({ className = '' }) {
           aria-label={size.name}
           aria-pressed={current === size.value}
           onClick={() => setCurrent(applyTextSize(size.value))}
-          className={`min-h-9 min-w-9 px-2 font-bold leading-none aria-pressed:bg-current/15 aria-pressed:underline aria-pressed:underline-offset-4 ${LABEL_CLASS[i]} ${i > 0 ? 'border-l border-current' : ''}`}
+          className={`min-h-10 min-w-10 px-2 font-bold leading-none focus-visible:outline-current focus-visible:-outline-offset-4 aria-pressed:bg-current/15 aria-pressed:underline aria-pressed:underline-offset-4 ${LABEL_CLASS[i]} ${i > 0 ? 'border-l border-current' : ''}`}
         >
           {size.label}
         </button>

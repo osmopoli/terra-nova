@@ -21,11 +21,11 @@ export default function ProfileScreen({ user, onUpdated, onLogout }) {
 
   return (
     <div className="w-full max-w-md rounded-card bg-surface p-5 shadow-card sm:p-8">
-      <div className="flex items-start justify-between gap-3">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-sm text-ink-muted">Bonjour</p>
-          <h1 className="truncate text-xl font-bold text-ink">{user.fullName}</h1>
-          <p className="truncate text-sm text-ink-muted">{user.email}</p>
+          <h1 className="text-xl font-bold break-words text-ink">{user.fullName}</h1>
+          <p className="text-sm break-all text-ink-muted">{user.email}</p>
         </div>
         <button
           type="button"
