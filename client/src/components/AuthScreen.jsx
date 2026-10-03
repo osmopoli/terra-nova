@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { api, setToken } from '../api/client.js';
 import { APP_NAME } from '../lib/constants.js';
+import { focusFirstError } from '../lib/focusError.js';
 import Field, { FormError, inputClass } from './Field.jsx';
 
 const EMPTY = { fullName: '', email: '', password: '' };
@@ -25,6 +26,7 @@ export default function AuthScreen({ onAuthenticated }) {
       onAuthenticated(data.user);
     } catch (err) {
       setError(err);
+      focusFirstError(e.target);
     } finally {
       setLoading(false);
     }

@@ -12,6 +12,10 @@ export default class DemandeStep extends BaseModel {
   @column()
   declare status: DemandeStatus
 
+  /** Réponse de l'agent jointe au changement d'état (F22), visible par l'habitant. */
+  @column()
+  declare note: string | null
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 }
