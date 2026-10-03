@@ -1,4 +1,5 @@
-import { Link } from '../lib/router.jsx';
+import { Link, NavLink } from '../lib/router.jsx';
+import { AGENT_NAV, navFor } from '../lib/navigation.js';
 import { APP_NAME } from '../lib/constants.js';
 import ContrastControl from './ContrastControl.jsx';
 import SkipLink from './SkipLink.jsx';
@@ -19,6 +20,15 @@ export default function AgentLayout({ user, onLogout, children }) {
           <nav aria-label="Navigation agents" className="ml-auto flex flex-wrap items-center gap-3 text-sm">
             {user && <span className="hidden text-mist sm:inline">{user.fullName}</span>}
             <ContrastControl className="text-surface" />
+            {navFor(AGENT_NAV, user).map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                className="font-bold text-surface underline-offset-4 hover:underline aria-[current=page]:text-accent aria-[current=page]:underline aria-[current=page]:decoration-2"
+              >
+                {item.label}
+              </NavLink>
+            ))}
             <Link to="/" className="font-bold text-surface underline-offset-4 hover:underline">
               Espace citoyen
             </Link>

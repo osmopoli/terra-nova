@@ -15,6 +15,7 @@ import ServicePage from './pages/ServicePage.jsx';
 import ServicesPage from './pages/ServicesPage.jsx';
 import { api, getToken, setToken } from './api/client.js';
 import { loginPath, safeRedirect } from './lib/redirect.js';
+import { canUseAgentSpace } from './lib/navigation.js';
 import { navigate, useLocation } from './lib/router.jsx';
 
 function Route({ session }) {
@@ -72,8 +73,11 @@ export default function App() {
   }, []);
 
   // /agent sans session : connexion, puis retour explicite vers l'espace agents.
+  // Citoyen : retour à l'accueil (garde d'UX, l'API renvoie de toute façon 403).
   useEffect(() => {
-    if (pathname === '/agent' && !loading && !user) navigate(loginPath('/agent'), { replace: true });
+    if (pathname !== '/agent' || loading) return;
+    if (!user) navigate(loginPath('/agent'), { replace: true });
+    else if (!canUseAgentSpace(user)) navigate('/', { replace: true });
   }, [pathname, loading, user]);
 
   async function logout() {
@@ -120,7 +124,7 @@ export default function App() {
   if (pathname === '/agent') {
     return (
       <AgentLayout user={user} onLogout={logout}>
-        {loading || !user ? (
+        {loading || !canUseAgentSpace(user) ? (
           <p className="text-ink-muted">Chargement...</p>
         ) : (
           <AgentPage onExpired={expire} />

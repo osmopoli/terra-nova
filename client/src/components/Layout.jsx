@@ -4,6 +4,7 @@ import { APP_NAME } from '../lib/constants.js';
 import TextSizeControl from './TextSizeControl.jsx';
 import ContrastControl from './ContrastControl.jsx';
 import SkipLink from './SkipLink.jsx';
+import { CITIZEN_NAV, navFor } from '../lib/navigation.js';
 
 export default function Layout({ user, children }) {
   // Entrée active : soulignée en couleur primaire (aria-current posé par NavLink).
@@ -22,15 +23,11 @@ export default function Layout({ user, children }) {
           <nav aria-label="Navigation principale" className="ml-auto flex flex-wrap items-center gap-3 sm:gap-4">
             <TextSizeControl className="text-ink" />
             <ContrastControl className="text-ink" />
-            <NavLink to="/" className={linkClass}>
-              Accueil
-            </NavLink>
-            <NavLink to="/contact" className={linkClass}>
-              Contact
-            </NavLink>
-            <NavLink to="/services" className={linkClass}>
-              Services
-            </NavLink>
+            {navFor(CITIZEN_NAV, user).map((item) => (
+              <NavLink key={item.to} to={item.to} className={linkClass}>
+                {item.label}
+              </NavLink>
+            ))}
             <NavLink
               to={user ? '/profil' : '/connexion'}
               className="rounded-control bg-primary px-3 py-1.5 font-bold text-white hover:bg-primary-strong aria-[current=page]:bg-primary-strong aria-[current=page]:ring-2 aria-[current=page]:ring-accent aria-[current=page]:ring-offset-2"
