@@ -194,6 +194,8 @@
   const liens = !u ? [['accueil', 'index.html'], ['services', 'services.html'], ['carte', 'carte.html'], ['annonces', 'annonces.html'], ['participer', 'participer.html'], ['transports', 'transports.html']]
     : u.role === 'citoyen' ? [['accueil', 'index.html'], ['services', 'services.html'], ['carte', 'carte.html'], ['annonces', 'annonces.html'], ['soutenir', 'soutenir.html'], ['participer', 'participer.html'], ['rdv', 'rendez-vous.html'], ['espace', 'espace.html']]
     : [['agent', 'agent.html'], ['tableau', 'agent-tableau.html'], ['demandesAgent', 'agent-demandes.html'], ['alertes', 'agent-alertes.html'], ['comptes', 'admin-comptes.html'], ['journal', 'agent-journal.html'], ['participer', 'participer.html'], ['services', 'services.html']];
+  if (u && u.role !== 'citoyen') liens.splice(5, 0, ['accueilAgent', 'agent-accueil.html']);   // vague 13 (F71) : inscription au guichet
+  if (u && u.role === 'admin') liens.push(['securite', 'agent-securite.html']);   // vague 13 (F69, F70) : centre de sécurité
   if (u) NT.rdv.verifierRappels();   // avant le compteur de la cloche, pour que les rappels dus soient comptés
   const nbNotif = u ? NT.notif.nonLues(u.id) : 0;
   const optionsLangue = Object.entries(NT.i18n.LANGUES).map(([c, n]) => `<option value="${c}" ${c === NT.i18n.langue ? 'selected' : ''} lang="${c}">${n}</option>`).join('');
@@ -306,7 +308,7 @@
   const pied = document.createElement('footer');
   pied.className = 'pied';
   pied.innerHTML = `<div class="conteneur"><span>${echap(t('pied.texte'))}</span>
-    <span class="ligne"><a href="demande.html">${echap(t('pied.contact'))}</a><a href="aide.html">${echap(t('pied.aide'))}</a><a href="donnees.html">${echap(t('pied.donnees'))}</a><a href="sobriete.html">${echap(t('pied.sobriete'))}</a><a href="${echap(ui.lienSimple())}" class="pied-simple" id="nt-lien-simple"><i class="ph ph-article" aria-hidden="true"></i>${echap(t('pied.simple'))}</a><a href="transports.html">${echap(t('nav.transports'))}</a>
+    <span class="ligne"><a href="demande.html">${echap(t('pied.contact'))}</a><a href="aide.html">${echap(t('pied.aide'))}</a><a href="donnees.html">${echap(t('pied.donnees'))}</a><a href="sobriete.html">${echap(t('pied.sobriete'))}</a><a href="${echap(ui.lienSimple())}" class="pied-simple" id="nt-lien-simple"><i class="ph ph-article" aria-hidden="true"></i>${echap(t('pied.simple'))}</a><a href="securite.html">${echap(t('pied.securite'))}</a><a href="bienvenue.html">${echap(t('pied.bienvenue'))}</a><a href="transports.html">${echap(t('nav.transports'))}</a>
       <a href="#" id="nt-lien-a11y">${echap(t('pied.accessibilite'))}</a><a href="#" id="nt-lien-clavier">${echap(t('clavier.titre'))}</a></span></div>`;
   corps.append(pied);
   /* F59 : le mode connexion lente se voit et se désactive en un clic ; s'il s'est activé tout seul, on le dit une fois */

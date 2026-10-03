@@ -226,7 +226,9 @@
     const DEMOS = [
       { role: 'citoyen', nom: 'Léa Martin', email: 'citoyen@nova.test', mdp: 'Citoyen2026', icone: 'ph-user' },
       { role: 'agent', nom: 'Karim Benali', email: 'agent@nova.test', mdp: 'Agent2026', icone: 'ph-identification-badge' },
-      { role: 'admin', nom: 'Inès Rousseau', email: 'admin@nova.test', mdp: 'Admin2026', icone: 'ph-shield-check' }
+      { role: 'admin', nom: 'Inès Rousseau', email: 'admin@nova.test', mdp: 'Admin2026', icone: 'ph-shield-check' },
+      { role: 'agent', nom: 'Sophie Laurent · habilitée', email: 'social@nova.test', mdp: 'Agent2026', icone: 'ph-identification-badge' },   // vague 13 (F70)
+      { role: 'citoyen', nom: 'Youssef Haddad · sans e-mail', email: 'TN-100001', mdp: '482915', icone: 'ph-identification-card' }   // vague 13 (F71)
     ];
     const form = $('#form-connexion');
     const champs = $('#champs-connexion');
@@ -329,8 +331,8 @@
       e.preventDefault();
       const email = $('#email').value.trim(), mdp = $('#motdepasse').value;
       const err = [];
-      if (!email) err.push({ id: 'email', msg: L('c.e.email', 'Indiquez votre adresse e-mail.') });
-      else if (!EMAIL.test(email)) err.push({ id: 'email', msg: L('c.e.emailFormat', 'L’adresse e-mail doit ressembler à prenom@exemple.fr.') });
+      // F71 : e-mail, identifiant TN-123456 ou numéro de téléphone
+      if (!email || (!EMAIL.test(email) && !/^tn[\s-]?\d{6}$/i.test(email) && !TEL.test(email))) err.push({ id: 'email', msg: L('v13.con.erreur', 'Indiquez votre e-mail, votre identifiant (TN-123456) ou votre numéro de téléphone.') });
       if (!mdp) err.push({ id: 'motdepasse', msg: L('c.e.mdpSaisir', 'Saisissez votre mot de passe.') });
       let verifOk = false;
       if (verifVisible()) {
@@ -806,12 +808,13 @@
       tiroir.innerHTML = '<dl class="fiche">' +
         dd(L('c.adm.cNom', 'Nom'), E(nomComplet(u))) + dd(L('c.adm.cEmail', 'E-mail'), E(u.email)) +
         dd(L('c.adm.cRole', 'Rôle'), '<span class="badge-role">' + E(rolePlein(u.role)) + '</span>') + dd(L('c.adm.cEtat', 'État'), badgeEtat(etatDe(u))) +
-        dd(L('c.adm.cQuartier', 'Quartier'), E(u.quartier || '—')) + dd(L('c.ins.tel', 'Téléphone'), E(u.telephone || '—')) +
+        dd(L('c.adm.cQuartier', 'Quartier'), E(u.quartier || '—')) + dd(L('c.ins.tel', 'Téléphone'), NT.sensible ? NT.sensible.telephone(u) : E(u.telephone || '—')) +
         dd(L('c.adm.cree', 'Compte créé le'), E(u.cree ? NT.ui.date(u.cree) : '—')) + dd(L('c.adm.cConn', 'Dernière connexion'), E(fmtDH(u.derniereConnexion))) +
         dd(L('c.adm.vuln', 'Personne vulnérable (alertes prioritaires)'), E(u.vulnerable ? L('c.oui', 'Oui') : L('c.non', 'Non'))) +
         dd(L('c.adm.nbDem', 'Demandes déposées'), String(NT.demandes.pour(u.id).length)) +
         dd(L('c.adm.echecsCours', 'Échecs de connexion en cours'), String(sec.echecs || 0)) +
         dd(L('c.adm.blocages', 'Verrouillages passés'), String(sec.blocages || 0)) + '</dl>' +
+        (NT.sensible ? NT.sensible.dossier(u) : '') +   // vague 13 (F70) : dossier réservé aux agents habilités
         '<h3>' + E(L('c.adm.activite', 'Activité récente')) + '</h3>' +
         (evts.length ? '<ul class="liste-activite">' + evts.map(x => '<li>' + pastilleType(x.type) + '<span class="doux">' + E(fmtDH(x.date)) + '</span></li>').join('') + '</ul>' : '<p class="doux">' + E(L('c.cpt.aucuneActivite', 'Aucune activité enregistrée.')) + '</p>') +
         '<sl-button slot="footer" variant="primary" data-fermer>' + E(L('ui.fermer', 'Fermer')) + '</sl-button>';
