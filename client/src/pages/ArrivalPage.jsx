@@ -79,7 +79,7 @@ export default function ArrivalPage() {
           </div>
         </header>
 
-        <main className="flex flex-1 items-end px-6 pb-40 pt-12 md:items-center md:px-[clamp(24px,7vw,110px)] md:pb-28">
+        <main className="flex flex-1 items-end px-6 pb-8 pt-12 md:items-center md:px-[clamp(24px,7vw,110px)] md:pb-28">
           <div className="max-w-3xl">
             <p className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-glow">
               <span aria-hidden="true" className="h-px w-8 bg-glow" />
@@ -110,7 +110,7 @@ export default function ArrivalPage() {
           </div>
         </main>
 
-        <footer className="absolute inset-x-5 bottom-6 rounded-card border border-glow/20 bg-space/60 px-4 py-3 text-[0.625rem] uppercase tracking-[0.08em] text-star-muted backdrop-blur-md md:inset-x-auto md:right-[clamp(24px,5vw,72px)] md:bottom-10 md:text-xs">
+        <footer className="mx-5 mb-6 rounded-card border border-glow/20 bg-space/60 px-4 py-3 text-[0.625rem] uppercase tracking-[0.08em] text-star-muted backdrop-blur-md md:absolute md:right-[clamp(24px,5vw,72px)] md:bottom-10 md:mx-0 md:mb-0 md:text-xs">
           <dl className="flex flex-wrap justify-between gap-x-3 gap-y-2 md:gap-6">
             <div>
               <dt>Destination</dt>

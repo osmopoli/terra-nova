@@ -142,6 +142,26 @@
   }
 
   /*
+   * Zoom 200 % et reflow à 320 px (WEBC-69, WCAG 1.4.4 / 1.4.10).
+   * La mise en page est en rem : elle suit le zoom navigateur et le réglage A / A+ / A++ (WEBC-20).
+   * - pas de recalcul automatique de la taille du texte par le mobile (le choix de l'habitant prime) ;
+   * - un mot long (adresse e-mail, URL, nom composé) passe à la ligne au lieu de pousser la page ;
+   * - un média ne dépasse jamais sa colonne.
+   */
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  body {
+    overflow-wrap: break-word;
+  }
+  img,
+  video,
+  iframe {
+    max-width: 100%;
+  }
+
+  /*
    * Information non portée par la couleur seule (WCAG 1.4.1).
    * Dans le contenu, un lien texte est toujours souligné, pas seulement au survol.
    * Les liens-boutons (fond plein) et la navigation d'en-tête en sont exclus.
