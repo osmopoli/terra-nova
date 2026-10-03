@@ -4,6 +4,7 @@ import AgentLayout from './components/AgentLayout.jsx';
 import AuthScreen from './components/AuthScreen.jsx';
 import ProfileScreen from './components/ProfileScreen.jsx';
 import MyMessages from './components/MyMessages.jsx';
+import OnboardingGuide from './components/OnboardingGuide.jsx';
 import AgentPage from './pages/AgentPage.jsx';
 import ArrivalPage from './pages/ArrivalPage.jsx';
 import ContactPage from './pages/ContactPage.jsx';
@@ -126,7 +127,13 @@ export default function App() {
           Chargement...
         </p>
       ) : (
-        <Route session={{ user, meta, setUser, logout, expire }} />
+        <>
+          {/* D12 : guide de première connexion, pour les habitants uniquement. */}
+          {user?.role === 'citoyen' && !user.onboardedAt && (
+            <OnboardingGuide user={user} onDone={setUser} />
+          )}
+          <Route session={{ user, meta, setUser, logout, expire }} />
+        </>
       )}
     </Layout>
   );
