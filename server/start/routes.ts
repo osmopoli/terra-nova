@@ -31,6 +31,7 @@ const DemandesController = () => import('#controllers/demandes_controller')
 const AgentDemandesController = () => import('#controllers/agent_demandes_controller')
 const SobrietyController = () => import('#controllers/sobriety_controller')
 const TwoFactorController = () => import('#controllers/two_factor_controller')
+const PasskeysController = () => import('#controllers/passkeys_controller')
 
 router
   .group(() => {
@@ -75,6 +76,9 @@ router
     router.post('/auth/login', [AuthController, 'login'])
     /** F53 : deuxième étape de connexion (jeton intermédiaire + code). */
     router.post('/auth/two-factor', [TwoFactorController, 'login'])
+    /** D02 : connexion sans mot de passe par clé d'accès (WebAuthn). */
+    router.post('/auth/passkey/options', [PasskeysController, 'loginOptions'])
+    router.post('/auth/passkey', [PasskeysController, 'login'])
 
     router
       .group(() => {
@@ -89,6 +93,12 @@ router
         router.post('/me/two-factor/setup', [TwoFactorController, 'setup'])
         router.post('/me/two-factor/confirm', [TwoFactorController, 'confirm'])
         router.delete('/me/two-factor', [TwoFactorController, 'destroy'])
+
+        /** Clés d'accès (D02) : liste, ajout (mot de passe redemandé), retrait. */
+        router.get('/me/passkeys', [PasskeysController, 'index'])
+        router.post('/me/passkeys/options', [PasskeysController, 'registrationOptions'])
+        router.post('/me/passkeys', [PasskeysController, 'store'])
+        router.delete('/me/passkeys/:id', [PasskeysController, 'destroy']).where('id', /^\d+$/)
 
         /** Messages aux services municipaux (WEBC-6) : chaque habitant ne voit que les siens. */
         router.get('/contact-messages', [ContactMessagesController, 'index'])

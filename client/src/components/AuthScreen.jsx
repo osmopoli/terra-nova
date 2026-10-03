@@ -4,6 +4,7 @@ import { APP_NAME } from '../lib/constants.js';
 import { focusFirstError } from '../lib/focusError.js';
 import Field, { FormError, inputClass } from './Field.jsx';
 import TwoFactorStep from './TwoFactorStep.jsx';
+import PasskeyLogin from './PasskeyLogin.jsx';
 
 const EMPTY = { fullName: '', email: '', password: '' };
 
@@ -109,6 +110,15 @@ export default function AuthScreen({ onAuthenticated }) {
         {tab('login', 'Connexion')}
         {tab('register', 'Inscription')}
       </div>
+
+      {!isRegister && (
+        <PasskeyLogin
+          onAuthenticated={(data) => {
+            setToken(data.token);
+            onAuthenticated(data.user);
+          }}
+        />
+      )}
 
       <form
         id="formulaire-auth"
