@@ -1,0 +1,38 @@
+/* F51 — vos données. Sobre, rem, lisible à 200 % et en 320 px. */
+[hidden]{ display:none!important; }
+.bloc-don{ margin-top:2.5rem; }
+.bloc-don h2{ font-size:clamp(1.25rem,2.2vw,1.6rem); margin-bottom:1rem; }
+.panneau.bloc-don h2{ margin-bottom:.5rem; }
+.sommaire-don ul{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:.5rem 1.25rem; }
+.sommaire-don a{ display:inline-block; padding:.5rem 0; min-height:2.75rem; }
+.table-don{ width:100%; border-collapse:collapse; }
+.table-don th,.table-don td{ text-align:start; vertical-align:top; padding:.7rem .9rem; border-bottom:1px solid var(--trait); }
+.table-don thead th{ color:var(--brume); font-size:.85rem; border-bottom:1px solid var(--trait-2); }
+.table-don tbody th{ font-weight:700; }
+.liste-claire{ list-style:none; margin:1.25rem 0 0; padding:0; display:grid; gap:.9rem; }
+.liste-claire li{ display:flex; gap:.8rem; align-items:flex-start; }
+.liste-claire i{ font-size:1.6rem; color:var(--iono); flex:none; }
+.resume-erreurs:not(:empty){ border:1px solid var(--corail); background:rgba(255,107,127,.08); padding:.9rem 1.1rem; margin-bottom:1.25rem; border-radius:var(--r); }
+.resume-erreurs p{ margin:0 0 .4rem; }
+.resume-erreurs ul{ margin:0; padding-inline-start:1.2rem; }
+.resume-erreurs a{ color:#FFD9DF; }
+.champ .erreur::before{ content:"Erreur : "; }
+html[lang="en"] .champ .erreur::before,html[lang="es"] .champ .erreur::before{ content:"Error: "; }
+html[lang="ar"] .champ .erreur::before{ content:"خطأ: "; }
+.confirm-don{ border:1px solid var(--calme); background:rgba(120,200,160,.08); border-radius:var(--r); padding:1rem 1.15rem; margin-bottom:1.25rem; }
+.confirm-don p{ margin:0 0 .4rem; }
+.confirm-don p:last-child{ margin-bottom:0; }
+.confirm-don .numero{ font-family:var(--titre); font-size:1.3rem; letter-spacing:.02em; }
+.confirm-don i{ font-size:1.3em; vertical-align:-.2em; color:var(--calme); }
+.liste-contrib{ list-style:none; margin:0; padding:0; display:grid; gap:1rem; }
+.contrib{ border:1px solid var(--trait); border-radius:var(--r-l); padding:1.1rem 1.25rem; background:var(--verre); }
+.contrib-tete{ display:flex; flex-wrap:wrap; gap:.4rem .75rem; align-items:center; justify-content:space-between; }
+.contrib h3{ margin:0; font-size:1.05rem; }
+.contrib .msg{ margin:.6rem 0; overflow-wrap:anywhere; white-space:pre-wrap; }
+.contrib .doux{ font-size:.9rem; }
+.reponse-del{ border-inline-start:3px solid var(--iono); padding:.4rem .9rem; margin:.7rem 0; }
+.reponse-del p{ margin:0; white-space:pre-wrap; overflow-wrap:anywhere; }
+.histo{ list-style:none; margin:.6rem 0 0; padding:0; display:grid; gap:.4rem; font-size:.9rem; color:var(--brume); }
+.histo li{ display:flex; flex-wrap:wrap; gap:.25rem .6rem; }
+.form-rep{ margin-top:1rem; border-top:1px solid var(--trait); padding-top:1rem; }
+.form-rep textarea{ min-height:5rem; }

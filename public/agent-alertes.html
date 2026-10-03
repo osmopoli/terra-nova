@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diffuser une alerte — Terra Nova</title>
+  <meta name="description" content="Centre de diffusion : publier une alerte ou une annonce à tous les habitants, lever une alerte et signaler l’état des services.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/agent.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/agent.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="alertes" data-ariane="nav.agent|agent.html;nav.alertes" data-roles="agent,admin">
+  <main id="contenu" class="conteneur ag">
+
+    <header class="titre-page">
+      <h1 data-i18n="al.titre">Diffuser un message aux habitants</h1>
+      <p data-i18n="al.intro">Publiez une alerte ou une annonce : elle apparaît dans la balise d’alerte du site et prévient les habitants concernés.</p>
+    </header>
+
+    <div id="confirmation" role="status"></div>
+
+    <div class="ag-alertes">
+      <!-- Formulaire (D18, F29, F30, F31) -->
+      <section class="panneau" aria-labelledby="t-form">
+        <h2 id="t-form" data-i18n="al.formTitre">Diffuser un message à tous les habitants</h2>
+
+        <h3 id="t-modeles" data-i18n="al.modeles">Modèles prêts en un clic</h3>
+        <ul class="ag-modeles" aria-labelledby="t-modeles">
+          <li><button type="button" class="btn" data-modele="eaux"><i class="ph-duotone ph-waves" aria-hidden="true"></i><span><span data-i18n="al.m.eaux">Montée des eaux</span><small data-i18n="al.m.eauxD">Alerte, quartier Sud</small></span></button></li>
+          <li><button type="button" class="btn" data-modele="chaleur"><i class="ph-duotone ph-thermometer-hot" aria-hidden="true"></i><span><span data-i18n="al.m.chaleur">Vague de chaleur</span><small data-i18n="al.m.chaleurD">Alerte, publics vulnérables</small></span></button></li>
+          <li><button type="button" class="btn" data-modele="annonce"><i class="ph-duotone ph-megaphone" aria-hidden="true"></i><span><span data-i18n="al.m.annonce">Annonce municipale importante</span><small data-i18n="al.m.annonceD">Importante, toute la ville</small></span></button></li>
+          <li><button type="button" class="btn" data-modele="general"><i class="ph-duotone ph-chat-circle-text" aria-hidden="true"></i><span><span data-i18n="al.m.general">Message général</span><small data-i18n="al.m.generalD">Information à tous</small></span></button></li>
+        </ul>
+
+        <form id="form-alerte" novalidate>
+          <div id="resume-erreurs" role="alert"></div>
+
+          <fieldset>
+            <legend data-i18n="al.niveau">Niveau du message</legend>
+            <div class="ag-niveaux">
+              <label><input type="radio" name="niveau" value="info"><span><strong data-i18n="ag.niv.info">Information</strong><span class="doux" data-i18n="al.niv.info">Publiée dans les annonces. Pas de balise ni de notification : pour ce qui est utile mais pas urgent.</span></span></label>
+              <label><input type="radio" name="niveau" value="importante" checked><span><strong data-i18n="ag.niv.importante">Importante</strong><span class="doux" data-i18n="al.niv.importante">La balise passe à l’ambre et les habitants concernés reçoivent une notification.</span></span></label>
+              <label><input type="radio" name="niveau" value="alerte"><span><strong data-i18n="ag.niv.alerte">Alerte</strong><span class="doux" data-i18n="al.niv.alerte">La balise rouge s’allume pour tous les habitants, avec notification et consignes. Réservée aux situations de danger.</span></span></label>
+            </div>
+          </fieldset>
+
+          <div class="champ"><label for="al-titre" data-i18n="al.fTitre">Titre</label>
+            <input id="al-titre" maxlength="90" autocomplete="off" aria-describedby="al-titre-aide al-titre-err">
+            <span class="aide" id="al-titre-aide" data-i18n="al.fTitreAide">Court et précis, par exemple « Montée des eaux dans le quartier Sud ».</span>
+            <p class="erreur" id="al-titre-err" hidden></p></div>
+
+          <div class="champ"><label for="al-resume" data-i18n="al.fResume">Résumé court</label>
+            <input id="al-resume" maxlength="200" autocomplete="off" aria-describedby="al-resume-aide al-resume-err">
+            <span class="aide" id="al-resume-aide" data-i18n="al.fResumeAide">Une ou deux phrases : c’est le texte affiché dans la balise d’alerte.</span>
+            <p class="erreur" id="al-resume-err" hidden></p></div>
+
+          <div class="champ"><label for="al-contenu" data-i18n="al.fContenu">Contenu</label>
+            <textarea id="al-contenu" aria-describedby="al-contenu-aide al-contenu-err"></textarea>
+            <span class="aide" id="al-contenu-aide" data-i18n="al.fContenuAide">Expliquez la situation en détail, avec des mots simples.</span>
+            <p class="erreur" id="al-contenu-err" hidden></p></div>
+
+          <div class="champ"><label for="al-zone" data-i18n="al.fZone">Zone concernée</label>
+            <select id="al-zone" aria-describedby="al-dest"></select>
+            <span class="aide" id="al-dest" aria-live="polite"></span></div>
+
+          <fieldset>
+            <legend data-i18n="al.fConsignes">Consignes (que doivent faire les habitants ?)</legend>
+            <ul class="ag-consignes" id="consignes"></ul>
+            <button type="button" class="btn" id="ajout-consigne"><i class="ph ph-plus" aria-hidden="true"></i><span data-i18n="al.ajoutConsigne">Ajouter une consigne</span></button>
+          </fieldset>
+
+          <fieldset>
+            <legend data-i18n="al.fPublics">Publics prioritaires (facultatif)</legend>
+            <p class="aide" style="margin-top:0" data-i18n="al.fPublicsAide">Les personnes vulnérables concernées reçoivent en plus un message personnalisé.</p>
+            <div class="ag-publics" id="publics"></div>
+          </fieldset>
+
+          <div class="champ"><label for="al-expire" data-i18n="al.fExpire">Date d’expiration (facultative)</label>
+            <input id="al-expire" type="datetime-local" aria-describedby="al-expire-aide al-expire-err">
+            <span class="aide" id="al-expire-aide" data-i18n="al.fExpireAide">Passée cette date, le message disparaît de la balise d’alerte.</span>
+            <p class="erreur" id="al-expire-err" hidden></p></div>
+
+          <button type="submit" class="btn btn-primaire"><i class="ph ph-paper-plane-tilt" aria-hidden="true"></i><span data-i18n="al.publier">Diffuser le message</span></button>
+        </form>
+      </section>
+
+      <!-- Aperçu en direct -->
+      <aside class="ag-apercu panneau" aria-labelledby="t-apercu">
+        <h2 id="t-apercu" data-i18n="al.apercu">Aperçu : ce que verront les habitants</h2>
+        <p class="doux" style="font-size:.9rem" data-i18n="al.apercuAide">Cette fiche s’affiche dans le panneau qui s’ouvre depuis la balise d’alerte.</p>
+        <div id="apercu"></div>
+      </aside>
+    </div>
+
+    <!-- Alertes actives -->
+    <section class="section" aria-labelledby="t-actives" style="margin-top:3rem">
+      <div class="titre-section"><div><h2 id="t-actives" data-i18n="al.actives">Alertes et annonces en cours</h2>
+        <p data-i18n="al.activesD">Levez une alerte dès que la situation est revenue à la normale.</p></div></div>
+      <ul class="ag-annonces" id="liste-actives"></ul>
+      <details style="margin-top:1rem"><summary id="resume-terminees" style="cursor:pointer;font-weight:700"></summary>
+        <ul class="ag-annonces" id="liste-terminees" style="margin-top:.7rem"></ul></details>
+    </section>
+
+    <!-- F38 : état des services -->
+    <section class="section" aria-labelledby="t-services" style="margin-top:3rem">
+      <div class="titre-section"><div><h2 id="t-services" data-i18n="al.services">État des services</h2>
+        <p data-i18n="al.servicesD">Signalez une maintenance ou un incident : les habitants le voient avant de commencer une démarche.</p></div></div>
+      <div class="ag-svc-grille">
+        <div class="table-defile">
+          <table>
+            <caption class="sr-only" data-i18n="al.svcCaption">État des services municipaux</caption>
+            <thead><tr><th scope="col" data-i18n="dm.service">Service</th><th scope="col" data-i18n="al.svcEtat">État</th><th scope="col" data-i18n="al.svcInfo">Message et retour</th><th scope="col"><span class="sr-only" data-i18n="al.svcAction">Action</span></th></tr></thead>
+            <tbody id="svc-lignes"></tbody>
+          </table>
+        </div>
+        <form class="panneau" id="form-service" novalidate aria-labelledby="t-svc-form">
+          <h3 id="t-svc-form" data-i18n="al.svcForm">Changer l’état d’un service</h3>
+          <div id="svc-resume" role="alert"></div>
+          <div class="champ"><label for="sv-service" data-i18n="dm.service">Service</label><select id="sv-service"></select></div>
+          <div class="champ"><label for="sv-etat" data-i18n="al.svcEtat">État</label>
+            <select id="sv-etat"><option value="ok" data-i18n="ag.etat.ok">Disponible</option><option value="maintenance" data-i18n="ag.etat.maintenance">En maintenance</option><option value="incident" data-i18n="ag.etat.incident">Incident</option></select></div>
+          <div class="champ"><label for="sv-message" data-i18n="al.svcMessage">Message pour les habitants</label>
+            <textarea id="sv-message" style="min-height:5rem" aria-describedby="sv-message-aide sv-message-err"></textarea>
+            <span class="aide" id="sv-message-aide" data-i18n="al.svcMessageAide">Obligatoire si le service n’est pas disponible. Dites ce qui se passe.</span>
+            <p class="erreur" id="sv-message-err" hidden></p></div>
+          <div class="champ"><label for="sv-retour" data-i18n="al.svcRetour">Quand revenir, ou que faire en attendant</label>
+            <input id="sv-retour" autocomplete="off" aria-describedby="sv-retour-aide"><span class="aide" id="sv-retour-aide" data-i18n="al.svcRetourAide">Par exemple « Réouverture lundi 9 h » ou « Déposez votre dossier à l’accueil ».</span></div>
+          <button type="submit" class="btn btn-primaire"><i class="ph ph-floppy-disk" aria-hidden="true"></i><span data-i18n="al.svcEnregistrer">Enregistrer l’état</span></button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    NT.i18n.ajouter({
+      en: {
+        'al.titre': 'Broadcast a message to residents', 'al.intro': 'Publish an alert or a notice: it appears in the site’s alert beacon and notifies the residents concerned.',
+        'al.formTitre': 'Broadcast a message to all residents', 'al.modeles': 'Ready-made templates, one click',
+        'al.m.eaux': 'Rising water', 'al.m.eauxD': 'Alert, South district', 'al.m.chaleur': 'Heatwave', 'al.m.chaleurD': 'Alert, vulnerable groups', 'al.m.annonce': 'Important city announcement', 'al.m.annonceD': 'Important, whole city', 'al.m.general': 'General message', 'al.m.generalD': 'Information for all',
+        'al.niveau': 'Message level', 'al.niv.info': 'Published in the announcements. No beacon or notification: useful but not urgent.', 'al.niv.importante': 'The beacon turns amber and the residents concerned get a notification.', 'al.niv.alerte': 'The red beacon lights up for every resident, with notification and instructions. Only for dangerous situations.',
+        'al.fTitre': 'Title', 'al.fTitreAide': 'Short and precise, for example “Rising water in the South district”.', 'al.fResume': 'Short summary', 'al.fResumeAide': 'One or two sentences: this is the text shown in the alert beacon.',
+        'al.fContenu': 'Content', 'al.fContenuAide': 'Explain the situation in detail, in simple words.', 'al.fZone': 'Area concerned', 'al.fConsignes': 'Instructions (what should residents do?)', 'al.ajoutConsigne': 'Add an instruction',
+        'al.fPublics': 'Priority groups (optional)', 'al.fPublicsAide': 'Vulnerable people concerned also get a personalised message.', 'al.fExpire': 'Expiry date (optional)', 'al.fExpireAide': 'After this date the message disappears from the alert beacon.', 'al.publier': 'Broadcast the message',
+        'al.apercu': 'Preview: what residents will see', 'al.apercuAide': 'This card appears in the panel opened from the alert beacon.',
+        'al.actives': 'Alerts and notices in progress', 'al.activesD': 'Lift an alert as soon as the situation is back to normal.',
+        'al.services': 'Service status', 'al.servicesD': 'Report maintenance or an incident: residents see it before starting a procedure.', 'al.svcCaption': 'Status of municipal services', 'al.svcEtat': 'Status', 'al.svcInfo': 'Message and return', 'al.svcAction': 'Action',
+        'al.svcForm': 'Change a service’s status', 'al.svcMessage': 'Message for residents', 'al.svcMessageAide': 'Required if the service is not available. Say what is happening.', 'al.svcRetour': 'When to come back, or what to do meanwhile', 'al.svcRetourAide': 'For example “Reopening Monday 9 am” or “Hand in your file at the front desk”.', 'al.svcEnregistrer': 'Save the status',
+        'al.p.agees': 'Elderly people', 'al.p.enfants': 'Children', 'al.p.enceintes': 'Pregnant women', 'al.p.malades': 'People who are ill', 'al.p.mobilite': 'People with reduced mobility',
+        'al.zoneVille': 'Whole city', 'al.dest': 'About {n} resident(s) concerned.', 'al.destVuln': ' Including {v} vulnerable person(s) who will get a personal message.',
+        'al.consigneN': 'Instruction {n}', 'al.supprConsigne': 'Remove instruction {n}', 'al.modeleOk': 'Template “{nom}” applied. Check the text before broadcasting.',
+        'al.resumeErr': 'The message cannot be broadcast yet:', 'al.errTitre': 'Enter a title.', 'al.errResume': 'Enter a short summary (it is shown in the alert beacon).', 'al.errContenu': 'Enter the content of the message.', 'al.errExpire': 'Choose a date in the future, or leave the field empty.',
+        'al.okAlerte': 'Alert broadcast to {n} residents', 'al.okImportante': 'Important message broadcast to {n} residents', 'al.okInfo': 'Information published for {n} residents',
+        'al.okVuln': '{v} vulnerable person(s) also received a personalised message.', 'al.okDetail': 'See the announcement', 'al.okFerme': 'The beacon in the header has been updated.',
+        'al.persoTitre': 'For you: {titre}', 'al.persoTexte': '{prenom}, this message concerns you in particular ({publics}). {resume}{consigne}', 'al.persoConsigne': ' First thing to do: {c}',
+        'al.aucuneActive': 'No alert or notice in progress.', 'al.lever': 'Lift the alert', 'al.retirer': 'Withdraw the notice', 'al.leverOk': '“{titre}” has been lifted.', 'al.levee': 'Lifted', 'al.expiree': 'Expired',
+        'al.expire': 'expires on {d}', 'al.zoneLib': 'Area', 'al.terminees': 'Lifted or expired messages ({n})', 'al.aucuneTerminee': 'No lifted or expired message.',
+        'al.svcRetourLib': 'Return', 'al.svcModifier': 'Change', 'al.svcModifierPour': 'Change the status of {nom}', 'al.svcMsgErr': 'Explain what is happening so residents understand why the service is unavailable.', 'al.svcResume': 'The status cannot be saved yet:',
+        'al.svcOk': '{nom}: status changed to “{etat}”.', 'al.svcRien': 'No message'
+      },
+      es: { 'al.titre': 'Difundir un mensaje a los habitantes', 'al.publier': 'Difundir el mensaje', 'al.services': 'Estado de los servicios' }
+    });
+
+    NT.pret(() => {
+      const { echap } = NT.ui, A = NT.agent, T = A.T;
+      const el = id => document.getElementById(id);
+      const form = el('form-alerte');
+
+      const PUBLICS = [['agees', 'Personnes âgées'], ['enfants', 'Enfants'], ['enceintes', 'Femmes enceintes'], ['malades', 'Personnes malades'], ['mobilite', 'Personnes à mobilité réduite']];
+      const publicLib = ([k, fr]) => T('al.p.' + k, fr);
+
+      /* ---------- Modèles (F29, F31, F30, D18) ---------- */
+      const MODELES = {
+        eaux: { nom: 'Montée des eaux', niveau: 'alerte', categorie: 'alerte', zone: 'Sud', publics: ['Personnes âgées', 'Personnes à mobilité réduite'],
+          titre: 'Montée des eaux dans le quartier Sud',
+          resume: 'Le niveau de l’eau monte anormalement dans le quartier Sud. Évitez les niveaux inférieurs et suivez les consignes.',
+          contenu: 'Le centre de surveillance environnementale observe une montée inhabituelle du niveau de l’eau dans le quartier Sud. Les équipes sont mobilisées. Restez informés : cette alerte sera mise à jour ou levée dès que la situation le permettra.',
+          consignes: ['Ne descendez pas dans les niveaux inférieurs ni dans les parkings', 'Mettez vos objets de valeur en hauteur', 'Rejoignez le point de regroupement : Dôme des Pionniers', 'En cas de danger, appelez le 112'] },
+        chaleur: { nom: 'Vague de chaleur', niveau: 'alerte', categorie: 'sanitaire', zone: 'Toute la ville',
+          publics: ['Personnes âgées', 'Enfants', 'Femmes enceintes', 'Personnes malades'],
+          titre: 'Vague de chaleur extrême',
+          resume: 'Températures extrêmes dans plusieurs secteurs. Personnes âgées, enfants, femmes enceintes et malades : protégez-vous.',
+          contenu: 'L’agence sanitaire de Terra Nova déclenche le niveau d’alerte chaleur. Les personnes les plus fragiles doivent limiter leurs efforts et rester au frais.',
+          consignes: ['Buvez de l’eau régulièrement, sans attendre d’avoir soif', 'Restez dans les espaces climatisés', 'Prenez des nouvelles de vos proches isolés', 'En cas de malaise, appelez le 15'] },
+        annonce: { nom: 'Annonce municipale importante', niveau: 'importante', categorie: 'municipale', zone: 'Toute la ville', publics: [],
+          titre: 'Annonce importante de la mairie',
+          resume: 'La mairie de Terra Nova vous informe d’un changement important concernant les services municipaux.',
+          contenu: 'Précisez ici l’information à connaître : ce qui change, à partir de quand, et ce que les habitants doivent faire.',
+          consignes: ['Consultez la page des annonces pour tous les détails'] },
+        general: { nom: 'Message général', niveau: 'importante', categorie: 'municipale', zone: 'Toute la ville', publics: [],
+          titre: 'Message à tous les habitants',
+          resume: 'Un message de la mairie à destination de tous les habitants de Terra Nova.',
+          contenu: 'Rédigez ici le message à diffuser à l’ensemble des habitants.',
+          consignes: [] }
+      };
+      let categorie = '';
+
+      /* ---------- Champs ---------- */
+      const zone = el('al-zone');
+      zone.innerHTML = `<option value="Toute la ville">${echap(T('al.zoneVille', 'Toute la ville'))}</option>` + NT.QUARTIERS.map(q => `<option value="${echap(q)}">${echap(q)}</option>`).join('');
+      el('publics').innerHTML = PUBLICS.map(p => `<label><input type="checkbox" name="publics" value="${echap(p[1])}"> ${echap(publicLib(p))}</label>`).join('');
+      const niveau = () => form.querySelector('input[name="niveau"]:checked').value;
+      const publicsCoches = () => Array.from(form.querySelectorAll('input[name="publics"]:checked')).map(c => c.value);
+      const consignes = () => Array.from(document.querySelectorAll('#consignes input')).map(i => i.value.trim()).filter(Boolean);
+
+      function ligneConsigne(valeur) {
+        const li = document.createElement('li');
+        li.innerHTML = `<input type="text" maxlength="160" autocomplete="off"><button type="button" class="btn btn-danger" data-suppr><i class="ph ph-trash" aria-hidden="true"></i></button>`;
+        li.querySelector('input').value = valeur || '';
+        el('consignes').append(li);
+        numeroter();
+        return li.querySelector('input');
+      }
+      function numeroter() {
+        document.querySelectorAll('#consignes li').forEach((li, i) => {
+          li.querySelector('input').setAttribute('aria-label', T('al.consigneN', 'Consigne {n}', { n: i + 1 }));
+          li.querySelector('button').setAttribute('aria-label', T('al.supprConsigne', 'Supprimer la consigne {n}', { n: i + 1 }));
+        });
+      }
+
+      /* ---------- Aperçu : même rendu que le panneau d'alertes (ui.js) ---------- */
+      function fiche(a) {
+        return `<article class="alerte-fiche niveau-${echap(a.importance)}">
+          <h3><i class="ph-duotone ${a.importance === 'alerte' ? 'ph-warning-octagon' : 'ph-megaphone'}" aria-hidden="true"></i>${echap(a.titre)}</h3>
+          <div class="zone"><i class="ph ph-map-pin" aria-hidden="true"></i> ${echap(a.zone)} · ${echap(a.quand)}</div>
+          <p style="margin:.6rem 0 0">${echap(a.resume || '')}</p>
+          ${a.consignes.length ? `<strong style="display:block;margin-top:.7rem">${echap(T('ui.consignes', 'Que faire ?'))}</strong><ul>${a.consignes.map(c => `<li>${echap(c)}</li>`).join('')}</ul>` : ''}
+          ${a.publics.length ? `<p class="doux" style="margin:.6rem 0 0">${echap(T('ui.publics', 'Personnes concernées en priorité'))} : ${a.publics.map(echap).join(', ')}</p>` : ''}
+          <span class="btn" style="margin-top:.8rem" aria-hidden="true">${echap(T('ui.detail', 'Lire l’annonce complète'))}</span></article>`;
+      }
+      function apercu() {
+        const titre = el('al-titre').value.trim(), resume = el('al-resume').value.trim();
+        el('apercu').innerHTML = fiche({ importance: niveau(), zone: zone.value === 'Toute la ville' ? T('al.zoneVille', 'Toute la ville') : zone.value, quand: NT.ui.depuis(new Date().toISOString()),
+          titre: titre || T('al.fTitre', 'Titre'), resume: resume || T('al.fResume', 'Résumé court'), consignes: consignes(), publics: publicsCoches() });
+        const dest = A.destinataires(zone.value), v = publicsCoches().length ? dest.filter(u => u.vulnerable).length : 0;
+        el('al-dest').textContent = T('al.dest', 'Environ {n} habitant(s) concerné(s).', { n: dest.length }) + (v ? T('al.destVuln', ' Dont {v} personne(s) vulnérable(s) qui recevront un message personnalisé.', { v }) : '');
+      }
+      form.addEventListener('input', apercu);
+      form.addEventListener('change', apercu);
+
+      function appliquerModele(k) {
+        const m = MODELES[k];
+        form.querySelector(`input[name="niveau"][value="${m.niveau}"]`).checked = true;
+        el('al-titre').value = m.titre; el('al-resume').value = m.resume; el('al-contenu').value = m.contenu; zone.value = m.zone; categorie = m.categorie;
+        form.querySelectorAll('input[name="publics"]').forEach(c => (c.checked = m.publics.includes(c.value)));
+        el('consignes').innerHTML = ''; m.consignes.forEach(c => ligneConsigne(c));
+        el('al-expire').value = '';
+        effacerErreurs(); apercu();
+        NT.ui.annoncer(T('al.modeleOk', 'Modèle « {nom} » appliqué. Relisez le texte avant de diffuser.', { nom: T('al.m.' + k, m.nom) }));
+        el('al-titre').focus();
+      }
+      document.querySelectorAll('[data-modele]').forEach(b => b.addEventListener('click', () => appliquerModele(b.dataset.modele)));
+      el('ajout-consigne').addEventListener('click', () => { ligneConsigne('').focus(); apercu(); });
+      el('consignes').addEventListener('click', ev => {
+        const b = ev.target.closest('[data-suppr]'); if (!b) return;
+        const li = b.closest('li'), suivant = li.nextElementSibling || li.previousElementSibling;
+        li.remove(); numeroter(); apercu();
+        (suivant ? suivant.querySelector('input') : el('ajout-consigne')).focus();
+      });
+
+      /* ---------- Validation et publication ---------- */
+      const CHAMPS = ['titre', 'resume', 'contenu', 'expire'];
+      function effacerErreurs() {
+        CHAMPS.forEach(c => { el('al-' + c).removeAttribute('aria-invalid'); el('al-' + c + '-err').hidden = true; });
+        el('resume-erreurs').className = ''; el('resume-erreurs').innerHTML = '';
+      }
+      form.addEventListener('submit', ev => {
+        ev.preventDefault();
+        effacerErreurs();
+        const err = [];
+        if (!el('al-titre').value.trim()) err.push(['titre', T('al.errTitre', 'Saisissez un titre.')]);
+        if (!el('al-resume').value.trim()) err.push(['resume', T('al.errResume', 'Saisissez un résumé court (il s’affiche dans la balise d’alerte).')]);
+        if (!el('al-contenu').value.trim()) err.push(['contenu', T('al.errContenu', 'Saisissez le contenu du message.')]);
+        const exp = el('al-expire').value;
+        if (exp && !(new Date(exp).getTime() > Date.now())) err.push(['expire', T('al.errExpire', 'Choisissez une date dans le futur, ou laissez le champ vide.')]);
+        if (err.length) {
+          err.forEach(([c, m]) => { el('al-' + c).setAttribute('aria-invalid', 'true'); const p = el('al-' + c + '-err'); p.textContent = m; p.hidden = false; });
+          const r = el('resume-erreurs'); r.className = 'ag-resume-erreurs';
+          r.innerHTML = `<strong>${echap(T('al.resumeErr', 'Le message ne peut pas encore être diffusé :'))}</strong><ul>${err.map(([c, m]) => `<li><a href="#al-${c}">${echap(m)}</a></li>`).join('')}</ul>`;
+          el('al-' + err[0][0]).focus();
+          return;
+        }
+        const importance = niveau(), z = zone.value, publics = publicsCoches(), liste = consignes();
+        const data = { titre: el('al-titre').value.trim(), resume: el('al-resume').value.trim(), contenu: el('al-contenu').value.trim(),
+          categorie: categorie || (importance === 'alerte' ? 'alerte' : importance === 'info' ? 'pratique' : 'municipale'),
+          importance, zone: z, consignes: liste, publics };
+        if (exp) data.expire = new Date(exp).toISOString();
+        const o = NT.annonces.publier(data);
+        const dest = A.destinataires(z);
+
+        /* F31 : message personnalisé pour les personnes vulnérables concernées */
+        let vuln = 0;
+        if (publics.length) {
+          dest.filter(u => u.vulnerable).forEach(u => {
+            NT.notif.ajouter(u.id, T('al.persoTitre', 'Pour vous : {titre}', { titre: o.titre }),
+              T('al.persoTexte', '{prenom}, ce message vous concerne tout particulièrement ({publics}). {resume}{consigne}',
+                { prenom: u.prenom, publics: publics.join(', '), resume: o.resume, consigne: liste.length ? T('al.persoConsigne', ' Première chose à faire : {c}', { c: liste[0] }) : '' }),
+              'annonces.html#' + o.id, importance === 'info' ? 'info' : importance);
+            vuln++;
+          });
+        }
+        NT.ui.rafraichirAlertes();
+        const cle = { alerte: ['al.okAlerte', 'Alerte diffusée à {n} habitants'], importante: ['al.okImportante', 'Message important diffusé à {n} habitants'], info: ['al.okInfo', 'Information publiée pour {n} habitants'] }[importance];
+        const msg = T(cle[0], cle[1], { n: dest.length });
+        NT.ui.toast(msg, importance === 'alerte' ? 'danger' : 'success', 7000);
+        el('confirmation').innerHTML = `<div class="ag-confirmation"><p><strong><i class="ph-duotone ph-check-circle" aria-hidden="true"></i> ${echap(msg)}</strong></p>
+          ${vuln ? `<p>${echap(T('al.okVuln', '{v} personne(s) vulnérable(s) ont aussi reçu un message personnalisé.', { v: vuln }))}</p>` : ''}
+          <p>${echap(T('al.okFerme', 'La balise de l’en-tête a été mise à jour.'))} <a href="annonces.html#${echap(o.id)}">${echap(T('al.okDetail', 'Voir l’annonce'))}</a></p></div>`;
+        form.reset(); categorie = ''; el('consignes').innerHTML = ''; apercu(); annonces();
+        window.scrollTo({ top: 0 });
+      });
+
+      /* ---------- Alertes actives (lever) ---------- */
+      const estActive = a => a.active && (!a.expire || a.expire > new Date().toISOString());
+      function ligneAnnonce(a, active) {
+        const niv = a.importance || 'info';
+        return `<li><div><div class="ligne">${A.niveauBadge(niv)}${!active ? `<span class="doux">${echap(a.active ? T('al.expiree', 'Expirée') : T('al.levee', 'Levée'))}</span>` : ''}</div>
+          <strong>${echap(a.titre)}</strong>
+          <div class="meta">${echap(T('al.zoneLib', 'Zone'))} : ${echap(a.zone)} · ${echap(NT.ui.dateHeure(a.cree))}${a.expire ? ' · ' + echap(T('al.expire', 'expire le {d}', { d: NT.ui.dateHeure(a.expire) })) : ''}</div></div>
+          ${active ? `<button type="button" class="btn btn-danger" data-lever="${echap(a.id)}"><i class="ph ph-bell-slash" aria-hidden="true"></i>${echap(niv === 'info' ? T('al.retirer', 'Retirer l’annonce') : T('al.lever', 'Lever l’alerte'))}<span class="sr-only"> : ${echap(a.titre)}</span></button>` : ''}</li>`;
+      }
+      function annonces() {
+        const toutes = NT.annonces.toutes(), act = toutes.filter(estActive), fin = toutes.filter(a => !estActive(a));
+        el('liste-actives').innerHTML = act.length ? act.map(a => ligneAnnonce(a, true)).join('') : `<li class="doux">${echap(T('al.aucuneActive', 'Aucune alerte ni annonce en cours.'))}</li>`;
+        el('resume-terminees').textContent = T('al.terminees', 'Messages levés ou expirés ({n})', { n: fin.length });
+        el('liste-terminees').innerHTML = fin.length ? fin.map(a => ligneAnnonce(a, false)).join('') : `<li class="doux">${echap(T('al.aucuneTerminee', 'Aucun message levé ou expiré.'))}</li>`;
+      }
+      el('liste-actives').addEventListener('click', ev => {
+        const b = ev.target.closest('[data-lever]'); if (!b) return;
+        const a = NT.store.find('annonces', b.dataset.lever); if (!a) return;
+        NT.store.update('annonces', a.id, { active: false });
+        NT.audit.log({ categorie: 'annonce', action: a.importance === 'info' ? 'Retrait d’une annonce' : 'Levée d’une alerte', objetId: a.id, objetLibelle: a.titre, avant: 'Active', apres: 'Levée' });
+        NT.ui.rafraichirAlertes();
+        NT.ui.toast(T('al.leverOk', '« {titre} » a été levée.', { titre: a.titre }), 'success');
+        annonces();
+        el('t-actives').setAttribute('tabindex', '-1'); el('t-actives').focus();
+      });
+
+      /* ---------- F38 : état des services ---------- */
+      const sel = el('sv-service'), svEtat = el('sv-etat'), svMsg = el('sv-message'), svRetour = el('sv-retour');
+      function services() {
+        const l = NT.services.tous();
+        el('svc-lignes').innerHTML = l.map(s => {
+          const nom = NT.i18n.choisir(s.nom), e = s.etat || { code: 'ok' };
+          return `<tr><th scope="row"><span class="ag-svc-nom"><i class="ph-duotone ${echap(s.icone)}" aria-hidden="true"></i>${echap(nom)}</span></th>
+            <td>${A.etatBadge(e.code)}</td>
+            <td>${e.message ? echap(e.message) : '<span class="doux">–</span>'}${e.retour ? `<br><span class="doux">${echap(T('al.svcRetourLib', 'Retour'))} : ${echap(e.retour)}</span>` : ''}</td>
+            <td><button type="button" class="btn" data-svc="${echap(s.id)}"><i class="ph ph-pencil-simple" aria-hidden="true"></i>${echap(T('al.svcModifier', 'Modifier'))}<span class="sr-only"> : ${echap(nom)}</span></button></td></tr>`;
+        }).join('');
+      }
+      function remplirSelect() {
+        sel.innerHTML = NT.services.tous().map(s => `<option value="${echap(s.id)}">${echap(NT.i18n.choisir(s.nom))}</option>`).join('');
+      }
+      function prefill() {
+        const s = NT.services.get(sel.value), e = (s && s.etat) || { code: 'ok', message: '', retour: '' };
+        svEtat.value = e.code; svMsg.value = e.message || ''; svRetour.value = e.retour || '';
+      }
+      sel.addEventListener('change', prefill);
+      el('svc-lignes').addEventListener('click', ev => {
+        const b = ev.target.closest('[data-svc]'); if (!b) return;
+        sel.value = b.dataset.svc; prefill(); sel.scrollIntoView({ block: 'center' }); svEtat.focus();
+      });
+      el('form-service').addEventListener('submit', ev => {
+        ev.preventDefault();
+        const r = el('svc-resume'), p = el('sv-message-err'); r.className = ''; r.innerHTML = ''; p.hidden = true; svMsg.removeAttribute('aria-invalid');
+        const code = svEtat.value, msg = svMsg.value.trim(), s = NT.services.get(sel.value);
+        if (code !== 'ok' && !msg) {
+          const m = T('al.svcMsgErr', 'Expliquez ce qui se passe pour que les habitants comprennent pourquoi le service est indisponible.');
+          p.textContent = m; p.hidden = false; svMsg.setAttribute('aria-invalid', 'true');
+          r.className = 'ag-resume-erreurs'; r.innerHTML = `<strong>${echap(T('al.svcResume', 'L’état ne peut pas encore être enregistré :'))}</strong><ul><li>${echap(m)}</li></ul>`;
+          svMsg.focus(); return;
+        }
+        NT.services.definirEtat(s.id, code, code === 'ok' ? '' : msg, code === 'ok' ? '' : svRetour.value.trim());
+        NT.ui.toast(T('al.svcOk', '{nom} : état « {etat} » enregistré.', { nom: NT.i18n.choisir(s.nom), etat: A.etatLabel(code) }), code === 'ok' ? 'success' : 'warning');
+        services(); prefill();
+      });
+
+      /* ---------- Démarrage ---------- */
+      ligneConsigne('');
+      apercu(); annonces(); remplirSelect(); prefill(); services();
+    });
+  </script>
+</body>
+</html>

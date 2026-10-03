@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gestion des comptes — Terra Nova</title>
+  <meta name="description" content="Administration des comptes : rôles, activation, déblocage et journal de sécurité.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/comptes.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/comptes.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="comptes" data-ariane="nav.agent|agent.html;nav.comptes" data-roles="agent,admin">
+  <main id="contenu" class="conteneur">
+    <header class="titre-page">
+      <h1 data-i18n="c.adm.titre">Gestion des comptes</h1>
+      <p data-i18n="c.adm.sous">Suivez les comptes de la plateforme, protégez-les et gardez une trace de chaque action sensible.</p>
+    </header>
+
+    <section class="kpis" id="adm-kpis" aria-label="Résumé"></section>
+
+    <!-- F34 : tableau des comptes -->
+    <section class="bloc" aria-labelledby="t-comptes">
+      <div class="titre-section"><div><h2 id="t-comptes" data-i18n="c.adm.comptes">Comptes utilisateurs</h2>
+        <p id="adm-role-note"></p></div></div>
+      <div class="filtres">
+        <div class="champ">
+          <label for="a-q" data-i18n="c.esp.fRech">Rechercher</label>
+          <input id="a-q" type="search" autocomplete="off" data-i18n-attr="placeholder:c.adm.rechPh" placeholder="Nom ou adresse e-mail">
+        </div>
+        <div class="champ">
+          <label for="a-role" data-i18n="c.adm.fRole">Rôle</label>
+          <select id="a-role"></select>
+        </div>
+        <div class="champ">
+          <label for="a-etat" data-i18n="c.adm.fEtat">État</label>
+          <select id="a-etat"></select>
+        </div>
+      </div>
+      <p class="doux" id="a-resultat" aria-live="polite"></p>
+      <div class="table-defile">
+        <table class="table-empilee" id="table-comptes">
+          <caption class="sr-only" data-i18n="c.adm.cap">Liste des comptes utilisateurs avec leur rôle, leur état et leurs actions</caption>
+          <thead id="thead-comptes"></thead>
+          <tbody id="tbody-comptes"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- D08 : qui peut faire quoi -->
+    <section class="bloc" aria-labelledby="t-droits">
+      <div class="titre-section"><div><h2 id="t-droits" data-i18n="c.adm.droits">Qui peut faire quoi</h2>
+        <p data-i18n="c.adm.droitsD">Chaque profil dispose uniquement des outils nécessaires à sa mission. Les pages et les actions réservées sont aussi bloquées côté interface si l’on tente d’y accéder directement.</p></div></div>
+      <div id="adm-encart"></div>
+      <div class="table-defile">
+        <table>
+          <caption class="sr-only" data-i18n="c.adm.droitsCap">Droits des trois profils : citoyen, agent municipal, administrateur</caption>
+          <thead><tr>
+            <th scope="col" data-i18n="c.adm.dAction">Action</th>
+            <th scope="col" data-i18n="role.citoyen">Citoyen</th>
+            <th scope="col" data-i18n="role.agent">Agent</th>
+            <th scope="col" data-i18n="role.admin">Admin</th>
+          </tr></thead>
+          <tbody id="tbody-droits"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- D09 : journal de sécurité -->
+    <section class="bloc" aria-labelledby="t-journal">
+      <div class="titre-section"><div><h2 id="t-journal" data-i18n="c.adm.journal">Journal de sécurité</h2>
+        <p data-i18n="c.adm.journalD">Connexions, échecs, verrouillages, accès refusés et actions d’administration, du plus récent au plus ancien.</p></div></div>
+      <div class="filtres">
+        <div class="champ">
+          <label for="j-type" data-i18n="c.adm.jType">Type d’événement</label>
+          <select id="j-type"></select>
+        </div>
+      </div>
+      <p class="doux" id="j-resultat" aria-live="polite"></p>
+      <div class="table-defile">
+        <table class="table-empilee">
+          <caption class="sr-only" data-i18n="c.adm.jCap">Journal des événements de sécurité</caption>
+          <thead><tr>
+            <th scope="col" data-i18n="c.adm.jDate">Date</th>
+            <th scope="col" data-i18n="c.adm.jEvt">Événement</th>
+            <th scope="col" data-i18n="c.adm.jCompte">Compte</th>
+            <th scope="col" data-i18n="c.adm.jDetail">Détail</th>
+          </tr></thead>
+          <tbody id="tbody-journal"></tbody>
+        </table>
+      </div>
+      <p><button class="btn" type="button" id="j-plus" hidden></button></p>
+    </section>
+  </main>
+
+  <script>NT.pret(() => NT.comptes.admin());</script>
+</body>
+</html>

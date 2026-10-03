@@ -1,0 +1,61 @@
+/* Transports — info trafic, Mon trajet, horaires par ligne. */
+.tr-ligne{ display:inline-grid; place-items:center; min-width:2.6rem; height:2rem; padding:0 .55rem; border-radius:8px; font-family:var(--titre); font-weight:700; font-size:.9rem;
+  border:2px solid var(--iono); color:var(--iono); background:oklch(0.7040 0.1400 182.5 / .08); flex:none; }
+.tr-N2{ border-color:var(--aurore); color:var(--aurore); background:rgba(157,123,255,.1); }
+.tr-N3{ border-color:var(--soleil); color:var(--soleil); background:rgba(255,196,107,.08); }
+.tr-N4{ border-color:var(--calme); color:var(--calme); background:rgba(143,227,208,.08); }
+
+/* Info trafic */
+.tr-trafic h2{ font-size:1.15rem; }
+.tr-alerte{ display:flex; gap:.9rem; align-items:flex-start; padding:1rem 1.1rem; border-radius:var(--r); border:1px solid var(--soleil); border-inline-start-width:5px; background:rgba(255,196,107,.07); margin-bottom:1rem; }
+.tr-alerte > i{ font-size:1.9rem; color:var(--soleil); flex:none; }
+.tr-alerte h3{ margin:0 0 .35rem; font-size:1rem; }
+.tr-alerte p{ margin:0 0 .5rem; }
+.tr-alerte a{ font-weight:700; }
+.tr-alerte-trajet{ margin:1.25rem 0 0; }
+.tr-puces{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr)); gap:.6rem 1.5rem; }
+.tr-puce{ display:flex; gap:.7rem; align-items:center; padding:.6rem 0; border-bottom:1px solid var(--trait); }
+.tr-puce-txt{ display:flex; flex-direction:column; gap:.25rem; }
+.tr-puce-txt strong{ font-size:.95rem; }
+.tr-puce-txt .statut{ align-self:flex-start; }
+
+/* Mon trajet */
+.tr-trajet{ margin-top:1.75rem; }
+.tr-trajet h2{ font-size:1.35rem; }
+.tr-form{ display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); gap:.5rem 1rem; align-items:end; margin-top:.5rem; }
+.tr-form .champ{ margin-bottom:0; }
+.tr-inverser{ margin-bottom:.1rem; }
+@media (max-width:700px){ .tr-form{ grid-template-columns:1fr; } .tr-inverser{ justify-self:start; } }
+.tr-note{ margin:.75rem 0 0; min-height:1.2rem; }
+.tr-resultat{ margin-top:1rem; }
+.tr-msg{ display:flex; gap:.6rem; align-items:center; padding:1rem; border:1px dashed var(--trait-2); border-radius:var(--r); }
+.tr-msg i{ font-size:1.5rem; color:var(--iono); }
+
+.tr-carte-ligne{ display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:1rem 2rem; align-items:center; margin-top:1.25rem; padding:1.1rem 0 .4rem; border-top:1px solid var(--trait); }
+@media (max-width:760px){ .tr-carte-ligne{ grid-template-columns:1fr; } }
+.tr-quoi{ display:flex; gap:.8rem; align-items:center; }
+.tr-quoi > i{ color:var(--brume); }
+.tr-quoi h3{ margin:0 0 .15rem; font-size:1.2rem; }
+.tr-quoi p{ margin:0; }
+.tr-chiffres{ display:grid; grid-template-columns:repeat(3,auto); gap:.4rem 1.5rem; margin:0; justify-content:start; }
+.tr-chiffres dt{ font-size:.8rem; color:var(--brume); }
+.tr-chiffres dd{ margin:0; font-family:var(--titre); font-size:1.05rem; font-weight:600; }
+@media (max-width:420px){ .tr-chiffres{ grid-template-columns:1fr 1fr; } }
+.tr-h3{ font-size:1rem; margin:1.2rem 0 .5rem; }
+.tr-departs{ list-style:none; margin:0; padding:0; border-top:1px solid var(--trait); }
+.tr-departs li{ display:grid; grid-template-columns:5.5rem 9rem minmax(0,1fr); gap:.4rem 1rem; align-items:baseline; padding:.85rem .25rem; border-bottom:1px solid var(--trait); }
+.tr-heure{ font-family:var(--titre); font-size:1.5rem; font-weight:700; color:#fff; line-height:1.1; }
+.tr-quand{ font-weight:700; color:var(--iono); }
+.tr-quand.tr-now{ color:var(--soleil); }
+.tr-detail{ color:var(--brume); font-size:.92rem; }
+@media (max-width:640px){ .tr-departs li{ grid-template-columns:5rem minmax(0,1fr); } .tr-detail{ grid-column:1 / -1; } }
+.tr-arrets{ margin-top:1rem; }
+.tr-arrets summary{ cursor:pointer; font-weight:700; padding:.5rem 0; }
+.tr-arrets ul{ list-style:none; margin:.4rem 0 0; padding:0; display:grid; gap:.5rem; }
+.tr-arrets li{ display:flex; gap:.6rem; align-items:flex-start; flex-wrap:wrap; }
+
+/* Horaires par ligne */
+.tr-resume{ display:flex; flex-wrap:wrap; gap:.5rem .75rem; align-items:center; margin:1rem 0; }
+#tr-tabs{ --indicator-color:var(--iono); }
+#tr-tabs sl-tab-panel::part(base){ padding-block:.5rem 0; }
+#tr-tabs td{ font-variant-numeric:tabular-nums; }

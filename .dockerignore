@@ -1,4 +1,7 @@
 node_modules
 .env
+.git
 data/*.db*
-server/build
+tools
+docs
+*.md

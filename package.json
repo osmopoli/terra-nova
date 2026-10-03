@@ -1,20 +1,18 @@
 {
-  "name": "nova-terra",
-  "private": true,
+  "name": "terranova",
   "version": "0.1.0",
-  "description": "Terra Nova, plateforme municipale (24h by Webcup 2026) : React 19 + Vite 7 + Tailwind 4 / AdonisJS 6 + MySQL, déployable HODI (Hodifly/Passenger)",
+  "private": true,
+  "description": "Plateforme citoyenne de Terra Nova - 24H By Webcup",
+  "main": "server.js",
   "scripts": {
-    "postinstall": "npm ci --prefix client && npm ci --prefix server",
-    "dev": "concurrently -n server,client -c blue,green \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
-    "build": "npm run build --prefix client && npm run build --prefix server",
-    "start": "npm start --prefix server/build",
-    "migrate": "node server/ace.js migration:run",
-    "seed": "cd server && node ace db:seed"
-  },
-  "devDependencies": {
-    "concurrently": "^9.1.2"
+    "start": "node --env-file-if-exists=.env --no-warnings=ExperimentalWarning server.js",
+    "dev": "node --watch --env-file-if-exists=.env --no-warnings=ExperimentalWarning server.js",
+    "build": "node tools/build-hodi.js"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=22.13"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
   }
 }

@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Espace agents — Terra Nova</title>
+  <meta name="description" content="Poste de contrôle des agents municipaux : demandes en attente, flux de l’API Terra Nova et activité de la plateforme.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/agent.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/agent.js"></script>
+  <script src="assets/js/journal.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="agent" data-ariane="nav.agent" data-roles="agent,admin">
+  <main id="contenu" class="conteneur ag">
+
+    <header class="titre-page ag-entete">
+      <div>
+      <h1 id="titre-agent">Bonjour Karim — Espace agents</h1>
+      <p class="ag-poste"><span class="ag-role" hidden><i class="ph-duotone ph-identification-badge" aria-hidden="true"></i><span id="role-agent">Agent</span></span>
+        <span data-i18n="ag.intro">Votre poste de contrôle : la charge de travail, le flux de l’API Terra Nova et l’activité de la plateforme.</span></p>
+      </div>
+      <a class="btn btn-primaire" href="agent-tableau.html"><i class="ph ph-chart-bar" aria-hidden="true"></i><span data-i18n="ag.tableau">Tableau de bord</span></a>
+    </header>
+
+    <!-- D17 : la charge de travail en un coup d'œil -->
+    <section aria-labelledby="t-kpis">
+      <h2 id="t-kpis" class="sr-only" data-i18n="ag.kpis">Indicateurs de charge</h2>
+      <ul class="ag-kpis" id="kpis"></ul>
+    </section>
+
+    <div class="ag-grille">
+      <!-- D19 : flux de l'API -->
+      <section class="ag-bloc" aria-labelledby="t-api">
+        <h2 id="t-api"><i class="ph-duotone ph-broadcast" aria-hidden="true"></i><span data-i18n="ag.api">Flux de l’API Terra Nova</span></h2>
+
+        <dl class="ag-session" id="api-session" hidden></dl>
+
+        <div class="ag-api-erreur" id="api-erreur" role="status" hidden>
+          <i class="ph-duotone ph-wifi-slash" aria-hidden="true"></i><p id="api-erreur-texte"></p>
+        </div>
+
+        <div class="ag-outils" role="search" aria-label="Filtrer les demandes de l’API" data-i18n-attr="aria-label:ag.apiFiltrer">
+          <div class="champ large"><label for="api-q" data-i18n="ag.rechercher">Rechercher</label>
+            <input id="api-q" type="search" autocomplete="off" data-i18n-attr="placeholder:ag.apiRecherchePh" placeholder="Code, demandeur, mot du message…"></div>
+          <div class="champ"><label for="api-diff" data-i18n="ag.difficulte">Difficulté</label>
+            <select id="api-diff"><option value="" data-i18n="ag.toutes">Toutes</option></select></div>
+          <div class="champ"><label for="api-vague" data-i18n="ag.vague">Vague</label>
+            <select id="api-vague"><option value="" data-i18n="ag.toutes">Toutes</option></select></div>
+          <div class="champ"><label for="api-tri" data-i18n="ag.tri">Trier par</label>
+            <select id="api-tri">
+              <option value="recent" data-i18n="ag.triRecent">Plus récentes d’abord</option>
+              <option value="xp" data-i18n="ag.triXp">XP décroissant</option>
+              <option value="diff" data-i18n="ag.triDiff">Difficulté décroissante</option>
+              <option value="code" data-i18n="ag.triCode">Code</option>
+            </select></div>
+        </div>
+
+        <div class="ag-etat">
+          <span id="api-compte" aria-live="off"></span>
+          <span class="ligne">
+            <span id="api-maj">–</span>
+            <button type="button" class="btn" id="api-actualiser"><i class="ph ph-arrow-clockwise" aria-hidden="true"></i><span data-i18n="ag.actualiser">Actualiser</span></button>
+          </span>
+        </div>
+        <div class="sr-only" id="api-live" aria-live="polite" role="status"></div>
+
+        <div class="ag-chargement" id="api-chargement" role="status" data-i18n="ag.chargement">Chargement du flux de l’API…</div>
+        <div class="table-defile" id="api-tableau" hidden>
+          <table>
+            <caption class="sr-only" data-i18n="ag.apiCaption">Demandes transmises par l’API Terra Nova</caption>
+            <thead><tr>
+              <th scope="col" data-i18n="ag.code">Code</th>
+              <th scope="col" data-i18n="ag.demandeur">Demandeur</th>
+              <th scope="col" data-i18n="ag.difficulte">Difficulté</th>
+              <th scope="col" data-i18n="ag.xp">XP</th>
+              <th scope="col" data-i18n="ag.vague">Vague</th>
+              <th scope="col" data-i18n="ag.message">Message</th>
+            </tr></thead>
+            <tbody id="api-lignes"></tbody>
+          </table>
+        </div>
+        <div class="ag-plus"><button type="button" class="btn" id="api-plus" hidden><i class="ph ph-caret-down" aria-hidden="true"></i><span data-i18n="ag.afficherPlus">Afficher plus de demandes</span></button></div>
+      </section>
+
+      <!-- Colonne latérale -->
+      <div>
+        <section class="ag-bloc" aria-labelledby="t-acces">
+          <h2 id="t-acces"><i class="ph-duotone ph-lightning" aria-hidden="true"></i><span data-i18n="ag.acces">Accès rapides</span></h2>
+          <ul class="ag-liens">
+            <li><a class="btn btn-primaire" href="agent-demandes.html?statut=recue"><i class="ph ph-tray" aria-hidden="true"></i><span data-i18n="ag.lienAttente">Prendre en charge les demandes</span></a></li>
+            <li><a class="btn" href="agent-demandes.html"><i class="ph ph-list-checks" aria-hidden="true"></i><span data-i18n="ag.lienToutes">Toutes les demandes citoyennes</span></a></li>
+            <li><a class="btn" href="agent-alertes.html"><i class="ph ph-megaphone" aria-hidden="true"></i><span data-i18n="ag.lienAlertes">Diffuser une alerte</span></a></li>
+          </ul>
+        </section>
+
+        <section class="ag-bloc" aria-labelledby="t-actions">
+          <h2 id="t-actions"><i class="ph-duotone ph-clipboard-text" aria-hidden="true"></i><span data-i18n="ag.derniers">Dernières actions</span></h2>
+          <ol class="ag-fil" id="dernieres-actions"></ol>
+          <p style="margin:.8rem 0 0"><a class="btn" href="agent-journal.html"><i class="ph ph-list-magnifying-glass" aria-hidden="true"></i><span data-i18n="ag.voirJournal">Ouvrir le journal des actions</span></a></p>
+        </section>
+
+        <section class="ag-bloc" aria-labelledby="t-fil">
+          <h2 id="t-fil"><i class="ph-duotone ph-pulse" aria-hidden="true"></i><span data-i18n="ag.activite">Activité récente</span></h2>
+          <ol class="ag-fil" id="fil"></ol>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    NT.i18n.ajouter({
+      en: {
+        'ag.bonjour': 'Hello {prenom} — Staff area', 'ag.intro': 'Your control post: workload, the Terra Nova API feed and platform activity.', 'ag.kpis': 'Workload indicators',
+        'ag.k.attente': 'Citizen requests waiting to be handled', 'ag.k.voir': 'Open the requests', 'ag.k.encours': 'In progress', 'ag.k.semaine': 'Resolved this week', 'ag.k.urgents': 'Urgent reports', 'ag.k.alertes': 'Active alerts',
+        'ag.k.urgentsAide': 'Open reports of high priority or waiting for more than a day',
+        'ag.tableau': 'Dashboard', 'ag.tableauAide': 'Activity charts and points to watch',
+        'ag.api': 'Terra Nova API feed', 'ag.apiFiltrer': 'Filter API requests', 'ag.rechercher': 'Search', 'ag.apiRecherchePh': 'Code, requester, word in the message…', 'ag.difficulte': 'Difficulty', 'ag.vague': 'Wave', 'ag.tri': 'Sort by',
+        'ag.triRecent': 'Most recent first', 'ag.triXp': 'XP, highest first', 'ag.triDiff': 'Difficulty, hardest first', 'ag.triCode': 'Code',
+        'ag.actualiser': 'Refresh', 'ag.chargement': 'Loading the API feed…', 'ag.apiCaption': 'Requests sent by the Terra Nova API',
+        'ag.code': 'Code', 'ag.demandeur': 'Requester', 'ag.xp': 'XP', 'ag.message': 'Message', 'ag.afficherPlus': 'Show more requests',
+        'ag.acces': 'Quick links', 'ag.lienAttente': 'Handle waiting requests', 'ag.lienToutes': 'All citizen requests', 'ag.lienAlertes': 'Broadcast an alert', 'ag.activite': 'Recent activity',
+        'ag.s.etat': 'Session', 'ag.s.enCours': 'Running', 'ag.s.arretee': 'Stopped', 'ag.s.vague': 'Current wave', 'ag.s.ecoule': 'Elapsed time', 'ag.s.prochaine': 'Next wave', 'ag.s.prochaineVal': 'in {n} min (wave {w})', 'ag.s.visibles': 'Requests received',
+        'ag.initiale': 'Initial', 'ag.vagueN': 'Wave {n}', 'ag.initiales': 'Initial requests', 'ag.nouveau': 'New', 'ag.replier': 'Collapse',
+        'ag.compte': '{n} of {total} requests shown', 'ag.aucune': 'No request matches these filters.',
+        'ag.maj': 'Last update: {h}', 'ag.majEchec': 'Last successful update: {h}', 'ag.majJamais': 'Not updated yet',
+        'ag.erreur': 'The API is temporarily unreachable, retrying in 30 s.', 'ag.erreurAnciennes': 'The data shown dates from {h}.',
+        'ag.live': 'Feed updated: {n} requests.', 'ag.liveErreur': 'The API is unreachable. New attempt in 30 seconds.',
+        'ag.act.demande': 'New request {id}: {objet}', 'ag.j.connexion': 'Sign-in: {email}', 'ag.j.inscription': 'New registration: {email}', 'ag.j.echec_connexion': 'Failed sign-in: {email}',
+        'ag.j.tentative_bloquee': 'Blocked attempt: {email}', 'ag.j.verrouillage': 'Account locked: {email} ({detail})', 'ag.j.deblocage': 'Account unlocked: {email}', 'ag.j.mdp_change': 'Password changed: {email}',
+        'ag.j.suppression_compte': 'Account deleted: {email}', 'ag.j.acces_refuse': 'Access denied: {email} ({detail})', 'ag.aucuneActivite': 'No activity recorded yet.'
+      },
+      es: { 'ag.bonjour': 'Hola {prenom} — Espacio agentes', 'ag.api': 'Flujo de la API Terra Nova', 'ag.actualiser': 'Actualizar', 'ag.activite': 'Actividad reciente' }
+    });
+
+    NT.pret(() => {
+      const { echap } = NT.ui, A = NT.agent, T = A.T;
+      const u = NT.auth.utilisateur();
+
+      document.getElementById('titre-agent').textContent = T('ag.bonjour', 'Bonjour {prenom} — Espace agents', { prenom: u.prenom });
+      document.getElementById('role-agent').textContent = T('role.' + u.role, NT.ROLES[u.role] || u.role);
+
+      /* ---------- D17 : indicateurs ---------- */
+      function kpis() {
+        const d = NT.demandes.toutes();
+        const attente = NT.demandes.enAttente().length;
+        const items = [
+          ['fort', 'agent-demandes.html?statut=recue', attente, T('ag.k.attente', 'Demandes citoyennes en attente de prise en charge'), T('ag.k.voir', 'Ouvrir les demandes')],
+          ['', 'agent-demandes.html?statut=en_cours', d.filter(x => x.statut === 'en_cours').length, T('ag.k.encours', 'En cours de traitement')],
+          ['', 'agent-demandes.html?statut=traitee', d.filter(A.traiteeCetteSemaine).length, T('ag.k.semaine', 'Traitées cette semaine')],
+          ['', 'agent-demandes.html?type=signalement', d.filter(A.signalementUrgent).length, T('ag.k.urgents', 'Signalements urgents'), '', T('ag.k.urgentsAide', 'Signalements ouverts de priorité haute ou en attente depuis plus d’un jour')],
+          ['', 'agent-alertes.html', NT.annonces.actives().length, T('ag.k.alertes', 'Alertes actives')]
+        ];
+        document.getElementById('kpis').innerHTML = items.map(([cls, href, n, lib, cta, aide]) => `
+          <li class="${cls ? 'ag-kpi-fort' : ''}"><a class="kpi ${cls}" href="${href}"${aide ? ` title="${echap(aide)}"` : ''}>
+            <span class="valeur">${n}</span><span class="libelle">${echap(lib)}</span>
+            ${cta ? `<span class="kpi-cta"><i class="ph ph-tray-arrow-down" aria-hidden="true"></i>${echap(cta)}</span>` : ''}</a></li>`).join('');
+      }
+      kpis();
+
+      /* ---------- Fil d'activité (journal + dernières demandes) ---------- */
+      function fil() {
+        const J = { connexion: 'ph-sign-in', inscription: 'ph-user-plus', echec_connexion: 'ph-warning', tentative_bloquee: 'ph-prohibit', verrouillage: 'ph-lock-key', deblocage: 'ph-lock-key-open', mdp_change: 'ph-key', suppression_compte: 'ph-user-minus', acces_refuse: 'ph-hand-palm' };
+        const FR = { connexion: 'Connexion : {email}', inscription: 'Nouvelle inscription : {email}', echec_connexion: 'Échec de connexion : {email}', tentative_bloquee: 'Tentative bloquée : {email}', verrouillage: 'Compte verrouillé : {email} ({detail})', deblocage: 'Compte débloqué : {email}', mdp_change: 'Mot de passe modifié : {email}', suppression_compte: 'Compte supprimé : {email}', acces_refuse: 'Accès refusé : {email} ({detail})' };
+        const evts = NT.auth.journal().slice(0, 12).map(j => ({ date: j.date, icone: J[j.type] || 'ph-circle',
+          texte: T('ag.j.' + j.type, FR[j.type] || (j.type + ' : {email}'), { email: j.email || '–', detail: j.detail || '' }) }));
+        const dem = NT.demandes.toutes().slice(0, 6).map(d => ({ date: d.cree, icone: 'ph-tray', lien: 'agent-demandes.html?q=' + encodeURIComponent(d.id),
+          texte: T('ag.act.demande', 'Nouvelle demande {id} : {objet}', { id: d.id, objet: d.objet }) }));
+        const tout = evts.concat(dem).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 10);
+        document.getElementById('fil').innerHTML = tout.length ? tout.map(x => `
+          <li><i class="ph-duotone ${x.icone}" aria-hidden="true"></i><span>${x.lien ? `<a href="${echap(x.lien)}">${echap(x.texte)}</a>` : echap(x.texte)}
+            <time class="quand" datetime="${echap(x.date)}">${echap(NT.ui.depuis(x.date))}</time></span></li>`).join('')
+          : `<li><span class="doux">${echap(T('ag.aucuneActivite', 'Aucune activité enregistrée pour le moment.'))}</span></li>`;
+      }
+      fil();
+
+      /* ---------- F47 / F48 : dernières actions du journal d'audit ---------- */
+      function dernieresActions() {
+        const V = NT.journalVue, l = V.toutes().slice(0, 5);
+        document.getElementById('dernieres-actions').innerHTML = l.length ? l.map(x => `
+          <li><i class="ph-duotone ${V.catIcone(x.categorie)}" aria-hidden="true"></i><span>
+            <a href="agent-journal.html${x.objetId ? '?objet=' + encodeURIComponent(x.objetId) : ''}">${echap(V.actionLabel(x.action))}${x.objetLibelle ? ' : ' + echap(x.objetLibelle) : ''}</a>
+            <span class="quand">${echap(V.nomActeur(x))} · <time datetime="${echap(x.date)}">${echap(NT.ui.depuis(x.date))}</time></span></span></li>`).join('')
+          : `<li><span class="doux">${echap(T('ag.aucuneAction', 'Aucune action enregistrée pour le moment.'))}</span></li>`;
+      }
+      dernieresActions();
+
+      /* ---------- D19 : flux de l'API ---------- */
+      const el = id => document.getElementById(id);
+      const PAS = 20;
+      let donnees = null, majLe = null, enCours = false, limite = PAS;
+
+      const duree = m => (m >= 60 ? Math.floor(m / 60) + ' h ' + String(m % 60).padStart(2, '0') + ' min' : m + ' min');
+      const vagueDe = r => (r.wave_number == null ? -1 : Number(r.wave_number));
+      const vagueLib = r => (r.wave_number == null ? T('ag.initiale', 'Initiale') : T('ag.vagueN', 'Vague {n}', { n: r.wave_number }));
+      const niveau = r => Math.min(3, Math.max(1, Number(r.difficulty_level) || 1));
+      const ICN = { 1: 'ph-cell-signal-low', 2: 'ph-cell-signal-medium', 3: 'ph-cell-signal-full' };
+      const diffBadge = r => `<span class="ag-diff ag-diff-${niveau(r)}"><i class="ph ${ICN[niveau(r)]}" aria-hidden="true"></i>${echap(r.difficulty || T('ag.diff.' + niveau(r), ''))}</span>`;
+      const vagueMax = () => Math.max(0, ...donnees.requests.map(vagueDe), Number(donnees.session && donnees.session.current_wave) || 0);
+
+      function session() {
+        const s = donnees.session || {};
+        const cell = (k, v) => `<div><dt>${echap(k)}</dt><dd>${v}</dd></div>`;
+        const etat = s.is_running ? `<span class="statut statut-ok"><i class="ph ph-play-circle" aria-hidden="true"></i>${echap(T('ag.s.enCours', 'En cours'))}</span>`
+          : `<span class="statut statut-attente"><i class="ph ph-pause-circle" aria-hidden="true"></i>${echap(T('ag.s.arretee', 'À l’arrêt'))}</span>`;
+        const prochaine = s.next_wave_number != null && s.minutes_until_next_wave != null
+          ? echap(T('ag.s.prochaineVal', 'dans {n} min (vague {w})', { n: s.minutes_until_next_wave, w: s.next_wave_number })) : '–';
+        const dl = el('api-session');
+        dl.innerHTML = cell(T('ag.s.etat', 'Session'), etat) + cell(T('ag.s.vague', 'Vague actuelle'), s.current_wave == null ? '–' : echap(s.current_wave))
+          + cell(T('ag.s.ecoule', 'Temps écoulé'), s.elapsed_minutes == null ? '–' : echap(duree(Number(s.elapsed_minutes))))
+          + cell(T('ag.s.prochaine', 'Prochaine vague'), prochaine)
+          + cell(T('ag.s.visibles', 'Demandes reçues'), echap(s.visible_requests_count != null ? s.visible_requests_count : donnees.requests.length));
+        dl.hidden = false;
+      }
+
+      function remplirOptions() {
+        const sd = el('api-diff'), sv = el('api-vague');
+        const vd = sd.value, vv = sv.value;
+        const diffs = [...new Map(donnees.requests.map(r => [niveau(r), r.difficulty || T('ag.diff.' + niveau(r), '')])).entries()].sort((a, b) => a[0] - b[0]);
+        sd.innerHTML = `<option value="">${echap(T('ag.toutes', 'Toutes'))}</option>` + diffs.map(([n, l]) => `<option value="${n}">${echap(l)}</option>`).join('');
+        const vagues = [...new Set(donnees.requests.map(vagueDe))].sort((a, b) => b - a);
+        sv.innerHTML = `<option value="">${echap(T('ag.toutes', 'Toutes'))}</option>` + vagues.map(n => `<option value="${n}">${echap(n < 0 ? T('ag.initiales', 'Demandes initiales') : T('ag.vagueN', 'Vague {n}', { n }))}</option>`).join('');
+        sd.value = vd; sv.value = vv;
+      }
+
+      function vue() {
+        const q = A.sansAccent(el('api-q').value.trim()), fd = el('api-diff').value, fv = el('api-vague').value, tri = el('api-tri').value;
+        let l = donnees.requests.filter(r =>
+          (!fd || String(niveau(r)) === fd) && (fv === '' || String(vagueDe(r)) === fv) &&
+          (!q || A.sansAccent([r.request_code, r.requester_name, r.requester_type, r.message_public, r.difficulty].join(' ')).includes(q)));
+        const recent = (a, b) => (vagueDe(b) - vagueDe(a)) || String(b.arrival_time || '').localeCompare(String(a.arrival_time || '')) || (Number(b.id) - Number(a.id));
+        const cmp = { recent, xp: (a, b) => (Number(b.xp_total) - Number(a.xp_total)) || recent(a, b), diff: (a, b) => (niveau(b) - niveau(a)) || recent(a, b),
+          code: (a, b) => String(a.request_code).localeCompare(String(b.request_code), undefined, { numeric: true }) }[tri];
+        return l.sort(cmp);
+      }
+
+      function message(m) {
+        m = String(m == null ? '' : m);
+        if (m.length <= 110) return echap(m);
+        return `<details><summary>${echap(m.slice(0, 110).trimEnd())}…</summary><p>${echap(m)}</p>
+          <button type="button" class="replier">${echap(T('ag.replier', 'Réduire'))}</button></details>`;
+      }
+
+      function rendre() {
+        const tout = vue(), actuelle = vagueMax();
+        const visibles = tout.slice(0, limite);
+        el('api-lignes').innerHTML = visibles.length ? visibles.map(r => {
+          const nouveau = r.wave_number != null && Number(r.wave_number) === actuelle;
+          return `<tr class="${nouveau ? 'ag-nouveau' : ''}">
+            <th scope="row" class="ag-code">${echap(r.request_code)}${nouveau ? `<span class="ag-nouveau-badge">${echap(T('ag.nouveau', 'Nouveau'))}</span>` : ''}</th>
+            <td><strong>${echap(r.requester_name)}</strong><br><span class="doux">${echap(r.requester_type)}</span></td>
+            <td>${diffBadge(r)}</td><td class="num">${echap(r.xp_total)}</td><td class="ag-vague">${echap(vagueLib(r))}</td>
+            <td class="ag-msg">${message(r.message_public)}</td></tr>`;
+        }).join('') : `<tr><td colspan="6" class="doux">${echap(T('ag.aucune', 'Aucune demande ne correspond à ces filtres.'))}</td></tr>`;
+        el('api-compte').textContent = T('ag.compte', '{n} demandes affichées sur {total}', { n: visibles.length, total: donnees.requests.length });
+        el('api-plus').hidden = tout.length <= limite;
+        el('api-tableau').hidden = false; el('api-chargement').hidden = true;
+      }
+
+      function majHeure(ok) {
+        el('api-maj').textContent = majLe ? T(ok ? 'ag.maj' : 'ag.majEchec', ok ? 'Dernière mise à jour : {h}' : 'Dernière mise à jour réussie : {h}', { h: A.heure(majLe, true) }) : T('ag.majJamais', 'Pas encore actualisé');
+      }
+
+      async function charger() {
+        if (enCours) return;
+        enCours = true;
+        const btn = el('api-actualiser'); btn.disabled = true; btn.setAttribute('aria-busy', 'true');
+        try {
+          const rep = await fetch('api.php', { cache: 'no-store', headers: { Accept: 'application/json' } });
+          if (!rep.ok) throw new Error('http ' + rep.status);
+          const j = await rep.json();
+          if (!j || !Array.isArray(j.requests)) throw new Error('format');
+          donnees = j; majLe = new Date();
+          el('api-erreur').hidden = true;
+          session(); remplirOptions(); rendre(); majHeure(true);
+          el('api-live').textContent = T('ag.live', 'Flux mis à jour : {n} demandes.', { n: j.requests.length });
+        } catch (err) {
+          let txt = T('ag.erreur', 'L’API est momentanément injoignable, nouvel essai dans 30 s.');
+          if (donnees) { txt += ' ' + T('ag.erreurAnciennes', 'Les données affichées datent de {h}.', { h: A.heure(majLe, true) }); majHeure(false); }
+          else { el('api-chargement').hidden = true; majHeure(false); }
+          el('api-erreur-texte').textContent = txt; el('api-erreur').hidden = false;
+          el('api-live').textContent = T('ag.liveErreur', 'L’API est injoignable. Nouvel essai dans 30 secondes.');
+        } finally {
+          enCours = false; btn.disabled = false; btn.removeAttribute('aria-busy');
+          kpis(); fil();
+        }
+      }
+
+      ['api-q', 'api-diff', 'api-vague', 'api-tri'].forEach(id => el(id).addEventListener('input', () => { if (donnees) { limite = PAS; rendre(); } }));
+      el('api-plus').addEventListener('click', () => { limite += PAS; rendre(); });
+      el('api-actualiser').addEventListener('click', charger);
+      el('api-lignes').addEventListener('click', ev => { const b = ev.target.closest('.replier'); if (b) { const d = b.closest('details'); d.open = false; d.querySelector('summary').focus(); } });
+      charger();
+      setInterval(charger, 30000);
+    });
+  </script>
+</body>
+</html>
