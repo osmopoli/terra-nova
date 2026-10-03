@@ -14,15 +14,16 @@
       'statut.recue': 'Received', 'statut.en_cours': 'In progress', 'statut.traitee': 'Resolved', 'statut.cloturee': 'Closed',
       'ag.type.contact': 'Question', 'ag.type.signalement': 'Report', 'ag.type.demarche': 'Procedure',
       'ag.prio.basse': 'Low', 'ag.prio.normale': 'Normal', 'ag.prio.haute': 'High',
-      'ag.etat.ok': 'Available', 'ag.etat.maintenance': 'Under maintenance', 'ag.etat.incident': 'Incident',
+      'ag.etat.ok': 'Available', 'ag.etat.maintenance': 'Under maintenance', 'ag.etat.incident': 'Incident', 'ag.etat.desactive': 'Disabled (unavailable)',
       'ag.niv.info': 'Information', 'ag.niv.importante': 'Important', 'ag.niv.alerte': 'Alert',
       'ag.diff.1': 'Easy', 'ag.diff.2': 'Medium', 'ag.diff.3': 'Hard',
       'ag.actionRequise': 'Action required', 'ag.toutes': 'All', 'ag.quartier': 'District', 'ag.aucun': 'None'
     },
     es: {
       'statut.recue': 'Recibida', 'statut.en_cours': 'En curso', 'statut.traitee': 'Tratada', 'statut.cloturee': 'Cerrada',
-      'ag.actionRequise': 'Acción requerida', 'ag.toutes': 'Todas'
-    }
+      'ag.actionRequise': 'Acción requerida', 'ag.toutes': 'Todas', 'ag.etat.desactive': 'Desactivado (no disponible)'
+    },
+    ar: { 'ag.etat.desactive': 'معطّلة (غير متاحة)' }
   });
 
   /* ---------- Libellés ---------- */
@@ -41,8 +42,8 @@
     return `<span class="ag-prio ag-prio-${k}"><i class="ph ${ic}" aria-hidden="true"></i>${e(A.prioLabel(p))}</span>`;
   };
 
-  const ETATS = { ok: 'Disponible', maintenance: 'En maintenance', incident: 'Incident' };
-  const ICONES_ETAT = { ok: 'ph-check-circle', maintenance: 'ph-wrench', incident: 'ph-warning-octagon' };
+  const ETATS = { ok: 'Disponible', maintenance: 'En maintenance', incident: 'Incident', desactive: 'Désactivé (indisponible)' };
+  const ICONES_ETAT = { ok: 'ph-check-circle', maintenance: 'ph-wrench', incident: 'ph-warning-octagon', desactive: 'ph-prohibit' };
   A.etatLabel = c => T('ag.etat.' + c, ETATS[c] || c);
   A.etatBadge = c => `<span class="statut statut-${e(c)}"><i class="ph ${ICONES_ETAT[c] || 'ph-circle'}" aria-hidden="true"></i>${e(A.etatLabel(c))}</span>`;
 

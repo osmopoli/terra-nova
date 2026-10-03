@@ -300,7 +300,7 @@
       el('api-actualiser').addEventListener('click', charger);
       el('api-lignes').addEventListener('click', ev => { const b = ev.target.closest('.replier'); if (b) { const d = b.closest('details'); d.open = false; d.querySelector('summary').focus(); } });
       charger();
-      setInterval(charger, 30000);
+      setInterval(charger, NT.econome.delai(30000));
     });
   </script>
 </body>

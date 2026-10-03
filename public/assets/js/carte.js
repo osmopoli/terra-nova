@@ -22,7 +22,7 @@
       'cm.ligne.N1': 'Centre – Nord', 'cm.ligne.N2': 'Sud – Gare orbitale', 'cm.ligne.N3': 'Est – Ouest', 'cm.ligne.N4': 'Est – Gare orbitale',
       'cm.st.ouvert': 'Ouvert maintenant', 'cm.st.ferme': 'Fermé maintenant', 'cm.h24': '24h/24', 'cm.jusqua': 'jusqu’à {h}',
       'cm.ouvreAuj': 'ouvre aujourd’hui à {h}', 'cm.ouvreDem': 'ouvre demain à {h}', 'cm.ouvreJour': 'ouvre {j} à {h}',
-      'cm.dansQuartier': 'Dans votre quartier', 'cm.svc.maintenance': 'Service en maintenance', 'cm.svc.incident': 'Incident sur le service',
+      'cm.dansQuartier': 'Dans votre quartier', 'cm.svc.maintenance': 'Service en maintenance', 'cm.svc.incident': 'Incident sur le service', 'cm.svc.desactive': 'Service indisponible (désactivé)',
       'cm.fermer': 'Fermer', 'cm.fermerFiche': 'Fermer la fiche du lieu', 'cm.adresse': 'Adresse', 'cm.horaires': 'Horaires', 'cm.tel': 'Téléphone', 'cm.acces': 'Accès PMR',
       'cm.pmrOui': 'Accessible aux personnes à mobilité réduite', 'cm.pmrNon': 'Accès limité pour le moment : appelez avant de venir.',
       'cm.yAller': 'Y aller en navette', 'cm.arret': 'Arrêt le plus proche', 'cm.lignes': 'Ligne(s)', 'cm.trajet': 'Calculer mon trajet', 'cm.voirService': 'Voir le service', 'cm.rdv': 'Prendre rendez-vous',
@@ -49,7 +49,7 @@
       'cm.ligne.N1': 'Centre – North', 'cm.ligne.N2': 'South – Orbital station', 'cm.ligne.N3': 'East – West', 'cm.ligne.N4': 'East – Orbital station',
       'cm.st.ouvert': 'Open now', 'cm.st.ferme': 'Closed now', 'cm.h24': '24/7', 'cm.jusqua': 'until {h}',
       'cm.ouvreAuj': 'opens today at {h}', 'cm.ouvreDem': 'opens tomorrow at {h}', 'cm.ouvreJour': 'opens {j} at {h}',
-      'cm.dansQuartier': 'In your district', 'cm.svc.maintenance': 'Service under maintenance', 'cm.svc.incident': 'Service incident',
+      'cm.dansQuartier': 'In your district', 'cm.svc.maintenance': 'Service under maintenance', 'cm.svc.incident': 'Service incident', 'cm.svc.desactive': 'Service unavailable (disabled)',
       'cm.fermer': 'Close', 'cm.fermerFiche': 'Close the place details', 'cm.adresse': 'Address', 'cm.horaires': 'Opening hours', 'cm.tel': 'Phone', 'cm.acces': 'Accessibility',
       'cm.pmrOui': 'Accessible to people with reduced mobility', 'cm.pmrNon': 'Limited access for now: please call before coming.',
       'cm.yAller': 'Getting there by shuttle', 'cm.arret': 'Nearest stop', 'cm.lignes': 'Line(s)', 'cm.trajet': 'Plan my trip', 'cm.voirService': 'See the service', 'cm.rdv': 'Book an appointment',
@@ -65,8 +65,9 @@
       'cm.ariane': 'Mapa de servicios', 'cm.titre': 'Mapa de servicios', 'cm.planTitre': 'Plano de Terra Nova',
       'cm.urgBtn': 'Urgencias y hospitales', 'cm.rechercheLabel': 'Buscar un lugar', 'cm.effacer': 'Borrar', 'cm.fermer': 'Cerrar',
       'cm.st.ouvert': 'Abierto ahora', 'cm.st.ferme': 'Cerrado ahora', 'cm.h24': '24 h', 'cm.lieux': 'Lugares', 'cm.adresse': 'Dirección', 'cm.horaires': 'Horarios', 'cm.tel': 'Teléfono',
-      'cm.rdv': 'Pedir cita', 'cm.voirService': 'Ver el servicio'
-    }
+      'cm.rdv': 'Pedir cita', 'cm.voirService': 'Ver el servicio', 'cm.svc.desactive': 'Servicio no disponible (desactivado)'
+    },
+    ar: { 'cm.svc.desactive': 'الخدمة غير متاحة (معطّلة)' }
   });
 
   /* ---------- Réseau de navettes (mêmes arrêts et lignes que transports.html) ---------- */
@@ -457,6 +458,6 @@
     rendre();
     if (lieuUrl && parId(lieuUrl)) selectionner(lieuUrl, { decl: 'marqueur' });
     NT.i18n.appliquer();
-    setInterval(majStatuts, 60000);
+    setInterval(majStatuts, NT.econome.delai(60000));
   });
 })();

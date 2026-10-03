@@ -29,6 +29,13 @@
     en: EN, es: EN, ar: EN
   });
 
+  /* F63 / F64 : état du service avant de commencer */
+  NT.i18n.ajouter({
+    fr: { 'dem.perturbeSuite': 'Vous pouvez tout de même envoyer votre demande : elle sera traitée dès que possible.', 'dem.errDesactive': 'Ce service est indisponible : la démarche ne peut pas être commencée en ligne. Utilisez la prochaine action possible indiquée sous le service.' },
+    en: { 'dem.perturbeSuite': 'You can still send your request: it will be handled as soon as possible.', 'dem.errDesactive': 'This service is unavailable: the procedure cannot be started online. Use the next possible action shown under the service.' },
+    es: { 'dem.perturbeSuite': 'Puede enviar su solicitud de todos modos: se tratará lo antes posible.', 'dem.errDesactive': 'Este servicio no está disponible: el trámite no puede empezarse en línea. Use la próxima acción posible indicada bajo el servicio.' },
+    ar: { 'dem.perturbeSuite': 'يمكنك مع ذلك إرسال طلبك: ستتم معالجته في أقرب وقت.', 'dem.errDesactive': 'هذه الخدمة غير متاحة: لا يمكن بدء الإجراء عبر الإنترنت. استعمل الإجراء الممكن التالي المبيّن تحت الخدمة.' }
+  });
   const bi = (fr, en) => (NT.i18n.langue === 'fr' ? fr : en);
   const { echap, $, $$ } = NT.ui;
   const nomService = s => (s ? NT.i18n.choisir(s.nom) : bi('Service à déterminer', 'Service to be determined'));
@@ -144,15 +151,22 @@
     majDestinataire();
 
     /* ---------- État du service choisi (information avant d'envoyer) ---------- */
+    /* F64 : l'état du service est affiché dès qu'il est choisi, même quand tout va bien (Disponible / Perturbé / Indisponible),
+       avec le message d'interruption connu et le retour prévu. F63 : service désactivé → la démarche ne peut pas être commencée,
+       le bouton d'envoi est remplacé par la prochaine action possible. */
     function majEtatService(p) {
       const sel = $('#' + p + '-service'), zone = $('#etat-' + p + '-service');
       const s = NT.services.get(sel.value);
-      if (!s || !s.etat || s.etat.code === 'ok') { zone.hidden = true; zone.innerHTML = ''; return; }
-      const lib = s.etat.code === 'incident' ? bi('Service indisponible', 'Service unavailable') : bi('Service en maintenance', 'Service under maintenance');
+      zone.className = 'dm-etat-zone';
+      if (!s) { zone.hidden = true; zone.innerHTML = ''; majEnvoi(); return; }
+      const e = NT.ui.etatService(s);
       zone.hidden = false;
-      zone.innerHTML = `<i class="ph-duotone ph-warning" aria-hidden="true"></i><p><strong>${echap(lib)}.</strong> ${echap(s.etat.message || '')} ${echap(s.etat.retour || '')}
-        ${echap(bi('Vous pouvez tout de même envoyer votre demande : elle sera traitée dès que possible.', 'You can still send your request: it will be handled as soon as possible.'))}</p>`;
+      zone.innerHTML = NT.ui.encartService(s, { siDisponible: true, actions: p === 'd' })
+        + (e.niveau === 'perturbe' ? `<p class="doux" style="margin:-.5rem 0 0">${echap(NT.t('dem.perturbeSuite'))}</p>` : '');
+      majEnvoi();
     }
+    const demarcheBloquee = () => { const id = $('#d-service').value; return type === 'demarche' && !!id && !NT.ui.etatService(NT.services.get(id)).demarchePossible; };
+    function majEnvoi() { const b = $('#btn-envoyer'); if (b) b.hidden = demarcheBloquee(); }
     ['c', 'd'].forEach(p => $('#' + p + '-service').addEventListener('change', () => { majEtatService(p); effacerErreur(p + '-service'); }));
 
     /* ---------- Choix du type ---------- */
@@ -161,6 +175,7 @@
       type = t;
       $$('input[name=type]').forEach(r => (r.checked = r.value === t));
       $$('.dm-bloc').forEach(b => (b.hidden = b.dataset.type !== t));
+      majEnvoi();
       masquerResume();
       $$('.dm-err').forEach(p => { p.hidden = true; p.textContent = ''; });
       $$('[aria-invalid]').forEach(el => el.removeAttribute('aria-invalid'));
@@ -251,6 +266,7 @@
         ],
         demarche: [
           { id: 'd-service', focus: 'd-service', ok: () => !!val('d-service'), msg: bi('Choisissez le service concerné.', 'Choose the service concerned.') },
+          { id: 'd-service', focus: 'd-service', ok: () => !demarcheBloquee(), msg: NT.t('dem.errDesactive') },
           { id: 'd-nature', focus: 'd-nature', ok: () => !!val('d-nature'), msg: bi('Choisissez la nature de la démarche.', 'Choose the type of procedure.') }
         ]
       };

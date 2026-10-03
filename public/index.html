@@ -135,12 +135,11 @@
       }
 
       /* Services les plus demandés (prioritaires puis les plus consultés) */
-      const etiquette = { maintenance: 'En maintenance', incident: 'Indisponible' };
       document.getElementById('populaires').innerHTML = NT.services.tous().slice().sort((a, b) => (b.prioritaire - a.prioritaire) || (b.vues - a.vues)).slice(0, 6).map(s => `
         <li><a href="${echap(s.lien || 'services.html#' + s.id)}">
           <span class="icone" aria-hidden="true"><i class="ph-duotone ${echap(s.icone)}"></i></span>
           <span><strong>${echap(choisir(s.nom))}</strong><span class="doux">${echap(choisir(s.description))}</span></span>
-          ${s.etat.code !== 'ok' ? `<span class="statut statut-${s.etat.code}">${etiquette[s.etat.code]}</span>` : ''}
+          ${s.etat.code !== 'ok' ? NT.ui.niveauBadge(s) : ''}
         </a></li>`).join('');
 
       /* Dernières nouvelles */

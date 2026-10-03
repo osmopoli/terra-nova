@@ -67,3 +67,5 @@ Le détail « où et comment le montrer au jury » est dans [`docs/RENDU-JURY.md
 | Rendez-vous, transports, carte | F36, F39, F40, F45, F46 | `rendez-vous`, `transports`, `carte` |
 | Participation, données | F51, F52 | `soutenir`, `donnees` |
 | Accessibilité, langues, langage clair | D13, D14, D20, F21, F23, F24, F41, F42, F43, F44 | toutes (panneau ♿, touche `?`, `aide`) |
+| Légèreté, appareils peu puissants, version simple | F61, F62 | panneau ♿, pied de page, `/simple` (`src/modules/simple.js`) |
+| État des services (désactivation admin, avant toute démarche) | F63, F64 | `agent-alertes`, `services`, `demande`, `rendez-vous` |

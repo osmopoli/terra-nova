@@ -98,10 +98,10 @@
     const serviceUrl = NT.ui.param('service');
     $('#liste-services').innerHTML = services.map(s => {
       const ok = !s.etat || s.etat.code === 'ok';
-      const libEtat = s.etat && s.etat.code === 'incident' ? bi('Indisponible', 'Unavailable') : bi('En maintenance', 'Under maintenance');
+      const altRdv = s.etat && s.etat.alternative && s.etat.alternative.texte ? ' ' + s.etat.alternative.texte : '';   // F63 : prochaine action possible
       return `<label class="dm-choix"><input type="radio" name="service" value="${echap(s.id)}" ${ok ? '' : 'disabled'} aria-describedby="sd-${echap(s.id)}">
         <span class="dm-choix-corps"><i class="ph-duotone ${echap(s.icone)} dm-ico" aria-hidden="true"></i><strong>${echap(nomService(s))}</strong>
-          <span class="doux" id="sd-${echap(s.id)}">${ok ? echap(s.lieu || '') : `<span class="statut statut-${echap(s.etat.code)}">${echap(libEtat)}</span> ${echap(bi('Non réservable : ', 'Cannot be booked: '))}${echap(s.etat.message || '')} ${echap(s.etat.retour || '')}`}</span></span>
+          <span class="doux" id="sd-${echap(s.id)}">${ok ? echap(s.lieu || '') : `${NT.ui.niveauBadge(s)} ${echap(bi('Non réservable : ', 'Cannot be booked: '))}${echap(s.etat.message || '')} ${echap(s.etat.retour || '')}${echap(altRdv)}`}</span></span>
         <i class="ph-duotone ph-check-circle dm-coche" aria-hidden="true"></i></label>`;
     }).join('') || `<p class="vide">${echap(bi('Aucun service ne propose de rendez-vous pour le moment.', 'No service offers appointments at the moment.'))}</p>`;
     $('#indicateur').setAttribute('aria-label', bi('Étapes du rendez-vous', 'Appointment steps'));

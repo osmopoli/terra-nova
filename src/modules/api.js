@@ -145,7 +145,12 @@ function reglePatch(col, req, avant, patch) {
     }
     case 'annonces': return staff ? sans(patch, 'id', 'cree') : null;
     case 'services': {
-      if (staff) return sans(patch, 'id');
+      if (staff) {
+        // F63 : la désactivation d'un service est réservée à l'administrateur (routes dédiées, journalisées) ;
+        // un agent ne peut ni désactiver un service ni écraser la désactivation décidée par l'administrateur
+        if ('etat' in patch && ((patch.etat && patch.etat.code === 'desactive') || (avant.etat && avant.etat.code === 'desactive'))) return null;
+        return sans(patch, 'id');
+      }
       if (Object.keys(patch).length === 1 && 'vues' in patch) return { vues: (avant.vues || 0) + 1 };   // compteur de consultation (F28)
       return null;
     }
@@ -159,6 +164,38 @@ function reglePatch(col, req, avant, patch) {
   }
 }
 
+const serviceDesactive = (id) => { const s = id ? docs.get('services', String(id)) : null; return s && s.etat && s.etat.code === 'desactive' ? s : null; };
+
+/* ---------- F63 : désactiver / réactiver rapidement un service défectueux (administrateur uniquement) ---------- */
+const TYPES_ALTERNATIVE = ['telephone', 'guichet', 'en-ligne', 'date', 'autre'];
+const texte = (v, max) => String(v == null ? '' : v).trim().slice(0, max);
+router.post('/api/services/:id/desactiver', A.exigerRole('admin'), (req, res) => {
+  const s = docs.get('services', req.params.id);
+  if (!s) return erreur(res, 404, 'Service introuvable.');
+  const b = req.body || {};
+  const motif = texte(b.motif, 300);
+  const alt = b.alternative || {};
+  const alternative = { type: TYPES_ALTERNATIVE.includes(alt.type) ? alt.type : 'autre', texte: texte(alt.texte, 300), valeur: texte(alt.valeur, 160) };
+  if (motif.length < 5) return erreur(res, 400, 'Indiquez la raison de la désactivation (5 caractères minimum).');
+  if (alternative.texte.length < 5) return erreur(res, 400, 'Indiquez la prochaine action possible pour les habitants (autre canal, téléphone, guichet, date).');
+  const avant = s.etat || { code: 'ok' };
+  const etat = { code: 'desactive', message: motif, retour: texte(b.retour, 160), alternative, depuis: maintenant(), par: `${req.user.prenom} ${req.user.nom}`,
+    precedent: avant.code === 'desactive' ? (avant.precedent || null) : avant };
+  const maj = docs.patch('services', s.id, { etat });
+  audit(req.user, { categorie: 'service', action: 'Désactivation du service', objetId: s.id, objetLibelle: (s.nom && s.nom.fr) || s.id,
+    avant: avant.code, apres: 'desactive', motif: `${motif}${etat.retour ? ' · Retour : ' + etat.retour : ''} · Alternative : ${alternative.texte}` });
+  res.json(maj);
+});
+router.post('/api/services/:id/reactiver', A.exigerRole('admin'), (req, res) => {
+  const s = docs.get('services', req.params.id);
+  if (!s) return erreur(res, 404, 'Service introuvable.');
+  if (!s.etat || s.etat.code !== 'desactive') return erreur(res, 400, 'Ce service n’est pas désactivé.');
+  const maj = docs.patch('services', s.id, { etat: { code: 'ok', message: '', retour: '' } });
+  audit(req.user, { categorie: 'service', action: 'Réactivation du service', objetId: s.id, objetLibelle: (s.nom && s.nom.fr) || s.id,
+    avant: 'desactive', apres: 'ok', motif: texte((req.body || {}).motif, 300) || 'Service rétabli' });
+  res.json(maj);
+});
+
 const COLLECTIONS = ['utilisateurs', 'demandes', 'annonces', 'services', 'rdv', 'notifications', 'audit'];
 
 router.post('/api/docs/:col', (req, res) => {
@@ -167,6 +204,9 @@ router.post('/api/docs/:col', (req, res) => {
   const liste = Array.isArray(req.body) ? req.body : [req.body];
   const crees = [];
   for (const brut of liste) {
+    // F63 : un service désactivé ne peut pas être utilisé pour commencer une démarche ou réserver un rendez-vous
+    const bloque = (col === 'rdv' || (col === 'demandes' && brut.type === 'demarche')) && serviceDesactive(brut.serviceId);
+    if (bloque) return res.status(409).json({ erreur: `Ce service est momentanément indisponible : ${bloque.etat.message || 'démarches suspendues'}. ${(bloque.etat.alternative && bloque.etat.alternative.texte) || 'Vous pouvez écrire au service.'}`, etat: bloque.etat });
     const d = regleCreation(col, req, Object.assign({}, brut, col === 'demandes' ? {} : { id: brut.id || uid(col.slice(0, 3)) }));
     if (!d) return erreur(res, req.user ? 403 : 401, 'Action non autorisée pour votre profil.');
     crees.push(docs.put(col, d));

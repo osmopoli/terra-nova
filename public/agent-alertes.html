@@ -135,9 +135,31 @@
             <p class="erreur" id="sv-message-err" hidden></p></div>
           <div class="champ"><label for="sv-retour" data-i18n="al.svcRetour">Quand revenir, ou que faire en attendant</label>
             <input id="sv-retour" autocomplete="off" aria-describedby="sv-retour-aide"><span class="aide" id="sv-retour-aide" data-i18n="al.svcRetourAide">Par exemple « Réouverture lundi 9 h » ou « Déposez votre dossier à l’accueil ».</span></div>
-          <button type="submit" class="btn btn-primaire"><i class="ph ph-floppy-disk" aria-hidden="true"></i><span data-i18n="al.svcEnregistrer">Enregistrer l’état</span></button>
+          <p class="doux" id="sv-verrou" hidden></p>
+          <button type="submit" class="btn btn-primaire" id="sv-enregistrer"><i class="ph ph-floppy-disk" aria-hidden="true"></i><span data-i18n="al.svcEnregistrer">Enregistrer l’état</span></button>
         </form>
       </div>
+      <!-- F63 : désactivation rapide d'un service défectueux (administrateur, contrôlée par le serveur et journalisée) -->
+      <sl-dialog id="dlg-desactiver" label="Désactiver ce service">
+        <form id="form-desactiver" novalidate>
+          <p class="doux" data-i18n="al.dsIntro">Les habitants verront immédiatement « Indisponible », la raison, le retour prévu et la prochaine action possible. Le bouton de démarche est remplacé par votre alternative.</p>
+          <div id="ds-resume" role="alert"></div>
+          <div class="champ"><label for="ds-motif" data-i18n="al.dsMotif">Raison (visible par les habitants)</label>
+            <textarea id="ds-motif" style="min-height:4.5rem" maxlength="300" aria-describedby="ds-motif-err"></textarea><p class="erreur" id="ds-motif-err" hidden></p></div>
+          <div class="champ"><label for="ds-retour" data-i18n="al.dsRetour">Retour prévu</label>
+            <input id="ds-retour" autocomplete="off" maxlength="160" aria-describedby="ds-retour-aide"><span class="aide" id="ds-retour-aide" data-i18n="al.dsRetourAide">Par exemple « Mardi 14 h » ou « D’ici la fin de semaine ». Laissez vide si inconnu.</span></div>
+          <fieldset><legend data-i18n="al.dsAlt">Prochaine action possible pour les habitants</legend>
+            <div class="champ"><label for="ds-type" data-i18n="al.dsType">Type d’alternative</label>
+              <select id="ds-type"><option value="telephone" data-i18n="al.dsT.telephone">Téléphone</option><option value="guichet" data-i18n="al.dsT.guichet">Guichet (sur place)</option><option value="en-ligne" data-i18n="al.dsT.en-ligne">Autre canal en ligne</option><option value="date" data-i18n="al.dsT.date">Revenir à une date</option></select></div>
+            <div class="champ"><label for="ds-texte" data-i18n="al.dsTexte">Ce que l’habitant peut faire</label>
+              <textarea id="ds-texte" style="min-height:4.5rem" maxlength="300" aria-describedby="ds-texte-err"></textarea><p class="erreur" id="ds-texte-err" hidden></p></div>
+            <div class="champ"><label for="ds-valeur" data-i18n="al.dsValeur">Numéro, adresse ou lien (facultatif)</label>
+              <input id="ds-valeur" autocomplete="off" maxlength="160" aria-describedby="ds-valeur-aide"><span class="aide" id="ds-valeur-aide" data-i18n="al.dsValeurAide">Téléphone : le numéro devient un bouton « Appeler ». Autre canal : une page du site, par exemple demande.html?type=contact.</span></div>
+          </fieldset>
+        </form>
+        <sl-button slot="footer" id="ds-annuler" data-i18n="al.dsAnnuler">Annuler</sl-button>
+        <sl-button slot="footer" variant="danger" id="ds-valider" data-i18n="al.dsValider">Désactiver le service</sl-button>
+      </sl-dialog>
     </section>
   </main>
 
@@ -168,6 +190,40 @@
         'al.svcOk': '{nom}: status changed to “{etat}”.', 'al.svcRien': 'No message'
       },
       es: { 'al.titre': 'Difundir un mensaje a los habitantes', 'al.publier': 'Difundir el mensaje', 'al.services': 'Estado de los servicios' }
+    });
+    /* F63 : désactivation rapide par l'administrateur */
+    NT.i18n.ajouter({
+      fr: { 'al.dsBtn': 'Désactiver', 'al.dsBtnPour': 'Désactiver le service {nom}', 'al.raBtn': 'Réactiver', 'al.raBtnPour': 'Réactiver le service {nom}', 'al.dsTitre': 'Désactiver : {nom}',
+        'al.dsErrMotif': 'Indiquez la raison (5 caractères minimum).', 'al.dsErrTexte': 'Indiquez ce que les habitants peuvent faire à la place.', 'al.dsErr': 'Le service ne peut pas encore être désactivé :',
+        'al.dsOk': '{nom} est désactivé : les habitants voient « Indisponible » et votre alternative.', 'al.raOk': '{nom} est réactivé : les démarches sont de nouveau possibles.',
+        'al.dsVerrou': 'Service désactivé par un administrateur : seul un administrateur peut le réactiver.', 'al.dsPar': 'Désactivé par {par}', 'al.dsAlt2': 'Alternative' },
+      en: { 'al.dsBtn': 'Disable', 'al.dsBtnPour': 'Disable the {nom} service', 'al.raBtn': 'Re-enable', 'al.raBtnPour': 'Re-enable the {nom} service', 'al.dsTitre': 'Disable: {nom}',
+        'al.dsIntro': 'Residents will immediately see “Unavailable”, the reason, the expected return and the next possible action. The procedure button is replaced by your alternative.',
+        'al.dsMotif': 'Reason (visible to residents)', 'al.dsRetour': 'Expected return', 'al.dsRetourAide': 'For example “Tuesday 2 pm” or “By the end of the week”. Leave empty if unknown.',
+        'al.dsAlt': 'Next possible action for residents', 'al.dsType': 'Type of alternative', 'al.dsT.telephone': 'Phone', 'al.dsT.guichet': 'Counter (in person)', 'al.dsT.en-ligne': 'Another online channel', 'al.dsT.date': 'Come back on a date',
+        'al.dsTexte': 'What residents can do', 'al.dsValeur': 'Number, address or link (optional)', 'al.dsValeurAide': 'Phone: the number becomes a “Call” button. Other channel: a page of the site, for example demande.html?type=contact.',
+        'al.dsAnnuler': 'Cancel', 'al.dsValider': 'Disable the service',
+        'al.dsErrMotif': 'Enter the reason (at least 5 characters).', 'al.dsErrTexte': 'Say what residents can do instead.', 'al.dsErr': 'The service cannot be disabled yet:',
+        'al.dsOk': '{nom} is disabled: residents see “Unavailable” and your alternative.', 'al.raOk': '{nom} is re-enabled: procedures are possible again.',
+        'al.dsVerrou': 'Service disabled by an administrator: only an administrator can re-enable it.', 'al.dsPar': 'Disabled by {par}', 'al.dsAlt2': 'Alternative' },
+      es: { 'al.dsBtn': 'Desactivar', 'al.dsBtnPour': 'Desactivar el servicio {nom}', 'al.raBtn': 'Reactivar', 'al.raBtnPour': 'Reactivar el servicio {nom}', 'al.dsTitre': 'Desactivar: {nom}',
+        'al.dsIntro': 'Los habitantes verán al instante «No disponible», el motivo, la vuelta prevista y la próxima acción posible. El botón del trámite se sustituye por su alternativa.',
+        'al.dsMotif': 'Motivo (visible para los habitantes)', 'al.dsRetour': 'Vuelta prevista', 'al.dsRetourAide': 'Por ejemplo «Martes 14 h» o «Antes del fin de semana». Déjelo vacío si no se sabe.',
+        'al.dsAlt': 'Próxima acción posible para los habitantes', 'al.dsType': 'Tipo de alternativa', 'al.dsT.telephone': 'Teléfono', 'al.dsT.guichet': 'Ventanilla (presencial)', 'al.dsT.en-ligne': 'Otro canal en línea', 'al.dsT.date': 'Volver en una fecha',
+        'al.dsTexte': 'Qué puede hacer el habitante', 'al.dsValeur': 'Número, dirección o enlace (opcional)', 'al.dsValeurAide': 'Teléfono: el número se convierte en un botón «Llamar». Otro canal: una página del sitio, por ejemplo demande.html?type=contact.',
+        'al.dsAnnuler': 'Cancelar', 'al.dsValider': 'Desactivar el servicio',
+        'al.dsErrMotif': 'Indique el motivo (5 caracteres como mínimo).', 'al.dsErrTexte': 'Indique qué pueden hacer los habitantes en su lugar.', 'al.dsErr': 'El servicio aún no puede desactivarse:',
+        'al.dsOk': '{nom} está desactivado: los habitantes ven «No disponible» y su alternativa.', 'al.raOk': '{nom} está reactivado: los trámites vuelven a ser posibles.',
+        'al.dsVerrou': 'Servicio desactivado por un administrador: solo un administrador puede reactivarlo.', 'al.dsPar': 'Desactivado por {par}', 'al.dsAlt2': 'Alternativa' },
+      ar: { 'al.dsBtn': 'تعطيل', 'al.dsBtnPour': 'تعطيل خدمة {nom}', 'al.raBtn': 'إعادة التفعيل', 'al.raBtnPour': 'إعادة تفعيل خدمة {nom}', 'al.dsTitre': 'تعطيل: {nom}',
+        'al.dsIntro': 'سيرى السكان فوراً «غير متاحة» والسبب والعودة المتوقعة والإجراء الممكن التالي. يُستبدل زر الإجراء بالبديل الذي تحدده.',
+        'al.dsMotif': 'السبب (يراه السكان)', 'al.dsRetour': 'العودة المتوقعة', 'al.dsRetourAide': 'مثلاً «الثلاثاء الساعة 14» أو «قبل نهاية الأسبوع». اتركه فارغاً إن لم يكن معروفاً.',
+        'al.dsAlt': 'الإجراء الممكن التالي للسكان', 'al.dsType': 'نوع البديل', 'al.dsT.telephone': 'الهاتف', 'al.dsT.guichet': 'الشباك (حضورياً)', 'al.dsT.en-ligne': 'قناة إلكترونية أخرى', 'al.dsT.date': 'العودة في تاريخ',
+        'al.dsTexte': 'ما يمكن للساكن فعله', 'al.dsValeur': 'رقم أو عنوان أو رابط (اختياري)', 'al.dsValeurAide': 'الهاتف: يصبح الرقم زر «اتصل». قناة أخرى: صفحة من الموقع، مثلاً demande.html?type=contact.',
+        'al.dsAnnuler': 'إلغاء', 'al.dsValider': 'تعطيل الخدمة',
+        'al.dsErrMotif': 'اذكر السبب (5 أحرف على الأقل).', 'al.dsErrTexte': 'اذكر ما يمكن للسكان فعله بدلاً من ذلك.', 'al.dsErr': 'لا يمكن تعطيل الخدمة بعد:',
+        'al.dsOk': 'تم تعطيل {nom}: يرى السكان «غير متاحة» والبديل.', 'al.raOk': 'أعيد تفعيل {nom}: أصبحت الإجراءات ممكنة من جديد.',
+        'al.dsVerrou': 'عطّل مسؤول هذه الخدمة: وحده المسؤول يمكنه إعادة تفعيلها.', 'al.dsPar': 'عطّلها {par}', 'al.dsAlt2': 'البديل' }
     });
 
     NT.pret(() => {
@@ -353,17 +409,65 @@
           const nom = NT.i18n.choisir(s.nom), e = s.etat || { code: 'ok' };
           return `<tr><th scope="row"><span class="ag-svc-nom"><i class="ph-duotone ${echap(s.icone)}" aria-hidden="true"></i>${echap(nom)}</span></th>
             <td>${A.etatBadge(e.code)}</td>
-            <td>${e.message ? echap(e.message) : '<span class="doux">–</span>'}${e.retour ? `<br><span class="doux">${echap(T('al.svcRetourLib', 'Retour'))} : ${echap(e.retour)}</span>` : ''}</td>
-            <td><button type="button" class="btn" data-svc="${echap(s.id)}"><i class="ph ph-pencil-simple" aria-hidden="true"></i>${echap(T('al.svcModifier', 'Modifier'))}<span class="sr-only"> : ${echap(nom)}</span></button></td></tr>`;
+            <td>${e.message ? echap(e.message) : '<span class="doux">–</span>'}${e.retour ? `<br><span class="doux">${echap(T('al.svcRetourLib', 'Retour'))} : ${echap(e.retour)}</span>` : ''}${e.alternative && e.alternative.texte ? `<br><span class="doux">${echap(T('al.dsAlt2', 'Alternative'))} : ${echap(e.alternative.texte)}</span>` : ''}${e.par ? `<br><span class="doux">${echap(T('al.dsPar', 'Désactivé par {par}', { par: e.par }))}</span>` : ''}</td>
+            <td><span class="ligne" style="gap:.4rem;flex-wrap:wrap">${e.code === 'desactive' ? '' : `<button type="button" class="btn" data-svc="${echap(s.id)}"><i class="ph ph-pencil-simple" aria-hidden="true"></i>${echap(T('al.svcModifier', 'Modifier'))}<span class="sr-only"> : ${echap(nom)}</span></button>`}
+              ${estAdmin ? (e.code === 'desactive'
+                ? `<button type="button" class="btn btn-primaire" data-reactiver="${echap(s.id)}" aria-label="${echap(T('al.raBtnPour', 'Réactiver le service {nom}', { nom }))}"><i class="ph ph-play-circle" aria-hidden="true"></i>${echap(T('al.raBtn', 'Réactiver'))}</button>`
+                : `<button type="button" class="btn" data-desactiver="${echap(s.id)}" aria-label="${echap(T('al.dsBtnPour', 'Désactiver le service {nom}', { nom }))}"><i class="ph ph-prohibit" aria-hidden="true"></i>${echap(T('al.dsBtn', 'Désactiver'))}</button>`) : ''}</span></td></tr>`;
         }).join('');
       }
+      const estAdmin = NT.auth.aRole('admin');
       function remplirSelect() {
         sel.innerHTML = NT.services.tous().map(s => `<option value="${echap(s.id)}">${echap(NT.i18n.choisir(s.nom))}</option>`).join('');
       }
       function prefill() {
         const s = NT.services.get(sel.value), e = (s && s.etat) || { code: 'ok', message: '', retour: '' };
-        svEtat.value = e.code; svMsg.value = e.message || ''; svRetour.value = e.retour || '';
+        // un service désactivé par l'administrateur ne se modifie pas ici (seul l'administrateur le réactive)
+        const verrou = e.code === 'desactive';
+        el('sv-verrou').hidden = !verrou; el('sv-verrou').textContent = verrou ? T('al.dsVerrou', 'Service désactivé par un administrateur : seul un administrateur peut le réactiver.') : '';
+        el('sv-enregistrer').disabled = verrou; svEtat.disabled = verrou;
+        svEtat.value = verrou ? 'ok' : e.code; svMsg.value = e.message || ''; svRetour.value = e.retour || '';
       }
+
+      /* ---------- F63 : désactiver / réactiver (administrateur) ---------- */
+      const dlg = el('dlg-desactiver');
+      let cible = null;
+      function ouvrirDesactivation(id) {
+        const s = NT.services.get(id); if (!s || !estAdmin) return;
+        // déjà désactivé : on amène directement au bouton « Réactiver »
+        if (s.etat && s.etat.code === 'desactive') { const b = document.querySelector('[data-reactiver="' + CSS.escape(s.id) + '"]'); if (b) { b.scrollIntoView({ block: 'center' }); b.focus(); } return; }
+        cible = s.id;
+        dlg.label = T('al.dsTitre', 'Désactiver : {nom}', { nom: NT.i18n.choisir(s.nom) });
+        ['ds-motif', 'ds-retour', 'ds-texte', 'ds-valeur'].forEach(i => { el(i).value = ''; el(i).removeAttribute('aria-invalid'); });
+        el('ds-type').value = 'telephone';
+        el('ds-resume').className = ''; el('ds-resume').innerHTML = ''; el('ds-motif-err').hidden = true; el('ds-texte-err').hidden = true;
+        customElements.whenDefined('sl-dialog').then(() => { dlg.show(); setTimeout(() => el('ds-motif').focus(), 80); });
+      }
+      function validerDesactivation() {
+        const motif = el('ds-motif').value.trim(), texte = el('ds-texte').value.trim(), errs = [];
+        const marquer = (id, msg) => { const p = el(id + '-err'); p.textContent = msg; p.hidden = !msg; if (msg) { el(id).setAttribute('aria-invalid', 'true'); errs.push([id, msg]); } else el(id).removeAttribute('aria-invalid'); };
+        marquer('ds-motif', motif.length < 5 ? T('al.dsErrMotif', 'Indiquez la raison (5 caractères minimum).') : '');
+        marquer('ds-texte', texte.length < 5 ? T('al.dsErrTexte', 'Indiquez ce que les habitants peuvent faire à la place.') : '');
+        const r = el('ds-resume');
+        if (errs.length) {
+          r.className = 'ag-resume-erreurs'; r.innerHTML = `<strong>${echap(T('al.dsErr', 'Le service ne peut pas encore être désactivé :'))}</strong><ul>${errs.map(([, m]) => `<li>${echap(m)}</li>`).join('')}</ul>`;
+          el(errs[0][0]).focus(); return;
+        }
+        const s = NT.services.desactiver(cible, { motif, retour: el('ds-retour').value.trim(), alternative: { type: el('ds-type').value, texte, valeur: el('ds-valeur').value.trim() } });
+        if (!s) return;
+        dlg.hide();
+        NT.ui.toast(T('al.dsOk', '{nom} est désactivé : les habitants voient « Indisponible » et votre alternative.', { nom: NT.i18n.choisir(s.nom) }), 'warning');
+        services(); prefill();
+      }
+      el('ds-valider').addEventListener('click', validerDesactivation);
+      el('form-desactiver').addEventListener('submit', ev => { ev.preventDefault(); validerDesactivation(); });
+      el('ds-annuler').addEventListener('click', () => dlg.hide());
+      el('svc-lignes').addEventListener('click', ev => {
+        const d = ev.target.closest('[data-desactiver]'); if (d) return ouvrirDesactivation(d.dataset.desactiver);
+        const r = ev.target.closest('[data-reactiver]'); if (!r) return;
+        const s = NT.services.reactiver(r.dataset.reactiver);
+        if (s) { NT.ui.toast(T('al.raOk', '{nom} est réactivé : les démarches sont de nouveau possibles.', { nom: NT.i18n.choisir(s.nom) }), 'success'); services(); prefill(); }
+      });
       sel.addEventListener('change', prefill);
       el('svc-lignes').addEventListener('click', ev => {
         const b = ev.target.closest('[data-svc]'); if (!b) return;
@@ -387,6 +491,9 @@
       /* ---------- Démarrage ---------- */
       ligneConsigne('');
       apercu(); annonces(); remplirSelect(); prefill(); services();
+      // raccourci depuis la fiche d'un service (services.html) : agent-alertes.html?desactiver=<id>
+      const aDesactiver = NT.ui.param('desactiver');
+      if (aDesactiver) { el('t-services').scrollIntoView({ block: 'start' }); ouvrirDesactivation(aDesactiver); }
     });
   </script>
 </body>

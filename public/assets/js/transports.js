@@ -317,6 +317,6 @@
       const tmp = selDep.value; selDep.value = selArr.value; selArr.value = tmp; note.textContent = ''; nouvelleSelection();
     });
     // Les « dans X min » restent justes : recalcul toutes les 20 secondes
-    setInterval(rendreTrajet, 20000);
+    setInterval(rendreTrajet, NT.econome.delai(20000));   // F61 : espacé sur appareil peu puissant
   });
 })();

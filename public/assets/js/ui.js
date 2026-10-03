@@ -19,6 +19,61 @@
     ar: { 'a11y.leger': 'وضع الاتصال البطيء (صفحات أخف)', 'pied.sobriete': 'الاعتدال الرقمي', 'leger.pied': 'وضع الاتصال البطيء مفعّل.', 'leger.desactiver': 'العودة إلى العرض الكامل',
       'leger.auto': 'يبدو أن اتصالك بطيء: تم تخفيف الصفحات لتظهر أسرع (بدون صور زخرفية أو حركة). يمكنك تغيير ذلك من قائمة ♿.' }
   });
+  /* Vague 11 : appareil peu puissant (F61), version simple (F62), état des services en trois niveaux (F63, F64) */
+  NT.i18n.ajouter({
+    fr: { 'a11y.econome': 'Mode appareil peu puissant (plus fluide, moins d’effets)',
+      'econome.auto': 'Votre appareil semble peu puissant : les effets visuels sont réduits pour que tout reste fluide. Toutes les informations et actions restent là. Vous pouvez changer cela dans le menu ♿.',
+      'econome.mesure': 'Cet appareil : {coeurs} cœurs, mémoire {mem}. Page prête en {ms} ms ; {n} blocage(s) de plus de 50 ms ({total} ms au total).',
+      'econome.inconnu': 'non communiquée', 'econome.go': '{n} Go',
+      'pied.simple': 'Version simple', 'a11y.simple': 'Version simple et rapide des pages essentielles',
+      'es.disponible': 'Disponible', 'es.perturbe': 'Perturbé', 'es.indisponible': 'Indisponible',
+      'es.t.disponible': 'Service disponible : vous pouvez commencer votre démarche.',
+      'es.t.perturbe': 'Service perturbé : il fonctionne en partie pour le moment.',
+      'es.t.indisponible': 'Service indisponible : la ville a suspendu les démarches en ligne de ce service.',
+      'es.pourquoi': 'Pourquoi', 'es.retour': 'Retour prévu', 'es.retourInconnu': 'Date de retour non communiquée : cette page se met à jour dès la réouverture.',
+      'es.prochaine': 'Prochaine action possible', 'es.ecrire': 'Écrire au service',
+      'es.alt.telephone': 'Appeler le {v}', 'es.alt.en-ligne': 'Utiliser l’autre canal', 'es.alt.guichet': 'Voir les guichets sur la carte',
+      'es.altDefaut': 'Écrivez au service : votre message sera traité dès que possible.' },
+    en: { 'a11y.econome': 'Low-power device mode (smoother, fewer effects)',
+      'econome.auto': 'Your device seems to have limited power: visual effects are reduced so everything stays smooth. All information and actions remain. You can change this in the ♿ menu.',
+      'econome.mesure': 'This device: {coeurs} cores, memory {mem}. Page ready in {ms} ms; {n} freeze(s) longer than 50 ms ({total} ms in total).',
+      'econome.inconnu': 'not reported', 'econome.go': '{n} GB',
+      'pied.simple': 'Simple version', 'a11y.simple': 'Simple, fast version of the essential pages',
+      'es.disponible': 'Available', 'es.perturbe': 'Disrupted', 'es.indisponible': 'Unavailable',
+      'es.t.disponible': 'Service available: you can start your procedure.',
+      'es.t.perturbe': 'Service disrupted: it is only partly working for now.',
+      'es.t.indisponible': 'Service unavailable: the city has suspended this service’s online procedures.',
+      'es.pourquoi': 'Why', 'es.retour': 'Expected return', 'es.retourInconnu': 'No return date announced: this page updates as soon as it reopens.',
+      'es.prochaine': 'Next possible action', 'es.ecrire': 'Write to the service',
+      'es.alt.telephone': 'Call {v}', 'es.alt.en-ligne': 'Use the other channel', 'es.alt.guichet': 'See the counters on the map',
+      'es.altDefaut': 'Write to the service: your message will be handled as soon as possible.' },
+    es: { 'a11y.econome': 'Modo dispositivo poco potente (más fluido, menos efectos)',
+      'econome.auto': 'Su dispositivo parece poco potente: los efectos visuales se reducen para que todo siga fluido. Toda la información y las acciones siguen disponibles. Puede cambiarlo en el menú ♿.',
+      'econome.mesure': 'Este dispositivo: {coeurs} núcleos, memoria {mem}. Página lista en {ms} ms; {n} bloqueo(s) de más de 50 ms ({total} ms en total).',
+      'econome.inconnu': 'no indicada', 'econome.go': '{n} GB',
+      'pied.simple': 'Versión sencilla', 'a11y.simple': 'Versión sencilla y rápida de las páginas esenciales',
+      'es.disponible': 'Disponible', 'es.perturbe': 'Con incidencias', 'es.indisponible': 'No disponible',
+      'es.t.disponible': 'Servicio disponible: puede empezar su trámite.',
+      'es.t.perturbe': 'Servicio con incidencias: por ahora funciona solo en parte.',
+      'es.t.indisponible': 'Servicio no disponible: el ayuntamiento ha suspendido los trámites en línea de este servicio.',
+      'es.pourquoi': 'Por qué', 'es.retour': 'Vuelta prevista', 'es.retourInconnu': 'Fecha de vuelta no comunicada: esta página se actualiza en cuanto reabra.',
+      'es.prochaine': 'Próxima acción posible', 'es.ecrire': 'Escribir al servicio',
+      'es.alt.telephone': 'Llamar al {v}', 'es.alt.en-ligne': 'Usar el otro canal', 'es.alt.guichet': 'Ver las ventanillas en el mapa',
+      'es.altDefaut': 'Escriba al servicio: su mensaje se tratará lo antes posible.' },
+    ar: { 'a11y.econome': 'وضع الجهاز محدود القدرة (أكثر سلاسة، مؤثرات أقل)',
+      'econome.auto': 'يبدو أن جهازك محدود القدرة: تم تقليل المؤثرات البصرية ليبقى كل شيء سلساً. كل المعلومات والإجراءات تبقى متاحة. يمكنك تغيير ذلك من قائمة ♿.',
+      'econome.mesure': 'هذا الجهاز: {coeurs} أنوية، الذاكرة {mem}. الصفحة جاهزة في {ms} ميلي ثانية؛ {n} توقف أطول من 50 ميلي ثانية ({total} ميلي ثانية إجمالاً).',
+      'econome.inconnu': 'غير معروفة', 'econome.go': '{n} غيغابايت',
+      'pied.simple': 'النسخة المبسطة', 'a11y.simple': 'نسخة مبسطة وسريعة من الصفحات الأساسية',
+      'es.disponible': 'متاحة', 'es.perturbe': 'مضطربة', 'es.indisponible': 'غير متاحة',
+      'es.t.disponible': 'الخدمة متاحة: يمكنك بدء إجرائك.',
+      'es.t.perturbe': 'الخدمة مضطربة: تعمل جزئياً في الوقت الحالي.',
+      'es.t.indisponible': 'الخدمة غير متاحة: علّقت المدينة الإجراءات الإلكترونية لهذه الخدمة.',
+      'es.pourquoi': 'السبب', 'es.retour': 'العودة المتوقعة', 'es.retourInconnu': 'لم يُعلن تاريخ العودة: تتحدث هذه الصفحة فور إعادة الفتح.',
+      'es.prochaine': 'الإجراء الممكن التالي', 'es.ecrire': 'مراسلة الخدمة',
+      'es.alt.telephone': 'اتصل بالرقم {v}', 'es.alt.en-ligne': 'استعمل القناة الأخرى', 'es.alt.guichet': 'عرض الشبابيك على الخريطة',
+      'es.altDefaut': 'راسل الخدمة: ستتم معالجة رسالتك في أقرب وقت.' }
+  });
   const corps = document.body;
   const u = NT.auth.utilisateur();
   const enAttente = NT._attente;
@@ -75,6 +130,53 @@
     }
   };
   NT.ui = ui;
+
+  /* ---------- F63 / F64 : état d'un service compris par tous, en trois niveaux ----------
+     ok → Disponible · maintenance / incident (agents) → Perturbé · desactive (administrateur) → Indisponible.
+     Toujours accompagné de la prochaine action possible. */
+  const ICONE_NIVEAU = { disponible: 'ph-check-circle', perturbe: 'ph-warning', indisponible: 'ph-prohibit' };
+  ui.etatService = s => {
+    const e = (s && s.etat) || { code: 'ok' };
+    const niveau = e.code === 'ok' ? 'disponible' : e.code === 'desactive' ? 'indisponible' : 'perturbe';
+    return { niveau, code: e.code, message: e.message || '', retour: e.retour || '', alternative: e.alternative || null, demarchePossible: niveau !== 'indisponible' };
+  };
+  ui.niveauBadge = s => { const n = ui.etatService(s).niveau; return `<span class="niveau-svc niveau-svc-${n}"><i class="ph ${ICONE_NIVEAU[n]}" aria-hidden="true"></i>${echap(t('es.' + n))}</span>`; };
+  // Boutons de la prochaine action possible quand le service est indisponible (canal de remplacement + écrire au service)
+  ui.actionsService = s => {
+    const a = ui.etatService(s).alternative || {};
+    const v = String(a.valeur || '').trim();
+    let principal = '';
+    if (a.type === 'telephone' && v) principal = `<a class="btn btn-primaire" href="tel:${echap(v.replace(/[^\d+]/g, ''))}"><i class="ph ph-phone" aria-hidden="true"></i>${echap(t('es.alt.telephone', { v }))}</a>`;
+    else if (a.type === 'en-ligne' && /^(?:[a-z0-9-]+\.html|\/)[^\s"'<>]*$/i.test(v)) principal = `<a class="btn btn-primaire" href="${echap(v)}"><i class="ph ph-arrow-square-out" aria-hidden="true"></i>${echap(t('es.alt.en-ligne'))}</a>`;
+    else if (a.type === 'guichet') principal = `<a class="btn btn-primaire" href="carte.html"><i class="ph ph-map-pin" aria-hidden="true"></i>${echap(t('es.alt.guichet'))}</a>`;
+    return principal + `<a class="btn${principal ? '' : ' btn-primaire'}" href="demande.html?type=contact&amp;service=${encodeURIComponent(s.id)}"><i class="ph ph-envelope-simple" aria-hidden="true"></i>${echap(t('es.ecrire'))}</a>`;
+  };
+  /* Encadré d'état à placer AVANT toute démarche. opts.siDisponible : l'afficher aussi quand tout va bien ;
+     opts.actions : boutons de la prochaine action quand le service est indisponible. */
+  ui.encartService = (s, opts) => {
+    const o = opts || {}, e = ui.etatService(s);
+    if (!s || (e.niveau === 'disponible' && !o.siDisponible)) return '';
+    const alt = e.alternative && e.alternative.texte ? e.alternative.texte : (e.niveau === 'indisponible' ? t('es.altDefaut') : '');
+    return `<div class="etat-svc etat-svc-${e.niveau}" role="group" aria-label="${echap(t('es.' + e.niveau))}">
+      <i class="ph-duotone ${ICONE_NIVEAU[e.niveau]}" aria-hidden="true"></i>
+      <div><p class="etat-svc-titre">${echap(t('es.t.' + e.niveau))}</p>
+        ${e.niveau === 'disponible' ? '' : `<dl>
+          ${e.message ? `<div><dt>${echap(t('es.pourquoi'))}</dt><dd>${echap(e.message)}</dd></div>` : ''}
+          <div><dt>${echap(t('es.retour'))}</dt><dd>${echap(e.retour || t('es.retourInconnu'))}</dd></div>
+          ${alt ? `<div><dt>${echap(t('es.prochaine'))}</dt><dd>${echap(alt)}</dd></div>` : ''}
+        </dl>`}
+        ${o.actions && e.niveau === 'indisponible' ? `<div class="etat-svc-actions">${ui.actionsService(s)}</div>` : ''}</div>
+    </div>`;
+  };
+  // F62 : adresse de la version simple de la page courante, dans la langue choisie
+  ui.lienSimple = () => {
+    const p = location.pathname.split('/').pop() || 'index.html';
+    const id = new URLSearchParams(location.search).get('id');
+    const svc = decodeURIComponent(location.hash.replace(/^#/, ''));
+    const chemin = p === 'services.html' ? (svc && NT.services.get(svc) ? '/simple/services/' + encodeURIComponent(svc) : '/simple/services')
+      : p === 'suivi.html' ? '/simple/suivi' + (id ? '?id=' + encodeURIComponent(id) : '') : '/simple';
+    return chemin + (chemin.includes('?') ? '&' : '?') + 'lang=' + NT.i18n.langue;
+  };
 
   /* ---------- Contrôle d'accès (D09) ---------- */
   const roles = (corps.dataset.roles || '').split(',').map(s => s.trim()).filter(Boolean);
@@ -194,6 +296,7 @@
 
   /* Halo lumineux qui suit le pointeur sur les éléments .halo (inspiré SeraUI Spotlight) */
   document.addEventListener('pointermove', e => {
+    if (NT.econome.actif()) return;   // F61 : aucun calcul au survol sur appareil peu puissant
     const el = e.target.closest && e.target.closest('.halo'); if (!el) return;
     const r = el.getBoundingClientRect();
     el.style.setProperty('--mx', (e.clientX - r.left) + 'px'); el.style.setProperty('--my', (e.clientY - r.top) + 'px');
@@ -203,7 +306,7 @@
   const pied = document.createElement('footer');
   pied.className = 'pied';
   pied.innerHTML = `<div class="conteneur"><span>${echap(t('pied.texte'))}</span>
-    <span class="ligne"><a href="demande.html">${echap(t('pied.contact'))}</a><a href="aide.html">${echap(t('pied.aide'))}</a><a href="donnees.html">${echap(t('pied.donnees'))}</a><a href="sobriete.html">${echap(t('pied.sobriete'))}</a><a href="transports.html">${echap(t('nav.transports'))}</a>
+    <span class="ligne"><a href="demande.html">${echap(t('pied.contact'))}</a><a href="aide.html">${echap(t('pied.aide'))}</a><a href="donnees.html">${echap(t('pied.donnees'))}</a><a href="sobriete.html">${echap(t('pied.sobriete'))}</a><a href="${echap(ui.lienSimple())}" class="pied-simple" id="nt-lien-simple"><i class="ph ph-article" aria-hidden="true"></i>${echap(t('pied.simple'))}</a><a href="transports.html">${echap(t('nav.transports'))}</a>
       <a href="#" id="nt-lien-a11y">${echap(t('pied.accessibilite'))}</a><a href="#" id="nt-lien-clavier">${echap(t('clavier.titre'))}</a></span></div>`;
   corps.append(pied);
   /* F59 : le mode connexion lente se voit et se désactive en un clic ; s'il s'est activé tout seul, on le dit une fois */
@@ -221,15 +324,21 @@
   if (NT.leger.auto && !NT.store.lire('legerPropose', false)) {
     NT.store.ecrire('legerPropose', true);
     setTimeout(() => ui.toast(t('leger.auto'), 'primary', 10000), 600);
+  } else if (NT.econome.auto && !NT.store.lire('economePropose', false)) {
+    // F61 : proposé une seule fois, sans bandeau ; l'interrupteur reste dans le panneau ♿
+    NT.store.ecrire('economePropose', true);
+    setTimeout(() => ui.toast(t('econome.auto'), 'primary', 10000), 600);
   }
+  // le lien « Version simple » suit la page et le service ouverts
+  window.addEventListener('hashchange', () => { const a = document.getElementById('nt-lien-simple'); if (a) a.href = ui.lienSimple(); });
 
   /* ---------- Panneau d'accessibilité (F21, F23, F24) ---------- */
   const dialogue = document.createElement('sl-dialog');
   dialogue.label = t('a11y.titre');
   const prefs = () => NT.store.lire('prefs', {});
   // contraste (F23), espacement, animations, liens soulignés (F43), lexique des mots difficiles (D13, actif par défaut)
-  const OPTIONS = ['contraste', 'espace', 'calme', 'souligne', 'lexique', 'leger'];   // leger : mode connexion lente (F59)
-  const valeur = c => (c === 'lexique' ? prefs().lexique !== false : c === 'leger' ? NT.leger.actif() : !!prefs()[c]);
+  const OPTIONS = ['contraste', 'espace', 'calme', 'souligne', 'lexique', 'leger', 'econome'];   // leger : connexion lente (F59) ; econome : appareil peu puissant (F61)
+  const valeur = c => (c === 'lexique' ? prefs().lexique !== false : c === 'leger' ? NT.leger.actif() : c === 'econome' ? NT.econome.actif() : !!prefs()[c]);
   dialogue.innerHTML = `
     <div class="reglage"><span id="nt-lbl-taille">${echap(t('a11y.taille'))} : <strong id="nt-val-taille">${prefs().taille || 100} %</strong></span>
       <div class="taille-btns" role="group" aria-labelledby="nt-lbl-taille">
@@ -237,7 +346,8 @@
         <button class="btn" type="button" data-taille="0">100 %</button>
         <button class="btn" type="button" data-taille="1" aria-label="${echap(t('a11y.taille'))} +" style="font-size:1.2rem">A+</button>
       </div></div>
-    ${OPTIONS.map(c => `<div class="reglage"><sl-switch id="nt-${c}" ${valeur(c) ? 'checked' : ''} style="width:100%">${echap(t('a11y.' + c))}</sl-switch></div>`).join('')}
+    ${OPTIONS.map(c => `<div class="reglage"${c === 'econome' ? ' style="flex-wrap:wrap"' : ''}><sl-switch id="nt-${c}" ${valeur(c) ? 'checked' : ''} style="width:100%">${echap(t('a11y.' + c))}</sl-switch>${c === 'econome' ? '<p class="a11y-mesure" id="nt-econome-mesure"></p>' : ''}</div>`).join('')}
+    <p style="margin:.9rem 0 0"><a href="${echap(ui.lienSimple())}" id="nt-a11y-simple"><i class="ph ph-article" aria-hidden="true"></i> ${echap(t('a11y.simple'))}</a></p>
     <p class="doux" style="margin-top:1rem">${echap(t('a11y.aide'))}</p>
     <p style="margin:.5rem 0 0"><a href="#" id="nt-ouvrir-raccourcis">${echap(t('clavier.titre'))}</a></p>
     <sl-button slot="footer" id="nt-a11y-reinit">${echap(t('a11y.reinit'))}</sl-button>
@@ -252,6 +362,7 @@
     ['contraste', 'espace', 'calme', 'souligne'].forEach(c => h.classList.toggle(c, !!p[c]));
     if ('leger' in patch) { h.classList.toggle('leger', !!p.leger); const pol = document.getElementById('nt-polices'); if (pol && !p.leger) pol.media = 'all'; if (NT.ui.rendreLeger) NT.ui.rendreLeger(); if (!p.leger) document.querySelectorAll('img[data-srcset],img[data-src]').forEach(NT.leger.image); }
     dialogue.querySelector('#nt-val-taille').textContent = (p.taille || 100) + ' %';
+    if ('econome' in patch) h.classList.toggle('econome', !!p.econome);
     if ('lexique' in patch) activerLexique();
     requestAnimationFrame(ajusterEntete);   // la taille du texte change la place disponible dans l'en-tête
   }
@@ -268,7 +379,16 @@
     OPTIONS.forEach(c => (dialogue.querySelector('#nt-' + c).checked = c === 'lexique'));
   });
   dialogue.querySelector('#nt-a11y-ok').addEventListener('click', () => dialogue.hide());
-  const ouvrirA11y = e => { e && e.preventDefault(); dialogue.show(); };
+  /* F61 : mesure concrète affichée sous l'interrupteur — capacités de l'appareil, temps de préparation de la page,
+     blocages de plus de 50 ms (tâches longues) depuis l'ouverture de la page */
+  let pretEnMs = 0;
+  function afficherMesure() {
+    const z = dialogue.querySelector('#nt-econome-mesure'); if (!z) return;
+    const tc = NT.econome.taches;
+    z.textContent = t('econome.mesure', { coeurs: NT.econome.coeurs || '?', mem: NT.econome.memoire ? t('econome.go', { n: NT.econome.memoire }) : t('econome.inconnu'),
+      ms: Math.round(pretEnMs || performance.now()), n: tc ? tc.n : '?', total: tc ? Math.round(tc.ms) : '?' });
+  }
+  const ouvrirA11y = e => { e && e.preventDefault(); afficherMesure(); const a = dialogue.querySelector('#nt-a11y-simple'); if (a) a.href = ui.lienSimple(); dialogue.show(); };
   entete.querySelector('#nt-btn-a11y').addEventListener('click', ouvrirA11y);
   pied.querySelector('#nt-lien-a11y').addEventListener('click', ouvrirA11y);
   NT.ui.ouvrirAccessibilite = ouvrirA11y;
@@ -280,7 +400,7 @@
     ['Alt + N', 'clavier.notifs', () => { const b = entete.querySelector('#nt-btn-notif'); b ? b.click() : ui.toast(t('clavier.connecte'), 'primary'); }],
     ['Alt + M', 'clavier.menu', () => entete.querySelector('.nav-principale a')?.focus()],
     ['Alt + C', 'clavier.contenu', () => { const m = document.getElementById('contenu'); m.setAttribute('tabindex', '-1'); m.focus(); }],
-    ['Alt + V', 'clavier.affichage', () => dialogue.show()],
+    ['Alt + V', 'clavier.affichage', () => ouvrirA11y()],
     ['?', 'clavier.aide', () => dialogueClavier.show()]
   ];
   const dialogueClavier = document.createElement('sl-dialog');
@@ -352,7 +472,7 @@
     let connues = new Set(NT.notif.pour(u.id).map(n => n.id));
     // toutes les 30 s, toutes les 2 min en mode connexion lente ; rien tant que l'onglet est caché
     let minuterie = null;
-    const planifier = () => { clearTimeout(minuterie); minuterie = setTimeout(() => { verifier(); planifier(); }, NT.leger.actif() ? 120000 : 30000); };
+    const planifier = () => { clearTimeout(minuterie); minuterie = setTimeout(() => { verifier(); planifier(); }, NT.leger.actif() ? 120000 : NT.econome.delai(30000)); };
     document.addEventListener('visibilitychange', () => { if (!document.hidden) { verifier(); planifier(); } });
     planifier();
     function verifier() {
@@ -383,5 +503,7 @@
   pret = true;
   enAttente.forEach(fn => fn());
   // après le code de page (contenu dynamique rendu) : lexique des mots difficiles
-  setTimeout(activerLexique, 300);
+  // F61 : sur appareil peu puissant, ce script non essentiel attend que l'appareil soit libre
+  if (NT.econome.actif() && window.requestIdleCallback) requestIdleCallback(activerLexique, { timeout: 4000 }); else setTimeout(activerLexique, 300);
+  pretEnMs = performance.now();
 })();

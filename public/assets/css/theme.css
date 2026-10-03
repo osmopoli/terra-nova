@@ -287,3 +287,35 @@ html.leger .entete .capsule, html.leger .carte, html.leger .panneau{ backdrop-fi
 html.leger .halo::before{ display:none; }
 .pied-leger{ display:inline-flex; align-items:center; gap:.4rem; }
 .pied-leger i{ color:var(--iono); }
+/* ---------- F61 : mode appareil peu puissant ----------
+   Moins de travail pour le processeur et la carte graphique, sans rien retirer d'essentiel :
+   pas de flou d'arrière-plan (le plus coûteux), pas d'ombre large ni d'animation, pas d'effet au survol,
+   et les listes longues ne sont dessinées que lorsqu'elles arrivent à l'écran (content-visibility). */
+html.econome *,html.econome *::before,html.econome *::after{ animation:none!important; transition:none!important; backdrop-filter:none!important; -webkit-backdrop-filter:none!important; scroll-behavior:auto!important; }
+html.econome .entete .capsule{ background:var(--nuit-2); box-shadow:none; }
+html.econome .carte,html.econome .panneau,html.econome .kpi.fort{ box-shadow:none; }
+html.econome .halo::before{ display:none; }
+html.econome .sv-liste > li,html.econome .ag-annonces > li,html.econome .liste-demandes > li,html.econome .dm-liste-demandes > li,
+html.econome .liste-sou > li,html.econome .liste-activite > li,html.econome .liste-simple > li,html.econome .liste-contrib > li{ content-visibility:auto; contain-intrinsic-size:auto 7rem; }
+.a11y-mesure{ margin:.35rem 0 0; font-size:.82rem; color:var(--brume); }
+
+/* ---------- F63 / F64 : état d'un service en trois niveaux (Disponible, Perturbé, Indisponible) ----------
+   Toujours texte + icône + couleur ; la prochaine action possible est donnée en clair. */
+.statut-desactive{ color:var(--corail); }
+.etat-svc{ display:flex; gap:.75rem; align-items:flex-start; padding:.85rem 1rem; margin:0 0 1rem; border:1px solid var(--trait-2); border-inline-start-width:5px; border-radius:var(--r); background:var(--verre); }
+.etat-svc > i{ font-size:1.5rem; flex:none; margin-top:.1rem; }
+.etat-svc p{ margin:0; }
+.etat-svc .etat-svc-titre{ font-weight:700; }
+.etat-svc dl{ margin:.45rem 0 0; display:grid; gap:.35rem; }
+.etat-svc dt{ font-size:.8rem; font-weight:800; color:var(--brume); }
+.etat-svc dd{ margin:0; }
+.etat-svc .etat-svc-actions{ display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.7rem; }
+.etat-svc-disponible{ border-color:var(--calme); } .etat-svc-disponible > i{ color:var(--calme); }
+.etat-svc-perturbe{ border-color:var(--soleil); } .etat-svc-perturbe > i{ color:var(--soleil); }
+.etat-svc-indisponible{ border-color:var(--corail); } .etat-svc-indisponible > i{ color:var(--corail); }
+.niveau-svc{ display:inline-flex; align-items:center; gap:.35rem; font-size:.8rem; font-weight:700; padding:.2rem .65rem; border-radius:99px; border:1px solid; white-space:nowrap; }
+.niveau-svc-disponible{ color:var(--calme); } .niveau-svc-perturbe{ color:var(--soleil); } .niveau-svc-indisponible{ color:var(--corail); }
+/* F62 : lien discret vers la version simple */
+.pied-simple{ display:inline-flex; align-items:center; gap:.35rem; }
+/* les textes réservés aux lecteurs d'écran d'un tableau défilant restent dans le tableau (pas de défilement horizontal de la page à 360 px) */
+.table-defile{ position:relative; }

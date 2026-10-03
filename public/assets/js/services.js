@@ -68,6 +68,14 @@
     }
   });
 
+  /* F63 : raccourci administrateur depuis la fiche d'un service */
+  NT.i18n.ajouter({
+    fr: { 'sv.adminDes': 'Désactiver ce service (administrateur)', 'sv.adminRea': 'Réactiver ce service (administrateur)' },
+    en: { 'sv.adminDes': 'Disable this service (administrator)', 'sv.adminRea': 'Re-enable this service (administrator)' },
+    es: { 'sv.adminDes': 'Desactivar este servicio (administrador)', 'sv.adminRea': 'Reactivar este servicio (administrador)' },
+    ar: { 'sv.adminDes': 'تعطيل هذه الخدمة (المسؤول)', 'sv.adminRea': 'إعادة تفعيل هذه الخدمة (المسؤول)' }
+  });
+
   /* ---------- F27 : contenus des démarches courantes en 4 langues ---------- */
   // Chaque démarche : [titre, pièces à prévoir]
   const DEM = {
@@ -152,7 +160,8 @@
   const demarchesDe = s => { const d = DEM[s.id]; return d ? (d[lang()] || d.fr) : []; };
   const alternativeDe = s => { const a = ALT[s.id]; return a ? (a[lang()] || a.fr) : t('sv.altGenerique'); };
   const iconeEtat = { ok: 'ph-check-circle', maintenance: 'ph-wrench', incident: 'ph-warning-octagon' };
-  const badge = s => `<span class="statut statut-${echap(etatCode(s))}">${echap(t('sv.etat.' + etatCode(s)))}</span>`;
+  // F63 : trois niveaux compris par tous (Disponible, Perturbé, Indisponible), texte + icône + couleur
+  const badge = s => NT.ui.niveauBadge(s);
 
   /* Texte de recherche : langue courante ET français, catégorie, démarches ; sans accents ni casse */
   function texteRecherche(s) {
@@ -185,6 +194,7 @@
 
   // F38 : bloc d'indisponibilité (icône + texte, jamais la couleur seule)
   function encart(s, complet) {
+    if (etatCode(s) === 'desactive') return NT.ui.encartService(s);   // F63 : désactivé par l'administrateur
     if (!degrade(s)) return '';
     const code = etatCode(s), e = s.etat;
     const titre = code === 'maintenance' ? t('sv.indispoMaint') : t('sv.indispo');
@@ -201,6 +211,7 @@
   // L'alternative remplace le bouton de démarche quand le service est dégradé
   function actionsAlternatives(s) {
     if (!degrade(s)) return '';
+    if (etatCode(s) === 'desactive') return NT.ui.actionsService(s);   // F63 : la démarche est remplacée par l'alternative
     const rdv = s.rdv ? `<a class="btn btn-primaire" href="rendez-vous.html?service=${encodeURIComponent(s.id)}"><i class="ph ph-calendar-check" aria-hidden="true"></i>${echap(t('sv.rdv'))}</a>` : '';
     const contact = `<a class="btn${rdv ? '' : ' btn-primaire'}" href="demande.html?type=contact&amp;service=${encodeURIComponent(s.id)}"><i class="ph ph-envelope-simple" aria-hidden="true"></i>${echap(t('sv.contacter'))}</a>`;
     return rdv + contact;
@@ -275,7 +286,7 @@
         <div><p class="sv-meta"><span class="sv-cat">${echap(catLibelle(s.categorie))}</span>${badge(s)}</p>
           <p class="sv-desc">${echap(choisir(s.description))}</p></div>
       </div>
-      ${encart(s, true)}
+      ${degrade(s) ? encart(s, true) : NT.ui.encartService(s, { siDisponible: true })}
       <dl class="sv-infos">
         ${s.horaires ? `<div><dt><i class="ph ph-clock" aria-hidden="true"></i>${echap(t('sv.horaires'))}</dt><dd>${echap(s.horaires)}</dd></div>` : ''}
         ${s.lieu ? `<div><dt><i class="ph ph-map-pin" aria-hidden="true"></i>${echap(t('sv.lieu'))}</dt><dd>${echap(s.lieu)}</dd></div>` : ''}
@@ -286,7 +297,8 @@
       <div class="ligne sv-actions sv-actions-detail">
         ${degrade(s) ? actionsAlternatives(s) : demande + rdv + lienDedie}
         ${LIEU_CARTE[s.id] ? `<a class="btn" href="carte.html?lieu=${encodeURIComponent(LIEU_CARTE[s.id])}"><i class="ph ph-map-pin" aria-hidden="true"></i>${echap(t('sv.carte'))}</a>` : ''}
-      </div>`;
+      </div>
+      ${NT.auth.aRole('admin') ? `<p style="margin-top:1rem"><a href="agent-alertes.html?desactiver=${encodeURIComponent(s.id)}#t-services"><i class="ph ph-${etatCode(s) === 'desactive' ? 'play-circle' : 'prohibit'}" aria-hidden="true"></i> ${echap(t(etatCode(s) === 'desactive' ? 'sv.adminRea' : 'sv.adminDes'))}</a></p>` : ''}`;
   }
 
   let ouvertId = null;

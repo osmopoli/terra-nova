@@ -1,0 +1,40 @@
+/* Terra Nova — F62 : version simple (pages produites par le serveur, sans script ni image).
+   Une colonne de texte lisible, liens et boutons larges, aucun effet. Couleurs : jetons de theme.css. */
+body.simple{ font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; line-height:1.6; margin:0; padding:0 1rem 2rem; }
+body.simple::before,body.simple::after{ display:none; }
+.simple-tete,.simple main,.simple-pied{ max-width:44rem; margin-inline:auto; }
+.simple-tete{ padding:1rem 0 .75rem; border-bottom:1px solid var(--trait-2); display:flex; flex-wrap:wrap; gap:.5rem 1.25rem; align-items:center; justify-content:space-between; }
+.simple-marque{ margin:0; font-weight:700; font-size:1.1rem; }
+.simple-marque a{ color:var(--givre); text-decoration:none; }
+.simple-marque span{ font-weight:400; font-size:.85rem; color:var(--brume); margin-inline-start:.4rem; }
+.simple-tete nav{ display:flex; flex-wrap:wrap; gap:.25rem 1rem; }
+.simple-tete nav a{ padding:.35rem 0; }
+.simple-tete nav a[aria-current="page"]{ color:var(--givre); font-weight:700; text-decoration:none; }
+.simple-complete{ margin:0; font-size:.9rem; }
+.simple h1{ font-size:1.6rem; line-height:1.25; margin:1.5rem 0 .5rem; }
+.simple h2{ font-size:1.2rem; margin:1.75rem 0 .5rem; }
+.simple .simple-h{ margin:0 0 .25rem; font-size:1.1rem; }
+.simple-liste{ padding-inline-start:1.25rem; margin:.5rem 0; }
+.simple-liste > li{ margin:0 0 .9rem; }
+.simple-menu a{ display:inline-block; padding:.35rem 0; font-weight:600; }
+.simple-etat{ border:1px solid var(--trait-2); border-inline-start-width:5px; border-radius:var(--r-s); padding:.6rem .9rem; margin:.5rem 0; }
+.simple-etat p{ margin:0; }
+.simple-etat dl{ margin:.4rem 0 0; display:grid; grid-template-columns:auto 1fr; gap:.2rem .75rem; }
+.simple-etat dt{ font-weight:700; color:var(--brume); }
+.simple-etat dd{ margin:0; }
+.simple-etat-disponible{ border-color:var(--calme); }
+.simple-etat-perturbe{ border-color:var(--soleil); }
+.simple-etat-indisponible{ border-color:var(--corail); }
+.simple-actions{ display:flex; flex-wrap:wrap; gap:.5rem 1rem; margin-top:.6rem!important; }
+.simple-actions a{ display:inline-block; padding:.45rem .2rem; font-weight:600; }
+.simple-actions a.principal{ padding:.45rem .9rem; border-radius:var(--r-s); background:var(--iono); color:var(--sur-iono); text-decoration:none; }
+.simple-infos{ display:grid; grid-template-columns:auto 1fr; gap:.3rem 1rem; }
+.simple-infos dt{ font-weight:700; color:var(--brume); }
+.simple-infos dd{ margin:0; }
+.simple-form{ display:flex; flex-wrap:wrap; gap:.5rem; align-items:flex-end; margin:1rem 0; }
+.simple-form label{ width:100%; font-weight:700; }
+.simple-form input{ flex:1 1 12rem; width:auto!important; }
+.simple-form button{ font:inherit; font-weight:700; min-height:2.8rem; padding:.5rem 1.1rem; border-radius:var(--r-s); border:1px solid var(--iono); background:var(--iono); color:var(--sur-iono); cursor:pointer; }
+.simple-pied{ margin-top:2.5rem; padding-top:1rem; border-top:1px solid var(--trait-2); color:var(--brume); font-size:.9rem; }
+.simple-pied p{ margin:.3rem 0; }
+@media (max-width:420px){ .simple-etat dl,.simple-infos{ grid-template-columns:1fr; } }

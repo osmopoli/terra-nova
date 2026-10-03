@@ -37,6 +37,28 @@
     if (img.dataset.srcset) img.srcset = img.dataset.srcset;
     if (img.dataset.src) img.src = img.dataset.src;
   };
+  /* F61 : mode « appareil peu puissant » — moins de calculs pour le processeur (pas de flou, d'ombre lourde ni d'animation,
+     mises à jour en direct espacées, listes longues dessinées à la demande). Proposé d'office si l'appareil a peu de cœurs
+     ou peu de mémoire, ou si le système demande moins d'animations ; l'habitant garde la main (panneau ♿). */
+  const coeurs = navigator.hardwareConcurrency || 0, memoire = navigator.deviceMemory || 0;
+  const mouvementReduit = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const raisons = [];
+  if (coeurs && coeurs <= 2) raisons.push('coeurs');
+  if (memoire && memoire <= 2) raisons.push('memoire');
+  if (mouvementReduit) raisons.push('mouvement');
+  if (reseau.saveData) raisons.push('economie');
+  NT.econome = { coeurs, memoire, raisons, auto: prefs.econome === undefined && raisons.length > 0 };
+  if (prefs.econome === true || NT.econome.auto) html.classList.add('econome');
+  NT.econome.actif = () => html.classList.contains('econome');
+  // Rythme des mises à jour en direct : espacées (× 3) sur appareil peu puissant
+  NT.econome.delai = ms => (NT.econome.actif() ? ms * 3 : ms);
+  // Mesure concrète : tâches longues (> 50 ms) qui bloquent l'appareil pendant le chargement (Chrome, Edge)
+  NT.econome.taches = { n: 0, ms: 0 };
+  try {
+    new PerformanceObserver(l => l.getEntries().forEach(e => { NT.econome.taches.n++; NT.econome.taches.ms += e.duration; }))
+      .observe({ type: 'longtask', buffered: true });
+  } catch (e) { NT.econome.taches = null; /* navigateur sans cette mesure */ }
+
   const langue = lire('langue', 'fr');
   html.lang = langue;
   html.dir = langue === 'ar' ? 'rtl' : 'ltr';
@@ -242,6 +264,17 @@
       const s = store.find('services', id);
       if (s) NT.audit.log({ categorie: 'service', action: 'Changement d’état du service', objetId: id, objetLibelle: s.nom.fr, avant: s.etat.code, apres: code, motif: message });
       return store.update('services', id, { etat: { code, message: message || '', retour: retour || '' } });
+    },
+    // F63 : désactivation rapide d'un service défectueux, réservée à l'administrateur (contrôlée et journalisée par le serveur)
+    desactiver(id, infos) {
+      const r = api('POST', '/api/services/' + encodeURIComponent(id) + '/desactiver', infos);
+      if (r.statut === 200) { recharger(); return copie(r.donnees); }
+      return refus(r);
+    },
+    reactiver(id) {
+      const r = api('POST', '/api/services/' + encodeURIComponent(id) + '/reactiver');
+      if (r.statut === 200) { recharger(); return copie(r.donnees); }
+      return refus(r);
     },
     vue(id) { const r = api('PATCH', '/api/docs/services/' + encodeURIComponent(id), { vues: 1 }); if (r.statut === 200) remplacer('services', r.donnees); }
   };
