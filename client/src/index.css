@@ -26,6 +26,59 @@
   --radius-control: 8px;
 
   --shadow-card: 0 1px 3px rgb(0 0 0 / 0.12);
+
+  /* Parcours d'arrivée (écran d'accueil visiteur + connexion) : ambiance spatiale. */
+  --color-space: #02040a;
+  --color-space-panel: #07101c;
+  --color-star: #edf6ff;
+  --color-star-muted: #b7c7d8;
+  --color-glow: #79e6ff;
+  --color-flare: #ff4d97;
+  --shadow-glow: 0 0 34px rgb(121 230 255 / 0.18);
+
+  --animate-ship-float: ship-float 0.45s ease-in-out infinite alternate;
+  --animate-ship-launch: ship-launch 3s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-warp: warp 3s linear both;
+  --animate-load: load 3s linear forwards;
+
+  @keyframes ship-float {
+    to {
+      translate: 0 -8px;
+    }
+  }
+  @keyframes ship-launch {
+    0% {
+      transform: scale(0.82) translateY(25px);
+    }
+    65% {
+      transform: scale(1) translateY(-5px);
+    }
+    100% {
+      transform: scale(0.22) translateY(-35vh);
+      opacity: 0.15;
+    }
+  }
+  @keyframes warp {
+    0% {
+      transform: scale(0.25);
+      opacity: 0;
+    }
+    12% {
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(2.3);
+      opacity: 0;
+    }
+  }
+  @keyframes load {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
 }
 
 @layer base {
