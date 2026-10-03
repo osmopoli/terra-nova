@@ -44,6 +44,21 @@ Interdits absolus :
   envahissants (les alertes passent par la balise lumineuse « Alertes » et le tiroir).
 - Mobile d'abord (360 px), focus visible, contraste AA, `prefers-reduced-motion` respecté, textes traduits dans les 4 langues.
 
+### Système de design (refonte du 4 octobre)
+
+- **Signature** : « l'horizon du dôme » (courbe lumineuse du hero, reflet qui la parcourt une seule fois) et le **hublot**
+  (galaxie dans une vitre ronde). Ne pas multiplier les décors : une courbe, un hublot, c'est tout.
+- **Jetons** (`theme.css`) : surfaces `--surface-1` (cartes) / `--surface-2` (contrôles), liseré `--liseré`,
+  `--ombre` (posé) / `--ombre-flottante` (en-tête, fenêtres, barre mobile seulement), rayons par rôle
+  `--r-s` contrôles, `--r-l` cartes, `--r-xl` grandes surfaces, pilule pour les puces ; échelle `--t-xs` → `--t-2xl`.
+- **Mouvement** : courbes `--ease-out` / `--ease-in-out`, moins de 300 ms pour l'interface, `scale(.97)` à l'appui,
+  survols derrière `@media (hover:hover)`. Une seule mise en scène par page (hero) ; apparition au défilement via
+  `data-revele` (une fois). Tout est coupé en mouvement réduit, mode léger (`html.leger`) et appareil peu puissant (`html.econome`).
+- **Haut Conseil (F73)** : jamais épinglé sur l'accueil. Une fenêtre discrète (`.off-fenetre`, `officiel.js`) une fois par
+  visite, qui s'efface seule et se range dans « Alertes » (la balise s'allume une fois).
+- **Mobile** : barre d'actions au pouce (`.barre-pouce`, ui.js) pour habitants et visiteurs ; l'en-tête se compacte.
+- Pas de choix de langue en encart au premier passage : le sélecteur de l'en-tête et `bienvenue.html` suffisent.
+
 ## Ajouter une demande Webcup (vague suivante)
 
 1. Lire la demande (`/agent`, données de l'API). Vérifier dans `docs/RENDU-JURY.md` qu'elle n'est pas déjà couverte.

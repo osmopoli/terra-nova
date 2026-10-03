@@ -51,12 +51,12 @@
   --sl-color-primary-300:color-mix(in oklch, var(--iono) 70%, white); --sl-color-primary-400:var(--iono); --sl-color-primary-500:var(--iono);
   --sl-color-primary-600:var(--iono); --sl-color-primary-700:color-mix(in oklch, var(--iono) 75%, white); --sl-color-primary-800:color-mix(in oklch, var(--iono) 50%, white);
   --sl-color-primary-900:color-mix(in oklch, var(--iono) 25%, white); --sl-color-primary-950:white;
-  --sl-panel-background-color:oklch(0.2101 0.0257 280.5303);
+  --sl-panel-background-color:oklch(0.1750 0.0210 203);
   --sl-panel-border-color:var(--trait-2);
   --sl-input-background-color:var(--verre);
   --sl-input-border-color:var(--trait-2);
   --sl-focus-ring-color:var(--iono);
-  --sl-overlay-background-color:rgba(4,6,20,.7);
+  --sl-overlay-background-color:oklch(0.0800 0.0150 205 / .72);
 }
 html.contraste{
   --nuit:#000; --nuit-2:#000; --verre:#000; --verre-fort:#000; --panneau-2:#000;
@@ -195,7 +195,7 @@ html.grand .capsule .nav-principale{ flex-wrap:wrap; overflow:visible; }
 .balise.importante{ border-color:var(--soleil); }
 .balise.importante .feu{ background:var(--soleil); box-shadow:0 0 10px var(--soleil); }
 @keyframes onde{ from{ transform:scale(.8); opacity:.9; } to{ transform:scale(2.6); opacity:0; } }
-@media (max-width:560px){ .balise .libelle-balise{ display:none; } .balise{ padding:0 .8rem; } }
+@media (max-width:900px){ .balise .libelle-balise{ display:none; } .balise{ padding:0 .8rem; } .select-langue{ max-width:7.5rem; } .outils-entete .btn-primaire{ display:none; } }
 .alerte-fiche{ border:1px solid var(--trait-2); border-radius:var(--r); padding:1rem 1.1rem; margin-bottom:1rem; background:rgba(255,255,255,.02); }
 .alerte-fiche.niveau-alerte{ border-color:var(--corail); background:rgba(255,107,127,.07); }
 .alerte-fiche.niveau-importante{ border-color:var(--soleil); background:rgba(255,196,107,.06); }
@@ -489,3 +489,9 @@ html.leger .off-fenetre-temps, html.econome .off-fenetre-temps{ display:none; }
 /* F75 : demande regroupée avec d'autres signalements du même problème */
 .sg-note{ display:flex; gap:.55rem; align-items:flex-start; margin:.6rem 0; padding:.6rem .8rem; border:1px solid var(--trait-2); border-inline-start:4px solid var(--iono); border-radius:var(--r-s); background:var(--verre); font-size:.92rem; }
 .sg-note i{ color:var(--iono); font-size:1.3rem; flex:none; }
+
+/* Tiroirs et fenêtres de dialogue (Shoelace) : même matière que les cartes, un liseré de lumière en bordure */
+sl-drawer::part(panel){ background:oklch(0.1650 0.0200 203); border-inline-start:1px solid oklch(1 0 0 / .08); box-shadow:-30px 0 80px -30px oklch(0 0 0 / .8); }
+sl-drawer::part(header), sl-dialog::part(header){ border-bottom:1px solid var(--trait); }
+sl-drawer::part(title), sl-dialog::part(title){ font-weight:650; letter-spacing:-.015em; font-size:1.125rem; }
+sl-dialog::part(panel){ background:oklch(0.1750 0.0210 203); border:1px solid oklch(1 0 0 / .08); border-radius:var(--r-xl); box-shadow:var(--ombre-flottante), var(--liseré); }
