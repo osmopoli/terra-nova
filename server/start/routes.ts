@@ -19,6 +19,7 @@ const AuthController = () => import('#controllers/auth_controller')
 const ProfileController = () => import('#controllers/profile_controller')
 const AgentController = () => import('#controllers/agent_controller')
 const AdminUsersController = () => import('#controllers/admin_users_controller')
+const DemandesController = () => import('#controllers/demandes_controller')
 
 router
   .group(() => {
@@ -75,6 +76,16 @@ router
       })
       .prefix('/admin')
       .use([middleware.auth(), middleware.role({ roles: ACCESS.admin })])
+
+    /** Demandes des habitants (« Mes demandes ») : citoyens uniquement, 403 sinon. */
+    router
+      .group(() => {
+        router.get('/', [DemandesController, 'index'])
+        router.post('/', [DemandesController, 'store'])
+        router.get('/:id', [DemandesController, 'show'])
+      })
+      .prefix('/demandes')
+      .use([middleware.auth(), middleware.role({ roles: ACCESS.citoyen })])
 
     // Routes métier : à ajouter ici (préfixe /api déjà appliqué, jamais de /spike).
 
