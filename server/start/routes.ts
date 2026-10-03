@@ -27,6 +27,9 @@ const NotificationsController = () => import('#controllers/notifications_control
 const AgentMessagesController = () => import('#controllers/agent_messages_controller')
 const AdminServiceTranslationsController = () =>
   import('#controllers/admin_service_translations_controller')
+const AgentMessagesController = () => import('#controllers/agent_messages_controller')
+const AlertsController = () => import('#controllers/alerts_controller')
+const DemandesController = () => import('#controllers/demandes_controller')
 
 router
   .group(() => {
@@ -76,6 +79,7 @@ router
         router.get('/me', [ProfileController, 'show'])
         router.patch('/me', [ProfileController, 'update'])
         router.post('/me/onboarding', [ProfileController, 'completeOnboarding'])
+        router.delete('/me', [ProfileController, 'destroy'])
 
         /** Notifications de changement d'état de mes demandes (WEBC-76). */
         router.get('/me/notifications', [NotificationsController, 'index'])
@@ -124,6 +128,27 @@ router
       })
       .prefix('/admin')
       .use([middleware.auth(), middleware.role({ roles: ACCESS.admin })])
+
+    /** Alertes générales : bannière publique, gestion réservée aux administrateurs. */
+    router.get('/alerts/active', [AlertsController, 'active'])
+    router
+      .group(() => {
+        router.get('/', [AlertsController, 'index'])
+        router.post('/', [AlertsController, 'store'])
+        router.patch('/:id', [AlertsController, 'update'])
+        router.delete('/:id', [AlertsController, 'destroy'])
+      })
+      .prefix('/alerts')
+      .use([middleware.auth(), middleware.role({ roles: ACCESS.admin })])
+    /** Demandes des habitants (« Mes demandes ») : citoyens uniquement, 403 sinon. */
+    router
+      .group(() => {
+        router.get('/', [DemandesController, 'index'])
+        router.post('/', [DemandesController, 'store'])
+        router.get('/:id', [DemandesController, 'show'])
+      })
+      .prefix('/demandes')
+      .use([middleware.auth(), middleware.role({ roles: ACCESS.citoyen })])
 
     // Routes métier : à ajouter ici (préfixe /api déjà appliqué, jamais de /spike).
 

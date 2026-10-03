@@ -17,11 +17,15 @@
 export const LIMITS = {
   fullName: 80,
   email: 254,
+  demandeSubject: 120,
+  demandeMessage: 2000,
   contactSubject: 120,
   contactMessage: 2000,
   newsTitle: 160,
   newsSummary: 300,
   newsBody: 10000,
+  alertTitle: 120,
+  alertMessage: 2000,
 } as const
 
 /** Catégories des actualités de la ville (colonne news_posts.category). */
@@ -52,7 +56,31 @@ export const DEFAULT_ROLE: Role = 'citoyen'
 export const ACCESS = {
   agent: ['agent', 'admin'],
   admin: ['admin'],
+  citoyen: ['citoyen'],
 } as const satisfies Record<string, readonly Role[]>
+
+/** Services municipaux destinataires d'une demande (colonne demandes.service). */
+export const SERVICES = {
+  etat_civil: 'État civil',
+  urbanisme: 'Urbanisme',
+  voirie: 'Voirie et propreté',
+  social: 'Action sociale',
+  education: 'Éducation et jeunesse',
+  autre: 'Autre',
+} as const
+export type Service = keyof typeof SERVICES
+export const SERVICE_VALUES = Object.keys(SERVICES) as Service[]
+
+/** Statuts d'une demande citoyenne (colonnes demandes.status et demande_steps.status). */
+export const DEMANDE_STATUSES = {
+  nouveau: 'Nouveau',
+  en_cours: 'En cours',
+  traite: 'Traité',
+} as const
+export type DemandeStatus = keyof typeof DEMANDE_STATUSES
+export const DEMANDE_STATUS_VALUES = Object.keys(DEMANDE_STATUSES) as DemandeStatus[]
+/** Statut de toute demande à sa création. */
+export const DEFAULT_DEMANDE_STATUS: DemandeStatus = 'nouveau'
 
 /** Services municipaux joignables par le formulaire de contact (colonne contact_messages.service). */
 export const CONTACT_SERVICES = {
@@ -131,10 +159,23 @@ export const CONTENT_LANGUAGES = {
 export type ContentLanguage = keyof typeof CONTENT_LANGUAGES
 export const CONTENT_LANGUAGE_VALUES = Object.keys(CONTENT_LANGUAGES) as ContentLanguage[]
 export const DEFAULT_CONTENT_LANGUAGE: ContentLanguage = 'fr'
+/**
+ * Niveaux des alertes diffusées à tous les habitants (colonne alerts.level),
+ * du moins au plus critique : l'ordre sert au tri des bannières.
+ */
+export const ALERT_LEVELS = {
+  info: 'Information',
+  important: 'Important',
+  urgent: 'Urgent',
+} as const
+export type AlertLevel = keyof typeof ALERT_LEVELS
+export const ALERT_LEVEL_VALUES = Object.keys(ALERT_LEVELS) as AlertLevel[]
 
 /** Listes fermées exposées au front par GET /api/meta (clé -> libellé). */
 export const META: Record<string, Record<string, string>> = {
   roles: ROLES,
+  services: SERVICES,
+  demandeStatuses: DEMANDE_STATUSES,
   contactServices: CONTACT_SERVICES,
   contactStatuses: CONTACT_STATUSES,
   contactStatusActions: CONTACT_STATUS_ACTIONS,
@@ -143,4 +184,5 @@ export const META: Record<string, Record<string, string>> = {
   loginOutcomes: LOGIN_OUTCOMES,
   loginBlockScopes: LOGIN_BLOCK_SCOPES,
   contentLanguages: CONTENT_LANGUAGES,
+  alertLevels: ALERT_LEVELS,
 }

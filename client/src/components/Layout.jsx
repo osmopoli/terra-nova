@@ -4,6 +4,7 @@ import { APP_NAME } from '../lib/constants.js';
 import TextSizeControl from './TextSizeControl.jsx';
 import NotificationBell from './NotificationBell.jsx';
 import ContrastControl from './ContrastControl.jsx';
+import SkipLink from './SkipLink.jsx';
 
 export default function Layout({ user, children }) {
   // Entrée active : soulignée en couleur primaire (aria-current posé par NavLink).
@@ -13,12 +14,7 @@ export default function Layout({ user, children }) {
   const space = user && user.role !== 'citoyen' ? 'agent' : 'citoyen';
   return (
     <div data-space={space} className="min-h-screen bg-canvas font-sans text-ink">
-      <a
-        href="#contenu"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-10 focus:rounded-control focus:bg-surface focus:px-4 focus:py-2"
-      >
-        Aller au contenu
-      </a>
+      <SkipLink />
       <header className="border-b border-line bg-surface">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-3 sm:px-6">
           <Link to="/" className="font-display text-xl font-bold leading-none text-ink sm:text-2xl">

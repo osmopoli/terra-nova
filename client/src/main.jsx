@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.jsx';
 import { TitleSync } from './lib/title.js';
+import { FocusSync } from './lib/focus.js';
 import { applyTextSize, getTextSize } from './lib/textSize.js';
 import { getHighContrast, setContrastAttribute } from './lib/contrast.js';
 
@@ -16,6 +17,7 @@ setContrastAttribute(getHighContrast());
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <TitleSync />
+    <FocusSync />
     <App />
   </StrictMode>,
 );

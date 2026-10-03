@@ -19,7 +19,7 @@ import { navigate, useLocation } from './lib/router.jsx';
 
 function Route({ session }) {
   const { pathname, searchParams } = useLocation();
-  const { user, meta, setUser, logout, expire } = session;
+  const { user, meta, setUser, logout, expire, accountDeleted } = session;
 
   if (pathname === '/') return <HomePage user={user} />;
   // Ajouter les routes métier ici (ex. /items, /items/:id).
@@ -32,7 +32,7 @@ function Route({ session }) {
       <div className="flex flex-col items-center gap-6">
         {user ? (
           <>
-            <ProfileScreen user={user} onUpdated={setUser} onLogout={logout} />
+            <ProfileScreen user={user} onUpdated={setUser} onLogout={logout} onDeleted={accountDeleted} />
             <MyMessages meta={meta} />
           </>
         ) : (
@@ -54,6 +54,7 @@ export default function App() {
   const [meta, setMeta] = useState({});
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(Boolean(getToken()));
+  const [notice, setNotice] = useState(null);
   const { pathname, searchParams } = useLocation();
 
   useEffect(() => {
@@ -85,6 +86,14 @@ export default function App() {
       setUser(null);
       navigate('/');
     }
+  }
+
+  // Compte supprimé côté serveur : session locale fermée, retour sur une page publique avec confirmation.
+  function accountDeleted() {
+    setToken(null);
+    setUser(null);
+    setNotice('Votre compte a été supprimé. Vos données personnelles ont été effacées.');
+    navigate('/services');
   }
 
   // Token refusé par l'API (401) pendant une action : déconnexion locale.
@@ -122,6 +131,17 @@ export default function App() {
 
   return (
     <Layout user={user}>
+      {notice && !user && (
+        <p
+          role="status"
+          className="mb-4 flex items-start justify-between gap-3 rounded-card bg-mist p-4 text-sm text-ink"
+        >
+          <span>{notice}</span>
+          <button type="button" onClick={() => setNotice(null)} className="shrink-0 font-medium text-primary underline">
+            Fermer
+          </button>
+        </p>
+      )}
       {loading ? (
         <p role="status" className="text-ink-muted">
           Chargement...
@@ -132,7 +152,7 @@ export default function App() {
           {user?.role === 'citoyen' && !user.onboardedAt && (
             <OnboardingGuide user={user} onDone={setUser} />
           )}
-          <Route session={{ user, meta, setUser, logout, expire }} />
+          <Route session={{ user, meta, setUser, logout, expire, accountDeleted }} />
         </>
       )}
     </Layout>

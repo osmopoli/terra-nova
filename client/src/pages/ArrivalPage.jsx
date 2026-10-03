@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import orbite from '../assets/planete-orbite.svg';
 import { APP_NAME } from '../lib/constants.js';
+import SkipLink from '../components/SkipLink.jsx';
 import TextSizeControl from '../components/TextSizeControl.jsx';
 import ContrastControl from '../components/ContrastControl.jsx';
 import { Link, navigate } from '../lib/router.jsx';
@@ -49,20 +50,48 @@ function Ship() {
 // 3 secondes, puis ouvre la vraie connexion (/connexion, API /auth/*).
 export default function ArrivalPage() {
   const [travelling, setTravelling] = useState(false);
+  const cancelRef = useRef(null);
+  const launchRef = useRef(null);
+  const cancelled = useRef(false);
+
+  function cancel() {
+    cancelled.current = true;
+    setTravelling(false);
+  }
 
   useEffect(() => {
-    if (!travelling) return undefined;
+    if (!travelling) {
+      // Voyage annulé (bouton ou Échap) : le focus revient sur le bouton qui l'a lancé.
+      if (cancelled.current) launchRef.current?.focus();
+      cancelled.current = false;
+      return undefined;
+    }
+    // Pendant le voyage, le focus reste sur « Annuler » (le fond est inerte).
+    cancelRef.current?.focus();
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const timer = setTimeout(() => navigate('/connexion'), reduced ? 300 : TRAVEL_MS);
-    return () => clearTimeout(timer);
+    const onKey = (e) => {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        cancelRef.current?.focus();
+      }
+      if (e.key === 'Escape') cancel();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('keydown', onKey);
+    };
   }, [travelling]);
 
   return (
     <div className="min-h-dvh bg-space font-sans text-star">
       <div
+        inert={travelling}
         className="relative isolate flex min-h-dvh flex-col overflow-hidden bg-cover bg-[center_42%]"
         style={{ backgroundImage: `url(${orbite})` }}
       >
+        <SkipLink />
         <div
           aria-hidden="true"
           className="absolute inset-0 -z-10 bg-linear-to-t from-space/90 to-space/30 md:bg-linear-to-r md:from-space/95 md:via-space/70 md:to-space/10"
@@ -79,7 +108,7 @@ export default function ArrivalPage() {
           </div>
         </header>
 
-        <main className="flex flex-1 items-end px-6 pb-40 pt-12 md:items-center md:px-[clamp(24px,7vw,110px)] md:pb-28">
+        <main id="contenu" tabIndex={-1} className="flex flex-1 focus:outline-none items-end px-6 pb-40 pt-12 md:items-center md:px-[clamp(24px,7vw,110px)] md:pb-28">
           <div className="max-w-3xl">
             <p className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-glow">
               <span aria-hidden="true" className="h-px w-8 bg-glow" />
@@ -94,6 +123,7 @@ export default function ArrivalPage() {
               cœur numérique de la première cité.
             </p>
             <button
+              ref={launchRef}
               type="button"
               onClick={() => setTravelling(true)}
               disabled={travelling}
@@ -130,7 +160,8 @@ export default function ArrivalPage() {
 
       {travelling && (
         <div
-          role="status"
+          role="dialog"
+          aria-modal="true"
           aria-label="Approche en cours"
           className="fixed inset-0 z-50 grid place-items-center overflow-hidden bg-space"
         >
@@ -151,6 +182,14 @@ export default function ArrivalPage() {
             <div aria-hidden="true" className="mx-auto mt-4 h-0.5 overflow-hidden bg-star/10">
               <div className="h-full w-0 animate-load bg-linear-to-r from-glow via-star to-flare motion-reduce:w-full motion-reduce:animate-none" />
             </div>
+            <button
+              ref={cancelRef}
+              type="button"
+              onClick={cancel}
+              className="mt-6 min-h-11 px-4 text-sm text-star-muted hover:text-star"
+            >
+              Annuler <kbd className="font-sans font-bold">Échap</kbd>
+            </button>
           </div>
         </div>
       )}
