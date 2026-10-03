@@ -1,6 +1,6 @@
 import { api } from '../api/client.js';
 import { labelOf } from '../lib/constants.js';
-import { Link } from '../lib/router.jsx';
+import { Link, useLocation } from '../lib/router.jsx';
 import { useAsync } from '../lib/useAsync.js';
 import ListState from './ListState.jsx';
 
@@ -10,6 +10,7 @@ const dateFormat = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium', timeS
 export default function MyMessages({ meta }) {
   const state = useAsync(() => api('/contact-messages'), []);
   const messages = Array.isArray(state.data) ? state.data : [];
+  const highlighted = useLocation().searchParams.get('demande');
 
   return (
     <section
@@ -46,7 +47,11 @@ export default function MyMessages({ meta }) {
       >
         <ul className="mt-4 divide-y divide-mist">
           {messages.map((m) => (
-            <li key={m.trackingCode} className="py-3">
+            <li
+              key={m.trackingCode}
+              id={m.trackingCode}
+              className={`py-3 ${m.trackingCode === highlighted ? 'rounded-control bg-mist px-2' : ''}`}
+            >
               <div className="flex items-start justify-between gap-3">
                 <p className="min-w-0 font-medium text-ink">{m.subject}</p>
                 <span className="shrink-0 rounded-control bg-mist px-2 py-0.5 text-xs font-semibold text-ink">

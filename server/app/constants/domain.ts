@@ -106,6 +106,12 @@ export const CONTACT_STATUSES = {
 export type ContactStatus = keyof typeof CONTACT_STATUSES
 export const CONTACT_STATUS_VALUES = Object.keys(CONTACT_STATUSES) as ContactStatus[]
 export const DEFAULT_CONTACT_STATUS: ContactStatus = 'nouveau'
+/** Action attendue de l'habitant selon le nouveau statut (notification de changement d'état). */
+export const CONTACT_STATUS_ACTIONS = {
+  nouveau: 'Rien à faire, votre demande a bien été reçue.',
+  en_cours: 'Rien à faire pour le moment, un agent s’en occupe.',
+  traite: 'Rien à faire : consultez la réponse et contactez-nous si besoin.',
+} as const satisfies Record<ContactStatus, string>
 /** Messages qui attendent encore une action d'un agent (filtre « à traiter »). */
 export const CONTACT_STATUSES_TO_HANDLE: ContactStatus[] = ['nouveau', 'en_cours']
 
@@ -213,6 +219,7 @@ export const META: Record<string, Record<string, string>> = {
   demandeStatuses: DEMANDE_STATUSES,
   contactServices: CONTACT_SERVICES,
   contactStatuses: CONTACT_STATUSES,
+  contactStatusActions: CONTACT_STATUS_ACTIONS,
   serviceCategories: SERVICE_CATEGORIES,
   quartiers: QUARTIERS,
   newsCategories: NEWS_CATEGORIES,

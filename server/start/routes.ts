@@ -23,6 +23,7 @@ const AdminUsersController = () => import('#controllers/admin_users_controller')
 const WebcupController = () => import('#controllers/webcup_controller')
 const ContactMessagesController = () => import('#controllers/contact_messages_controller')
 const ServicesController = () => import('#controllers/services_controller')
+const NotificationsController = () => import('#controllers/notifications_controller')
 const AdminServiceTranslationsController = () =>
   import('#controllers/admin_service_translations_controller')
 const AgentMessagesController = () => import('#controllers/agent_messages_controller')
@@ -79,6 +80,12 @@ router
         router.patch('/me', [ProfileController, 'update'])
         router.post('/me/onboarding', [ProfileController, 'completeOnboarding'])
         router.delete('/me', [ProfileController, 'destroy'])
+
+        /** Notifications de changement d'état de mes demandes (WEBC-76). */
+        router.get('/me/notifications', [NotificationsController, 'index'])
+        router
+          .post('/me/notifications/:id/read', [NotificationsController, 'read'])
+          .where('id', /^\d+$/)
 
         /** Messages aux services municipaux (WEBC-6) : chaque habitant ne voit que les siens. */
         router.get('/contact-messages', [ContactMessagesController, 'index'])
