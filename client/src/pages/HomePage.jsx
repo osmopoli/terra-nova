@@ -7,7 +7,7 @@ export default function HomePage({ user }) {
     <section className="mx-auto max-w-2xl py-12 text-center">
       <h1 className="font-display text-3xl font-bold sm:text-4xl">{APP_NAME}</h1>
       <p className="mt-4 text-ink-muted">
-        Starter prêt : API AdonisJS, comptes, front React. Le sujet arrive à H+0.
+        La plateforme des services municipaux de Nova Terra : créez votre compte pour suivre vos démarches.
       </p>
       {!user && (
         <Link
