@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
-import type { HasMany } from '@adonisjs/lucid/types/relations'
+import { BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
+import User from '#models/user'
 import db from '@adonisjs/lucid/services/db'
 import DemandeStep from '#models/demande_step'
 import {
@@ -69,6 +70,10 @@ export default class Demande extends BaseModel {
 
   @hasMany(() => DemandeStep)
   declare steps: HasMany<typeof DemandeStep>
+
+  /** Habitant auteur : chargé uniquement pour la vue agent (nom affiché, jamais l'e-mail). */
+  @belongsTo(() => User, { serializeAs: null })
+  declare user: BelongsTo<typeof User>
 
   /** Enregistre une demande, son numéro de suivi et sa première étape, en une transaction. */
   static async submit(
