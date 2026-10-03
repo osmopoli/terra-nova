@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import Layout from './components/Layout.jsx';
 import AuthScreen from './components/AuthScreen.jsx';
 import ProfileScreen from './components/ProfileScreen.jsx';
+import ArrivalPage from './pages/ArrivalPage.jsx';
 import HomePage from './pages/HomePage.jsx';
+import LoginPage from './pages/LoginPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import { api, getToken, setToken } from './api/client.js';
 import { safeRedirect } from './lib/redirect.js';
@@ -38,6 +40,7 @@ export default function App() {
   const [meta, setMeta] = useState({});
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(Boolean(getToken()));
+  const { pathname, searchParams } = useLocation();
 
   useEffect(() => {
     // Listes fermées (constantes métier) servies par l'API.
@@ -69,6 +72,20 @@ export default function App() {
   function expire() {
     setToken(null);
     setUser(null);
+  }
+
+  // Visiteur non connecté : parcours d'arrivée plein écran (accueil puis connexion).
+  if (!loading && !user && (pathname === '/' || pathname === '/connexion')) {
+    return pathname === '/' ? (
+      <ArrivalPage />
+    ) : (
+      <LoginPage
+        onAuthenticated={(u) => {
+          setUser(u);
+          navigate(safeRedirect(searchParams.get('redirect')), { replace: true });
+        }}
+      />
+    );
   }
 
   return (
