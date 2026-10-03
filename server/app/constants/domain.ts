@@ -19,7 +19,19 @@ export const LIMITS = {
   email: 254,
   contactSubject: 120,
   contactMessage: 2000,
+  newsTitle: 160,
+  newsSummary: 300,
+  newsBody: 10000,
 } as const
+
+/** Catégories des actualités de la ville (colonne news_posts.category). */
+export const NEWS_CATEGORIES = {
+  annonce: 'Annonce municipale',
+  changement_service: 'Changement de service',
+  info_pratique: 'Info pratique',
+} as const
+export type NewsCategory = keyof typeof NEWS_CATEGORIES
+export const NEWS_CATEGORY_VALUES = Object.keys(NEWS_CATEGORIES) as NewsCategory[]
 
 /** Profils de la plateforme (colonne users.role). */
 export const ROLES = {
@@ -83,4 +95,5 @@ export const META: Record<string, Record<string, string>> = {
   contactServices: CONTACT_SERVICES,
   contactStatuses: CONTACT_STATUSES,
   serviceCategories: SERVICE_CATEGORIES,
+  newsCategories: NEWS_CATEGORIES,
 }
