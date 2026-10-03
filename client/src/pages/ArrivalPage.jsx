@@ -57,7 +57,7 @@ export default function ArrivalPage() {
 
   return (
     <div className="min-h-dvh bg-space font-sans text-star">
-      <main
+      <div
         className="relative isolate flex min-h-dvh flex-col overflow-hidden bg-cover bg-[center_42%]"
         style={{ backgroundImage: `url(${orbite})` }}
       >
@@ -73,7 +73,7 @@ export default function ArrivalPage() {
           </p>
         </header>
 
-        <section className="flex flex-1 items-end px-6 pb-40 pt-12 md:items-center md:px-[clamp(24px,7vw,110px)] md:pb-28">
+        <main className="flex flex-1 items-end px-6 pb-40 pt-12 md:items-center md:px-[clamp(24px,7vw,110px)] md:pb-28">
           <div className="max-w-3xl">
             <p className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-glow">
               <span aria-hidden="true" className="h-px w-8 bg-glow" />
@@ -102,27 +102,30 @@ export default function ArrivalPage() {
               Découvrir les services municipaux
             </Link>
           </div>
-        </section>
+        </main>
 
-        <dl className="absolute inset-x-5 bottom-6 flex justify-between gap-3 rounded-card border border-glow/20 bg-space/60 px-4 py-3 text-[10px] uppercase tracking-[0.08em] text-star-muted backdrop-blur-md md:inset-x-auto md:right-[clamp(24px,5vw,72px)] md:bottom-10 md:gap-6 md:text-xs">
-          <div>
-            <dt>Destination</dt>
-            <dd className="text-xs font-bold text-star md:text-sm">{APP_NAME}</dd>
-          </div>
-          <div>
-            <dt>Distance</dt>
-            <dd className="text-xs font-bold text-star md:text-sm">0,4 UA</dd>
-          </div>
-          <div>
-            <dt>Arrivée estimée</dt>
-            <dd className="text-xs font-bold text-star md:text-sm">3 secondes</dd>
-          </div>
-        </dl>
-      </main>
+        <footer className="absolute inset-x-5 bottom-6 rounded-card border border-glow/20 bg-space/60 px-4 py-3 text-[10px] uppercase tracking-[0.08em] text-star-muted backdrop-blur-md md:inset-x-auto md:right-[clamp(24px,5vw,72px)] md:bottom-10 md:text-xs">
+          <dl className="flex justify-between gap-3 md:gap-6">
+            <div>
+              <dt>Destination</dt>
+              <dd className="text-xs font-bold text-star md:text-sm">{APP_NAME}</dd>
+            </div>
+            <div>
+              <dt>Distance</dt>
+              <dd className="text-xs font-bold text-star md:text-sm">0,4 UA</dd>
+            </div>
+            <div>
+              <dt>Arrivée estimée</dt>
+              <dd className="text-xs font-bold text-star md:text-sm">3 secondes</dd>
+            </div>
+          </dl>
+        </footer>
+      </div>
 
       {travelling && (
         <div
           role="status"
+          aria-label="Approche en cours"
           className="fixed inset-0 z-50 grid place-items-center overflow-hidden bg-space"
         >
           <div

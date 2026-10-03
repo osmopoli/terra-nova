@@ -108,3 +108,13 @@
     outline-offset: 2px;
   }
 }
+
+/* Écrans sombres (parcours d'arrivée) : focus lumineux, sauf dans les cartes claires. */
+@layer base {
+  .bg-space :focus-visible {
+    outline-color: var(--color-glow);
+  }
+  .bg-space .bg-surface :focus-visible {
+    outline-color: var(--color-primary);
+  }
+}
