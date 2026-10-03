@@ -57,6 +57,12 @@ router
 
     /** Actualités de la ville : lecture publique, publication agent / admin. */
     router.get('/news', [NewsController, 'index'])
+    router
+      .group(() => {
+        router.get('/news/important/unread', [NewsController, 'unreadImportant'])
+        router.post('/news/important/seen', [NewsController, 'markImportantSeen'])
+      })
+      .use(middleware.auth())
     router.get('/news/:id', [NewsController, 'show'])
     router
       .group(() => {

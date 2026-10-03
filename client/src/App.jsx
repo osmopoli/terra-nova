@@ -10,6 +10,7 @@ import ArrivalPage from './pages/ArrivalPage.jsx';
 import ContactPage from './pages/ContactPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
+import NewsPage, { NewsDetailPage } from './pages/NewsPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import ServicePage from './pages/ServicePage.jsx';
 import ServicesPage from './pages/ServicesPage.jsx';
@@ -27,6 +28,9 @@ function Route({ session }) {
   if (pathname === '/services') return <ServicesPage meta={meta} />;
   const serviceMatch = pathname.match(/^\/services\/([a-z0-9-]+)$/);
   if (serviceMatch) return <ServicePage slug={serviceMatch[1]} meta={meta} user={user} />;
+  if (pathname === '/actualites') return <NewsPage user={user} meta={meta} />;
+  const newsMatch = pathname.match(/^\/actualites\/(\d+)$/);
+  if (newsMatch) return <NewsDetailPage id={newsMatch[1]} meta={meta} />;
   if (pathname === '/connexion' || pathname === '/profil') {
     return (
       <div className="flex flex-col items-center gap-6">

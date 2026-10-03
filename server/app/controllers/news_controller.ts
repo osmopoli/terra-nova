@@ -86,4 +86,29 @@ export default class NewsController {
     await post.delete()
     return response.noContent()
   }
+
+  /**
+   * F30 : annonces importantes publiées depuis la dernière consultation de l'habitant
+   * (pour un nouveau compte : celles des 7 derniers jours), la plus récente d'abord.
+   */
+  async unreadImportant({ auth }: HttpContext) {
+    const user = auth.getUserOrFail()
+    const since = user.newsSeenAt ?? DateTime.now().minus({ days: 7 })
+    const data = await NewsPost.query()
+      .withScopes((scopes) => scopes.visible())
+      .where('important', true)
+      .where('published_at', '>', since.toSQL({ includeOffset: false })!)
+      .orderBy('published_at', 'desc')
+      .orderBy('id', 'desc')
+      .limit(20)
+    return { count: data.length, data }
+  }
+
+  /** F30 : l'habitant a vu ses annonces importantes. */
+  async markImportantSeen({ auth, response }: HttpContext) {
+    const user = auth.getUserOrFail()
+    user.newsSeenAt = DateTime.now()
+    await user.save()
+    return response.noContent()
+  }
 }

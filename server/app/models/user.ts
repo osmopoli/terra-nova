@@ -31,6 +31,9 @@ export default class User extends compose(BaseModel, AuthFinder) {
   /** Guide de première connexion terminé ou passé (D12) ; null = à afficher. */
   @column.dateTime()
   declare onboardedAt: DateTime | null
+  /** Dernière consultation des annonces importantes (F30) ; null = jamais. */
+  @column.dateTime({ serializeAs: null })
+  declare newsSeenAt: DateTime | null
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

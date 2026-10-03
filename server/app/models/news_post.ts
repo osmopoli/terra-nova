@@ -23,6 +23,10 @@ export default class NewsPost extends BaseModel {
   @column.dateTime()
   declare publishedAt: DateTime
 
+  /** Annonce importante : les habitants connectés en sont prévenus (F30). */
+  @column({ consume: (value) => Boolean(value) })
+  declare important: boolean
+
   @column({ serializeAs: null })
   declare authorId: number | null
 

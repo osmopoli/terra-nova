@@ -70,11 +70,18 @@ export default class extends BaseSeeder {
     const admin = await User.query().where('role', 'admin').orderBy('id').first()
     const now = DateTime.now().startOf('minute')
 
+    // F30 : annonces importantes de démo (les habitants connectés en sont prévenus).
+    const important = new Set([
+      'Travaux sur le boulevard des Alizés',
+      "Nouveaux horaires de l'accueil de la mairie",
+    ])
+
     for (const { title, daysAgo, ...attrs } of DEMO_NEWS) {
       await NewsPost.updateOrCreate(
         { title },
         {
           ...attrs,
+          important: important.has(title),
           publishedAt: now.minus({ days: daysAgo, hours: daysAgo ? 2 : 0 }),
           authorId: admin?.id ?? null,
         }

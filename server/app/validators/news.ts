@@ -13,6 +13,7 @@ const messages = new SimpleMessagesProvider(
     minLength: 'Au moins {{ min }} caractères.',
     maxLength: 'Au plus {{ max }} caractères.',
     enum: 'Valeur non autorisée.',
+    boolean: 'Valeur oui/non attendue.',
   },
   {
     title: 'titre',
@@ -20,6 +21,7 @@ const messages = new SimpleMessagesProvider(
     body: 'contenu',
     category: 'catégorie',
     publishedAt: 'date de publication',
+    important: 'annonce importante',
   }
 )
 
@@ -30,6 +32,7 @@ const fields = {
   summary: vine.string().trim().minLength(3).maxLength(LIMITS.newsSummary),
   body: vine.string().trim().minLength(3).maxLength(LIMITS.newsBody),
   category: vine.enum(NEWS_CATEGORY_VALUES),
+  important: vine.boolean().optional(),
 }
 
 export const listNewsValidator = vine.compile(
@@ -64,6 +67,7 @@ export const updateNewsValidator = vine.compile(
     summary: fields.summary.clone().optional(),
     body: fields.body.clone().optional(),
     category: fields.category.clone().optional(),
+    important: vine.boolean().optional(),
     publishedAt: vine.date(dateFormats).optional(),
   })
 )

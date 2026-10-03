@@ -4,6 +4,7 @@ import { APP_NAME } from '../lib/constants.js';
 import TextSizeControl from './TextSizeControl.jsx';
 import ContrastControl from './ContrastControl.jsx';
 import SkipLink from './SkipLink.jsx';
+import NotificationBell from './NotificationBell.jsx';
 
 export default function Layout({ user, children }) {
   // Entrée active : soulignée en couleur primaire (aria-current posé par NavLink).
@@ -31,6 +32,10 @@ export default function Layout({ user, children }) {
             <NavLink to="/services" className={linkClass}>
               Services
             </NavLink>
+            <NavLink to="/actualites" className={linkClass}>
+              Actualités
+            </NavLink>
+            {user && <NotificationBell user={user} />}
             <NavLink
               to={user ? '/profil' : '/connexion'}
               className="rounded-control bg-primary px-3 py-1.5 font-bold text-white hover:bg-primary-strong aria-[current=page]:bg-primary-strong aria-[current=page]:ring-2 aria-[current=page]:ring-accent aria-[current=page]:ring-offset-2"
