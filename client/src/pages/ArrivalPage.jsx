@@ -50,29 +50,32 @@ function Ship() {
 // 3 secondes, puis ouvre la vraie connexion (/connexion, API /auth/*).
 export default function ArrivalPage() {
   const [travelling, setTravelling] = useState(false);
-  const overlayRef = useRef(null);
+  const cancelRef = useRef(null);
   const launchRef = useRef(null);
   const cancelled = useRef(false);
 
+  function cancel() {
+    cancelled.current = true;
+    setTravelling(false);
+  }
+
   useEffect(() => {
     if (!travelling) {
-      // Voyage annulé (Échap) : le focus revient sur le bouton qui l'a lancé.
+      // Voyage annulé (bouton ou Échap) : le focus revient sur le bouton qui l'a lancé.
       if (cancelled.current) launchRef.current?.focus();
       cancelled.current = false;
       return undefined;
     }
-    // Pendant le voyage, le focus reste dans l'écran de transition (le fond est inerte).
-    overlayRef.current?.focus();
+    // Pendant le voyage, le focus reste sur « Annuler » (le fond est inerte).
+    cancelRef.current?.focus();
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const timer = setTimeout(() => navigate('/connexion'), reduced ? 300 : TRAVEL_MS);
     const onKey = (e) => {
       if (e.key === 'Tab') {
         e.preventDefault();
-        overlayRef.current?.focus();
+        cancelRef.current?.focus();
       }
-      if (e.key !== 'Escape') return;
-      cancelled.current = true;
-      setTravelling(false);
+      if (e.key === 'Escape') cancel();
     };
     window.addEventListener('keydown', onKey);
     return () => {
@@ -157,11 +160,10 @@ export default function ArrivalPage() {
 
       {travelling && (
         <div
-          ref={overlayRef}
-          tabIndex={-1}
-          role="status"
+          role="dialog"
+          aria-modal="true"
           aria-label="Approche en cours"
-          className="fixed inset-0 z-50 grid place-items-center overflow-hidden bg-space focus:outline-none"
+          className="fixed inset-0 z-50 grid place-items-center overflow-hidden bg-space"
         >
           <div
             aria-hidden="true"
@@ -180,9 +182,14 @@ export default function ArrivalPage() {
             <div aria-hidden="true" className="mx-auto mt-4 h-0.5 overflow-hidden bg-star/10">
               <div className="h-full w-0 animate-load bg-linear-to-r from-glow via-star to-flare motion-reduce:w-full motion-reduce:animate-none" />
             </div>
-            <p className="mt-6 text-xs text-star-muted">
-              <kbd className="font-sans font-bold text-star">Échap</kbd> pour annuler
-            </p>
+            <button
+              ref={cancelRef}
+              type="button"
+              onClick={cancel}
+              className="mt-6 min-h-11 px-4 text-sm text-star-muted hover:text-star"
+            >
+              Annuler <kbd className="font-sans font-bold">Échap</kbd>
+            </button>
           </div>
         </div>
       )}

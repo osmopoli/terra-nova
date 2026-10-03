@@ -8,7 +8,7 @@ export default function SkipLink() {
       onClick={(e) => {
         if (focusMain()) e.preventDefault();
       }}
-      className="fixed left-4 top-4 z-[60] -translate-y-[200%] rounded-control bg-surface px-4 py-2 font-bold text-ink shadow-pop focus:translate-y-0"
+      className="fixed left-3 top-3 z-[60] -translate-y-[200%] rounded-control bg-surface px-4 py-2 text-sm font-bold text-ink shadow-pop focus:translate-y-0"
     >
       Aller au contenu
     </a>
