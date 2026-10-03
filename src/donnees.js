@@ -1,7 +1,8 @@
 // Accès aux documents métier : chaque document est un objet JSON identique à celui que manipule le navigateur.
 const crypto = require('node:crypto');
 const db = require('./db');
-const { sceller, ouvrir } = require('./chiffrement');   // F69 : champs sensibles chiffrés au repos
+const { sceller, ouvrir, verifierTemoin } = require('./chiffrement');   // F69 : champs sensibles chiffrés au repos
+verifierTemoin(db);   // refuse de démarrer si la clé de chiffrement n'est pas celle de la base (sinon profils perdus en silence)
 
 const maintenant = () => new Date().toISOString();
 const uid = (prefixe) => (prefixe || 'id') + '-' + Date.now().toString(36) + crypto.randomBytes(3).toString('hex');

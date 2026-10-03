@@ -49,7 +49,8 @@ function chiffrer(valeur, contexte) {
   return PREFIXE + [iv, c.getAuthTag(), donnees].map((b) => b.toString('base64url')).join('.');
 }
 let alerte = false;
-function dechiffrer(texte, contexte) {
+// En cas d'échec (clé différente, donnée altérée) : renvoie `repli` (null par défaut) sans lever d'erreur
+function dechiffrer(texte, contexte, repli = null) {
   if (typeof texte !== 'string' || !texte.startsWith(PREFIXE)) return texte;
   try {
     const [iv, tag, donnees] = texte.slice(PREFIXE.length).split('.').map((s) => Buffer.from(s, 'base64url'));
@@ -59,7 +60,7 @@ function dechiffrer(texte, contexte) {
     return JSON.parse(Buffer.concat([d.update(donnees), d.final()]).toString('utf8'));
   } catch {
     if (!alerte) { alerte = true; console.error('[sécurité] une donnée chiffrée n’a pas pu être lue (clé différente ou donnée altérée)'); }
-    return null;
+    return repli;
   }
 }
 
@@ -74,12 +75,29 @@ function sceller(col, obj) {
   for (const f of champs) if (f in copie && copie[f] !== '' && copie[f] != null && !(typeof copie[f] === 'string' && copie[f].startsWith(PREFIXE))) copie[f] = chiffrer(copie[f], `${col}:${obj.id}:${f}`);
   return copie;
 }
-// Après lecture : champs sensibles déchiffrés
+// Après lecture : champs sensibles déchiffrés. Si la clé ne permet pas de lire une valeur, elle reste chiffrée telle quelle
+// en mémoire (`sceller` ne la rechiffre pas) : la prochaine écriture du profil ne l'efface pas. Le bouclier la masque en sortie.
 function ouvrir(col, obj) {
   const champs = CHAMPS[col];
   if (!champs || !obj) return obj;
-  for (const f of champs) if (typeof obj[f] === 'string' && obj[f].startsWith(PREFIXE)) obj[f] = dechiffrer(obj[f], `${col}:${obj.id}:${f}`);
+  for (const f of champs) if (illisible(obj[f])) obj[f] = dechiffrer(obj[f], `${col}:${obj.id}:${f}`, obj[f]);
   return obj;
 }
+// Valeur encore chiffrée après lecture (clé absente ou différente)
+const illisible = (v) => typeof v === 'string' && v.startsWith(PREFIXE);
 
-module.exports = { chiffrer, dechiffrer, empreinte, sceller, ouvrir, CHAMPS, PREFIXE };
+// Témoin : une valeur chiffrée au premier démarrage, relue à chaque démarrage. Si elle ne se déchiffre plus, la clé n'est pas
+// celle de la base (DATA_ENCRYPTION_KEY changée ou terranova.key perdu) : on refuse de démarrer plutôt que de servir des profils
+// illisibles. CHIFFREMENT_IGNORER_TEMOIN=1 force le démarrage (dépannage, après sauvegarde de la base).
+const TEMOIN = 'chiffrement_temoin';
+function verifierTemoin(db) {
+  const r = db.prepare('SELECT valeur FROM compteurs WHERE nom = ?').get(TEMOIN);
+  if (!r) { db.prepare('INSERT INTO compteurs (nom, valeur) VALUES (?, ?)').run(TEMOIN, chiffrer('ok', TEMOIN)); return true; }
+  if (dechiffrer(String(r.valeur), TEMOIN) === 'ok') return true;
+  console.error('[sécurité] clé de chiffrement différente de celle de la base : vérifiez DATA_ENCRYPTION_KEY / terranova.key '
+    + '(ne jamais changer la clé sans réchiffrer la base ; CHIFFREMENT_IGNORER_TEMOIN=1 pour démarrer quand même).');
+  if (process.env.CHIFFREMENT_IGNORER_TEMOIN === '1') return false;
+  process.exit(1);
+}
+
+module.exports = { chiffrer, dechiffrer, empreinte, sceller, ouvrir, illisible, verifierTemoin, CHAMPS, PREFIXE };
