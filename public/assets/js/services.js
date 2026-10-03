@@ -224,7 +224,7 @@
         <span class="icone-ronde" aria-hidden="true"><i class="ph-duotone ${echap(s.icone)}"></i></span>
         <div class="sv-titre">
           <h3>${echap(nom)}</h3>
-          <p class="sv-meta"><span class="sv-cat">${echap(catLibelle(s.categorie))}</span>${badge(s)}</p>
+          <p class="sv-meta"><span class="sv-cat">${echap(catLibelle(s.categorie))}</span>${badge(s)}${NT.avisService ? NT.avisService.badgeMoyenne(s.id) : ''}</p>
         </div>
       </div>
       <p class="sv-desc">${echap(choisir(s.description))}</p>
@@ -298,6 +298,8 @@
         ${degrade(s) ? actionsAlternatives(s) : demande + rdv + lienDedie}
         ${LIEU_CARTE[s.id] ? `<a class="btn" href="carte.html?lieu=${encodeURIComponent(LIEU_CARTE[s.id])}"><i class="ph ph-map-pin" aria-hidden="true"></i>${echap(t('sv.carte'))}</a>` : ''}
       </div>
+      ${NT.assos ? NT.assos.blocService(s.id) : ''}
+      <div class="av-zone" data-av-service="${echap(s.id)}"></div>
       ${NT.auth.aRole('admin') ? `<p style="margin-top:1rem"><a href="agent-alertes.html?desactiver=${encodeURIComponent(s.id)}#t-services"><i class="ph ph-${etatCode(s) === 'desactive' ? 'play-circle' : 'prohibit'}" aria-hidden="true"></i> ${echap(t(etatCode(s) === 'desactive' ? 'sv.adminRea' : 'sv.adminDes'))}</a></p>` : ''}`;
   }
 
@@ -309,6 +311,7 @@
     ouvertId = id;
     tiroir.setAttribute('label', choisir(s.nom));
     tiroir.innerHTML = detailHtml(s);
+    if (NT.avisService) NT.avisService.blocService(tiroir.querySelector('.av-zone'), s.id);   // F76 : note moyenne, commentaires, « Donner mon avis »
     tiroir.show();
   }
   function selonAncre() {

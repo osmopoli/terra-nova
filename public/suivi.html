@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="assets/css/demandes.css">
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/store.js"></script>
+  <script src="assets/js/avis-service.js"></script>
   <script src="assets/js/ui.js" defer></script>
 </head>
 <body data-page="espace" data-ariane="nav.accueil|index.html;nav.espace|espace.html;suivi.ariane" data-roles="connecte">
@@ -33,6 +34,13 @@
       'suivi.intro': 'See the status of each request and the steps already completed, without contacting the city hall.'
     };
     NT.i18n.ajouter({ fr: { 'suivi.ariane': 'Suivi de la demande' }, en: EN, es: EN, ar: EN });
+    // F75 : demande regroupée avec d'autres signalements du même problème
+    NT.i18n.ajouter({
+      fr: { 'sg.rattachee': 'D’autres habitants ont signalé le même problème : votre demande est traitée avec la demande {id}. Vous recevez les mêmes réponses, sans rien refaire.', 'sg.principale': '{n} autre(s) habitant(s) ont signalé le même problème : une seule réponse pour tous, chacun est prévenu.' },
+      en: { 'sg.rattachee': 'Other residents reported the same problem: your request is handled together with request {id}. You get the same replies, with nothing to redo.', 'sg.principale': '{n} other resident(s) reported the same problem: one reply for all, everyone is notified.' },
+      es: { 'sg.rattachee': 'Otros habitantes señalaron el mismo problema: su solicitud se trata junto con la solicitud {id}. Recibe las mismas respuestas, sin rehacer nada.', 'sg.principale': '{n} habitante(s) más señalaron el mismo problema: una sola respuesta para todos, cada uno recibe aviso.' },
+      ar: { 'sg.rattachee': 'أبلغ سكان آخرون عن المشكلة نفسها: يُعالج طلبك مع الطلب {id}. تتلقى الردود نفسها دون إعادة أي شيء.', 'sg.principale': 'أبلغ {n} ساكن(ون) آخرون عن المشكلة نفسها: رد واحد للجميع، ويتم إعلام كل واحد.' }
+    });
 
     NT.pret(() => {
       const { echap, $ } = NT.ui;
@@ -99,6 +107,8 @@
                   <span class="dm-statut-grand statut-${echap(d.statut)}"><i class="ph-duotone ${ICONES[d.statut]}" aria-hidden="true"></i><span><span class="sr-only">${echap(bi('Statut actuel : ', 'Current status: '))}</span>${echap(lib(d.statut))}</span></span>
                 </div>
                 ${d.message ? `<p style="white-space:pre-line">${echap(d.message)}</p>` : ''}
+                ${d.principale ? `<p class="sg-note"><i class="ph-duotone ph-stack" aria-hidden="true"></i><span>${echap(NT.t('sg.rattachee', { id: d.principale }))}</span></p>`
+                  : (d.liees && d.liees.length ? `<p class="sg-note"><i class="ph-duotone ph-stack" aria-hidden="true"></i><span>${echap(NT.t('sg.principale', { n: d.liees.length }))}</span></p>` : '')}
                 <h3 style="margin-top:1.5rem">${echap(bi('Avancement', 'Progress'))}</h3>
                 <ol class="etapes dm-frise" aria-label="${echap(bi('Étapes de la demande', 'Request steps'))}">${frise}</ol>
               </section>
@@ -115,6 +125,7 @@
                   <button class="btn btn-primaire" type="submit"><i class="ph ph-paper-plane-tilt" aria-hidden="true"></i>${echap(bi('Envoyer le complément', 'Send the addition'))}</button>
                 </form>
               </section>` : (d.statut === 'cloturee' ? `<p class="doux" style="margin-top:1rem">${echap(bi('Cette demande est clôturée : pour une nouvelle question, faites une nouvelle demande.', 'This request is closed: for a new question, make a new request.'))}</p>` : '')}
+              <div id="zone-avis-dem"></div>
             </div>
             <aside class="panneau dm-panneau" aria-labelledby="h-fiche">
               <h2 id="h-fiche" style="font-size:1.2rem">${echap(bi('Détails', 'Details'))}</h2>
@@ -132,6 +143,7 @@
         const titre = $('#titre-suivi'); titre.textContent = bi('Demande ', 'Request ') + d.id;
         $('#intro-suivi').textContent = bi('Statut actuel, étapes réalisées et historique de votre demande.', 'Current status, completed steps and history of your request.');
         document.title = bi('Demande ', 'Request ') + d.id + ' — Terra Nova';
+        if (NT.avisService) NT.avisService.panneauDemande($('#zone-avis-dem'), d);   // F76 : « Donner mon avis » sur une demande traitée
 
         const f = $('#form-compl');
         if (f) f.addEventListener('submit', e => {

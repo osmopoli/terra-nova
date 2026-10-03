@@ -8,7 +8,8 @@ const { creerCompte, parEmail, motsDePasseDemo } = require('./auth');
 
 const FICHIER = path.join(__dirname, '..', 'data', 'demo-seed.json');
 const PARTICIPATION = ['consultations', 'avis', 'projets', 'idees'];   // vague 12 (F65-F68)
-const COLLECTIONS = ['utilisateurs', 'services', 'demandes', 'annonces', 'audit', 'notifications', 'rdv', 'journal', ...PARTICIPATION];
+const VAGUE14 = ['officiels', 'associations', 'avisServices'];   // vague 14 (F73, F74, F76)
+const COLLECTIONS = ['utilisateurs', 'services', 'demandes', 'annonces', 'audit', 'notifications', 'rdv', 'journal', ...PARTICIPATION, ...VAGUE14];
 
 function absolu(v, t) {
   if (typeof v === 'string' && /^@-?\d+$/.test(v)) return new Date(t - Number(v.slice(1))).toISOString();
@@ -53,7 +54,41 @@ function viderDemo(s) {
   db.exec('DELETE FROM securite;');
   // le compteur NT-xxxx ne doit jamais redescendre sous une demande conservée
   const max = docs.tous('demandes').reduce((m, d) => Math.max(m, Number(String(d.id).replace(/^NT-/, '')) || 0), 0);
+  // vague 14 : rechargée avec la démo ; le compteur COM-xxxx ne redescend pas sous un avis conservé
+  const maxAvis = docs.tous('avisServices').reduce((m, d) => Math.max(m, Number(String(d.id).replace(/^COM-/, '')) || 0), 0);
+  docs.fixerCompteur('seed_vague14', 0); docs.fixerCompteur('officiels', 0); docs.fixerCompteur('avisServices', maxAvis);
   return Math.max(s.compteur || 1040, max);
+}
+
+/* Vague 14 : message officiel (F73), associations partenaires (F74), demandes semblables (F75), avis sur les services (F76).
+   Chargés une seule fois, y compris sur une base déjà en service (compteur « seed_vague14 ») ; les demandes prennent le prochain
+   numéro NT-xxxx libre pour ne jamais écraser une vraie demande. */
+function semerVague14(s) {
+  const fait = db.prepare('SELECT valeur FROM compteurs WHERE nom = ?').get('seed_vague14');
+  if (fait && fait.valeur > 0) return false;
+  const v = s.vague14 || {};
+  const existe = (id) => !!(id && docs.get('utilisateurs', id));
+  const maintenant = new Date().toISOString();
+  for (const a of v.associations || []) if (!docs.get('associations', a.id)) docs.put('associations', a);
+  for (const m of v.officiels || []) {
+    const n = docs.prochainNumero('officiels', 0);
+    docs.put('officiels', Object.assign({ id: 'OFF-' + String(n).padStart(4, '0'), cree: m.debut < maintenant ? m.debut : maintenant,
+      signataire: 'Haut Conseil de la Ville', statut: 'publie', accuses: [], accusesAppareils: 0 }, m));
+  }
+  for (const r of v.rdv || []) if (!docs.get('rdv', r.id) && existe(r.userId)) docs.put('rdv', r);
+  for (const d of v.demandes || []) {
+    const { ref, historique, ...dem } = d;   // eslint-disable-line no-unused-vars
+    if (dem.userId && !existe(dem.userId)) dem.userId = null;
+    const id = 'NT-' + docs.prochainNumero('demandes', 1040);
+    docs.put('demandes', Object.assign(dem, { id, historique: [{ date: dem.cree, statut: 'recue', note: 'Demande enregistrée et transmise au service concerné.', par: 'Système' }].concat(historique || []) }));
+  }
+  for (const a of v.avisServices || []) {
+    if (!existe(a.userId)) continue;
+    const n = docs.prochainNumero('avisServices', 0);
+    docs.put('avisServices', Object.assign({ id: 'COM-' + String(n).padStart(4, '0'), statut: 'publie', modifications: 0 }, a));
+  }
+  docs.fixerCompteur('seed_vague14', 1);
+  return true;
 }
 
 function semer({ forcer = false } = {}) {
@@ -61,6 +96,7 @@ function semer({ forcer = false } = {}) {
   if (!forcer && docs.compte('services') > 0) {
     if (docs.compte('projets') === 0) { semerParticipation(lire()); console.log('[demo] participation (vague 12) chargée'); }
     if (semerVague13(lire())) console.log('[demo] comptes et dossiers de la vague 13 chargés');
+    if (semerVague14(lire())) console.log('[demo] contenus de la vague 14 chargés (message officiel, associations, demandes semblables, avis)');
     motsDePasseDemo();
     return false;
   }
@@ -75,6 +111,7 @@ function semer({ forcer = false } = {}) {
   semerVague13(s);
   docs.fixerCompteur('demandes', compteur);
   semerParticipation(s);
+  semerVague14(s);
   motsDePasseDemo();
   console.log('[demo] données de démonstration chargées');
   return true;
