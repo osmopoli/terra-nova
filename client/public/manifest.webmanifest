@@ -1,12 +1,18 @@
 {
-  "name": "Nova Terra",
+  "name": "Nova Terra — services municipaux",
   "short_name": "Nova Terra",
+  "description": "Démarches, services et annonces de la ville de Nova Terra.",
   "lang": "fr",
-  "start_url": "/",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#f6f3ec",
   "theme_color": "#0b6a6b",
+  "categories": ["government", "utilities"],
   "icons": [
-    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon-maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
   ]
 }
