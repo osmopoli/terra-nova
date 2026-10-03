@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import Layout from './components/Layout.jsx';
+import AgentLayout from './components/AgentLayout.jsx';
 import AuthScreen from './components/AuthScreen.jsx';
 import ProfileScreen from './components/ProfileScreen.jsx';
 import MyMessages from './components/MyMessages.jsx';
+import AgentPage from './pages/AgentPage.jsx';
 import ArrivalPage from './pages/ArrivalPage.jsx';
 import ContactPage from './pages/ContactPage.jsx';
 import HomePage from './pages/HomePage.jsx';
@@ -11,7 +13,7 @@ import NotFoundPage from './pages/NotFoundPage.jsx';
 import ServicePage from './pages/ServicePage.jsx';
 import ServicesPage from './pages/ServicesPage.jsx';
 import { api, getToken, setToken } from './api/client.js';
-import { safeRedirect } from './lib/redirect.js';
+import { loginPath, safeRedirect } from './lib/redirect.js';
 import { navigate, useLocation } from './lib/router.jsx';
 
 function Route({ session }) {
@@ -67,6 +69,11 @@ export default function App() {
       .finally(() => setLoading(false));
   }, []);
 
+  // /agent sans session : connexion, puis retour explicite vers l'espace agents.
+  useEffect(() => {
+    if (pathname === '/agent' && !loading && !user) navigate(loginPath('/agent'), { replace: true });
+  }, [pathname, loading, user]);
+
   async function logout() {
     try {
       await api('/auth/logout', { method: 'POST' });
@@ -96,6 +103,19 @@ export default function App() {
           navigate(safeRedirect(searchParams.get('redirect')), { replace: true });
         }}
       />
+    );
+  }
+
+  // Back-office agents : layout distinct. Le rôle est vérifié par l'API (403 pour un citoyen).
+  if (pathname === '/agent') {
+    return (
+      <AgentLayout user={user} onLogout={logout}>
+        {loading || !user ? (
+          <p className="text-ink-muted">Chargement...</p>
+        ) : (
+          <AgentPage onExpired={expire} />
+        )}
+      </AgentLayout>
     );
   }
 
