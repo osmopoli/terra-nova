@@ -31,6 +31,7 @@ app.use(require('./src/modules/accueil'));   // vague 13 : comptes sans e-mail, 
 app.use(require('./src/statique').statique(path.join(__dirname, 'public')));   // F58 : fichiers compressés + cache navigateur
 app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
 
+app.use('/api', (req, res) => res.status(404).json({ erreur: 'Route inconnue.' }));
 app.use((req, res) => res.status(404).sendFile(path.join(__dirname, 'public', 'index.html')));
 app.use((err, req, res, _next) => {
   if (err.type === 'entity.parse.failed' || err.type === 'entity.too.large') return res.status(err.type === 'entity.too.large' ? 413 : 400).json({ erreur: 'Données refusées : format inattendu.' });   // F69
