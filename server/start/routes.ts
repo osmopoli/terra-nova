@@ -151,6 +151,11 @@ router
 
     // Annuaire des services municipaux : public, lecture seule.
     router.get('/services', [ServicesController, 'index'])
+    router.get('/services/highlights', [ServicesController, 'highlights'])
+    router
+      .patch('/services/:slug/featured', [ServicesController, 'feature'])
+      .where('slug', /^[a-z0-9-]{1,80}$/)
+      .use(middleware.auth())
     router.get('/services/:slug', [ServicesController, 'show']).where('slug', /^[a-z0-9-]{1,80}$/)
 
     router.any('/*', async ({ response }) => {

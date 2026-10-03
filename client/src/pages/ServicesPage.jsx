@@ -12,6 +12,7 @@ export default function ServicesPage({ meta }) {
   const t = serviceUi(lang);
   const state = useAsync(() => api(`/services?lang=${lang}`), [lang]);
   const services = Array.isArray(state.data) ? state.data : [];
+  const highlights = useAsync(() => api(`/services/highlights?lang=${lang}`), [lang]);
 
   return (
     <section lang={lang}>
@@ -22,6 +23,32 @@ export default function ServicesPage({ meta }) {
         </div>
         <LanguageSwitcher options={meta.contentLanguages} value={lang} onChange={setLang} />
       </div>
+
+      {highlights.data?.length > 0 && (
+        <section aria-labelledby="services-prioritaires" className="mt-8">
+          <h2 id="services-prioritaires" className="font-display text-xl font-bold">
+            {t.highlights}
+          </h2>
+          <ul className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {highlights.data.map((h) => (
+              <li key={h.slug} lang={h.lang}>
+                <Link
+                  to={`/services/${h.slug}`}
+                  className="flex h-full flex-col rounded-card bg-primary p-4 text-white shadow-card hover:bg-primary-strong"
+                >
+                  {h.reason === 'popular' && (
+                    <span lang={lang} className="text-xs font-bold uppercase tracking-wide">
+                      {t.popular}
+                    </span>
+                  )}
+                  <span className="font-display text-lg font-bold">{h.firstProcedure ?? h.name}</span>
+                  {h.firstProcedure && <span className="mt-1 text-sm">{h.name}</span>}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <ListState
         state={state}

@@ -63,3 +63,10 @@ listServicesValidator.messagesProvider = new SimpleMessagesProvider(
   { enum: 'Valeur non autorisée.' },
   { lang: 'langue', quartier: 'quartier', category: 'catégorie' }
 )
+
+/** F28 : mise en avant d'un service par un administrateur. */
+export const featureServiceValidator = vine.compile(vine.object({ featured: vine.boolean() }))
+featureServiceValidator.messagesProvider = new SimpleMessagesProvider(
+  { required: 'Ce champ est obligatoire.', boolean: 'Valeur oui/non attendue.' },
+  { featured: 'mise en avant' }
+)

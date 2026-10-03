@@ -38,6 +38,11 @@ export const SERVICE_UI = {
     contact: 'Contact',
     language: 'Langue du contenu',
     notTranslated: 'Ce service n’est pas encore traduit : le contenu est affiché en français.',
+    highlights: 'Démarches les plus demandées',
+    popular: 'Très consulté',
+    feature: 'Mettre en avant dans l’annuaire',
+    unfeature: 'Retirer de la mise en avant',
+    featured: 'Mis en avant',
   },
   en: {
     title: 'City services',
@@ -50,6 +55,11 @@ export const SERVICE_UI = {
     contact: 'Contact',
     language: 'Content language',
     notTranslated: 'This service is not translated yet: the content is shown in French.',
+    highlights: 'Most requested procedures',
+    popular: 'Popular',
+    feature: 'Feature in the directory',
+    unfeature: 'Remove from featured',
+    featured: 'Featured',
   },
   es: {
     title: 'Servicios municipales',
@@ -62,6 +72,11 @@ export const SERVICE_UI = {
     contact: 'Contacto',
     language: 'Idioma del contenido',
     notTranslated: 'Este servicio aún no está traducido: el contenido se muestra en francés.',
+    highlights: 'Trámites más solicitados',
+    popular: 'Muy consultado',
+    feature: 'Destacar en el directorio',
+    unfeature: 'Quitar de destacados',
+    featured: 'Destacado',
   },
 };
 export const serviceUi = (lang) => SERVICE_UI[lang] ?? SERVICE_UI.fr;

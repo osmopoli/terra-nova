@@ -76,6 +76,14 @@ export default class Service extends BaseModel {
   })
   declare translations: Translations
 
+  /** Mise en avant par la mairie (F28) : position dans la sélection, null sinon. */
+  @column()
+  declare featuredRank: number | null
+
+  /** Nombre de consultations de la fiche : sert à proposer les services les plus utilisés. */
+  @column()
+  declare views: number
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

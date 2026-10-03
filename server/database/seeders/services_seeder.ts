@@ -232,10 +232,17 @@ export const DEMO_SERVICES: ServiceSeed[] = [
 
 export default class extends BaseSeeder {
   async run() {
+    // F28 : démarches les plus courantes mises en avant par la mairie, dans cet ordre.
+    const featured = ['etat-civil', 'ccas', 'enfance-education', 'proprete-dechets']
+
     for (const { slug, ...attrs } of DEMO_SERVICES) {
       await Service.updateOrCreate(
         { slug },
-        { ...attrs, translations: SERVICE_TRANSLATIONS[slug] ?? {} }
+        {
+          ...attrs,
+          translations: SERVICE_TRANSLATIONS[slug] ?? {},
+          featuredRank: featured.includes(slug) ? featured.indexOf(slug) + 1 : null,
+        }
       )
     }
   }

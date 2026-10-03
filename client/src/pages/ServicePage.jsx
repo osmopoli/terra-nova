@@ -8,11 +8,40 @@ import LanguageSwitcher from '../components/LanguageSwitcher.jsx';
 import ServiceTranslationForm from '../components/ServiceTranslationForm.jsx';
 import { serviceUi, useContentLanguage } from '../lib/contentLanguage.js';
 
+// F28 (admin) : mettre en avant ce service en tête de l'annuaire, ou l'en retirer.
+function FeatureToggle({ slug, featured, onChange, t }) {
+  const [busy, setBusy] = useState(false);
+  async function toggle() {
+    setBusy(true);
+    try {
+      const res = await api(`/services/${slug}/featured`, { method: 'PATCH', body: { featured: !featured } });
+      onChange(res.featured);
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <div className="mt-4 flex flex-wrap items-center gap-3 rounded-control bg-mist p-3 text-sm">
+      {featured && <span className="font-bold">{t.featured}</span>}
+      <button
+        type="button"
+        onClick={toggle}
+        disabled={busy}
+        aria-pressed={featured}
+        className="rounded-control border border-primary px-3 py-1.5 font-semibold text-primary hover:bg-primary/10 disabled:opacity-60"
+      >
+        {featured ? t.unfeature : t.feature}
+      </button>
+    </div>
+  );
+}
+
 // Fiche détail d'un service municipal : description, horaires, contact, démarches.
 export default function ServicePage({ slug, meta, user }) {
   const [lang, setLang] = useContentLanguage();
   const t = serviceUi(lang);
   const [revision, setRevision] = useState(0);
+  const [featured, setFeatured] = useState(null);
   const { status, data: service, error } = useAsync(
     () => api(`/services/${slug}?lang=${lang}`),
     [slug, lang, revision],
@@ -39,6 +68,14 @@ export default function ServicePage({ slug, meta, user }) {
         </Link>
         <LanguageSwitcher options={meta.contentLanguages} value={lang} onChange={setLang} />
       </div>
+      {user?.role === 'admin' && (
+        <FeatureToggle
+          slug={slug}
+          featured={featured ?? service.featured}
+          onChange={setFeatured}
+          t={t}
+        />
+      )}
       {service.lang !== lang && (
         <p lang={lang} role="status" className="mt-4 rounded-control bg-mist p-3 text-sm">
           {t.notTranslated}
