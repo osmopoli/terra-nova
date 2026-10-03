@@ -66,6 +66,8 @@
 
   X.recharger = () => {
     const r = NT.api('GET', '/api/demandes/groupes');
+    X.pause = r.statut === 503 ? ((r.donnees && r.donnees.erreur) || '') : '';   // vague 15 : regroupement mis en pause pendant la forte affluence
+    if (X.pause) return;
     groupes = r.statut === 200 ? r.donnees.groupes : [];
     parDemande.clear();
     groupes.forEach(g => g.demandes.concat(g.rattachees).forEach(id => parDemande.set(id, g)));
@@ -86,6 +88,7 @@
     const A = NT.agent;
     if (etat.tri === 'attente') return (a, b) => (A.estOuverte(b) - A.estOuverte(a)) || A.dernierChangement(a).localeCompare(A.dernierChangement(b));
     if (etat.tri === 'recentes') return (a, b) => b.cree.localeCompare(a.cree);
+    if (etat.tri === 'priorite' && NT.priorites) return NT.priorites.comparer;   // vague 15 (F80)
     if (etat.tri === 'groupes') return (a, b) => ((X.groupeDe(b.id) || {}).taille || 0) - ((X.groupeDe(a.id) || {}).taille || 0) || a.cree.localeCompare(b.cree);
     return null;
   };
@@ -102,7 +105,7 @@
     const A = NT.agent;
     z.innerHTML = `<h2 id="sg-h"><i class="ph-duotone ph-stack" aria-hidden="true"></i> ${e(t('sg.titre'))} <span class="pastille-n">${groupes.length}</span></h2>
       <p class="doux" style="margin:.2rem 0 .8rem;font-size:.88rem">${e(t('sg.intro'))}</p>
-      ${groupes.length ? `<ul class="sg-liste">${groupes.map(g => `<li class="sg-groupe${g.urgente ? ' sg-urgente' : ''}">
+      ${X.pause && !groupes.length ? `<p class="vide" role="status">${e(X.pause)}</p>` : groupes.length ? `<ul class="sg-liste">${groupes.map(g => `<li class="sg-groupe${g.urgente ? ' sg-urgente' : ''}">
         <div class="ligne entre"><strong class="sg-n">${e(t('sg.n', { n: g.taille }))}</strong>${g.urgente ? `<span class="ag-prio ag-prio-haute"><i class="ph ph-caret-double-up" aria-hidden="true"></i>${e(t('sg.urgent'))}</span>` : ''}</div>
         <p class="sg-objet">${e(g.objet)}</p>
         <p class="sg-meta">${e(A.service(g.serviceId) || '–')} · ${e(g.quartiers.join(', ') || '–')} · ${e(t('sg.habitants', { n: g.habitants }))} · ${e(t('sg.periode', { d: NT.ui.dateHeure(g.premier), f: NT.ui.dateHeure(g.dernier) }))}</p>
@@ -118,7 +121,7 @@
     const chip = (k, lib, ic) => `<button type="button" class="sv-filtre sg-chip" data-sg-filtre="${k}" aria-pressed="${!!etat[k]}"><i class="ph ${ic}" aria-hidden="true"></i> ${e(t(lib))}</button>`;
     z.innerHTML = `<span id="sg-lbl-att">${e(t('sg.attention'))}</span>
       <span class="sg-chips" role="group" aria-labelledby="sg-lbl-att">${chip('urgentes', 'sg.fUrgentes', 'ph-warning-circle')}${chip('nonAssignees', 'sg.fNonAssignees', 'ph-user-circle-dashed')}${chip('groupes', 'sg.fGroupes', 'ph-stack')}</span>
-      <span class="champ sg-tri"><label for="sg-tri">${e(t('sg.tri'))}</label><select id="sg-tri">${[['action', 'sg.tAction'], ['attente', 'sg.tAttente'], ['recentes', 'sg.tRecentes'], ['groupes', 'sg.tGroupes']].map(([v, l]) => `<option value="${v}" ${etat.tri === v ? 'selected' : ''}>${e(t(l))}</option>`).join('')}</select></span>
+      <span class="champ sg-tri"><label for="sg-tri">${e(t('sg.tri'))}</label><select id="sg-tri">${[['action', 'sg.tAction'], ['attente', 'sg.tAttente'], ['recentes', 'sg.tRecentes'], ['groupes', 'sg.tGroupes']].concat(NT.priorites ? [['priorite', 'pr.tPriorite']] : []).map(([v, l]) => `<option value="${v}" ${etat.tri === v ? 'selected' : ''}>${e(t(l))}</option>`).join('')}</select></span>
       ${etat.groupe ? `<span class="sg-filtre-groupe">${e(t('sg.filtreGroupe', { id: etat.groupe.replace('GRP-', '') }))} <button type="button" class="lien-bouton" data-sg-effacer>${e(t('sg.effacer'))}</button></span>` : ''}`;
   }
   X.rendre = () => { panneau(); barre(); };

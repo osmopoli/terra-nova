@@ -17,6 +17,7 @@
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/store.js"></script>
   <script src="assets/js/avis-service.js"></script>
+  <script src="assets/js/sujets.js"></script>
   <script src="assets/js/ui.js" defer></script>
 </head>
 <body data-page="espace" data-ariane="nav.accueil|index.html;nav.espace|espace.html;suivi.ariane" data-roles="connecte">
@@ -104,11 +105,17 @@
             <span class="ligne"><a class="btn btn-primaire" href="demande.html"><i class="ph ph-plus" aria-hidden="true"></i>${echap(bi('Nouvelle demande', 'New request'))}</a>
             <a class="btn" href="recapitulatif.html"><i class="ph ph-file-arrow-down" aria-hidden="true"></i>${echap(bi('Télécharger le récapitulatif', 'Download the summary'))}</a>
             <a class="btn" href="espace.html">${echap(bi('Retour à mon espace', 'Back to my space'))}</a></span></div>` +
-          (l.length ? `<ul class="dm-liste-demandes">${l.map(d => `<li><a href="suivi.html?id=${encodeURIComponent(d.id)}">
+          (l.length ? `<div id="suivi-outils"></div><ul class="dm-liste-demandes" id="suivi-liste"></ul>`
+            : `<p class="vide">${echap(bi('Vous n’avez pas encore fait de demande.', 'You have not made any request yet.'))}</p>`);
+        if (!l.length) return;
+        // F79 : trier et filtrer mes demandes par sujet (service), état et mot-clé ; état gardé dans l'adresse
+        const ligne = d => `<li><a href="suivi.html?id=${encodeURIComponent(d.id)}">
               <span><span class="ref">${echap(d.id)}</span><strong>${echap(d.objet)}</strong>
               <span class="meta" style="display:block">${echap(bi(TYPES[d.type][0], TYPES[d.type][1]))} · ${echap(nomService(d.serviceId))} · ${echap(NT.ui.date(d.cree))}</span></span>
-              ${badge(d.statut)}</a></li>`).join('')}</ul>`
-            : `<p class="vide">${echap(bi('Vous n’avez pas encore fait de demande.', 'You have not made any request yet.'))}</p>`);
+              ${badge(d.statut)}</a></li>`;
+        NT.sujets.monter({ conteneur: $('#suivi-outils'), statuts: true, elements: () => l, sujetDe: d => d.serviceId || '', statutDe: d => d.statut, dateDe: d => d.cree,
+          texteDe: d => [d.id, d.objet, d.message, d.lieu, nomService(d.serviceId)].join(' '),
+          onChange: r => { $('#suivi-liste').innerHTML = r.length ? r.map(ligne).join('') : `<li class="vide">${echap(NT.t('sj.aucun'))}</li>`; } });
       }
 
       /* ----- Détail d'une demande ----- */

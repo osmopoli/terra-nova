@@ -20,6 +20,7 @@
   <script src="assets/js/avis-service.js"></script>
   <script src="assets/js/comptes.js"></script>
   <script src="assets/js/participer.js"></script>
+  <script src="assets/js/sujets.js"></script>
   <script src="assets/js/ui.js" defer></script>
 </head>
 <body data-page="espace" data-ariane="nav.accueil|index.html;nav.espace" data-roles="citoyen">
@@ -90,23 +91,8 @@
       <div class="titre-section"><div><h2 id="t-hist" data-i18n="c.esp.hist">Historique de mes demandes</h2>
         <p data-i18n="c.esp.histD">Toutes vos demandes depuis votre inscription, pour retrouver ce que vous avez déjà envoyé.</p></div></div>
       <div id="astuces-hist" class="astuces"></div>
-      <div class="filtres">
-        <div class="champ">
-          <label for="f-statut" data-i18n="c.esp.fStatut">Statut</label>
-          <select id="f-statut"></select>
-        </div>
-        <div class="champ">
-          <label for="f-q" data-i18n="c.esp.fRech">Rechercher</label>
-          <input id="f-q" type="search" autocomplete="off" aria-describedby="aide-fq" data-i18n-attr="placeholder:c.esp.fRechPh" placeholder="Objet, numéro, service">
-        </div>
-        <div class="champ">
-          <label for="f-ordre" data-i18n="c.esp.fOrdre">Trier par date</label>
-          <select id="f-ordre">
-            <option value="desc" data-i18n="c.esp.recentes">Plus récentes d’abord</option>
-            <option value="asc" data-i18n="c.esp.anciennes">Plus anciennes d’abord</option>
-          </select>
-        </div>
-      </div>
+      <!-- F79 : sujet (puces avec nombre), état, tri, recherche — assets/js/sujets.js, état gardé dans l'adresse (?hsujet=…) -->
+      <div class="filtres-sujets" id="filtres-hist"></div>
       <p class="aide" id="aide-fq" data-i18n="c.esp.fAide">Le tableau se met à jour pendant que vous saisissez.</p>
       <p class="doux" id="f-resultat" aria-live="polite"></p>
       <div class="table-defile">

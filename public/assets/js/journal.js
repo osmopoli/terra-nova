@@ -79,7 +79,9 @@
   });
 
   const CATS = { demande: ['ph-tray', 'Demande'], annonce: ['ph-megaphone', 'Annonce'], service: ['ph-buildings', 'Service'], compte: ['ph-users', 'Compte'], rdv: ['ph-calendar-check', 'Rendez-vous'],
-    consultation: ['ph-chats-circle', 'Consultation'], projet: ['ph-crane', 'Projet'], idee: ['ph-lightbulb-filament', 'Idée'] };
+    consultation: ['ph-chats-circle', 'Consultation'], projet: ['ph-crane', 'Projet'], idee: ['ph-lightbulb-filament', 'Idée'],
+    plateforme: ['ph-gauge', 'Plateforme'] };   // vague 15 (F77, F78) : mode dégradé forcé par l'administrateur
+  NT.i18n.ajouter({ en: { 'jr.c.plateforme': 'Platform' }, es: { 'jr.c.plateforme': 'Plataforma' }, ar: { 'jr.c.plateforme': 'المنصة' } });
   const ACTIONS = {
     'Ouverture d’une consultation': ['jr.a.ouvCons'], 'Clôture d’une consultation': ['jr.a.cloCons'], 'Publication d’une décision': ['jr.a.decCons'], 'Mise à jour d’un projet': ['jr.a.majProjet'], 'Traitement d’une idée': ['jr.a.idee'],
     'Changement de statut': ['jr.a.statut'], 'Diffusion d’une alerte': ['jr.a.diffAlerte'], 'Publication d’une annonce': ['jr.a.pubAnnonce'], 'Changement d’état du service': ['jr.a.etatService'],
@@ -120,6 +122,7 @@
       case 'compte': return 'admin-comptes.html';
       case 'rdv': return 'rendez-vous.html';
       case 'consultation': case 'projet': case 'idee': return 'participer.html#' + encodeURIComponent(id);
+      case 'plateforme': return 'agent-plateforme.html';
       default: return '';
     }
   }

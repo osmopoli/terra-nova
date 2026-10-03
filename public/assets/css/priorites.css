@@ -1,0 +1,28 @@
+/* Terra Nova — vague 15 (F80) : dossiers prioritaires (agent-demandes, espace agents). Jetons et classes existants uniquement. */
+.pr-badge{ display:inline-flex; align-items:center; gap:.3rem; font-size:.82rem; font-weight:700; padding:.15rem .6rem; border-radius:99px; border:1px solid currentColor; white-space:nowrap; }
+.pr-critique{ color:var(--corail); } .pr-haute{ color:var(--soleil); } .pr-normale{ color:var(--iono); } .pr-basse{ color:var(--brume); }
+.pr-badge.pr-critique{ background:color-mix(in oklch, var(--corail) 12%, transparent); }
+.pr-panneau{ margin-bottom:1rem; }
+.pr-panneau h2{ display:flex; gap:.5rem; align-items:center; font-size:1.2rem; margin:0; }
+.pr-intro{ margin:.2rem 0 .8rem; font-size:.88rem; }
+.pr-comptes{ display:grid; gap:.6rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,6.5rem),1fr)); margin-bottom:.8rem; }
+.pr-compte{ font:inherit; display:flex; flex-direction:column; align-items:flex-start; gap:.1rem; padding:.6rem .8rem; border-radius:var(--r); border:1px solid currentColor; background:transparent; cursor:pointer; min-height:2.75rem; }
+.pr-compte .valeur{ font-size:1.6rem; font-weight:700; line-height:1.1; color:var(--givre); }
+.pr-compte span:last-child{ color:var(--givre); font-size:.88rem; }
+.pr-compte:focus-visible{ outline:3px solid var(--iono); outline-offset:2px; }
+.pr-files{ display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr)); }
+.pr-files h3{ font-size:.95rem; margin:.4rem 0; }
+.pr-liste{ list-style:none; margin:0; padding:0; display:grid; gap:.4rem; }
+.pr-liste li{ display:flex; flex-wrap:wrap; gap:.3rem .6rem; align-items:center; padding:.45rem .6rem; border:1px solid var(--trait); border-radius:var(--r); }
+.pr-ouvrir{ font:inherit; background:none; border:0; color:var(--givre); text-align:start; cursor:pointer; padding:.2rem 0; text-decoration:underline; text-underline-offset:3px; min-height:2rem; }
+.pr-raison{ font-size:.82rem; color:var(--brume); flex-basis:100%; }
+.pr-tiroir{ margin-top:1rem; padding-top:.5rem; border-top:1px solid var(--trait); }
+.pr-lbl{ font-weight:700; margin:.6rem 0 .3rem; }
+.pr-raisons{ list-style:none; margin:0; padding:0; display:grid; gap:.25rem; }
+.pr-raisons li{ display:flex; justify-content:space-between; gap:1rem; padding:.3rem .5rem; border-radius:var(--r-s); background:var(--panneau-2); font-size:.9rem; }
+.pr-pts{ font-family:var(--mono); color:var(--brume); }
+.pr-manuel{ display:flex; gap:.5rem; align-items:flex-start; font-size:.9rem; }
+.pr-manuel i{ color:var(--iono); }
+.pr-changer{ margin-top:.8rem; }
+.pr-changer summary{ cursor:pointer; font-weight:700; color:var(--iono); min-height:2.25rem; display:flex; align-items:center; }
+.pr-form{ margin-top:.6rem; }
