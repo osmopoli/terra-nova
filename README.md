@@ -25,6 +25,9 @@ Comptes de démo (un par rôle, créés par `node ace db:seed`) : `citoyen@novat
 `admin@novaterra.test` (administrateur). Mot de passe commun : variable d'environnement `DEMO_PASSWORD` (8 caractères minimum), à définir
 dans `server/.env` ou au lancement : `DEMO_PASSWORD=... node ace db:seed`. Le rôle est renvoyé par `GET /api/me` (`role`) et la liste par `GET /api/meta` (`roles`).
 
+Contrôle d'accès par profil : middleware `role` (`server/app/middleware/role_middleware.ts`), profils autorisés dans `ACCESS`
+(`server/app/constants/domain.ts`). `/api/agent/*` : agent et admin ; `/api/admin/*` : admin seul. 401 sans token, 403 `{ error }` sinon.
+
 ## À personnaliser à H+0
 
 1. Nom de l'app : `client/src/lib/constants.js` (`APP_NAME`), `client/index.html`, `client/public/manifest.webmanifest`, variable `APP_NAME` du serveur.

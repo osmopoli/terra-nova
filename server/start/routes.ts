@@ -12,11 +12,13 @@ import app from '@adonisjs/core/services/app'
 import router from '@adonisjs/core/services/router'
 import db from '@adonisjs/lucid/services/db'
 import { middleware } from '#start/kernel'
-import { META } from '#constants/domain'
+import { ACCESS, META } from '#constants/domain'
 import env from '#start/env'
 
 const AuthController = () => import('#controllers/auth_controller')
 const ProfileController = () => import('#controllers/profile_controller')
+const AgentController = () => import('#controllers/agent_controller')
+const AdminUsersController = () => import('#controllers/admin_users_controller')
 
 router
   .group(() => {
@@ -56,6 +58,23 @@ router
         router.patch('/me', [ProfileController, 'update'])
       })
       .use(middleware.auth())
+
+    /** Espace agent municipal : 401 sans token, 403 pour un citoyen. */
+    router
+      .group(() => {
+        router.get('/overview', [AgentController, 'overview'])
+      })
+      .prefix('/agent')
+      .use([middleware.auth(), middleware.role({ roles: ACCESS.agent })])
+
+    /** Fonctions sensibles : administrateurs uniquement. */
+    router
+      .group(() => {
+        router.get('/users', [AdminUsersController, 'index'])
+        router.patch('/users/:id/role', [AdminUsersController, 'updateRole'])
+      })
+      .prefix('/admin')
+      .use([middleware.auth(), middleware.role({ roles: ACCESS.admin })])
 
     // Routes métier : à ajouter ici (préfixe /api déjà appliqué, jamais de /spike).
 
