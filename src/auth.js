@@ -81,7 +81,7 @@ const marquerVerifie = (req) => req.jeton && verifies.set(req.jeton, Date.now())
 const estVerifie = (req) => !!req.jeton && Date.now() - (verifies.get(req.jeton) || 0) < VERIF_VALIDITE;
 
 /* ---------- F37 : état anti-intrusion ---------- */
-const VIDE = { echecs: 0, verrouJusqu: 0, blocages: 0, echecsDepuisConnexion: 0 };
+const VIDE = { echecs: 0, verrouJusqu: 0, blocages: 0, echecsDepuisConnexion: 0, ips: {} };   // ips : échecs par adresse IP masquée ; verrouIps : IP visées par le verrou
 function etatSecurite(email) {
   const r = db.prepare('SELECT etat FROM securite WHERE email = ?').get(String(email || '').toLowerCase());
   return r ? JSON.parse(r.etat) : { ...VIDE };
@@ -96,28 +96,35 @@ function connecter(req, res, email, motdepasse, verificationReussie) {
   email = require('./modules/accueil').resoudreLogin(email);   // F71 : e-mail, identifiant TN-xxxxxx ou numéro de téléphone
   const etat = etatSecurite(email);
   const t = Date.now();
-  if (etat.verrouJusqu > t) {
-    journal('tentative_bloquee', email);
+  // Le verrou ne s'applique qu'aux adresses IP (masquées) d'où viennent les échecs : un tiers ne peut pas bloquer
+  // un compte à distance. La « vérification humaine » est journalisée mais ne protège rien : le limiteur de débit s'en charge.
+  const ip = require('./bouclier').ipMasquee(req && req.ip);
+  etat.ips = Object.assign({}, etat.ips && typeof etat.ips === 'object' ? etat.ips : {});   // copie : VIDE reste intact
+  if (verificationReussie) journal('verification_humaine', email, ip);
+  if (etat.verrouJusqu > t && Array.isArray(etat.verrouIps) && etat.verrouIps.includes(ip)) {
+    journal('tentative_bloquee', email, ip);
     return { ok: false, verrouJusqu: etat.verrouJusqu, erreur: 'Trop de tentatives. Connexion temporairement bloquée pour protéger ce compte.' };
   }
-  if (etat.echecs >= SEUIL_VERIF && !verificationReussie) return { ok: false, verification: true, erreur: 'Par sécurité, confirmez que vous êtes bien une personne.' };
   const row = parEmail(email);
   const profil = row && docs.get('utilisateurs', row.doc_id);
   if (!row || !verifier(motdepasse || '', row.password_hash) || !profil || profil.actif === false) {
     etat.echecs++; etat.echecsDepuisConnexion = (etat.echecsDepuisConnexion || 0) + 1;
+    etat.ips[ip] = (etat.ips[ip] || 0) + 1;
+    if (Object.keys(etat.ips).length > 50) etat.ips = { [ip]: etat.ips[ip] };   // borne mémoire
     let rep = { ok: false, erreur: 'Identifiant ou mot de passe incorrect.' };
     if (profil && profil.actif === false && row && verifier(motdepasse || '', row.password_hash)) rep.erreur = 'Ce compte est désactivé. Contactez la mairie.';
     if (etat.echecs >= SEUIL_BLOCAGE) {
       etat.blocages = (etat.blocages || 0) + 1;
       etat.verrouJusqu = t + DUREE_BLOCAGE * etat.blocages;
-      etat.echecs = 0;
+      etat.verrouIps = Object.keys(etat.ips);   // seules les IP d'où viennent les échecs sont bloquées
+      etat.echecs = 0; etat.ips = {};
       rep = { ok: false, verrouJusqu: etat.verrouJusqu, erreur: 'Trop de tentatives. Connexion temporairement bloquée pour protéger ce compte.' };
-      journal('verrouillage', email, `${(DUREE_BLOCAGE * etat.blocages) / 60000} min`);
+      journal('verrouillage', email, `${(DUREE_BLOCAGE * etat.blocages) / 60000} min (${ip})`);
       if (profil) notifier(profil.id, 'Tentatives de connexion inhabituelles', 'Votre compte a été protégé après plusieurs essais de mot de passe incorrects. Si ce n’était pas vous, changez votre mot de passe.', 'compte.html', 'alerte');
     } else {
       rep.restantes = SEUIL_BLOCAGE - etat.echecs;
       rep.verification = etat.echecs >= SEUIL_VERIF;
-      journal('echec_connexion', email);
+      journal('echec_connexion', email, ip);
     }
     majSecurite(email, etat);
     return rep;
@@ -129,6 +136,8 @@ function connecter(req, res, email, motdepasse, verificationReussie) {
 }
 
 // Comptes de démonstration de l'équipe (en plus de ceux de demo-seed.json) : variables d'environnement facultatives
+const MDP_EXEMPLE = ['admin1234', 'agent1234'];   // valeurs de .env.example : jamais en production
+const PROD = process.env.NODE_ENV === 'production';
 function comptesEquipe() {
   const seeds = [
     { email: process.env.ADMIN_EMAIL, password: process.env.ADMIN_PASSWORD, prenom: 'Administrateur', nom: 'Terra Nova', role: 'admin' },
@@ -136,12 +145,32 @@ function comptesEquipe() {
   ];
   for (const s of seeds) {
     if (!s.email || !s.password || parEmail(s.email)) continue;
+    if (PROD && MDP_EXEMPLE.includes(s.password)) { console.warn(`[auth] ${s.email} non créé : mot de passe d'exemple refusé en production`); continue; }
     creerCompte({ prenom: s.prenom, nom: s.nom, email: s.email, role: s.role, quartier: 'Centre', telephone: '', premiereConnexion: false, profilComplet: true }, s.password);
+  }
+}
+
+// Comptes de démonstration publics (README) : en production, ADMIN_PASSWORD remplace le mot de passe de admin@nova.test
+// et AGENT_PASSWORD celui des agents de démo, à chaque démarrage (base déjà semée comprise). Les sessions ouvertes
+// avec l'ancien mot de passe sont fermées. Les comptes citoyens de démo restent inchangés.
+function motsDePasseDemo() {
+  const cibles = [['ADMIN_PASSWORD', ['admin@nova.test']], ['AGENT_PASSWORD', ['agent@nova.test', 'social@nova.test']]];
+  for (const [variable, emails] of cibles) {
+    const mdp = process.env[variable];
+    if (!mdp) { if (PROD) console.warn(`[auth] ${variable} non défini : ${emails.join(', ')} garde(nt) le mot de passe public du README`); continue; }
+    if (MDP_EXEMPLE.includes(mdp)) { console.warn(`[auth] ${variable} : valeur d'exemple ignorée, comptes de démo inchangés`); continue; }
+    for (const email of emails) {
+      const row = parEmail(email);
+      if (!row || verifier(mdp, row.password_hash)) continue;
+      db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(hacher(mdp), row.id);
+      db.prepare('DELETE FROM sessions WHERE user_id = ?').run(row.id);
+      console.log(`[auth] mot de passe de ${email} remplacé par ${variable}`);
+    }
   }
 }
 
 module.exports = {
   ROLES, SEUIL_VERIF, SEUIL_BLOCAGE, hacher, verifier, validerMotDePasse, parEmail, parDoc, creerCompte,
   ouvrirSession, fermerSession, chargerUtilisateur, exigerRole, estPersonnel, marquerVerifie, estVerifie,
-  etatSecurite, majSecurite, toutesSecurites, connecter, comptesEquipe, VIDE
+  etatSecurite, majSecurite, toutesSecurites, connecter, comptesEquipe, motsDePasseDemo, VIDE
 };
