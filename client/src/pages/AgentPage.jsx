@@ -42,7 +42,7 @@ function SessionPanel({ data, now }) {
       <p className="mt-4 text-sm text-ink-muted">
         {data.syncedAt
           ? `Dernière synchronisation à ${timeFormat.format(new Date(data.syncedAt))}`
-          : 'Pas encore synchronisé avec l’API Nova Terra.'}{' '}
+          : 'Pas encore synchronisé avec l’API Terra Nova.'}{' '}
         · Mise à jour automatique toutes les {data.pollIntervalSeconds} s.
       </p>
       {data.lastError && (
@@ -169,7 +169,7 @@ export default function AgentPage({ onExpired }) {
       <div>
         <h1 className="font-display text-2xl font-bold sm:text-3xl">Demandes de la ville</h1>
         <p className="mt-1 text-ink-muted">
-          Les besoins transmis par l’API Nova Terra, mis à jour en continu.
+          Les besoins transmis par l’API Terra Nova, mis à jour en continu.
         </p>
       </div>
 

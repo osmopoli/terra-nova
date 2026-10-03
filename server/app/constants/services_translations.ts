@@ -14,7 +14,7 @@ export const SERVICE_TRANSLATIONS: Record<
       name: 'Civil registry and citizenship',
       summary: 'Birth, marriage and death certificates, identity documents and voter registration.',
       description:
-        'The Civil Registry records births, marriages, civil partnerships and deaths in Nova Terra and issues copies of certificates. It also handles identity card and passport applications and keeps the city’s electoral roll.',
+        'The Civil Registry records births, marriages, civil partnerships and deaths in Terra Nova and issues copies of certificates. It also handles identity card and passport applications and keeps the city’s electoral roll.',
       hours: 'Monday to Friday: 8 am – 4 pm\nSaturday: 8 am – 12 pm (by appointment)',
       procedures: [
         {
@@ -38,7 +38,7 @@ export const SERVICE_TRANSLATIONS: Record<
       summary:
         'Actas de nacimiento, matrimonio y defunción, documentos de identidad e inscripción en el censo electoral.',
       description:
-        'El Registro civil inscribe los nacimientos, matrimonios, parejas de hecho y defunciones de Nova Terra y expide copias de actas. También tramita el documento de identidad y el pasaporte, y gestiona el censo electoral de la ciudad.',
+        'El Registro civil inscribe los nacimientos, matrimonios, parejas de hecho y defunciones de Terra Nova y expide copias de actas. También tramita el documento de identidad y el pasaporte, y gestiona el censo electoral de la ciudad.',
       hours: 'Lunes a viernes: 8 h – 16 h\nSábado: 8 h – 12 h (con cita previa)',
       procedures: [
         {
@@ -204,7 +204,7 @@ export const SERVICE_TRANSLATIONS: Record<
       name: 'Planning and housing',
       summary: 'Building permits, works declarations and advice for your home.',
       description:
-        'The Planning department processes permits to build or alter a building, in line with Nova Terra’s local development plan. A consultant architect meets residents free of charge to help them prepare their project.',
+        'The Planning department processes permits to build or alter a building, in line with Terra Nova’s local development plan. A consultant architect meets residents free of charge to help them prepare their project.',
       hours: 'Monday to Thursday: 8 am – 12 pm, afternoons by appointment',
       procedures: [
         {
@@ -225,7 +225,7 @@ export const SERVICE_TRANSLATIONS: Record<
       name: 'Urbanismo y vivienda',
       summary: 'Licencias de obra, declaraciones de obras y asesoramiento para su vivienda.',
       description:
-        'El servicio de Urbanismo tramita las licencias para construir o modificar un edificio, conforme al plan urbanístico de Nova Terra. Un arquitecto asesor recibe gratuitamente a los vecinos para ayudarles a preparar su proyecto.',
+        'El servicio de Urbanismo tramita las licencias para construir o modificar un edificio, conforme al plan urbanístico de Terra Nova. Un arquitecto asesor recibe gratuitamente a los vecinos para ayudarles a preparar su proyecto.',
       hours: 'Lunes a jueves: 8 h – 12 h, tardes con cita previa',
       procedures: [
         {

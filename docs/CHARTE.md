@@ -1,10 +1,10 @@
-# Charte Nova Terra
+# Charte Terra Nova
 
 Source de vérité technique : les tokens de `client/src/index.css`. Ce document explique leurs choix ; s'il diverge du CSS, le CSS fait foi.
 
 ## Intention
 
-Nova Terra est une ville neuve, sur une terre neuve : on y arrive par l'espace (parcours d'arrivée), puis on s'y installe.
+Terra Nova est une ville neuve, sur une terre neuve : on y arrive par l'espace (parcours d'arrivée), puis on s'y installe.
 Trois ambiances, un seul vocabulaire de tokens :
 
 | Ambiance | Où | Caractère |

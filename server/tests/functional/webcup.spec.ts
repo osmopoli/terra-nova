@@ -18,7 +18,7 @@ async function login(role: Role) {
 const request = (code: string, difficulty: number, xp: number) => ({
   id: Math.floor(Math.random() * 1000),
   request_code: code,
-  requester_name: 'Mairie de Nova Terra',
+  requester_name: 'Mairie de Terra Nova',
   message_public: `Besoin ${code}`,
   difficulty_level: difficulty,
   xp_total: xp,

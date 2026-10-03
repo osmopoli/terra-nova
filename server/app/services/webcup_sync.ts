@@ -4,7 +4,7 @@ import db from '@adonisjs/lucid/services/db'
 import env from '#start/env'
 
 /**
- * WEBC-2 : synchronisation de l'API Webcup / Nova Terra.
+ * WEBC-2 : synchronisation de l'API Webcup / Terra Nova.
  * La clé reste côté serveur ; dédoublonnage sur request_code ; aucune hypothèse
  * sur le nombre ou le rythme des vagues (le serveur Webcup filtre déjà les demandes futures).
  */
@@ -166,7 +166,8 @@ export async function listRequests({ onlyNew = false } = {}) {
     pollIntervalSeconds: POLL_INTERVAL_SECONDS,
     newCount: Number(newCount?.total ?? 0),
     requests: rows.map((row) => ({
-      ...JSON.parse(row.payload),
+      // Les textes du sujet Webcup écrivent « Nova Terra » : on affiche le nom retenu, Terra Nova.
+      ...JSON.parse(String(row.payload).replaceAll('Nova Terra', 'Terra Nova')),
       firstSeenAt: new Date(row.first_seen_at).toISOString(),
       isNew: !row.seen_at,
     })),

@@ -1,7 +1,7 @@
 {
-  "name": "Nova Terra — services municipaux",
-  "short_name": "Nova Terra",
-  "description": "Démarches, services et annonces de la ville de Nova Terra.",
+  "name": "Terra Nova — services municipaux",
+  "short_name": "Terra Nova",
+  "description": "Démarches, services et annonces de la ville de Terra Nova.",
   "lang": "fr",
   "dir": "ltr",
   "start_url": "./",

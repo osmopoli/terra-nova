@@ -33,7 +33,7 @@ export default function MyMessages({ meta }) {
         loadingLabel="Chargement de vos messages..."
         empty={{
           title: 'Aucun message envoyé',
-          text: 'Une question pour la mairie de Nova Terra ? Écrivez au service concerné et suivez sa réponse ici.',
+          text: 'Une question pour la mairie de Terra Nova ? Écrivez au service concerné et suivez sa réponse ici.',
           action: (
             <Link
               to="/contact"
