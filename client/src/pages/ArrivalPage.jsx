@@ -4,6 +4,7 @@ import { APP_NAME } from '../lib/constants.js';
 import SkipLink from '../components/SkipLink.jsx';
 import TextSizeControl from '../components/TextSizeControl.jsx';
 import ContrastControl from '../components/ContrastControl.jsx';
+import LiteModeControl from '../components/LiteModeControl.jsx';
 import { Link, navigate } from '../lib/router.jsx';
 
 const TRAVEL_MS = 3000;
@@ -68,7 +69,9 @@ export default function ArrivalPage() {
     }
     // Pendant le voyage, le focus reste sur « Annuler » (le fond est inerte).
     cancelRef.current?.focus();
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Animations réduites ou version allégée : passage presque direct à la connexion.
+    const reduced =
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches || 'lite' in document.documentElement.dataset;
     const timer = setTimeout(() => navigate('/connexion'), reduced ? 300 : TRAVEL_MS);
     const onKey = (e) => {
       if (e.key === 'Tab') {
@@ -88,12 +91,14 @@ export default function ArrivalPage() {
     <div className="min-h-dvh bg-space font-sans text-star">
       <div
         inert={travelling}
+        data-lite-plain
         className="relative isolate flex min-h-dvh flex-col overflow-hidden bg-cover bg-[center_42%]"
         style={{ backgroundImage: `url(${orbite})` }}
       >
         <SkipLink />
         <div
           aria-hidden="true"
+          data-lite-hide
           className="absolute inset-0 -z-10 bg-linear-to-t from-space/90 to-space/30 md:bg-linear-to-r md:from-space/95 md:via-space/70 md:to-space/10"
         />
         <header className="flex min-h-[4.625rem] flex-wrap items-center justify-between gap-3 border-b border-glow/20 px-6 py-3 backdrop-blur-md md:min-h-[5.625rem] md:px-[clamp(24px,6vw,92px)]">
@@ -140,10 +145,11 @@ export default function ArrivalPage() {
             >
               Découvrir les services municipaux
             </Link>
+            <LiteModeControl withHint className="mt-8 max-w-xl text-star-muted" />
           </div>
         </main>
 
-        <footer className="absolute inset-x-5 bottom-6 rounded-card border border-glow/20 bg-space/60 px-4 py-3 text-[0.625rem] uppercase tracking-[0.08em] text-star-muted backdrop-blur-md md:inset-x-auto md:right-[clamp(24px,5vw,72px)] md:bottom-10 md:text-xs">
+        <footer data-lite-hide className="absolute inset-x-5 bottom-6 rounded-card border border-glow/20 bg-space/60 px-4 py-3 text-[0.625rem] uppercase tracking-[0.08em] text-star-muted backdrop-blur-md md:inset-x-auto md:right-[clamp(24px,5vw,72px)] md:bottom-10 md:text-xs">
           <dl className="flex flex-wrap justify-between gap-x-3 gap-y-2 md:gap-6">
             <div>
               <dt>Destination</dt>
@@ -170,11 +176,12 @@ export default function ArrivalPage() {
         >
           <div
             aria-hidden="true"
+            data-lite-hide
             className="absolute -inset-1/5 animate-warp motion-reduce:hidden"
             style={warpRings}
           />
           <div className="relative w-[min(390px,72vw)] text-center">
-            <div className="animate-ship-launch motion-reduce:animate-none">
+            <div data-lite-hide className="animate-ship-launch motion-reduce:animate-none">
               <div className="animate-ship-float motion-reduce:animate-none">
                 <Ship />
               </div>

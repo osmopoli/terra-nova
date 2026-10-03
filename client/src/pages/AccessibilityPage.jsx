@@ -46,6 +46,7 @@ const SECTIONS = [
     title: 'Animations',
     items: [
       'Si votre appareil demande de réduire les animations, la plateforme les désactive.',
+      'Le bouton « Version allégée », en bas de chaque page, affiche des pages plus simples et plus rapides : sans images décoratives ni animations, sur une seule colonne. Utile pour une connexion lente ou un appareil ancien ; votre choix est mémorisé.',
     ],
   },
 ];

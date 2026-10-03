@@ -136,6 +136,39 @@
     box-shadow: 0 0 0 7px var(--color-surface);
   }
 
+  /*
+   * Version allégée (WEBC-90) : posée sur <html> par LiteModeControl.
+   * Polices du système (aucun fichier de police téléchargé), ombres réduites à un filet,
+   * pas de flou, d'animation, de décor ni d'image de fond, contenu sur une seule colonne.
+   * Un élément purement décoratif (ou une carte remplacée par une liste) porte data-lite-hide.
+   */
+  :root[data-lite],
+  :root[data-lite] [data-space] {
+    --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-display: var(--font-sans);
+  }
+  /* Tailwind fige la valeur des ombres dans les classes : on les remplace par un filet. */
+  :root[data-lite] [class*="shadow-"]:not(:focus-visible) {
+    box-shadow: 0 0 0 1px var(--color-line) !important;
+  }
+  :root[data-lite] *,
+  :root[data-lite] ::before,
+  :root[data-lite] ::after {
+    animation: none !important;
+    transition: none !important;
+    backdrop-filter: none !important;
+    scroll-behavior: auto !important;
+  }
+  :root[data-lite] :where([data-lite-hide], img[alt=""]) {
+    display: none !important;
+  }
+  :root[data-lite] [data-lite-plain] {
+    background-image: none !important;
+  }
+  :root[data-lite] main .grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
   :focus-visible {
     outline: 3px solid var(--color-primary);
     outline-offset: 2px;

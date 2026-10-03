@@ -3,6 +3,7 @@ import Breadcrumb from './Breadcrumb.jsx';
 import { APP_NAME } from '../lib/constants.js';
 import TextSizeControl from './TextSizeControl.jsx';
 import ContrastControl from './ContrastControl.jsx';
+import LiteModeControl from './LiteModeControl.jsx';
 import SkipLink from './SkipLink.jsx';
 
 export default function Layout({ user, children }) {
@@ -57,6 +58,7 @@ export default function Layout({ user, children }) {
       <footer className="border-t border-mist">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-4 text-sm text-ink-muted sm:px-6">
           <p>{APP_NAME}, la plateforme des services municipaux.</p>
+          <LiteModeControl withHint className="text-ink" />
           <Link to="/accessibilite" className="font-semibold text-ink">
             Accessibilité
           </Link>
