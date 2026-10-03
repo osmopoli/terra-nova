@@ -14,6 +14,12 @@ const db = new DatabaseSync(fichier);
 db.exec(`
 PRAGMA journal_mode = WAL;
 PRAGMA foreign_keys = ON;
+-- Vague 15 (F77, F78) : tenue en charge. Attendre au lieu d'échouer si la base est occupée ; écritures moins coûteuses
+-- en WAL (sûr : aucune perte si le processus s'arrête) ; cache de pages et tables temporaires en mémoire.
+PRAGMA busy_timeout = 5000;
+PRAGMA synchronous = NORMAL;
+PRAGMA cache_size = -16000;
+PRAGMA temp_store = MEMORY;
 
 -- Identifiants : le mot de passe (scrypt) et le rôle font foi côté serveur.
 -- Le profil (prénom, quartier, préférences…) est un document de la collection « utilisateurs ».
@@ -76,5 +82,18 @@ CREATE TABLE IF NOT EXISTS api_state (
 const colonnes = db.prepare('PRAGMA table_info(users)').all().map((c) => c.name);
 if (!colonnes.includes('doc_id')) db.exec('ALTER TABLE users ADD COLUMN doc_id TEXT');
 db.exec('CREATE UNIQUE INDEX IF NOT EXISTS users_doc ON users(doc_id)');
+// Vague 15 : index des requêtes chaudes (déconnexion de tous les appareils d'un compte, sessions expirées)
+db.exec('CREATE INDEX IF NOT EXISTS sessions_user ON sessions(user_id); CREATE INDEX IF NOT EXISTS sessions_expire ON sessions(expires_at);');
+
+/* Vague 15 : réutilisation des requêtes préparées. db.prepare(sql) avec le même texte renvoie la requête déjà compilée
+   au lieu de la recompiler à chaque requête HTTP (ex. lecture de la session). node:sqlite est synchrone : une requête
+   préparée ne sert jamais à deux appels en même temps. */
+const preparer = db.prepare.bind(db);
+const preparees = new Map();
+db.prepare = (sql) => {
+  let s = preparees.get(sql);
+  if (!s) { s = preparer(sql); if (preparees.size < 400) preparees.set(sql, s); }
+  return s;
+};
 
 module.exports = db;

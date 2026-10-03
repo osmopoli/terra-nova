@@ -74,6 +74,21 @@
       'es.alt.telephone': 'اتصل بالرقم {v}', 'es.alt.en-ligne': 'استعمل القناة الأخرى', 'es.alt.guichet': 'عرض الشبابيك على الخريطة',
       'es.altDefaut': 'راسل الخدمة: ستتم معالجة رسالتك في أقرب وقت.' }
   });
+  /* Vague 15 (F77, F78) : forte affluence, serveur injoignable, page « État de la plateforme » */
+  NT.i18n.ajouter({
+    fr: { 'nav.plateforme': 'Plateforme', 'secours.titre': 'Le serveur ne répond pas pour le moment', 'secours.texte': 'Votre espace revient dès que possible. Rien n’est perdu : vos brouillons restent sur cet appareil. L’essentiel en attendant :',
+      'secours.urgences': 'Urgences : SAMU 15 · numéro européen 112', 'secours.alertes': 'Dernières alertes connues', 'secours.aucune': 'Aucune alerte en cours lors de la dernière connexion.', 'secours.date': 'Informations enregistrées le {d}.',
+      'secours.simple': 'Version simple et rapide', 'secours.reessayer': 'Réessayer', 'secours.accueil': 'Accueil' },
+    en: { 'nav.plateforme': 'Platform', 'secours.titre': 'The server is not responding right now', 'secours.texte': 'Your space will be back as soon as possible. Nothing is lost: your drafts stay on this device. The essentials meanwhile:',
+      'secours.urgences': 'Emergencies: ambulance 15 · European number 112', 'secours.alertes': 'Last known alerts', 'secours.aucune': 'No alert in progress at the last connection.', 'secours.date': 'Information saved on {d}.',
+      'secours.simple': 'Simple, fast version', 'secours.reessayer': 'Try again', 'secours.accueil': 'Home' },
+    es: { 'nav.plateforme': 'Plataforma', 'secours.titre': 'El servidor no responde por ahora', 'secours.texte': 'Su espacio volverá lo antes posible. No se pierde nada: sus borradores quedan en este dispositivo. Lo esencial mientras tanto:',
+      'secours.urgences': 'Urgencias: SAMU 15 · número europeo 112', 'secours.alertes': 'Últimas alertas conocidas', 'secours.aucune': 'Ninguna alerta en curso en la última conexión.', 'secours.date': 'Información guardada el {d}.',
+      'secours.simple': 'Versión sencilla y rápida', 'secours.reessayer': 'Reintentar', 'secours.accueil': 'Inicio' },
+    ar: { 'nav.plateforme': 'المنصة', 'secours.titre': 'الخادم لا يستجيب حالياً', 'secours.texte': 'سيعود فضاؤك في أقرب وقت. لن يضيع شيء: تبقى مسوداتك على هذا الجهاز. الأساسي في الأثناء:',
+      'secours.urgences': 'الطوارئ: الإسعاف 15 · الرقم الأوروبي 112', 'secours.alertes': 'آخر التنبيهات المعروفة', 'secours.aucune': 'لا يوجد تنبيه جارٍ عند آخر اتصال.', 'secours.date': 'معلومات محفوظة بتاريخ {d}.',
+      'secours.simple': 'النسخة المبسطة والسريعة', 'secours.reessayer': 'إعادة المحاولة', 'secours.accueil': 'الرئيسية' }
+  });
   const corps = document.body;
   const u = NT.auth.utilisateur();
   const enAttente = NT._attente;
@@ -180,7 +195,26 @@
 
   /* ---------- Contrôle d'accès (D09) ---------- */
   const roles = (corps.dataset.roles || '').split(',').map(s => s.trim()).filter(Boolean);
+  /* F77, F78 : serveur injoignable sur une page réservée → page de secours (urgences, dernières alertes connues, version simple)
+     au lieu d'une redirection vers la connexion qui échouerait aussi */
+  function pageSecours() {
+    const main = document.getElementById('contenu') || corps;
+    const alertes = NT.annonces.toutes().filter(a => a.active && a.importance !== 'info').slice(0, 4);
+    main.innerHTML = `<section class="panneau secours" aria-labelledby="secours-h">
+      <h1 id="secours-h">${echap(t('secours.titre'))}</h1>
+      <p>${echap(t('secours.texte'))}</p>
+      <p><a class="btn btn-primaire" href="tel:15"><i class="ph ph-phone" aria-hidden="true"></i>${echap(t('secours.urgences'))}</a></p>
+      <h2>${echap(t('secours.alertes'))}</h2>
+      ${alertes.length ? `<ul>${alertes.map(a => `<li><strong>${echap(a.titre)}</strong> — ${echap(a.zone || '')}${a.resume ? '<br>' + echap(a.resume) : ''}</li>`).join('')}</ul>` : `<p class="doux">${echap(t('secours.aucune'))}</p>`}
+      ${NT.horsLigne && NT.horsLigne.depuis ? `<p class="doux">${echap(t('secours.date', { d: ui.dateHeure(NT.horsLigne.depuis) }))}</p>` : ''}
+      <p class="ligne"><button type="button" class="btn" id="secours-reessayer"><i class="ph ph-arrow-clockwise" aria-hidden="true"></i>${echap(t('secours.reessayer'))}</button>
+        <a class="btn" href="/simple?lang=${echap(NT.i18n.langue)}"><i class="ph ph-article" aria-hidden="true"></i>${echap(t('secours.simple'))}</a>
+        <a class="btn" href="index.html">${echap(t('secours.accueil'))}</a></p></section>`;
+    main.querySelector('#secours-reessayer').addEventListener('click', () => location.reload());
+    corps.classList.add('pret');
+  }
   if (roles.length) {
+    if (!u && NT.horsLigne) { pageSecours(); return; }
     if (!u) { location.replace('connexion.html?retour=' + encodeURIComponent(location.pathname.split('/').pop() + location.search)); return; }
     if (!roles.includes('connecte') && !roles.includes(u.role)) {
       sessionStorage.setItem('nt:refus', '1');
@@ -196,6 +230,7 @@
     : [['agent', 'agent.html'], ['tableau', 'agent-tableau.html'], ['demandesAgent', 'agent-demandes.html'], ['alertes', 'agent-alertes.html'], ['comptes', 'admin-comptes.html'], ['journal', 'agent-journal.html'], ['participer', 'participer.html'], ['services', 'services.html']];
   if (u && u.role !== 'citoyen') liens.splice(5, 0, ['accueilAgent', 'agent-accueil.html']);   // vague 13 (F71) : inscription au guichet
   if (u && u.role === 'admin') liens.push(['securite', 'agent-securite.html']);   // vague 13 (F69, F70) : centre de sécurité
+  if (u && u.role === 'admin') liens.push(['plateforme', 'agent-plateforme.html']);   // vague 15 (F77, F78) : état de la plateforme
   if (u) NT.rdv.verifierRappels();   // avant le compteur de la cloche, pour que les rappels dus soient comptés
   const nbNotif = u ? NT.notif.nonLues(u.id) : 0;
   const optionsLangue = Object.entries(NT.i18n.LANGUES).map(([c, n]) => `<option value="${c}" ${c === NT.i18n.langue ? 'selected' : ''} lang="${c}">${n}</option>`).join('');
@@ -281,12 +316,15 @@
     const off = NT.ui.officiels ? NT.ui.officiels() : { n: 0, nonLus: 0, html: '' };
     const total = liste.length + off.n;
     const alerte = liste.some(a => a.importance === 'alerte');
+    // F77, F78 : forte affluence ou serveur injoignable — carte calme en tête du tiroir, balise discrète (resilience.js)
+    const carteCharge = NT.ui.carteCharge ? NT.ui.carteCharge() : '';
+    balise.classList.toggle('charge', !!carteCharge);
     balise.classList.toggle('active', alerte);
     balise.classList.toggle('importante', !alerte && liste.length > 0);
     balise.classList.toggle('officiel', off.nonLus > 0);
     balise.querySelector('#nt-balise-nb').textContent = total ? total : '';
     balise.setAttribute('aria-label', total ? t('ui.alertesActives', { n: total }) + (off.nonLus ? ' · ' + t('off.baliseNonLu', null, 'message officiel à lire') : '') : t('ui.aucuneAlerte'));
-    panneauAlertes.innerHTML = off.html + (liste.length ? liste.map(a => `
+    panneauAlertes.innerHTML = carteCharge + off.html + (liste.length ? liste.map(a => `
       <article class="alerte-fiche niveau-${a.importance}">
         <h3><i class="ph-duotone ${a.importance === 'alerte' ? 'ph-warning-octagon' : 'ph-megaphone'}" aria-hidden="true"></i>${echap(a.titre)}</h3>
         <div class="zone"><i class="ph ph-map-pin" aria-hidden="true"></i> ${echap(a.zone)} · ${echap(ui.depuis(a.cree))}</div>
@@ -294,7 +332,7 @@
         ${a.consignes && a.consignes.length ? `<strong style="display:block;margin-top:.7rem">${echap(t('ui.consignes'))}</strong><ul>${a.consignes.map(c => `<li>${echap(c)}</li>`).join('')}</ul>` : ''}
         ${a.publics && a.publics.length ? `<p class="doux" style="margin:.6rem 0 0">${echap(t('ui.publics'))} : ${a.publics.map(echap).join(', ')}</p>` : ''}
         <a class="btn" style="margin-top:.8rem" href="annonces.html#${echap(a.id)}">${echap(t('ui.detail'))}</a>
-      </article>`).join('') : (off.n ? '' : `<p class="vide">${echap(t('ui.aucuneAlerte'))}</p>`));
+      </article>`).join('') : (off.n || carteCharge ? '' : `<p class="vide">${echap(t('ui.aucuneAlerte'))}</p>`));
   }
   balise.addEventListener('click', () => panneauAlertes.show());
   rendreAlertes();
@@ -517,4 +555,8 @@
   const scriptOfficiel = document.createElement('script');
   scriptOfficiel.src = 'assets/js/officiel.js';
   document.head.append(scriptOfficiel);
+  // F77, F78 : tenue en charge côté navigateur (état de charge, brouillons, nouveaux essais, copie hors connexion)
+  const scriptResilience = document.createElement('script');
+  scriptResilience.src = 'assets/js/resilience.js';
+  document.head.append(scriptResilience);
 })();

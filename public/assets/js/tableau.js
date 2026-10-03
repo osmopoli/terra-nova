@@ -218,6 +218,6 @@
     heure();
     el('tb-actualiser').addEventListener('click', () => charger(true));
     charger(false);
-    setInterval(() => { if (!document.hidden) charger(false); }, NT.econome.delai(60000));
+    setInterval(() => { if (!document.hidden && !(NT.charge && NT.charge.enPause())) charger(false); }, NT.econome.delai(60000));   // F77, F78 : en pause pendant la forte affluence
   });
 })();

@@ -6,6 +6,9 @@ const { sceller, ouvrir } = require('./chiffrement');   // F69 : champs sensible
 const maintenant = () => new Date().toISOString();
 const uid = (prefixe) => (prefixe || 'id') + '-' + Date.now().toString(36) + crypto.randomBytes(3).toString('hex');
 
+// Vague 15 (F77, F78) : numéro de version incrémenté à chaque écriture, pour invalider les lectures mémorisées (src/charge.js)
+let version = 0;
+
 const q = {
   tous: db.prepare('SELECT data FROM docs WHERE col = ? ORDER BY cree'),
   un: db.prepare('SELECT data FROM docs WHERE col = ? AND id = ?'),
@@ -25,6 +28,7 @@ const docs = {
     if (!obj.id) obj.id = uid(col.slice(0, 3));
     if (!obj.cree) obj.cree = maintenant();
     q.ecrire.run(col, String(obj.id), JSON.stringify(sceller(col, obj)), obj.cree);
+    version++;
     return obj;
   },
   patch(col, id, patch) {
@@ -32,8 +36,9 @@ const docs = {
     if (!o) return null;
     return docs.put(col, Object.assign(o, patch, { id: o.id, cree: o.cree }));
   },
-  suppr: (col, id) => q.suppr.run(col, String(id)).changes,
-  vider: (col) => q.viderCol.run(col),
+  suppr: (col, id) => { version++; return q.suppr.run(col, String(id)).changes; },
+  vider: (col) => { version++; return q.viderCol.run(col); },
+  version: () => version,
   compte: (col) => q.compte.get(col).n,
   // Numéro de demande NT-xxxx incrémental et unique
   prochainNumero(nom, depart) {

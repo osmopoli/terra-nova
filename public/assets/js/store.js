@@ -50,8 +50,41 @@
   NT.econome = { coeurs, memoire, raisons, auto: prefs.econome === undefined && raisons.length > 0 };
   if (prefs.econome === true || NT.econome.auto) html.classList.add('econome');
   NT.econome.actif = () => html.classList.contains('econome');
-  // Rythme des mises à jour en direct : espacées (× 3) sur appareil peu puissant
-  NT.econome.delai = ms => (NT.econome.actif() ? ms * 3 : ms);
+  /* Vague 15 (F77, F78) : forte affluence. Le serveur indique son niveau de charge dans l'en-tête X-Charge
+     (normal / forte / critique) et répond 503 + Retry-After aux fonctions non essentielles quand il est surchargé.
+     Ici : état partagé par toutes les pages. Les mises à jour en direct ralentissent (recul exponentiel + gigue pour que
+     les navigateurs ne reviennent pas tous en même temps), les widgets non essentiels se mettent en pause.
+     L'affichage (pied de page, tiroir des alertes), les brouillons et les nouveaux essais sont dans resilience.js. */
+  const charge = NT.charge = { niveau: 'normal', echecs: 0, injoignable: 0, ecrituresOk: 0, echecsEcriture: 0, derniereReponse: 0, _ecoute: [] };
+  charge.surChangement = fn => charge._ecoute.push(fn);
+  charge.observer = (statut, niveau) => {
+    const avant = charge.niveau + '|' + (charge.echecs > 0) + '|' + (charge.injoignable > 1);
+    if (statut === 0 || statut === 502 || statut === 504) charge.injoignable++; else if (statut > 0) charge.injoignable = 0;   // aucune réponse de l'application
+    if (niveau === 'normal' || niveau === 'forte' || niveau === 'critique') charge.niveau = niveau;
+    if (statut === 0 || statut === 502 || statut === 503 || statut === 504) charge.echecs = Math.min(charge.echecs + 1, 6);
+    else if (statut > 0 && statut < 500) { charge.echecs = 0; charge.derniereReponse = Date.now(); }
+    if (avant !== charge.niveau + '|' + (charge.echecs > 0) + '|' + (charge.injoignable > 1)) charge._ecoute.forEach(fn => { try { fn(charge); } catch (e) { /* écouteur fautif */ } });
+  };
+  // Facteur appliqué aux intervalles des mises à jour en direct : 1 en temps normal, jusqu'à × 20 en surcharge
+  charge.facteur = () => {
+    const base = charge.niveau === 'critique' ? 4 : charge.niveau === 'forte' ? 2 : 1;
+    const f = Math.min(20, base * Math.pow(2, charge.echecs));
+    return f === 1 ? 1 : f * (0.8 + Math.random() * 0.4);
+  };
+  // Widgets non essentiels (tableaux de bord, flux, statistiques) : en pause tant que le serveur est surchargé
+  charge.enPause = () => charge.niveau !== 'normal' || charge.echecs > 0;
+  // Rythme des mises à jour en direct : espacées (× 3) sur appareil peu puissant, ralenties en cas de forte affluence (F77, F78)
+  NT.econome.delai = ms => (NT.econome.actif() ? ms * 3 : ms) * charge.facteur();
+  // Les requêtes fetch() vers l'API renseignent aussi le niveau de charge
+  if (window.fetch) {
+    const fetchOrigine = window.fetch.bind(window);
+    window.fetch = (entree, init) => {
+      let api = false;
+      try { const u = new URL(typeof entree === 'string' ? entree : (entree && entree.url) || '', location.href); api = u.origin === location.origin && u.pathname.startsWith('/api'); } catch (e) { /* adresse illisible */ }
+      return fetchOrigine(entree, init).then(r => { if (api) charge.observer(r.status, r.headers.get('X-Charge')); return r; },
+        err => { if (api) charge.observer(0); throw err; });
+    };
+  }
   // Mesure concrète : tâches longues (> 50 ms) qui bloquent l'appareil pendant le chargement (Chrome, Edge)
   NT.econome.taches = { n: 0, ms: 0 };
   try {
@@ -73,18 +106,34 @@
     x.open(methode, url, false);
     x.setRequestHeader('Content-Type', 'application/json');
     try { x.send(corps === undefined ? null : JSON.stringify(corps)); }
-    catch (e) { return { statut: 0, donnees: { erreur: 'Serveur injoignable. Vérifiez votre connexion.' } }; }
+    catch (e) { charge.observer(0); if (methode !== 'GET') charge.echecsEcriture++; return { statut: 0, donnees: { erreur: 'Serveur injoignable. Vérifiez votre connexion.' } }; }
     let donnees = null;
     try { donnees = x.responseText ? JSON.parse(x.responseText) : null; } catch (e) { /* réponse non JSON */ }
+    charge.observer(x.status, x.getResponseHeader('X-Charge'));   // F77, F78
+    if (methode !== 'GET') { if (x.status >= 200 && x.status < 300) charge.ecrituresOk++; else if (x.status === 0 || x.status >= 500 || x.status === 429) charge.echecsEcriture++; }
     return { statut: x.status, donnees };
   }
   NT.api = api;
 
   // État en mémoire, rechargé depuis le serveur
   let etat = {};
+  /* F77, F78 : dernières informations publiques connues (état des services, annonces et alertes), gardées sur l'appareil
+     pour rester lisibles si le serveur ne répond plus. Jamais de donnée personnelle dans cette copie. */
   function recharger() {
-    const r = api('GET', '/api/etat');
-    etat = r.statut === 200 && r.donnees ? r.donnees : { moi: null };
+    let r = api('GET', '/api/etat');
+    if (r.statut === 503 || r.statut === 0) r = api('GET', '/api/etat');   // un nouvel essai immédiat (file d'attente pleine, réseau qui flanche)
+    if (r.statut === 200 && r.donnees) {
+      etat = r.donnees;
+      NT.horsLigne = null;
+      ecrire('dernierEtat', { date: maintenant(), services: etat.services || [], annonces: (etat.annonces || []).filter(a => a.active) });
+      return;
+    }
+    const dernier = lire('dernierEtat', null);
+    etat = { moi: null };
+    if (r.statut === 0 || r.statut >= 500) {
+      NT.horsLigne = { statut: r.statut, depuis: dernier ? dernier.date : '' };
+      if (dernier) Object.assign(etat, { services: dernier.services, annonces: dernier.annonces });
+    }
   }
   recharger();
   NT.recharger = recharger;
@@ -98,6 +147,8 @@
   function refus(r) {
     const msg = (r.donnees && r.donnees.erreur) || 'Action impossible.';
     console.warn('[Terra Nova]', msg);
+    // F77, F78 : serveur surchargé ou injoignable → message calme, brouillon gardé, nouvel essai automatique (resilience.js)
+    if ((r.statut === 0 || r.statut === 429 || r.statut >= 502) && charge.reessayer) { charge.reessayer(r); return null; }
     if (NT.ui && NT.ui.toast) NT.ui.toast(msg, 'danger');
     return null;
   }

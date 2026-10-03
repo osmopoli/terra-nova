@@ -18,6 +18,7 @@
   <script src="assets/js/store.js"></script>
   <script src="assets/js/agent.js"></script>
   <script src="assets/js/agent-doublons.js"></script>
+  <script src="assets/js/agent-priorites.js"></script>
   <script src="assets/js/ui.js" defer></script>
 </head>
 <body data-page="demandesAgent" data-ariane="nav.agent|agent.html;nav.demandesAgent" data-roles="agent,admin">
@@ -42,10 +43,14 @@
         <select id="f-quartier"><option value="" data-i18n="ag.toutes">Toutes</option></select></div>
       <div class="champ"><label for="f-prio" data-i18n="dm.priorite">Priorité</label>
         <select id="f-prio"><option value="" data-i18n="ag.toutes">Toutes</option>
-          <option value="haute" data-i18n="ag.prio.haute">Haute</option>
-          <option value="normale" data-i18n="ag.prio.normale">Normale</option>
-          <option value="basse" data-i18n="ag.prio.basse">Basse</option></select></div>
+          <option value="critique" data-i18n="pr.n.critique">Critique</option>
+          <option value="haute" data-i18n="pr.n.haute">Haute</option>
+          <option value="normale" data-i18n="pr.n.normale">Normale</option>
+          <option value="basse" data-i18n="pr.n.basse">Basse</option></select></div>
     </form>
+
+    <!-- F80 : dossiers prioritaires (niveau calculé par le serveur, corrigeable avec justification) — assets/js/agent-priorites.js -->
+    <section class="panneau pr-panneau" id="pr-panneau" aria-labelledby="pr-h"></section>
 
     <!-- F75 : demandes semblables (groupes calculés par le serveur) et filtres d'attention — assets/js/agent-doublons.js -->
     <section class="panneau sg-panneau" id="sg-groupes" aria-labelledby="sg-h"></section>
@@ -98,6 +103,8 @@
       const { echap } = NT.ui, A = NT.agent, T = A.T;
       const X = NT.doublons;   // F75 : demandes semblables, filtres et tri d'attention
       if (X) X.recharger();
+      const P = NT.priorites;   // F80 : niveau de priorité calculé par le serveur
+      if (P) P.recharger();
       const agent = NT.auth.utilisateur();
       const el = id => document.getElementById(id);
       const STATUTS = ['recue', 'en_cours', 'traitee', 'cloturee'];
@@ -111,6 +118,8 @@
       NT.QUARTIERS.forEach(q => sQ.insertAdjacentHTML('beforeend', `<option value="${echap(q)}">${echap(q)}</option>`));
       if (['contact', 'signalement', 'demarche'].includes(NT.ui.param('type'))) sType.value = NT.ui.param('type');
       if (NT.ui.param('q')) champQ.value = NT.ui.param('q');
+      if (['critique', 'haute', 'normale', 'basse'].includes(NT.ui.param('priorite'))) sP.value = NT.ui.param('priorite');
+      if (P && NT.ui.param('mes') === '1') P.etat.mes = true;
 
       const photoSure = s => typeof s === 'string' && /^(data:image\/|https?:\/\/|assets\/|\.\/)/.test(s);
       const photoDe = d => [d.photo].concat(d.photos || []).concat([d.image]).find(photoSure) || '';
@@ -119,9 +128,10 @@
         const q = A.sansAccent(champQ.value.trim());
         return NT.demandes.toutes().filter(d => {
           if (X && !X.filtre(d)) return false;
+          if (P && !P.filtre(d)) return false;
           if (sType.value && d.type !== sType.value) return false;
           if (sQ.value && A.quartierDe(d) !== sQ.value) return false;
-          if (sP.value && (sP.value === 'haute' ? !A.estHaute(d.priorite) : d.priorite !== sP.value)) return false;
+          if (sP.value && (P ? P.niveau(d) !== sP.value : (sP.value === 'haute' ? !A.estHaute(d.priorite) : d.priorite !== sP.value))) return false;
           if (q) {
             const c = A.utilisateur(d.userId);
             if (!A.sansAccent([d.id, d.objet, d.message, d.lieu, c ? A.nomComplet(c) : ''].join(' ')).includes(q)) return false;
@@ -144,8 +154,8 @@
       function tri(a, b) {
         const aa = A.actionRequise(a), ab = A.actionRequise(b);
         if (aa !== ab) return aa ? -1 : 1;
-        if (aa) { // action requise : priorité haute d'abord, puis la plus ancienne
-          const h = (A.estHaute(b.priorite) ? 1 : 0) - (A.estHaute(a.priorite) ? 1 : 0);
+        if (aa) { // action requise : priorité la plus forte d'abord (F80), puis la plus ancienne
+          const h = P ? P.rang(a) - P.rang(b) : (A.estHaute(b.priorite) ? 1 : 0) - (A.estHaute(a.priorite) ? 1 : 0);
           return h || a.cree.localeCompare(b.cree);
         }
         return b.cree.localeCompare(a.cree);
@@ -161,12 +171,12 @@
             <td><button type="button" class="ag-ouvrir" data-id="${echap(d.id)}">${echap(d.objet)}</button>
               ${act ? `<span class="ag-action-lib"><i class="ph ph-warning-circle" aria-hidden="true"></i>${echap(T('ag.actionRequise', 'Action requise'))}</span>` : ''}${X ? X.badge(d) : ''}</td>
             <td>${echap(A.typeLabel(d.type))}</td><td>${echap(A.service(d.serviceId) || '–')}</td><td>${echap(A.quartierDe(d) || '–')}</td>
-            <td>${A.prioBadge(d.priorite)}</td><td>${A.statutBadge(d.statut)}</td>
+            <td>${P ? P.badge(d) : A.prioBadge(d.priorite)}</td><td>${A.statutBadge(d.statut)}</td>
             <td><time datetime="${echap(d.cree)}">${echap(NT.ui.depuis(d.cree))}</time></td></tr>`;
         }).join('') : `<tr><td colspan="8" class="doux">${echap(T('dm.aucune', 'Aucune demande ne correspond à ces filtres.'))}</td></tr>`;
       }
 
-      function tout() { onglets(); tableau(); }
+      function tout() { if (P) P.rendrePanneau(el('pr-panneau')); onglets(); tableau(); }
 
       /* ---------- Tiroir de traitement ---------- */
       const tiroir = el('tiroir'), corps = el('tiroir-corps');
@@ -175,7 +185,7 @@
         const c = A.utilisateur(d.userId), photo = photoDe(d);
         const sel = STATUTS.map(s => `<option value="${s}" ${s === d.statut ? 'selected' : ''}>${echap(T('statut.' + s, NT.STATUTS[s]))}</option>`).join('');
         return `
-          <p class="ligne">${A.statutBadge(d.statut)} ${A.prioBadge(d.priorite)}${A.actionRequise(d) ? `<span class="ag-action-lib"><i class="ph ph-warning-circle" aria-hidden="true"></i>${echap(T('ag.actionRequise', 'Action requise'))}</span>` : ''}</p>
+          <p class="ligne">${A.statutBadge(d.statut)} ${P ? P.badge(d) : A.prioBadge(d.priorite)}${A.actionRequise(d) ? `<span class="ag-action-lib"><i class="ph ph-warning-circle" aria-hidden="true"></i>${echap(T('ag.actionRequise', 'Action requise'))}</span>` : ''}</p>
           <h3 class="premier">${echap(d.objet)}</h3>
           <dl class="ag-dl">
             <dt>${echap(T('dm.type', 'Type'))}</dt><dd>${echap(A.typeLabel(d.type))}</dd>
@@ -192,6 +202,7 @@
           ${c ? `<p style="margin:0">${echap(A.nomComplet(c))} · ${echap(c.email)}${c.telephone ? ' · ' + echap(c.telephone) : ''}<br>${echap(T('ag.quartier', 'Quartier'))} : ${echap(c.quartier || '–')}</p>
             ${c.vulnerable ? `<p class="ag-vuln" style="margin:.4rem 0 0"><i class="ph-duotone ph-heartbeat" aria-hidden="true"></i> ${echap(T('dm.vulnerable', 'Personne vulnérable : à traiter avec attention'))}</p>` : ''}`
             : `<p class="doux" style="margin:0">${echap(T('dm.anonyme', 'Compte anonymisé ou supprimé'))}</p>`}
+          ${P ? P.tiroirHtml(d) : ''}
           ${X ? X.tiroirHtml(d) : ''}
           <h3>${echap(T('dm.historique', 'Historique'))}</h3>
           <ol class="etapes">${(d.historique || []).map(h => `<li class="faite"><strong>${echap(T('statut.' + h.statut, NT.STATUTS[h.statut] || h.statut))}</strong>
@@ -226,6 +237,7 @@
         if (!d.agent || (agent && d.agent !== A.nomComplet(agent) && statut === 'en_cours')) NT.store.update('demandes', d.id, { agent: A.nomComplet(agent) });
         NT.ui.toast(toastMsg, 'success');
         if (X && (d.liees || []).length) { NT.recharger(); X.recharger(); X.rendre(); }   // F75 : les demandes rattachées ont suivi la réponse
+        if (P) P.recharger();   // F80 : un dossier traité ou pris en charge change de file
         tout(); rafraichirTiroir();
       }
 
@@ -261,6 +273,7 @@
       el('lignes').addEventListener('click', ev => { const b = ev.target.closest('.ag-ouvrir'); if (b) ouvrir(b.dataset.id); });
       [sType, sQ, sP, champQ].forEach(c => c.addEventListener('input', tout));
       if (X) { X.onChange = tout; X.ouvrir = ouvrir; X.rendre(); }
+      if (P) { P.onChange = tout; P.ouvrir = ouvrir; }
       tout();
     });
   </script>

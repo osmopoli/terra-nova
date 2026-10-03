@@ -83,17 +83,12 @@
       </article></li>`;
     }
 
-    function filtrer() {
-      const q = $('#f-q').value.trim().toLowerCase();
-      const qt = $('#f-quartier').value;
-      return donnees.filter(d => (!qt || d.quartier === qt) &&
-        (!q || [d.objet, d.message, d.lieu, d.id, d.quartier].join(' ').toLowerCase().includes(q)));
-    }
-
-    function rendre() {
-      const l = filtrer();
+    /* F79 : sujet (puces avec nombre), tri (plus soutenus, récents, anciens, état) et recherche — NT.sujets ;
+       le quartier reste un filtre de la page. État gardé dans l'adresse. */
+    let tri = null;
+    function rendre() { if (tri) tri.appliquer(); }
+    function dessiner(l) {
       $('#liste').innerHTML = l.length ? l.map(d => carte(d, '')).join('') : `<li class="vide">${E(L('sou.aucun', 'Aucun signalement ne correspond. Essayez un autre quartier ou un autre mot.'))}</li>`;
-      $('#resultat').textContent = l.length === 1 ? L('sou.resultat1', '1 signalement ouvert') : L('sou.resultat', '{n} signalements ouverts', { n: l.length });
       const mes = donnees.filter(d => d.soutenuParMoi);
       $('#mes-soutiens').hidden = !mes.length;
       $('#liste-mes-soutiens').innerHTML = mes.map(d => carte(d, 'ms-')).join('');
@@ -108,7 +103,13 @@
     const qs = Array.from(new Set(NT.QUARTIERS.concat(donnees.map(d => d.quartier)))).filter(Boolean);
     $('#f-quartier').innerHTML = `<option value="">${E(L('sou.tous', 'Tous les quartiers'))}</option>` + qs.map(q => `<option>${E(q)}</option>`).join('');
     $('#f-quartier').addEventListener('change', () => { cible = ''; rendre(); });
-    $('#f-q').addEventListener('input', () => { cible = ''; rendre(); });
+    $('#f-q').addEventListener('input', () => { cible = ''; });
+    tri = NT.sujets.monter({ conteneur: $('#filtres'), champRecherche: $('#f-q'), compte: $('#resultat'), triDefaut: 'soutenus', elements: () => donnees,
+      extraFiltre: d => !$('#f-quartier').value || d.quartier === $('#f-quartier').value,
+      sujetDe: d => d.serviceId || '', statutDe: d => d.statut, dateDe: d => d.cree, soutiensDe: d => d.soutiens,
+      texteDe: d => [d.objet, d.message, d.lieu, d.id, d.quartier].join(' '),
+      libelleCompte: n => (n === 1 ? L('sou.resultat1', '1 signalement ouvert') : L('sou.resultat', '{n} signalements ouverts', { n })),
+      onChange: dessiner });
 
     // Invitation visiteur
     if (!u) {
@@ -145,6 +146,5 @@
       if (nouveau) nouveau.focus();
     });
 
-    rendre();
   });
 })();

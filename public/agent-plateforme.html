@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>État de la plateforme — Terra Nova</title>
+  <meta name="description" content="État de la plateforme : charge du serveur, latence, requêtes délestées, mémoire et mode dégradé.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/securite.css">
+  <link rel="stylesheet" href="assets/css/plateforme.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/agent-plateforme.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="plateforme" data-ariane="nav.agent|agent.html;pf.titre" data-roles="agent,admin">
+  <main id="contenu" class="conteneur">
+    <header class="titre-page">
+      <span class="surtitre" data-i18n="pf.surtitre">Centre technique · Direction du Numérique</span>
+      <h1 data-i18n="pf.titre">État de la plateforme</h1>
+      <p data-i18n="pf.sous">Charge du serveur en direct, ce qui reste prioritaire quand beaucoup d’habitants se connectent en même temps, et ce qui est mis en pause.</p>
+    </header>
+
+    <section class="panneau pf-etat" id="pf-etat" aria-live="polite" aria-labelledby="pf-etat-h"></section>
+
+    <section class="bloc-sec" aria-labelledby="pf-mesures-h">
+      <h2 id="pf-mesures-h" data-i18n="pf.mesures">Mesures en direct</h2>
+      <p class="doux" data-i18n="pf.mesuresAide">Mises à jour toutes les 5 secondes. Latence mesurée par le serveur, attente comprise.</p>
+      <div class="kpis-sec" id="pf-kpis"></div>
+    </section>
+
+    <section class="bloc-sec" aria-labelledby="pf-courbe-h">
+      <h2 id="pf-courbe-h" data-i18n="pf.courbe">Les 3 dernières minutes</h2>
+      <div class="panneau pf-courbe" id="pf-courbe"></div>
+    </section>
+
+    <section class="bloc-sec" aria-labelledby="pf-priorite-h">
+      <h2 id="pf-priorite-h" data-i18n="pf.priorite">Ce qui reste prioritaire</h2>
+      <div class="pf-classes" id="pf-classes"></div>
+      <h3 data-i18n="pf.delestees">Requêtes mises en pause (503 + Retry-After)</h3>
+      <div id="pf-chemins"></div>
+    </section>
+
+    <section class="bloc-sec" aria-labelledby="pf-pilote-h">
+      <h2 id="pf-pilote-h" data-i18n="pf.pilote">Mode dégradé (démonstration)</h2>
+      <p class="doux" data-i18n="pf.piloteAide">Forcer un niveau montre aux habitants ce qui se passe pendant un pic d’affluence : avis calme en pied de page et dans le tiroir des alertes, mises à jour espacées, fonctions secondaires en pause. Retour automatique à la fin de la durée choisie. Action réservée à l’administrateur et inscrite au journal.</p>
+      <form class="panneau" id="pf-form" novalidate data-brouillon="non">
+        <fieldset>
+          <legend data-i18n="pf.mode">Niveau</legend>
+          <div class="pf-modes">
+            <label><input type="radio" name="pf-mode" value="auto" checked> <span data-i18n="pf.auto">Automatique (selon la charge mesurée)</span></label>
+            <label><input type="radio" name="pf-mode" value="forte"> <span data-i18n="pf.forte">Forte affluence : calculs lourds en pause</span></label>
+            <label><input type="radio" name="pf-mode" value="critique"> <span data-i18n="pf.critique">Critique : seul l’essentiel est servi</span></label>
+          </div>
+        </fieldset>
+        <div class="filtres-sec">
+          <div class="champ"><label for="pf-minutes" data-i18n="pf.duree">Durée</label>
+            <select id="pf-minutes"><option value="5">5 min</option><option value="15" selected>15 min</option><option value="30">30 min</option><option value="60">60 min</option></select></div>
+          <div class="champ" style="flex:1"><label for="pf-motif" data-i18n="pf.motif">Motif (journal)</label>
+            <input id="pf-motif" type="text" maxlength="200" autocomplete="off"></div>
+        </div>
+        <p class="erreur" id="pf-erreur" role="alert" hidden></p>
+        <button type="submit" class="btn btn-primaire" id="pf-appliquer"><i class="ph ph-sliders-horizontal" aria-hidden="true"></i><span data-i18n="pf.appliquer">Appliquer</span></button>
+      </form>
+      <p class="doux" id="pf-lecture" hidden data-i18n="pf.lecture">Seul l’administrateur peut forcer le mode dégradé.</p>
+    </section>
+
+    <section class="bloc-sec" aria-labelledby="pf-test-h">
+      <h2 id="pf-test-h" data-i18n="pf.test">Mesurer la tenue en charge</h2>
+      <p data-i18n="pf.testAide">Depuis le dossier du projet, lancer le test de charge (aucune dépendance) puis regarder cette page :</p>
+      <pre class="pf-code"><code>node tools/charge.js --url http://localhost:3000 --clients 100 --duree 30</code></pre>
+    </section>
+  </main>
+</body>
+</html>

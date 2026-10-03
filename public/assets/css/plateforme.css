@@ -1,0 +1,29 @@
+/* Terra Nova — État de la plateforme (vague 15 : F77, F78). Couleurs : jetons de theme.css uniquement. */
+.pf-etat{ display:flex; flex-wrap:wrap; gap:1rem 1.5rem; align-items:center; margin-bottom:1rem; }
+.pf-etat h2{ margin:0; font-size:1.25rem; display:flex; gap:.6rem; align-items:center; }
+.pf-etat p{ margin:.25rem 0 0; color:var(--brume); }
+.pf-niveau{ display:inline-flex; align-items:center; gap:.45rem; font-weight:700; padding:.3rem .8rem; border-radius:99px; border:1px solid currentColor; white-space:nowrap; }
+.pf-niveau::before{ content:""; width:.6rem; height:.6rem; border-radius:50%; background:currentColor; }
+.pf-niveau-normal{ color:var(--iono); }
+.pf-niveau-forte{ color:var(--soleil); }
+.pf-niveau-critique{ color:var(--corail); }
+.pf-kpi .valeur small{ font-size:1rem; font-weight:600; color:var(--brume); margin-inline-start:.2rem; }
+.pf-kpi .libelle small{ display:block; font-size:.8rem; }
+.pf-courbe svg{ width:100%; max-width:52rem; height:auto; display:block; }
+.pf-courbe .axe{ stroke:var(--trait-2); stroke-width:1; }
+.pf-courbe .l-p95{ fill:none; stroke:var(--iono); stroke-width:2; }
+.pf-courbe .l-lag{ fill:none; stroke:var(--aurore); stroke-width:2; stroke-dasharray:5 4; }
+.pf-courbe .l-rps{ fill:color-mix(in oklch, var(--calme) 18%, transparent); stroke:none; }
+.pf-courbe text{ fill:var(--brume); font-size:11px; font-family:var(--police); }
+.pf-legende{ display:flex; flex-wrap:wrap; gap:.5rem 1.25rem; list-style:none; margin:.6rem 0 0; padding:0; font-size:.88rem; color:var(--brume); }
+.pf-legende span{ display:inline-block; width:1.4rem; height:.25rem; vertical-align:middle; margin-inline-end:.4rem; border-radius:2px; }
+.pf-legende .k-p95{ background:var(--iono); } .pf-legende .k-lag{ background:var(--aurore); } .pf-legende .k-rps{ background:color-mix(in oklch, var(--calme) 50%, transparent); height:.7rem; }
+.pf-classes{ display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr)); }
+.pf-classes .carte h3{ display:flex; gap:.5rem; align-items:center; font-size:1rem; }
+.pf-classes ul{ margin:.5rem 0 0; padding-inline-start:1.1rem; }
+.pf-classes .c-essentiel h3 i{ color:var(--iono); } .pf-classes .c-lourd h3 i{ color:var(--soleil); } .pf-classes .c-secondaire h3 i{ color:var(--calme); }
+.pf-modes{ display:grid; gap:.5rem; }
+.pf-modes label{ display:flex; gap:.6rem; align-items:flex-start; cursor:pointer; min-height:2.25rem; }
+.pf-modes input{ margin-top:.35rem; width:1.1rem; height:1.1rem; accent-color:var(--iono); flex:none; }
+.pf-code{ background:var(--verre); border:1px solid var(--trait); border-radius:var(--r); padding:.8rem 1rem; overflow-x:auto; }
+.pf-code code{ font-family:var(--mono); font-size:.88rem; }

@@ -86,6 +86,7 @@
     const A = NT.agent;
     if (etat.tri === 'attente') return (a, b) => (A.estOuverte(b) - A.estOuverte(a)) || A.dernierChangement(a).localeCompare(A.dernierChangement(b));
     if (etat.tri === 'recentes') return (a, b) => b.cree.localeCompare(a.cree);
+    if (etat.tri === 'priorite' && NT.priorites) return NT.priorites.comparer;   // vague 15 (F80)
     if (etat.tri === 'groupes') return (a, b) => ((X.groupeDe(b.id) || {}).taille || 0) - ((X.groupeDe(a.id) || {}).taille || 0) || a.cree.localeCompare(b.cree);
     return null;
   };
@@ -118,7 +119,7 @@
     const chip = (k, lib, ic) => `<button type="button" class="sv-filtre sg-chip" data-sg-filtre="${k}" aria-pressed="${!!etat[k]}"><i class="ph ${ic}" aria-hidden="true"></i> ${e(t(lib))}</button>`;
     z.innerHTML = `<span id="sg-lbl-att">${e(t('sg.attention'))}</span>
       <span class="sg-chips" role="group" aria-labelledby="sg-lbl-att">${chip('urgentes', 'sg.fUrgentes', 'ph-warning-circle')}${chip('nonAssignees', 'sg.fNonAssignees', 'ph-user-circle-dashed')}${chip('groupes', 'sg.fGroupes', 'ph-stack')}</span>
-      <span class="champ sg-tri"><label for="sg-tri">${e(t('sg.tri'))}</label><select id="sg-tri">${[['action', 'sg.tAction'], ['attente', 'sg.tAttente'], ['recentes', 'sg.tRecentes'], ['groupes', 'sg.tGroupes']].map(([v, l]) => `<option value="${v}" ${etat.tri === v ? 'selected' : ''}>${e(t(l))}</option>`).join('')}</select></span>
+      <span class="champ sg-tri"><label for="sg-tri">${e(t('sg.tri'))}</label><select id="sg-tri">${[['action', 'sg.tAction'], ['attente', 'sg.tAttente'], ['recentes', 'sg.tRecentes'], ['groupes', 'sg.tGroupes']].concat(NT.priorites ? [['priorite', 'pr.tPriorite']] : []).map(([v, l]) => `<option value="${v}" ${etat.tri === v ? 'selected' : ''}>${e(t(l))}</option>`).join('')}</select></span>
       ${etat.groupe ? `<span class="sg-filtre-groupe">${e(t('sg.filtreGroupe', { id: etat.groupe.replace('GRP-', '') }))} <button type="button" class="lien-bouton" data-sg-effacer>${e(t('sg.effacer'))}</button></span>` : ''}`;
   }
   X.rendre = () => { panneau(); barre(); };

@@ -386,3 +386,36 @@ html.econome .liste-sou > li,html.econome .liste-activite > li,html.econome .lis
 /* F75 : demande regroupée avec d'autres signalements du même problème */
 .sg-note{ display:flex; gap:.55rem; align-items:flex-start; margin:.6rem 0; padding:.6rem .8rem; border:1px solid var(--trait-2); border-inline-start:4px solid var(--iono); border-radius:var(--r-s); background:var(--verre); font-size:.92rem; }
 .sg-note i{ color:var(--iono); font-size:1.3rem; flex:none; }
+/* ---------- Vague 15 (F77, F78) : forte affluence, sans bandeau ----------
+   Une ligne calme en pied de page, une carte en tête du tiroir « Alertes », une teinte discrète (sans clignotement) sur la balise. */
+.pied-charge{ display:inline-flex; align-items:center; gap:.4rem; flex-wrap:wrap; color:var(--givre); }
+.pied-charge i{ color:var(--calme); }
+.balise.charge:not(.active):not(.importante):not(.officiel){ border-color:var(--calme); }
+.balise.charge:not(.active):not(.importante):not(.officiel) .feu{ background:var(--calme); }
+.alerte-fiche.niveau-charge{ border-color:var(--calme); background:oklch(0.6700 0.1336 230 / .07); }
+.alerte-fiche.niveau-charge h3 i{ color:var(--calme); }
+.alerte-fiche.niveau-charge p{ margin:.5rem 0 0; }
+.brouillon-note,.reessai-note{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .75rem; margin:0 0 1rem; padding:.7rem .9rem; border:1px solid var(--calme); border-radius:var(--r); background:oklch(0.6700 0.1336 230 / .07); font-size:.92rem; }
+.brouillon-note i,.reessai-note i{ color:var(--calme); font-size:1.2rem; flex:none; }
+.reessai-note{ margin:1rem 0 0; }
+.reessai-note p{ margin:0; flex:1 1 16rem; }
+.secours{ margin:2rem auto; max-width:44rem; }
+.secours h1{ font-size:1.5rem; }
+.secours h2{ font-size:1.1rem; margin-top:1.5rem; }
+/* Widgets non essentiels marqués .non-essentiel : estompés pendant la forte affluence (leurs mises à jour sont en pause) */
+html.affluence .non-essentiel{ opacity:.6; }
+.pied .lien-bouton,.brouillon-note .lien-bouton,.reessai-note .lien-bouton{ font:inherit; background:none; border:0; color:var(--iono); text-decoration:underline; text-underline-offset:3px; cursor:pointer; padding:.35rem .25rem; min-height:2.25rem; }
+/* ---------- Vague 15 (F79) : trier et filtrer par sujet (assets/js/sujets.js) ---------- */
+.sujets-outils{ margin:0 0 1rem; }
+.sujets-champs{ display:flex; flex-wrap:wrap; gap:0 1rem; }
+.sujets-champs .champ{ flex:1 1 12rem; margin-bottom:.8rem; }
+.sujets-puces{ display:flex; flex-wrap:wrap; gap:.45rem; align-items:center; }
+.sujets-lbl{ font-weight:700; margin-inline-end:.25rem; }
+.sujets-liste{ display:contents; }
+.chip-sujet{ font:inherit; font-size:.88rem; font-weight:600; color:var(--givre); background:transparent; border:1px solid var(--trait-2); border-radius:999px; padding:.35rem .8rem; min-height:2.5rem; cursor:pointer; display:inline-flex; align-items:center; gap:.4rem; }
+.chip-sujet .n{ display:inline-grid; place-items:center; min-width:1.4rem; height:1.4rem; padding:0 .35rem; border-radius:99px; background:var(--panneau-2); font-size:.78rem; }
+.chip-sujet[aria-pressed="true"]{ background:var(--iono); color:var(--sur-iono); border-color:var(--iono); }
+.chip-sujet[aria-pressed="true"] .n{ background:var(--sur-iono); color:var(--iono); }
+.chip-sujet:focus-visible{ outline:3px solid var(--iono); outline-offset:2px; }
+@media (hover:hover) and (pointer:fine){ .chip-sujet:hover{ border-color:var(--iono); } }
+.sujets-compte{ margin:.6rem 0 0; }
