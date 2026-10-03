@@ -3,12 +3,13 @@ const router = require('express').Router();
 const db = require('../db');
 const { requireAuth, ROLE_LABELS } = require('../auth');
 const { html, safe, fmtDate } = require('../views');
+const { ah } = require('../async');
 
 const STATUS = { nouveau: 'Reçue', en_cours: 'En cours de traitement', traite: 'Traitée' };
 
-router.get('/espace', requireAuth, (req, res) => {
+router.get('/espace', requireAuth, ah(async (req, res) => {
   const u = req.user;
-  const msgs = db.prepare('SELECT * FROM messages WHERE user_id = ? OR email = ? ORDER BY created_at DESC').all(u.id, u.email);
+  const msgs = await db.all('SELECT * FROM messages WHERE user_id = ? OR email = ? ORDER BY created_at DESC', [u.id, u.email]);
   res.page({ title: 'Mon espace', active: 'espace', body: html`
 ${req.query.bienvenue ? safe`<div class="alert success" role="status">Bienvenue ${u.name}, votre compte est créé.</div>` : ''}
 <header class="espace-head"><h1>Mon espace personnel</h1><p class="muted">Connecté en tant que <strong>${u.name}</strong> (${u.email}) · ${ROLE_LABELS[u.role]} · inscrit le ${fmtDate(u.created_at)}</p></header>
@@ -24,7 +25,7 @@ ${req.query.bienvenue ? safe`<div class="alert success" role="status">Bienvenue 
     ${['agent', 'admin'].includes(u.role) ? safe`<li><a href="/agent">Espace agents</a></li>` : ''}</ul>
   </section>
 </div>` });
-});
+}));
 
 module.exports = router;
 module.exports.STATUS = STATUS;

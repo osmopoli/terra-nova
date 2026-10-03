@@ -3,11 +3,12 @@ const router = require('express').Router();
 const db = require('../db');
 const { requireRole, ROLES, ROLE_LABELS, createUser, findUserByEmail } = require('../auth');
 const { html, safe, fmtDate } = require('../views');
+const { ah } = require('../async');
 
 const admin = requireRole('admin');
 
-router.get('/admin', admin, (req, res) => {
-  const users = db.prepare('SELECT id, name, email, role, created_at FROM users ORDER BY role DESC, created_at').all();
+router.get('/admin', admin, ah(async (req, res) => {
+  const users = await db.all('SELECT id, name, email, role, created_at FROM users ORDER BY role DESC, created_at');
   const byRole = Object.fromEntries(ROLES.map((r) => [r, users.filter((u) => u.role === r).length]));
   res.page({ title: 'Administration', active: 'admin', body: html`
 <h1>Administration des comptes</h1>
@@ -27,23 +28,23 @@ ${users.map((u) => safe`<tr><td>${u.name}</td><td>${u.email}</td><td>${fmtDate(u
   <label>Profil<select name="role">${ROLES.map((r) => safe`<option value="${r}" ${r === 'agent' ? 'selected' : ''}>${ROLE_LABELS[r]}</option>`)}</select></label>
   <button class="btn">Créer</button>
 </form></section>` });
-});
+}));
 
-router.post('/admin/users/:id/role', admin, (req, res) => {
+router.post('/admin/users/:id/role', admin, ah(async (req, res) => {
   const id = Number(req.params.id);
   if (id === req.user.id || !ROLES.includes(req.body.role)) return res.redirect('/admin');
-  db.prepare('UPDATE users SET role = ? WHERE id = ?').run(req.body.role, id);
-  db.prepare('DELETE FROM sessions WHERE user_id = ?').run(id); // force la reconnexion avec les nouveaux droits
+  await db.run('UPDATE users SET role = ? WHERE id = ?', [req.body.role, id]);
+  await db.run('DELETE FROM sessions WHERE user_id = ?', [id]); // force la reconnexion avec les nouveaux droits
   res.redirect('/admin?msg=' + encodeURIComponent('Profil mis à jour.'));
-});
+}));
 
-router.post('/admin/users', admin, (req, res) => {
+router.post('/admin/users', admin, ah(async (req, res) => {
   const { name, email, password, role } = req.body;
-  if (!name || !email || !password || password.length < 8 || !ROLES.includes(role) || findUserByEmail(email)) {
+  if (!name || !email || !password || password.length < 8 || !ROLES.includes(role) || (await findUserByEmail(email))) {
     return res.redirect('/admin?msg=' + encodeURIComponent('Création impossible : vérifiez les champs ou un compte existe déjà.'));
   }
-  createUser({ name, email, password, role });
+  await createUser({ name, email, password, role });
   res.redirect('/admin?msg=' + encodeURIComponent('Compte créé.'));
-});
+}));
 
 module.exports = router;

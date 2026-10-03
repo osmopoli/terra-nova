@@ -5,25 +5,26 @@ const db = require('../db');
 const { requireRole } = require('../auth');
 const { html, safe, fmtDate } = require('../views');
 const webcup = require('../webcup');
+const { ah } = require('../async');
 const { STATUS } = require('./espace');
 
 const staff = requireRole('agent', 'admin');
 const FILTERS = { action: "À traiter", nouveau: 'Nouvelles', en_cours: 'En cours', traite: 'Traitées', all: 'Toutes' };
 
-function counts() {
-  const rows = db.prepare('SELECT status, COUNT(*) n FROM messages GROUP BY status').all();
+async function counts() {
+  const rows = await db.all('SELECT status, COUNT(*) n FROM messages GROUP BY status');
   const c = { nouveau: 0, en_cours: 0, traite: 0 };
   rows.forEach((r) => (c[r.status] = r.n));
   return c;
 }
 
-router.get('/agent', staff, (req, res) => {
+router.get('/agent', staff, ah(async (req, res) => {
   const filter = FILTERS[req.query.filtre] ? req.query.filtre : 'action';
   const where = filter === 'all' ? '' : filter === 'action' ? "WHERE status != 'traite'" : 'WHERE status = ?';
   const args = ['nouveau', 'en_cours', 'traite'].includes(filter) ? [filter] : [];
-  const msgs = db.prepare(`SELECT m.*, s.name service_name FROM messages m LEFT JOIN services s ON s.slug = m.service_slug ${where}
-    ORDER BY CASE status WHEN 'nouveau' THEN 0 WHEN 'en_cours' THEN 1 ELSE 2 END, created_at ASC`).all(...args);
-  const c = counts();
+  const msgs = await db.all(`SELECT m.*, s.name service_name FROM messages m LEFT JOIN services s ON s.slug = m.service_slug ${where}
+    ORDER BY CASE status WHEN 'nouveau' THEN 0 WHEN 'en_cours' THEN 1 ELSE 2 END, created_at ASC`, args);
+  const c = await counts();
   res.page({ title: 'Espace agents', active: 'agent', scripts: ['/agent.js'], body: html`
 <header class="agent-head"><h1>Espace de travail des agents</h1><p class="muted">Interface réservée aux agents municipaux et administrateurs.</p></header>
 
@@ -54,24 +55,24 @@ router.get('/agent', staff, (req, res) => {
   <table class="table"><thead><tr><th>Code</th><th>Demandeur</th><th>Message</th><th>Difficulté</th><th>XP</th><th>Vague</th><th>Fait</th></tr></thead>
   <tbody id="api-requests"></tbody></table>
 </section>` });
-});
+}));
 
-router.post('/agent/demandes/:id', staff, (req, res) => {
+router.post('/agent/demandes/:id', staff, ah(async (req, res) => {
   const status = STATUS[req.body.status] ? req.body.status : 'nouveau';
-  db.prepare("UPDATE messages SET status = ?, agent_note = ?, updated_at = datetime('now') WHERE id = ?")
-    .run(status, String(req.body.agent_note || '').slice(0, 1000) || null, Number(req.params.id));
+  await db.run('UPDATE messages SET status = ?, agent_note = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
+    [status, String(req.body.agent_note || '').slice(0, 1000) || null, Number(req.params.id) || 0]);
   res.redirect(req.get('referer')?.includes('/agent') ? req.get('referer') : '/agent');
-});
+}));
 
 // API JSON consommée par public/agent.js (polling navigateur → notre backend, jamais l'API Webcup directement)
-router.get('/api/webcup/state', staff, (req, res) => res.json(webcup.getState()));
-router.post('/api/webcup/:code/done', staff, (req, res) => {
-  const changed = webcup.setDone(req.params.code, !!req.body.done);
+router.get('/api/webcup/state', staff, ah(async (req, res) => res.json(await webcup.getState())));
+router.post('/api/webcup/:code/done', staff, ah(async (req, res) => {
+  const changed = await webcup.setDone(req.params.code, !!req.body.done);
   res.status(changed ? 200 : 404).json({ ok: !!changed });
-});
-router.post('/api/webcup/refresh', requireRole('admin'), async (req, res) => {
+}));
+router.post('/api/webcup/refresh', requireRole('admin'), ah(async (req, res) => {
   await webcup.pollOnce();
-  res.json(webcup.getState());
-});
+  res.json(await webcup.getState());
+}));
 
 module.exports = router;

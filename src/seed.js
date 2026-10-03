@@ -15,14 +15,16 @@ const NEWS = [
   ['Collecte des encombrants : mode d\'emploi', 'Information pratique', 'Prenez rendez-vous en ligne pour faire enlever vos encombrants.', 'La collecte des encombrants se fait uniquement sur rendez-vous. Contactez le service Propreté via le formulaire de contact en précisant le volume et l\'adresse.'],
 ];
 
-function seedContent() {
-  if (!db.prepare('SELECT COUNT(*) n FROM services').get().n) {
-    const ins = db.prepare('INSERT INTO services (slug, name, icon, summary, details, hours, contact, sort_order) VALUES (?,?,?,?,?,?,?,?)');
-    SERVICES.forEach((s, i) => ins.run(...s, i));
+async function seedContent() {
+  if (!(await db.get('SELECT COUNT(*) n FROM services')).n) {
+    for (const [i, svc] of SERVICES.entries()) {
+      await db.run('INSERT INTO services (slug, name, icon, summary, details, hours, contact, sort_order) VALUES (?,?,?,?,?,?,?,?)', [...svc, i]);
+    }
   }
-  if (!db.prepare('SELECT COUNT(*) n FROM news').get().n) {
-    const ins = db.prepare("INSERT INTO news (title, category, summary, body, published_at) VALUES (?,?,?,?, datetime('now', ?))");
-    NEWS.forEach((n, i) => ins.run(...n, `-${i} days`));
+  if (!(await db.get('SELECT COUNT(*) n FROM news')).n) {
+    for (const [i, n] of NEWS.entries()) {
+      await db.run('INSERT INTO news (title, category, summary, body, published_at) VALUES (?,?,?,?, CURRENT_TIMESTAMP - INTERVAL ? DAY)', [...n, i]);
+    }
   }
 }
 

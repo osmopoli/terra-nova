@@ -1,14 +1,24 @@
 # Terra Nova · Plateforme citoyenne (24H By Webcup)
 
-Node.js 22 + Express + SQLite intégré (`node:sqlite`), rendu HTML côté serveur, aucune autre dépendance.
+Node.js 22 + Express + MySQL (`mysql2`), rendu HTML côté serveur.
 
 ## Démarrer
 
 ```bash
 npm install
-cp .env.example .env   # puis collez votre WEBCUP_API_KEY
-npm start              # http://localhost:3000
+cp .env.example .env     # puis collez votre WEBCUP_API_KEY et vos accès MySQL
+docker compose up -d     # (optionnel) MySQL 8.4 local, accès = valeurs DB_* du .env
+npm start                # http://localhost:3000
+npm test                 # tests d'intégration sur la base DB_TEST_NAME (vidée à chaque lancement)
 ```
+
+## Base de données (MySQL 8 / MariaDB 10.6+)
+
+- Connexion : `DATABASE_URL` (`mysql://user:mdp@hôte:3306/base`) ou `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`.
+- Au démarrage, `src/db.js` crée la base si possible, puis les tables manquantes (`CREATE TABLE IF NOT EXISTS`, utf8mb4, InnoDB), puis les comptes et contenus de départ (`src/seed.js`). Aucune commande de migration à lancer.
+- Dates stockées en UTC, affichées à l'heure de La Réunion.
+- `GET /api/health` → `200 {"status":"ok","database":"up"}`, ou `503` si MySQL est injoignable.
+- Tables : `users`, `sessions`, `messages`, `services`, `news`, `api_requests`, `api_state`, `api_events`.
 
 Sans clé, l'app charge `data/initial-requests.json` (export de la vague 0) pour que l'espace agents fonctionne quand même.
 
@@ -45,4 +55,4 @@ Comptes créés au premier démarrage (à changer dans `.env`) :
 1. Créez `src/modules/<nom>.js` qui exporte un `express.Router()`.
 2. Ajoutez son nom dans la liste de `server.js`.
 3. Protégez les routes sensibles avec `requireRole('agent', 'admin')` ou `requireRole('admin')`.
-4. Si besoin, ajoutez la table dans `src/db.js` (`CREATE TABLE IF NOT EXISTS`).
+4. Si besoin, ajoutez la table dans `SCHEMA` de `src/db.js` (`CREATE TABLE IF NOT EXISTS`, syntaxe MySQL) et utilisez `db.all` / `db.get` / `db.run` (asynchrones) dans des routes enveloppées par `ah()` (`src/async.js`).

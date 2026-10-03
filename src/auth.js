@@ -1,6 +1,7 @@
 // D01 / D03 : comptes et connexion. D08 / D09 : rôles et contrôle d'accès.
 const crypto = require('node:crypto');
 const db = require('./db');
+const { ah } = require('./async');
 
 const SESSION_DAYS = 7;
 const ROLES = ['citoyen', 'agent', 'admin'];
@@ -18,25 +19,25 @@ function verifyPassword(password, stored) {
   return crypto.timingSafeEqual(candidate, Buffer.from(hash, 'hex'));
 }
 
-function createUser({ email, name, password, role = 'citoyen' }) {
-  const info = db.prepare('INSERT INTO users (email, name, password_hash, role) VALUES (?, ?, ?, ?)')
-    .run(email.trim().toLowerCase(), name.trim(), hashPassword(password), role);
-  return Number(info.lastInsertRowid);
+async function createUser({ email, name, password, role = 'citoyen' }) {
+  const info = await db.run('INSERT INTO users (email, name, password_hash, role) VALUES (?, ?, ?, ?)',
+    [email.trim().toLowerCase(), name.trim(), hashPassword(password), role]);
+  return info.insertId;
 }
 
 function findUserByEmail(email) {
-  return db.prepare('SELECT * FROM users WHERE email = ?').get(String(email).trim().toLowerCase());
+  return db.get('SELECT * FROM users WHERE email = ?', [String(email).trim().toLowerCase()]);
 }
 
-function createSession(res, userId) {
+async function createSession(res, userId) {
   const token = crypto.randomBytes(32).toString('hex');
   const expires = Date.now() + SESSION_DAYS * 864e5;
-  db.prepare('INSERT INTO sessions (token, user_id, expires_at) VALUES (?, ?, ?)').run(token, userId, expires);
+  await db.run('INSERT INTO sessions (token, user_id, expires_at) VALUES (?, ?, ?)', [token, userId, expires]);
   res.cookie('tn_session', token, { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production', maxAge: SESSION_DAYS * 864e5 });
 }
 
-function destroySession(req, res) {
-  if (req.cookies.tn_session) db.prepare('DELETE FROM sessions WHERE token = ?').run(req.cookies.tn_session);
+async function destroySession(req, res) {
+  if (req.cookies.tn_session) await db.run('DELETE FROM sessions WHERE token = ?', [req.cookies.tn_session]);
   res.clearCookie('tn_session');
 }
 
@@ -48,19 +49,19 @@ function parseCookies(header = '') {
 }
 
 // Charge l'utilisateur courant dans req.user / res.locals.user
-function loadUser(req, res, next) {
+const loadUser = ah(async (req, res, next) => {
   req.cookies = parseCookies(req.headers.cookie);
   const token = req.cookies.tn_session;
   req.user = null;
   if (token) {
-    const row = db.prepare(`SELECT u.id, u.email, u.name, u.role, u.created_at, s.expires_at
-      FROM sessions s JOIN users u ON u.id = s.user_id WHERE s.token = ?`).get(token);
-    if (row && row.expires_at > Date.now()) req.user = row;
-    else if (row) db.prepare('DELETE FROM sessions WHERE token = ?').run(token);
+    const row = await db.get(`SELECT u.id, u.email, u.name, u.role, u.created_at, s.expires_at
+      FROM sessions s JOIN users u ON u.id = s.user_id WHERE s.token = ?`, [token]);
+    if (row && Number(row.expires_at) > Date.now()) req.user = row;
+    else if (row) await db.run('DELETE FROM sessions WHERE token = ?', [token]);
   }
   res.locals.user = req.user;
   next();
-}
+});
 
 function requireAuth(req, res, next) {
   if (!req.user) return res.redirect(`/connexion?next=${encodeURIComponent(req.originalUrl)}`);
@@ -82,12 +83,12 @@ function requireRole(...roles) {
   };
 }
 
-function seedAccounts() {
+async function seedAccounts() {
   const seeds = [
     { email: process.env.ADMIN_EMAIL || 'admin@terranova.fr', password: process.env.ADMIN_PASSWORD || 'admin1234', name: 'Administrateur Terra Nova', role: 'admin' },
     { email: process.env.AGENT_EMAIL || 'agent@terranova.fr', password: process.env.AGENT_PASSWORD || 'agent1234', name: 'Agent municipal', role: 'agent' },
   ];
-  for (const s of seeds) if (!findUserByEmail(s.email)) createUser(s);
+  for (const s of seeds) if (!(await findUserByEmail(s.email))) await createUser(s);
 }
 
 module.exports = { ROLES, ROLE_LABELS, createUser, findUserByEmail, verifyPassword, createSession, destroySession, loadUser, requireAuth, requireRole, seedAccounts };

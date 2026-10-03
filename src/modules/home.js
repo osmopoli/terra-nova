@@ -3,9 +3,11 @@ const router = require('express').Router();
 const { html, safe } = require('../views');
 const { listServices, serviceCard } = require('./services');
 const { latestNews, newsItem } = require('./news');
+const { ah } = require('../async');
 
-router.get('/', (req, res) => {
+router.get('/', ah(async (req, res) => {
   const u = req.user;
+  const [services, news] = await Promise.all([listServices(), latestNews(3)]);
   res.page({ active: 'home', body: html`
 <section class="hero">
   <h1>Bienvenue sur la plateforme citoyenne de Terra Nova</h1>
@@ -24,11 +26,11 @@ router.get('/', (req, res) => {
   </div>
 </section>
 <section aria-labelledby="svc"><div class="row-between"><h2 id="svc">Services principaux</h2><a href="/services">Tous les services →</a></div>
-  <div class="grid">${listServices().slice(0, 6).map(serviceCard)}</div>
+  <div class="grid">${services.slice(0, 6).map(serviceCard)}</div>
 </section>
 <section aria-labelledby="news"><div class="row-between"><h2 id="news">Dernières actualités</h2><a href="/actualites">Toutes les actualités →</a></div>
-  <div class="grid">${latestNews(3).map(newsItem)}</div>
+  <div class="grid">${news.map(newsItem)}</div>
 </section>` });
-});
+}));
 
 module.exports = router;

@@ -2,22 +2,23 @@
 const router = require('express').Router();
 const db = require('../db');
 const { html, safe } = require('../views');
+const { ah } = require('../async');
 
-const listServices = () => db.prepare('SELECT * FROM services ORDER BY sort_order').all();
+const listServices = () => db.all('SELECT * FROM services ORDER BY sort_order');
 const serviceCard = (s) => safe`<a class="card service" href="/services/${s.slug}"><span class="icon" aria-hidden="true">${s.icon}</span><h3>${s.name}</h3><p>${s.summary}</p></a>`;
 
-router.get('/services', (req, res) => {
+router.get('/services', ah(async (req, res) => {
   const q = String(req.query.q || '').trim().toLowerCase();
-  const services = listServices().filter((s) => !q || `${s.name} ${s.summary} ${s.details}`.toLowerCase().includes(q));
+  const services = (await listServices()).filter((s) => !q || `${s.name} ${s.summary} ${s.details}`.toLowerCase().includes(q));
   res.page({ title: 'Services municipaux', active: 'services', body: html`
 <h1>Services municipaux</h1>
 <p class="lead">Trouvez le service qui correspond à votre besoin.</p>
 <form class="search" method="get"><label class="sr-only" for="q">Rechercher un service</label><input id="q" name="q" placeholder="Ex. : passeport, encombrants, cantine…" value="${q}"><button class="btn">Rechercher</button></form>
 <div class="grid">${services.length ? services.map(serviceCard) : safe`<p>Aucun service ne correspond à « ${q} ».</p>`}</div>` });
-});
+}));
 
-router.get('/services/:slug', (req, res, next) => {
-  const s = db.prepare('SELECT * FROM services WHERE slug = ?').get(req.params.slug);
+router.get('/services/:slug', ah(async (req, res, next) => {
+  const s = await db.get('SELECT * FROM services WHERE slug = ?', [req.params.slug]);
   if (!s) return next();
   res.page({ title: s.name, active: 'services', body: html`
 <p><a href="/services">← Tous les services</a></p>
@@ -28,7 +29,7 @@ router.get('/services/:slug', (req, res, next) => {
   <dl class="facts"><dt>Horaires</dt><dd>${s.hours}</dd><dt>Contact</dt><dd>${s.contact}</dd></dl>
   <a class="btn" href="/contact?service=${s.slug}">Contacter ce service</a>
 </article>` });
-});
+}));
 
 module.exports = router;
 module.exports.listServices = listServices;

@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('node:path');
+const db = require('./src/db');
 const { loadUser, seedAccounts } = require('./src/auth');
 const { layout, html } = require('./src/views');
 const { seedContent } = require('./src/seed');
@@ -10,6 +11,17 @@ app.disable('x-powered-by');
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Supervision : l'application répond et la base MySQL est joignable (avant loadUser, qui interroge la base).
+app.get('/api/health', async (req, res) => {
+  try {
+    await db.ping();
+    res.json({ status: 'ok', database: 'up' });
+  } catch {
+    res.status(503).json({ status: 'error', database: 'down' });
+  }
+});
+
 app.use(loadUser);
 
 // Helpers de rendu disponibles dans tous les modules
@@ -24,15 +36,35 @@ for (const mod of ['home', 'accounts', 'services', 'news', 'contact', 'espace', 
   app.use(require(`./src/modules/${mod}`));
 }
 
+app.use('/api', (req, res) => res.status(404).json({ error: 'Ressource introuvable' }));
 app.use((req, res) => res.status(404).page({ title: 'Page introuvable', body: html`<section class="card narrow"><h1>Page introuvable</h1><a class="btn" href="/">Retour à l'accueil</a></section>` }));
 app.use((err, req, res, _next) => {
   console.error(err);
-  res.status(500).page({ title: 'Erreur', body: html`<section class="card narrow"><h1>Une erreur est survenue</h1><p>Merci de réessayer.</p></section>` });
+  if (req.originalUrl.startsWith('/api/')) return res.status(500).json({ error: 'Erreur interne' });
+  const body = html`<section class="card narrow"><h1>Une erreur est survenue</h1><p>Merci de réessayer.</p></section>`;
+  res.status(500);
+  return res.page ? res.page({ title: 'Erreur', body }) : res.send(layout({ title: 'Erreur', body }));
 });
 
-seedAccounts();
-seedContent();
-startPolling();
+// Prépare la base (tables + comptes + contenus de départ) avant d'accepter des requêtes.
+async function prepare() {
+  await db.init();
+  await seedAccounts();
+  await seedContent();
+}
 
-const port = Number(process.env.PORT) || 3000;
-app.listen(port, () => console.log(`Terra Nova sur http://localhost:${port}`));
+async function start() {
+  await prepare();
+  startPolling();
+  const port = Number(process.env.PORT) || 3000;
+  return app.listen(port, () => console.log(`Terra Nova sur http://localhost:${port}`));
+}
+
+if (require.main === module) {
+  start().catch((err) => {
+    console.error('Démarrage impossible (base MySQL injoignable ?) :', err.message);
+    process.exit(1);
+  });
+}
+
+module.exports = { app, prepare, start };

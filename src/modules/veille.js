@@ -4,6 +4,7 @@ const router = require('express').Router();
 const { requireRole } = require('../auth');
 const { html } = require('../views');
 const webcup = require('../webcup');
+const { ah } = require('../async');
 
 const staff = requireRole('agent', 'admin');
 
@@ -33,6 +34,6 @@ router.get('/veille', staff, (req, res) => {
 </section>` });
 });
 
-router.get('/api/webcup/events', staff, (req, res) => res.json(webcup.getEvents(req.query.since)));
+router.get('/api/webcup/events', staff, ah(async (req, res) => res.json(await webcup.getEvents(req.query.since))));
 
 module.exports = router;
