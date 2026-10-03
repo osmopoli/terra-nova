@@ -174,4 +174,8 @@
   .bg-space .bg-surface :focus-visible {
     outline-color: var(--color-primary);
   }
+  /* Bandeau sombre de l'espace agents : focus orangé, contrasté sur `ink`. */
+  .bg-ink :focus-visible {
+    outline-color: var(--color-accent);
+  }
 }

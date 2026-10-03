@@ -30,14 +30,37 @@ export default function AuthScreen({ onAuthenticated }) {
     }
   }
 
+  function select(value) {
+    setMode(value);
+    setError(null);
+  }
+
+  // Onglets au clavier : flèches gauche/droite (et Début/Fin) changent d'onglet et y placent le focus.
+  function onTabKey(e) {
+    const order = ['login', 'register'];
+    const index = order.indexOf(mode);
+    const next = {
+      ArrowRight: order[(index + 1) % order.length],
+      ArrowLeft: order[(index + order.length - 1) % order.length],
+      Home: order[0],
+      End: order[order.length - 1],
+    }[e.key];
+    if (!next) return;
+    e.preventDefault();
+    select(next);
+    document.getElementById(`onglet-${next}`)?.focus();
+  }
+
   const tab = (value, label) => (
     <button
+      id={`onglet-${value}`}
       type="button"
-      aria-pressed={mode === value}
-      onClick={() => {
-        setMode(value);
-        setError(null);
-      }}
+      role="tab"
+      aria-selected={mode === value}
+      aria-controls="formulaire-auth"
+      tabIndex={mode === value ? 0 : -1}
+      onClick={() => select(value)}
+      onKeyDown={onTabKey}
       className={`flex-1 rounded-control py-2 text-sm font-semibold ${
         mode === value ? 'bg-surface text-primary shadow-card' : 'text-ink-muted'
       }`}
@@ -52,14 +75,17 @@ export default function AuthScreen({ onAuthenticated }) {
         {APP_NAME}
       </h2>
 
-      <div role="group" aria-label="Choix du formulaire" className="mt-6 flex gap-1 rounded-control bg-mist p-1">
+      <div role="tablist" aria-label="Choix du formulaire" className="mt-6 flex gap-1 rounded-control bg-mist p-1">
         {tab('login', 'Connexion')}
         {tab('register', 'Inscription')}
       </div>
 
       <form
+        id="formulaire-auth"
+        role="tabpanel"
+        aria-labelledby={`onglet-${mode}`}
         onSubmit={submit}
-        aria-label={isRegister ? 'Inscription' : 'Connexion'} className="mt-6 space-y-4" noValidate>
+        className="mt-6 space-y-4" noValidate>
         {isRegister && (
           <Field label="Nom" error={error?.fields?.fullName}>
             <input
