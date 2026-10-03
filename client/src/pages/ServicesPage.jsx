@@ -5,9 +5,10 @@ import { useAsync } from '../lib/useAsync.js';
 import ListState from '../components/ListState.jsx';
 import LanguageSwitcher from '../components/LanguageSwitcher.jsx';
 import { serviceUi, useContentLanguage } from '../lib/contentLanguage.js';
+import FirstVisitHint from '../components/FirstVisitHint.jsx';
 
 // Annuaire des services municipaux (D05) : liste publique, fiche par service.
-export default function ServicesPage({ meta }) {
+export default function ServicesPage({ meta, user }) {
   const [lang, setLang] = useContentLanguage();
   const t = serviceUi(lang);
   const state = useAsync(() => api(`/services?lang=${lang}`), [lang]);
@@ -22,6 +23,11 @@ export default function ServicesPage({ meta }) {
         </div>
         <LanguageSwitcher options={meta.contentLanguages} value={lang} onChange={setLang} />
       </div>
+
+      <FirstVisitHint id="services" title="Trouver le bon service" user={user} className="mt-6 max-w-2xl">
+        Chaque carte ouvre une fiche avec les horaires, le contact et les démarches. Votre besoin n'y
+        figure pas ? Écrivez-nous depuis la page Contact.
+      </FirstVisitHint>
 
       <ListState
         state={state}

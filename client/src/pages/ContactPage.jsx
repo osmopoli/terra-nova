@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api/client.js';
+import FirstVisitHint from '../components/FirstVisitHint.jsx';
 import Field, { FormError, OptionSelect, inputClass } from '../components/Field.jsx';
 import { labelOf } from '../lib/constants.js';
 import { loginPath } from '../lib/redirect.js';
@@ -83,6 +84,10 @@ export default function ContactPage({ user, meta, onExpired }) {
         Une question, une difficulté ? Votre message est transmis au service choisi et vous recevez un
         numéro de suivi.
       </p>
+      <FirstVisitHint id="nouvelle_demande" title="Votre première demande" user={user} className="mt-6">
+        Un sujet court et le bon service accélèrent la réponse. Après l'envoi, notez votre numéro de
+        suivi : il permet de retrouver la demande dans Mon profil.
+      </FirstVisitHint>
       <form onSubmit={submit} className="mt-6 space-y-4" noValidate>
         <Field label="Sujet" error={error?.fields?.subject}>
           <input

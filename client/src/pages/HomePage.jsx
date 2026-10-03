@@ -2,6 +2,7 @@ import { api } from '../api/client.js';
 import { APP_NAME } from '../lib/constants.js';
 import { Link } from '../lib/router.jsx';
 import { useAsync } from '../lib/useAsync.js';
+import FirstVisitHint from '../components/FirstVisitHint.jsx';
 
 const formatDate = (iso) => new Date(iso).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
 
@@ -32,6 +33,14 @@ export default function HomePage({ user }) {
           {APP_NAME}, vos services municipaux en ligne
         </h1>
         <p className="mt-2 max-w-2xl text-lg text-ink-muted">Que souhaitez-vous faire aujourd’hui ?</p>
+
+        {user && (
+          <FirstVisitHint id="accueil" title="Par où commencer ?" user={user} className="mt-6 max-w-2xl">
+            Chaque tuile ci-dessous mène à une action : la première, <strong className="text-ink">Trouver
+            un service</strong>, donne horaires et démarches. Pour écrire à la mairie, passez par{' '}
+            <strong className="text-ink">Contacter la mairie</strong>.
+          </FirstVisitHint>
+        )}
 
         <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {actionsFor(user).map((action, i) => (
