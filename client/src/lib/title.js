@@ -9,6 +9,7 @@ const TITLES = {
   '/connexion': 'Connexion',
   '/profil': 'Mon profil',
   '/contact': 'Contact',
+  '/vos-donnees': 'Vos données',
   '/services': 'Services',
   '/actualites': 'Actualités',
   '/mes-demarches': 'Mes démarches',

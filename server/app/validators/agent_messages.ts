@@ -1,12 +1,15 @@
 import vine, { SimpleMessagesProvider } from '@vinejs/vine'
-import { CONTACT_STATUS_VALUES } from '#constants/domain'
+import { CONTACT_STATUS_VALUES, LIMITS } from '#constants/domain'
 
 const messages = new SimpleMessagesProvider(
   {
     required: 'Ce champ est obligatoire.',
     enum: 'Statut non autorisé.',
+    string: 'Ce champ doit être un texte.',
+    minLength: 'Au moins {{ min }} caractères.',
+    maxLength: 'Au plus {{ max }} caractères.',
   },
-  { status: 'statut', filter: 'filtre' }
+  { status: 'statut', filter: 'filtre', reply: 'réponse' }
 )
 
 export const listAgentMessagesValidator = vine.compile(
@@ -22,3 +25,10 @@ export const updateMessageStatusValidator = vine.compile(
   })
 )
 updateMessageStatusValidator.messagesProvider = messages
+
+export const replyMessageValidator = vine.compile(
+  vine.object({
+    reply: vine.string().trim().minLength(5).maxLength(LIMITS.contactReply),
+  })
+)
+replyMessageValidator.messagesProvider = messages

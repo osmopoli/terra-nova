@@ -28,6 +28,13 @@ export default class ContactMessage extends BaseModel {
   @column()
   declare status: ContactStatus
 
+  /** Réponse d'un agent, visible par l'habitant dans son espace (F51). */
+  @column()
+  declare reply: string | null
+
+  @column.dateTime()
+  declare repliedAt: DateTime | null
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

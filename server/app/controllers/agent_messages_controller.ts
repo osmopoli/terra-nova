@@ -1,8 +1,10 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import ContactMessage from '#models/contact_message'
 import { CONTACT_STATUSES_TO_HANDLE, CONTACT_STATUS_VALUES } from '#constants/domain'
+import { DateTime } from 'luxon'
 import {
   listAgentMessagesValidator,
+  replyMessageValidator,
   updateMessageStatusValidator,
 } from '#validators/agent_messages'
 
@@ -40,6 +42,19 @@ export default class AgentMessagesController {
     }
 
     message.status = status
+    await message.save()
+    return message
+  }
+
+  /** Réponse écrite à l'habitant (F51) : le message passe en « Traité ». */
+  async reply({ params, request, response }: HttpContext) {
+    const { reply } = await request.validateUsing(replyMessageValidator)
+    const message = await ContactMessage.findBy('tracking_code', String(params.code).toUpperCase())
+    if (!message) {
+      return response.notFound({ error: 'Message introuvable.' })
+    }
+
+    message.merge({ reply, repliedAt: DateTime.now(), status: 'traite' })
     await message.save()
     return message
   }

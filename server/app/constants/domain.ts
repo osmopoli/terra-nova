@@ -19,6 +19,7 @@ export const LIMITS = {
   email: 254,
   contactSubject: 120,
   contactMessage: 2000,
+  contactReply: 2000,
   newsTitle: 160,
   newsSummary: 300,
   newsBody: 10000,
@@ -62,6 +63,7 @@ export const CONTACT_SERVICES = {
   social: 'Action sociale et santé',
   education: 'Écoles et petite enfance',
   culture_sport: 'Culture et sport',
+  donnees_personnelles: 'Données personnelles',
   autre: 'Autre demande',
 } as const
 export type ContactService = keyof typeof CONTACT_SERVICES

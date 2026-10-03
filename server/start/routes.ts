@@ -91,6 +91,9 @@ router
         router
           .patch('/contact-messages/:code', [AgentMessagesController, 'updateStatus'])
           .where('code', /^NT-[A-Za-z0-9]{6}$/)
+        router
+          .post('/contact-messages/:code/reply', [AgentMessagesController, 'reply'])
+          .where('code', /^NT-[A-Za-z0-9]{6}$/)
       })
       .prefix('/agent')
       .use([middleware.auth(), middleware.role({ roles: ACCESS.agent })])

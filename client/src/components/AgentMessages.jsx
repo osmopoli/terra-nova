@@ -11,6 +11,8 @@ const STATUS_STYLE = {
   traite: 'bg-mist text-success',
 };
 
+const REPLY_MAX = 2000;
+
 const FILTERS = [
   ['a_traiter', 'À traiter'],
   ['', 'Tous'],
@@ -23,6 +25,8 @@ export default function AgentMessages({ onExpired }) {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [saving, setSaving] = useState(null);
+  // Brouillons de réponse, par numéro de suivi.
+  const [drafts, setDrafts] = useState({});
   const [reload, setReload] = useState(0);
   // Référence stable : un nouveau rendu du parent ne doit pas relancer le chargement.
   const expired = useRef(onExpired);
@@ -60,6 +64,22 @@ export default function AgentMessages({ onExpired }) {
     } catch (e) {
       if (e.status === 401) return onExpired();
       setError(e.message);
+    } finally {
+      setSaving(null);
+    }
+  }
+
+  async function sendReply(e, code) {
+    e.preventDefault();
+    setSaving(code);
+    try {
+      await api(`/agent/contact-messages/${code}/reply`, { method: 'POST', body: { reply: drafts[code] ?? '' } });
+      setDrafts((d) => ({ ...d, [code]: '' }));
+      setError(null);
+      setReload((n) => n + 1);
+    } catch (err) {
+      if (err.status === 401) return onExpired();
+      setError(err.fields?.reply ?? err.message);
     } finally {
       setSaving(null);
     }
@@ -130,6 +150,32 @@ export default function AgentMessages({ onExpired }) {
                 <span className="font-mono">{m.trackingCode}</span> · {dateFormat.format(new Date(m.createdAt))}
               </p>
               <p className="mt-3 flex-1 whitespace-pre-line leading-relaxed">{m.message}</p>
+              {m.reply && (
+                <div className="mt-3 rounded-control border-l-4 border-primary bg-mist p-3 text-sm">
+                  <p className="font-semibold text-primary">Réponse envoyée</p>
+                  <p className="mt-1 whitespace-pre-line">{m.reply}</p>
+                </div>
+              )}
+              <form onSubmit={(e) => sendReply(e, m.trackingCode)} className="mt-4 space-y-2">
+                <label htmlFor={`reponse-${m.trackingCode}`} className="block text-sm font-semibold">
+                  {m.reply ? 'Modifier la réponse' : 'Répondre à l’habitant'}
+                </label>
+                <textarea
+                  id={`reponse-${m.trackingCode}`}
+                  value={drafts[m.trackingCode] ?? ''}
+                  onChange={(e) => setDrafts((d) => ({ ...d, [m.trackingCode]: e.target.value }))}
+                  maxLength={REPLY_MAX}
+                  rows={3}
+                  className="w-full rounded-control border border-line bg-surface px-3 py-2"
+                />
+                <button
+                  type="submit"
+                  disabled={saving === m.trackingCode || !(drafts[m.trackingCode] ?? '').trim()}
+                  className="rounded-control bg-primary px-4 py-2 text-sm font-bold text-surface hover:bg-primary-strong disabled:opacity-60"
+                >
+                  Envoyer la réponse
+                </button>
+              </form>
               <label className="mt-4 flex items-center gap-2 text-sm font-semibold">
                 Statut
                 <select

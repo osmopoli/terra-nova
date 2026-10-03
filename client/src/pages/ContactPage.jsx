@@ -3,21 +3,24 @@ import { api } from '../api/client.js';
 import Field, { FormError, OptionSelect, inputClass } from '../components/Field.jsx';
 import { labelOf } from '../lib/constants.js';
 import { loginPath } from '../lib/redirect.js';
-import { Link, navigate } from '../lib/router.jsx';
+import { Link, navigate, useLocation } from '../lib/router.jsx';
 
 const EMPTY = { subject: '', service: '', message: '' };
 const MESSAGE_MAX = 2000;
 
 /** Formulaire de contact des services municipaux, puis confirmation avec numéro de suivi. */
 export default function ContactPage({ user, meta, onExpired }) {
-  const [form, setForm] = useState(EMPTY);
+  const { searchParams } = useLocation();
+  // Service présélectionné par un lien (ex. « Vos données » -> ?service=donnees_personnelles).
+  const preset = searchParams.get('service');
+  const [form, setForm] = useState({ ...EMPTY, service: preset ?? '' });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(null);
 
   useEffect(() => {
-    if (!user) navigate(loginPath('/contact'), { replace: true });
-  }, [user]);
+    if (!user) navigate(loginPath(preset ? `/contact?service=${encodeURIComponent(preset)}` : '/contact'), { replace: true });
+  }, [user, preset]);
   if (!user) return null;
 
   const update = (key) => (e) => setForm({ ...form, [key]: e.target.value });
@@ -28,7 +31,7 @@ export default function ContactPage({ user, meta, onExpired }) {
     setError(null);
     try {
       setSent(await api('/contact-messages', { method: 'POST', body: form }));
-      setForm(EMPTY);
+      setForm({ ...EMPTY, service: form.service });
       window.scrollTo(0, 0);
     } catch (err) {
       if (err.status === 401) onExpired();

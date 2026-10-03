@@ -44,6 +44,14 @@ export default function MyMessages({ meta }) {
                 {labelOf(meta.contactServices, m.service)} ·{' '}
                 <span className="font-mono">{m.trackingCode}</span> · {dateFormat.format(new Date(m.createdAt))}
               </p>
+              {m.reply && (
+                <div className="mt-2 rounded-control border-l-4 border-primary bg-mist p-3">
+                  <p className="text-xs font-semibold text-primary">
+                    Réponse de la mairie · {dateFormat.format(new Date(m.repliedAt))}
+                  </p>
+                  <p className="mt-1 whitespace-pre-line text-sm text-ink">{m.reply}</p>
+                </div>
+              )}
             </li>
           ))}
         </ul>

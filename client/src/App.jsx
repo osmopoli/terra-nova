@@ -7,6 +7,7 @@ import MyMessages from './components/MyMessages.jsx';
 import AgentPage from './pages/AgentPage.jsx';
 import ArrivalPage from './pages/ArrivalPage.jsx';
 import ContactPage from './pages/ContactPage.jsx';
+import DataPage from './pages/DataPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
@@ -23,6 +24,7 @@ function Route({ session }) {
   if (pathname === '/') return <HomePage user={user} />;
   // Ajouter les routes métier ici (ex. /items, /items/:id).
   if (pathname === '/contact') return <ContactPage user={user} meta={meta} onExpired={expire} />;
+  if (pathname === '/vos-donnees') return <DataPage user={user} />;
   if (pathname === '/services') return <ServicesPage meta={meta} />;
   const serviceMatch = pathname.match(/^\/services\/([a-z0-9-]+)$/);
   if (serviceMatch) return <ServicePage slug={serviceMatch[1]} meta={meta} />;
