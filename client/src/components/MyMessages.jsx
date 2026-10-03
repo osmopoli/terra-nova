@@ -47,8 +47,8 @@ export default function MyMessages({ meta }) {
         <ul className="mt-4 divide-y divide-mist">
           {messages.map((m) => (
             <li key={m.trackingCode} className="py-3">
-              <div className="flex items-start justify-between gap-3">
-                <p className="min-w-0 font-medium text-ink">{m.subject}</p>
+              <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-1">
+                <p className="min-w-40 flex-1 font-medium text-ink">{m.subject}</p>
                 <span className="shrink-0 rounded-control bg-mist px-2 py-0.5 text-xs font-semibold text-ink">
                   {labelOf(meta.contactStatuses, m.status)}
                 </span>

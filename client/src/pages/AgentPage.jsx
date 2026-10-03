@@ -35,7 +35,7 @@ function SessionPanel({ data, now }) {
         {items.map(([label, value]) => (
           <div key={label}>
             <dt className="text-sm text-ink-muted">{label}</dt>
-            <dd className="font-display text-2xl font-bold">{value}</dd>
+            <dd className="font-display text-xl font-bold sm:text-2xl">{value}</dd>
           </div>
         ))}
       </dl>
@@ -63,7 +63,7 @@ function RequestCard({ request, onSeen }) {
       }`}
     >
       <div className="flex flex-wrap items-center gap-2">
-        <h3 className="font-display text-lg font-bold">{request.request_code}</h3>
+        <h3 className="min-w-0 font-display text-lg font-bold">{request.request_code}</h3>
         {request.isNew && (
           <span className="rounded-control bg-accent px-2 py-0.5 text-xs font-bold uppercase text-ink">
             Nouvelle
@@ -89,7 +89,7 @@ function RequestCard({ request, onSeen }) {
           <button
             type="button"
             onClick={() => onSeen([request.request_code])}
-            className="ml-auto font-bold text-primary underline-offset-4 hover:underline"
+            className="ml-auto min-h-10 font-bold text-primary underline-offset-4 hover:underline"
           >
             Marquer comme vue
           </button>
@@ -203,7 +203,7 @@ export default function AgentPage({ onExpired }) {
                 ? `${newCount} nouvelle${newCount > 1 ? 's' : ''} demande${newCount > 1 ? 's' : ''}`
                 : 'Aucune nouvelle demande'}
             </p>
-            <label className="flex items-center gap-2 text-sm">
+            <label className="flex min-h-10 items-center gap-2 text-sm">
               <input
                 type="checkbox"
                 checked={onlyNew}
@@ -216,7 +216,7 @@ export default function AgentPage({ onExpired }) {
               <button
                 type="button"
                 onClick={() => markSeen()}
-                className="ml-auto rounded-control bg-primary px-3 py-1.5 text-sm font-bold text-surface hover:bg-primary-strong"
+                className="ml-auto min-h-10 rounded-control bg-primary px-3 py-1.5 text-sm font-bold text-surface hover:bg-primary-strong"
               >
                 Tout marquer comme vu
               </button>

@@ -89,7 +89,7 @@ export default function AgentMessages({ onExpired }) {
               type="button"
               aria-pressed={filter === value}
               onClick={() => setFilter(value)}
-              className={`rounded-control px-3 py-1.5 text-sm font-bold ${
+              className={`min-h-10 rounded-control px-3 py-1.5 text-sm font-bold ${
                 filter === value ? 'bg-primary text-surface' : 'bg-surface text-ink shadow-card'
               }`}
             >
@@ -116,7 +116,7 @@ export default function AgentMessages({ onExpired }) {
           {data.messages.map((m) => (
             <li key={m.trackingCode} className="flex flex-col rounded-card bg-surface p-4 shadow-card sm:p-5">
               <div className="flex flex-wrap items-start gap-2">
-                <h3 className="min-w-0 flex-1 font-display text-lg font-bold">{m.subject}</h3>
+                <h3 className="min-w-48 flex-1 font-display text-lg font-bold">{m.subject}</h3>
                 <span
                   className={`shrink-0 rounded-control px-2 py-0.5 text-xs font-bold uppercase ${
                     STATUS_STYLE[m.status] ?? 'bg-mist text-ink'
@@ -130,13 +130,13 @@ export default function AgentMessages({ onExpired }) {
                 <span className="font-mono">{m.trackingCode}</span> · {dateFormat.format(new Date(m.createdAt))}
               </p>
               <p className="mt-3 flex-1 whitespace-pre-line leading-relaxed">{m.message}</p>
-              <label className="mt-4 flex items-center gap-2 text-sm font-semibold">
+              <label className="mt-4 flex flex-wrap items-center gap-2 text-sm font-semibold">
                 Statut
                 <select
                   value={m.status}
                   disabled={saving === m.trackingCode}
                   onChange={(e) => changeStatus(m.trackingCode, e.target.value)}
-                  className="rounded-control border border-line bg-surface px-2 py-1.5 font-normal"
+                  className="min-h-10 min-w-0 max-w-full rounded-control border border-line-strong bg-surface px-2 py-1.5 font-normal"
                 >
                   {statuses.map(({ value, label }) => (
                     <option key={value} value={value}>
