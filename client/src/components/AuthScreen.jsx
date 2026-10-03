@@ -63,7 +63,7 @@ export default function AuthScreen({ onAuthenticated }) {
       tabIndex={mode === value ? 0 : -1}
       onClick={() => select(value)}
       onKeyDown={onTabKey}
-      className={`flex-1 rounded-control py-2 text-sm font-semibold ${
+      className={`flex-1 rounded-control px-3 py-2 text-sm font-semibold ${
         mode === value ? 'bg-surface text-primary shadow-card' : 'text-ink-muted'
       }`}
     >
@@ -77,7 +77,7 @@ export default function AuthScreen({ onAuthenticated }) {
         {APP_NAME}
       </h2>
 
-      <div role="tablist" aria-label="Choix du formulaire" className="mt-6 flex gap-1 rounded-control bg-mist p-1">
+      <div role="tablist" aria-label="Choix du formulaire" className="mt-6 flex flex-wrap gap-1 rounded-control bg-mist p-1">
         {tab('login', 'Connexion')}
         {tab('register', 'Inscription')}
       </div>
