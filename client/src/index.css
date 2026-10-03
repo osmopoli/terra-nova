@@ -1,31 +1,37 @@
 @import "tailwindcss";
 
 /*
- * Tokens visuels du projet : SOURCE DE VÉRITÉ du design.
+ * Tokens visuels du projet : SOURCE DE VÉRITÉ du design (charte : docs/CHARTE.md).
  * Toute couleur, police, rayon ou ombre de l'interface passe par ces variables
  * (classes Tailwind générées : bg-primary, text-ink, rounded-card, font-display...).
  * Aucune valeur codée en dur dans les composants.
  *
- * Valeurs NEUTRES de départ : l'agent Designer / DA les remplace à H+1 selon
- * la direction artistique validée. Contrastes à vérifier (WCAG AA >= 4.5).
+ * Valeurs par défaut = espace citoyen (accueillant, clair). L'espace agent
+ * (outil de travail, dense) redéfinit les mêmes variables sous [data-space="agent"].
+ * Contrastes vérifiés WCAG AA (ratios dans la charte).
  */
 @theme {
-  --color-ink: #111827;
-  --color-ink-muted: #4b5563;
+  --color-ink: #16242f;
+  --color-ink-muted: #4f5d68;
   --color-surface: #ffffff;
-  --color-mist: #f3f4f6;
-  --color-primary: #1d4ed8;
-  --color-primary-strong: #1e3a8a;
-  --color-accent: #f59e0b;
-  --color-danger: #b91c1c;
+  --color-canvas: #f6f3ec;
+  --color-mist: #e9f1ef;
+  --color-line: #d6dfdc;
+  --color-primary: #0b6a6b;
+  --color-primary-strong: #074b4e;
+  --color-accent: #f08a4b;
+  --color-success: #1d6b3a;
+  --color-warning: #8a4b00;
+  --color-danger: #b42318;
 
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-display: var(--font-sans);
+  --font-sans: "Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Space Grotesk", var(--font-sans);
 
-  --radius-card: 14px;
-  --radius-control: 8px;
+  --radius-card: 20px;
+  --radius-control: 12px;
 
-  --shadow-card: 0 1px 3px rgb(0 0 0 / 0.12);
+  --shadow-card: 0 1px 2px rgb(22 36 47 / 0.06), 0 8px 24px -12px rgb(22 36 47 / 0.18);
+  --shadow-pop: 0 12px 32px -8px rgb(22 36 47 / 0.28);
 
   /* Parcours d'arrivée (écran d'accueil visiteur + connexion) : ambiance spatiale. */
   --color-space: #02040a;
@@ -82,6 +88,21 @@
 }
 
 @layer base {
+  /* Espace agent : même noms de tokens, ambiance outil (indigo froid, rayons serrés, ombres plates). */
+  [data-space="agent"] {
+    --color-ink: #0f1729;
+    --color-ink-muted: #475467;
+    --color-canvas: #f1f3f7;
+    --color-mist: #e4e8ef;
+    --color-line: #d0d5dd;
+    --color-primary: #3046b0;
+    --color-primary-strong: #1f2f80;
+    --radius-card: 8px;
+    --radius-control: 6px;
+    --shadow-card: 0 1px 2px rgb(15 23 41 / 0.08);
+    --shadow-pop: 0 6px 16px -4px rgb(15 23 41 / 0.2);
+  }
+
   :focus-visible {
     outline: 3px solid var(--color-primary);
     outline-offset: 2px;
