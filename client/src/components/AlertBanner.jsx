@@ -46,6 +46,20 @@ function AlertItem({ alert, meta }) {
               <p className="mt-1 whitespace-pre-line">{alert.instructions}</p>
             </div>
           )}
+          {alert.vulnerableAdvice &&
+            (alert.forVulnerable ? (
+              <div className="mt-3 rounded-control border-2 border-ink bg-surface p-3">
+                <p className="text-sm font-bold">Recommandations pour vous</p>
+                <p className="mt-1 whitespace-pre-line">{alert.vulnerableAdvice}</p>
+              </div>
+            ) : (
+              <details className="mt-3 rounded-control bg-surface p-3">
+                <summary className="cursor-pointer text-sm font-bold">
+                  Personnes vulnérables : recommandations adaptées
+                </summary>
+                <p className="mt-2 whitespace-pre-line">{alert.vulnerableAdvice}</p>
+              </details>
+            ))}
         </>
       ) : (
         <button
@@ -60,7 +74,7 @@ function AlertItem({ alert, meta }) {
   );
 }
 
-/** Bannière des alertes en cours (D18), ciblées par quartier (F29). */
+/** Bannière des alertes en cours (D18), ciblées par quartier (F29), conseils vulnérables (F31). */
 export default function AlertBanner({ user, meta = {} }) {
   const [alerts, setAlerts] = useState([]);
 
@@ -77,7 +91,7 @@ export default function AlertBanner({ user, meta = {} }) {
       clearInterval(timer);
     };
     // Recharger quand l'habitant se connecte ou change de quartier.
-  }, [user?.id, user?.district]);
+  }, [user?.id, user?.district, user?.vulnerable]);
 
   if (alerts.length === 0) return null;
   const urgent = alerts.some((a) => a.level === 'urgent' && a.concernsYou !== false);

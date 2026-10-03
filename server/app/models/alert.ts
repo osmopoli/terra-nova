@@ -27,6 +27,10 @@ export default class Alert extends BaseModel {
   @column()
   declare instructions: string | null
 
+  /** Recommandations adaptées aux personnes vulnérables (F31). */
+  @column()
+  declare vulnerableAdvice: string | null
+
   @column.dateTime()
   declare startsAt: DateTime
 

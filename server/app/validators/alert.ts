@@ -23,6 +23,7 @@ const messages = new SimpleMessagesProvider(
     endsAt: 'fin',
     districts: 'quartiers',
     instructions: 'consignes',
+    vulnerableAdvice: 'recommandations pour les personnes vulnérables',
   }
 )
 
@@ -45,6 +46,7 @@ export const createAlertValidator = vine.compile(
     endsAt: date(),
     districts: districts().optional(),
     instructions: instructions().optional(),
+    vulnerableAdvice: instructions().optional(),
   })
 )
 createAlertValidator.messagesProvider = messages
@@ -58,6 +60,7 @@ export const updateAlertValidator = vine.compile(
     endsAt: date().optional(),
     districts: districts().optional(),
     instructions: instructions().optional(),
+    vulnerableAdvice: instructions().optional(),
     params: params(),
   })
 )

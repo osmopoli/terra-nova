@@ -15,9 +15,22 @@ const EMPTY = {
   title: '',
   message: '',
   instructions: '',
+  vulnerableAdvice: '',
   level: 'urgent',
   districts: [],
   endsAt: localInput(24),
+};
+
+// Modèle prêt à adapter : une canicule demande d'agir vite, avec des conseils distincts
+// pour la population générale et pour les personnes vulnérables (F31).
+const HEATWAVE = {
+  title: 'Vague de chaleur extrême',
+  message: 'Des températures exceptionnellement élevées sont attendues de jour comme de nuit.',
+  instructions:
+    'Buvez de l’eau régulièrement sans attendre d’avoir soif. Restez au frais aux heures chaudes (11 h à 18 h). Fermez volets et fenêtres le jour, aérez la nuit. Prenez des nouvelles de vos proches isolés.',
+  vulnerableAdvice:
+    'Personnes âgées, enceintes, malades chroniques ou nourrissons : ne sortez pas aux heures chaudes, passez au moins 3 heures par jour dans un lieu frais, ne modifiez pas votre traitement sans avis médical. Signes d’alerte (fièvre, confusion, maux de tête) : appelez le 15.',
+  level: 'urgent',
 };
 
 const formatDate = (iso) =>
@@ -57,6 +70,7 @@ export default function AdminAlertsPage({ meta }) {
         body: {
           ...form,
           instructions: form.instructions.trim() || null,
+          vulnerableAdvice: form.vulnerableAdvice.trim() || null,
           districts: form.districts.length ? form.districts : null,
           endsAt: new Date(form.endsAt).toISOString(),
         },
@@ -84,6 +98,14 @@ export default function AdminAlertsPage({ meta }) {
           fin. Sans quartier coché, elle concerne toute la ville.
         </p>
 
+        <button
+          type="button"
+          onClick={() => setForm({ ...form, ...HEATWAVE })}
+          className="mt-4 rounded-control border border-primary px-3 py-1.5 text-sm font-semibold text-primary hover:bg-primary/10"
+        >
+          Partir du modèle canicule
+        </button>
+
         <form onSubmit={submit} className="mt-6 space-y-4" noValidate>
           <Field label="Titre" error={error?.fields?.title}>
             <input className={inputClass} value={form.title} onChange={update('title')} />
@@ -106,6 +128,18 @@ export default function AdminAlertsPage({ meta }) {
               rows={3}
               value={form.instructions}
               onChange={update('instructions')}
+            />
+          </Field>
+          <Field
+            label="Recommandations pour les personnes vulnérables"
+            hint="Mises en avant pour les habitants qui se sont déclarés vulnérables."
+            error={error?.fields?.vulnerableAdvice}
+          >
+            <textarea
+              className={inputClass}
+              rows={3}
+              value={form.vulnerableAdvice}
+              onChange={update('vulnerableAdvice')}
             />
           </Field>
           <Field label="Niveau" error={error?.fields?.level}>

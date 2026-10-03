@@ -10,6 +10,7 @@ const messages = new SimpleMessagesProvider(
     'string': 'Ce champ doit être un texte.',
     'email': 'Adresse e-mail invalide.',
     'enum': 'Valeur non autorisée.',
+    'boolean': 'Valeur oui/non attendue.',
     'minLength': 'Au moins {{ min }} caractères.',
     'maxLength': 'Au plus {{ max }} caractères.',
     'database.unique': 'Un compte existe déjà avec cet e-mail.',
@@ -19,6 +20,7 @@ const messages = new SimpleMessagesProvider(
     email: 'e-mail',
     password: 'mot de passe',
     district: 'quartier',
+    vulnerable: 'personne vulnérable',
   }
 )
 
@@ -51,6 +53,7 @@ export const updateProfileValidator = vine.compile(
   vine.object({
     fullName: fullName().optional(),
     district: vine.enum(DISTRICT_VALUES).nullable().optional(),
+    vulnerable: vine.boolean().optional(),
   })
 )
 updateProfileValidator.messagesProvider = messages

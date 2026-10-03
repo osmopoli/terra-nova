@@ -12,13 +12,17 @@ export default class AlertsController {
    * Public (connecté ou non) : alertes à afficher en bannière maintenant.
    * Avec un token, `concernsYou` dit si l'alerte vise le quartier de l'habitant
    * (null s'il n'a pas de quartier) et celles de son quartier passent en tête.
+   * Les recommandations pour personnes vulnérables sont publiques (un proche peut les relayer) ;
+   * `forVulnerable` signale à l'habitant déclaré vulnérable qu'elles s'adressent à lui.
    */
   async active({ auth }: HttpContext) {
-    const district = (await auth.check()) ? auth.user!.district : null
+    const user = (await auth.check()) ? auth.user! : null
+    const district = user?.district ?? null
     const alerts = Alert.sortForDisplay(await Alert.query().withScopes((s) => s.active()), district)
     return alerts.map((alert) => ({
       ...alert.serialize(),
       concernsYou: district ? alert.concerns(district) : null,
+      forVulnerable: Boolean(user?.vulnerable && alert.vulnerableAdvice),
     }))
   }
 

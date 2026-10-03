@@ -15,12 +15,14 @@ export const DEMO_USERS: {
   email: string
   role: Role
   district?: District
+  vulnerable?: boolean
 }[] = [
   {
     fullName: 'Camille Citoyenne',
     email: 'citoyen@novaterra.test',
     role: 'citoyen',
     district: 'sud',
+    vulnerable: true,
   },
   { fullName: 'Mathis Agent', email: 'agent@novaterra.test', role: 'agent' },
   { fullName: 'Sarah Admin', email: 'admin@novaterra.test', role: 'admin' },
@@ -38,6 +40,23 @@ export default class extends BaseSeeder {
     for (const { email, ...attrs } of DEMO_USERS) {
       await User.updateOrCreate({ email }, { ...attrs, password })
     }
+
+    // F31 : canicule sur plusieurs secteurs, avec recommandations pour les personnes vulnérables.
+    await Alert.updateOrCreate(
+      { title: 'Vague de chaleur extrême' },
+      {
+        message:
+          'L’Agence sanitaire de Nova Terra annonce des températures exceptionnellement élevées dans le centre-ville et le quartier est, de jour comme de nuit.',
+        instructions:
+          'Buvez de l’eau régulièrement sans attendre d’avoir soif. Restez au frais aux heures chaudes (11 h à 18 h). Fermez volets et fenêtres le jour, aérez la nuit. Prenez des nouvelles de vos proches isolés.',
+        vulnerableAdvice:
+          'Personnes âgées, enceintes, malades chroniques ou nourrissons : ne sortez pas aux heures chaudes, passez au moins 3 heures par jour dans un lieu frais (salles climatisées de la mairie ouvertes de 10 h à 19 h), ne modifiez pas votre traitement sans avis médical. Signes d’alerte (fièvre, confusion, maux de tête) : appelez le 15.',
+        level: 'urgent',
+        districts: ['centre', 'est'],
+        startsAt: DateTime.now(),
+        endsAt: DateTime.now().plus({ days: 3 }),
+      }
+    )
 
     // F29 : alerte de démonstration ciblée sur le quartier sud (rejouable : mise à jour par titre).
     await Alert.updateOrCreate(

@@ -32,6 +32,10 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare district: District | null
 
+  /** Personne vulnérable (âge, grossesse, santé) : reçoit les recommandations adaptées des alertes. */
+  @column({ consume: (value) => Boolean(value) })
+  declare vulnerable: boolean
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

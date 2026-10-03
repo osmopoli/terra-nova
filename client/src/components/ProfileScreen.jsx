@@ -3,7 +3,11 @@ import { api } from '../api/client.js';
 import Field, { FormError, OptionSelect, inputClass } from './Field.jsx';
 
 export default function ProfileScreen({ user, meta = {}, onUpdated, onLogout }) {
-  const [form, setForm] = useState({ fullName: user.fullName ?? '', district: user.district ?? '' });
+  const [form, setForm] = useState({
+    fullName: user.fullName ?? '',
+    district: user.district ?? '',
+    vulnerable: Boolean(user.vulnerable),
+  });
   const [error, setError] = useState(null);
   const [saved, setSaved] = useState(false);
 
@@ -57,6 +61,21 @@ export default function ProfileScreen({ user, meta = {}, onUpdated, onLogout }) 
             onChange={(e) => setForm({ ...form, district: e.target.value })}
           />
         </Field>
+        <label className="flex items-start gap-3 text-sm">
+          <input
+            type="checkbox"
+            className="mt-1"
+            checked={form.vulnerable}
+            onChange={(e) => setForm({ ...form, vulnerable: e.target.checked })}
+          />
+          <span>
+            <span className="font-medium text-ink">Je suis une personne vulnérable</span>
+            <span className="block text-ink-muted">
+              Âge avancé, grossesse, maladie chronique : vous recevrez des recommandations adaptées
+              lors des alertes sanitaires.
+            </span>
+          </span>
+        </label>
         <FormError error={error} />
         {saved && <p className="text-sm text-primary">Profil enregistré.</p>}
         <button
