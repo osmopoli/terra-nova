@@ -74,3 +74,50 @@
 .sv-demarches span{ color:var(--brume); font-size:.92rem; }
 .sv-actions-detail{ margin-top:1rem; }
 .vide i{ font-size:2rem; }
+
+/* ---------- Vague 14 (F74) : associations partenaires ---------- */
+.as-liste{ display:grid; gap:1rem; grid-template-columns:repeat(auto-fill,minmax(min(100%,22rem),1fr)); margin-top:1rem; }
+.as-liste-compacte{ grid-template-columns:1fr; margin-top:.5rem; }
+.as-carte{ background:var(--verre); border:1px solid var(--trait); border-radius:var(--r-l); padding:1.15rem; display:flex; flex-direction:column; gap:.2rem; scroll-margin-top:6rem; }
+.as-carte:focus-visible,.as-carte:target{ outline:2px solid var(--iono); outline-offset:3px; }
+.as-tete{ display:flex; gap:.8rem; align-items:center; }
+.as-tete .icone-ronde{ margin:0; flex:none; }
+.as-tete h3{ margin:0; font-size:1.05rem; }
+.as-etat{ margin:.25rem 0 0; display:flex; flex-wrap:wrap; gap:.3rem .5rem; align-items:center; font-size:.88rem; }
+.as-detail{ color:var(--brume); }
+.statut-ferme{ color:var(--brume); }
+.as-info{ display:flex; gap:.5rem; align-items:flex-start; margin:.5rem 0 0; padding:.5rem .7rem; border-inline-start:3px solid var(--iono); background:oklch(0.7040 0.1400 182.5 / .06); border-radius:var(--r-s); font-size:.9rem; }
+.as-h4{ font-size:.9rem; margin:.8rem 0 .25rem; color:var(--brume); text-transform:none; }
+.as-aide{ margin:0; padding-inline-start:1.2rem; }
+.as-aide li{ margin:.15rem 0; }
+.as-infos{ margin:.7rem 0 0; display:grid; gap:.5rem; font-size:.92rem; }
+.as-infos > div{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:.5rem; align-items:start; }
+.as-infos dt{ font-weight:700; display:flex; gap:.35rem; align-items:center; min-width:7rem; }
+.as-infos dt i{ color:var(--iono); }
+.as-infos dd{ margin:0; }
+.as-infos small{ color:var(--brume); }
+@media (max-width:420px){ .as-infos > div{ grid-template-columns:1fr; gap:.1rem; } }
+.as-semaine{ list-style:none; margin:0; padding:0; display:grid; gap:.1rem; }
+.as-semaine li{ display:flex; justify-content:space-between; gap:.8rem; }
+.as-semaine li span:first-child{ text-transform:capitalize; }
+.as-semaine li.aujourdhui{ font-weight:800; color:var(--iono); }
+.as-actions{ margin-top:auto; padding-top:.8rem; flex-wrap:wrap; }
+.as-agent{ margin:.7rem 0 0; display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; font-size:.85rem; }
+.as-compact{ padding:.9rem; }
+.as-table{ width:100%; font-size:.9rem; }
+.as-table td,.as-table th{ padding:.35rem .4rem; }
+.as-table input[type=time]{ min-height:2.4rem; padding:.3rem .4rem; }
+.as-table input[type=checkbox]{ width:1.3rem; height:1.3rem; }
+/* F76 : moyenne sur les cartes, avis à traiter (agents) */
+.av-badge{ display:inline-flex; align-items:center; gap:.3rem; font-size:.82rem; }
+.av-agents{ margin:0 0 1.5rem; }
+.av-agents h2{ display:flex; align-items:center; gap:.5rem; font-size:1.15rem; }
+.pastille-n{ display:inline-grid; place-items:center; min-width:1.6rem; height:1.6rem; padding:0 .4rem; border-radius:99px; background:var(--iono); color:var(--sur-iono); font-size:.8rem; }
+.av-service{ margin-top:.5rem; }
+.as-table input[type=time]{ width:6.4rem; max-width:100%; }
+.as-table abbr{ text-decoration:none; text-transform:capitalize; }
+#as-dlg::part(body){ overflow-x:hidden; }
+.as-liste > *,.as-carte{ min-width:0; }
+.as-carte{ overflow-wrap:anywhere; }
+.as-actions .btn{ max-width:100%; white-space:normal; }
+.as-tete > div{ min-width:0; flex:1; } .as-etat .statut{ white-space:normal; }
