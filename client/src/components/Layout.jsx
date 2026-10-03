@@ -45,9 +45,12 @@ export default function Layout({ user, children }) {
         {children}
       </main>
       <footer className="border-t border-mist">
-        <p className="mx-auto max-w-6xl px-4 py-4 text-sm text-ink-muted sm:px-6">
-          {APP_NAME}, la plateforme des services municipaux.
-        </p>
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-4 text-sm text-ink-muted sm:px-6">
+          <p>{APP_NAME}, la plateforme des services municipaux.</p>
+          <Link to="/accessibilite" className="font-semibold text-ink">
+            Accessibilité
+          </Link>
+        </div>
       </footer>
     </div>
   );

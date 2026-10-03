@@ -154,6 +154,23 @@
   :where(main, footer) a:not([class*="bg-"]):hover {
     text-decoration-thickness: 2px;
   }
+
+  /* Titre ou contenu recevant le focus au changement de page (RouteAnnouncer) : pas de cadre. */
+  :where(h1, main)[tabindex="-1"]:focus {
+    outline: none;
+  }
+
+  /* Préférence système « réduire les animations » : aucune animation ni transition. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 @layer utilities {
