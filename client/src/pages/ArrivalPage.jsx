@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import orbite from '../assets/planete-orbite.svg';
 import { APP_NAME } from '../lib/constants.js';
 import TextSizeControl from '../components/TextSizeControl.jsx';
+import ContrastControl from '../components/ContrastControl.jsx';
 import { Link, navigate } from '../lib/router.jsx';
 
 const TRAVEL_MS = 3000;
@@ -72,7 +73,10 @@ export default function ArrivalPage() {
             <b className="block text-glow">Système localisé</b>
             Coordonnées NT-01 · Liaison stable
           </p>
-          <TextSizeControl className="text-star" />
+          <div className="flex flex-wrap items-center gap-2">
+            <TextSizeControl className="text-star" />
+            <ContrastControl className="text-star" />
+          </div>
         </header>
 
         <main className="flex flex-1 items-end px-6 pb-40 pt-12 md:items-center md:px-[clamp(24px,7vw,110px)] md:pb-28">

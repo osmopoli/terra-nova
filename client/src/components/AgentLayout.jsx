@@ -1,5 +1,6 @@
 import { Link } from '../lib/router.jsx';
 import { APP_NAME } from '../lib/constants.js';
+import ContrastControl from './ContrastControl.jsx';
 
 // Layout du back-office agents : bandeau sombre, distinct de l'espace citoyen.
 export default function AgentLayout({ user, onLogout, children }) {
@@ -21,6 +22,7 @@ export default function AgentLayout({ user, onLogout, children }) {
           </Link>
           <nav aria-label="Navigation agents" className="ml-auto flex flex-wrap items-center gap-3 text-sm">
             {user && <span className="hidden text-mist sm:inline">{user.fullName}</span>}
+            <ContrastControl className="text-surface" />
             <Link to="/" className="font-bold text-surface underline-offset-4 hover:underline">
               Espace citoyen
             </Link>
