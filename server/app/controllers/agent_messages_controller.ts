@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import ContactMessage from '#models/contact_message'
+import Notification from '#models/notification'
 import { CONTACT_STATUSES_TO_HANDLE, CONTACT_STATUS_VALUES } from '#constants/domain'
 import {
   listAgentMessagesValidator,
@@ -39,8 +40,18 @@ export default class AgentMessagesController {
       return response.notFound({ error: 'Message introuvable.' })
     }
 
+    const changed = message.status !== status
     message.status = status
     await message.save()
+    // L'auteur de la demande (et lui seul) est prévenu du nouvel état.
+    if (changed) {
+      await Notification.create({
+        userId: message.userId,
+        trackingCode: message.trackingCode,
+        subject: message.subject,
+        status,
+      })
+    }
     return message
   }
 }

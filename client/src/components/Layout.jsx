@@ -2,6 +2,7 @@ import { Link, NavLink } from '../lib/router.jsx';
 import Breadcrumb from './Breadcrumb.jsx';
 import { APP_NAME } from '../lib/constants.js';
 import TextSizeControl from './TextSizeControl.jsx';
+import NotificationBell from './NotificationBell.jsx';
 
 export default function Layout({ user, children }) {
   // Entrée active : soulignée en couleur primaire (aria-current posé par NavLink).
@@ -24,6 +25,7 @@ export default function Layout({ user, children }) {
           </Link>
           <nav aria-label="Navigation principale" className="ml-auto flex flex-wrap items-center gap-3 sm:gap-4">
             <TextSizeControl className="text-ink" />
+            {user && <NotificationBell />}
             <NavLink to="/" className={linkClass}>
               Accueil
             </NavLink>

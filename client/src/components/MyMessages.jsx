@@ -1,6 +1,6 @@
 import { api } from '../api/client.js';
 import { labelOf } from '../lib/constants.js';
-import { Link } from '../lib/router.jsx';
+import { Link, useLocation } from '../lib/router.jsx';
 import { useAsync } from '../lib/useAsync.js';
 
 const dateFormat = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium', timeStyle: 'short' });
@@ -8,6 +8,7 @@ const dateFormat = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium', timeS
 /** « Mon espace » : messages envoyés aux services municipaux et leur statut. */
 export default function MyMessages({ meta }) {
   const { status, data, error } = useAsync(() => api('/contact-messages'), []);
+  const highlighted = useLocation().searchParams.get('demande');
 
   return (
     <section
@@ -33,7 +34,11 @@ export default function MyMessages({ meta }) {
       {status === 'success' && data.length > 0 && (
         <ul className="mt-4 divide-y divide-mist">
           {data.map((m) => (
-            <li key={m.trackingCode} className="py-3">
+            <li
+              key={m.trackingCode}
+              id={m.trackingCode}
+              className={`py-3 ${m.trackingCode === highlighted ? 'rounded-control bg-mist px-2' : ''}`}
+            >
               <div className="flex items-start justify-between gap-3">
                 <p className="min-w-0 font-medium text-ink">{m.subject}</p>
                 <span className="shrink-0 rounded-control bg-mist px-2 py-0.5 text-xs font-semibold text-ink">
