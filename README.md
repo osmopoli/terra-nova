@@ -58,6 +58,7 @@ Réinitialiser les données de démonstration : connecté en admin, `POST /api/d
 - `src/modules/participation.js` — consultations, avis (un par habitant), projets et idées (F65-F68), droits contrôlés par le serveur.
 - `src/modules/api.js` — `GET /api/etat` (tout ce que le profil a le droit de voir), écritures `POST/PATCH /api/docs/:collection` contrôlées par règle (un citoyen ne voit et ne modifie que ses données ; seuls agents / admins traitent les demandes, diffusent les alertes, changent l'état des services ; seul l'admin change un rôle), soutiens (F52), contributions données (F51), indicateurs (F50), flux Webcup pour les agents (D19, clé jamais exposée).
 - Vague 14 : `src/modules/officiel.js` (message officiel du Haut Conseil, F73), `associations.js` (associations partenaires, F74), `doublons.js` (demandes semblables TF-IDF, rattachement, réponse commune, F75), `avis-services.js` (avis après un service, reçu COM-xxxx, F76).
+- Vague 16 : `src/modules/formulaires.js` (jetons signés, champ piège, vérification humaine, idempotence et demandes en double, F81-F82), `accuses.js` (accusé de réception vérifiable, F83), `echanges.js` (réponses des agents et fil d’échanges, F84) ; côté navigateur `formulaires.js`, `accuse.js`, `echanges.js`, `agent-robots.js` et `assets/css/vague16.css`.
 - `src/webcup.js` — interroge l'API toutes les `POLL_INTERVAL_SECONDS` (dédoublonnage sur `request_code`).
 - `public/assets/js/store.js` — client du serveur, même interface pour toutes les pages (`NT.store`, `NT.auth`, `NT.demandes`…).
 - `data/demo-seed.json` — données de démonstration (dates relatives).
@@ -86,3 +87,6 @@ Le détail « où et comment le montrer au jury » est dans [`docs/RENDU-JURY.md
 | Associations partenaires (vague 14) | F74 | `services#associations`, fiche d'un service, `carte` |
 | Demandes semblables, attention (vague 14) | F75 | `agent-demandes` |
 | Avis après un service (vague 14) | F76 | `suivi`, `rendez-vous`, `services`, `espace` |
+| Formulaires protégés contre les robots, envois sans doublon (vague 16) | F81, F82 | tous les formulaires publics, `agent-securite` |
+| Accusé de réception vérifiable (vague 16) | F83 | `demande`, `accuse`, `verifier-accuse`, `suivi`, `espace` |
+| Réponses des agents, fil d’échanges (vague 16) | F84 | `agent-demandes`, `agent`, `suivi` |

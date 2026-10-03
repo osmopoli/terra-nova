@@ -21,6 +21,7 @@ app.get('/api/health', (req, res) => {
 });
 app.use('/api', require('./src/statique').jsonCompresse);   // F58 : réponses JSON compressées
 app.use(bouclier.apres);   // vague 13 (F69, F70) : validation des entrées, filtrage des champs réservés, journal des refus
+app.use(require('./src/modules/formulaires').garde);   // vague 16 : formulaires protégés contre les robots (F81), envois sans doublon (F82)
 app.use(require('./src/modules/api'));
 app.use(require('./src/renfort').router);   // vague 9 : clés d'accès, deux étapes, appareils
 app.use(require('./src/modules/sobriete'));   // vague 10 : diagnostic de sobriété (F57)
@@ -32,6 +33,9 @@ app.use(require('./src/modules/officiel'));   // vague 14 : message officiel du 
 app.use(require('./src/modules/associations'));   // vague 14 : associations partenaires (F74)
 app.use(require('./src/modules/doublons'));   // vague 14 : demandes semblables, rattachement, attention (F75)
 app.use(require('./src/modules/avis-services'));   // vague 14 : avis après un service, reçu COM-xxxx (F76)
+app.use(require('./src/modules/formulaires'));   // vague 16 : jetons de formulaire, centre anti-robots (F81, F82)
+app.use(require('./src/modules/accuses'));   // vague 16 : accusés de réception vérifiables (F83)
+app.use(require('./src/modules/echanges'));   // vague 16 : réponses des agents, fil d'échanges (F84)
 app.use(require('./src/statique').statique(path.join(__dirname, 'public')));   // F58 : fichiers compressés + cache navigateur
 app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
 

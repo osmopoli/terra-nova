@@ -2336,5 +2336,99 @@
     "reponse": null
    }
   ]
+ },
+ "vague16": {
+  "_note": "Vague 16 (F81-F84) : chargée aussi sur une base déjà en service, une seule fois (compteur seed_vague16). Réponses types des agents et fils d’échanges de démonstration sur des demandes existantes (ajoutés seulement si la demande existe et n’a pas encore d’échange).",
+  "reponsesTypes": [
+   {
+    "id": "RT-01",
+    "ordre": 1,
+    "titre": "Prise en charge",
+    "statut": "en_cours",
+    "texte": "Bonjour, votre demande {numero} est bien prise en charge par le service {service}. Nous revenons vers vous dès que possible, au plus tard dans 5 jours ouvrés."
+   },
+   {
+    "id": "RT-02",
+    "ordre": 2,
+    "titre": "Pièce manquante",
+    "statut": "en_cours",
+    "texte": "Bonjour, pour traiter votre demande {numero}, il nous manque un justificatif (pièce d’identité ou justificatif de domicile de moins de 3 mois). Vous pouvez répondre à ce message en indiquant quand vous pourrez le déposer à l’accueil de la mairie."
+   },
+   {
+    "id": "RT-03",
+    "ordre": 3,
+    "titre": "Intervention programmée",
+    "statut": "en_cours",
+    "texte": "Bonjour, une équipe interviendra sur place dans les prochains jours pour votre signalement {numero}. Merci pour votre vigilance."
+   },
+   {
+    "id": "RT-04",
+    "ordre": 4,
+    "titre": "Demande traitée",
+    "statut": "traitee",
+    "texte": "Bonjour, votre demande {numero} est traitée. Si le problème persiste ou si vous avez une question, répondez simplement à ce message."
+   },
+   {
+    "id": "RT-05",
+    "ordre": 5,
+    "titre": "Réorientation",
+    "statut": "",
+    "texte": "Bonjour, votre demande {numero} relève d’un autre service : nous l’avons transmise. Vous n’avez rien à refaire, vous serez prévenu de la suite."
+   },
+   {
+    "id": "RT-06",
+    "ordre": 6,
+    "titre": "Clôture sans suite",
+    "statut": "cloturee",
+    "texte": "Bonjour, faute de réponse de votre part, nous clôturons la demande {numero}. Vous pouvez faire une nouvelle demande à tout moment."
+   }
+  ],
+  "echanges": {
+   "NT-1036": [
+    {
+     "date": "@172800000",
+     "auteur": "agent",
+     "par": "Karim Benali",
+     "parId": "usr-musjmvnrk9zx",
+     "message": "Bonjour Léa, nous avons bien reçu votre justificatif. Pouvez-vous nous confirmer le numéro exact de votre nouveau module (bâtiment et étage) ?",
+     "statut": "",
+     "modele": ""
+    },
+    {
+     "date": "@90000000",
+     "auteur": "habitant",
+     "par": "Léa Martin",
+     "parId": "usr-musjmvnmt9x1",
+     "message": "Bonjour, il s’agit du module 14, bâtiment C, 2e étage. Merci !"
+    }
+   ],
+   "NT-1031": [
+    {
+     "date": "@691200000",
+     "auteur": "agent",
+     "par": "Karim Benali",
+     "parId": "usr-musjmvnrk9zx",
+     "message": "Bonjour, le lampadaire de l’allée des Comètes a été réparé ce matin. Merci pour votre signalement.",
+     "statut": "traitee",
+     "modele": "RT-04"
+    }
+   ],
+   "NT-1040": [
+    {
+     "date": "@72000000",
+     "auteur": "agent",
+     "par": "Karim Benali",
+     "parId": "usr-musjmvnrk9zx",
+     "message": "Bonjour, une équipe de collecte passera demain matin vider le conteneur de tri.",
+     "statut": "",
+     "modele": "RT-03"
+    }
+   ]
+  },
+  "proprietaires": {
+   "NT-1036": "usr-musjmvnmt9x1",
+   "NT-1031": "usr-musjmvnmt9x1",
+   "NT-1040": "usr-musjmvnrzm4a"
+  }
  }
 }

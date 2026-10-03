@@ -448,6 +448,7 @@
       if (!d) {
         envoi = false; btn.disabled = false; btn.removeAttribute('aria-busy');
         $('#btn-envoyer-txt').textContent = bi('Envoyer la demande', 'Send the request');
+        if (NT.formulaires && NT.formulaires.pris) return;   // F81 / F82 : vérification rapide ou « demande déjà envoyée » proposées à l'écran
         const r = $('#resume-erreurs');
         r.innerHTML = `<h2><i class="ph-duotone ph-warning-octagon" aria-hidden="true"></i>${echap(bi('L’envoi a échoué', 'Sending failed'))}</h2>
           <p style="margin:0">${echap(bi('Votre demande n’a pas pu être enregistrée. Vérifiez votre connexion, retirez la photo si vous en avez joint une, puis réessayez.', 'Your request could not be saved. Check your connection, remove the photo if you attached one, then try again.'))}</p>`;
@@ -489,6 +490,7 @@
         <p class="doux">${echap(bi('Gardez ce numéro : il vous permet de retrouver votre demande.', 'Keep this number: it lets you find your request.'))}</p>
         <div class="dm-numero"><span class="sr-only">${echap(bi('Numéro de demande', 'Request number'))} </span><span class="nb" id="conf-numero">${echap(d.id)}</span>
           <button class="btn" type="button" id="btn-copier"><i class="ph ph-copy" aria-hidden="true"></i><span>${echap(bi('Copier le numéro', 'Copy the number'))}</span></button></div>
+        ${NT.accuse ? NT.accuse.bloc(d) : ''}
         <div class="gauche">
           <div class="dm-bloc-conf"><h3><i class="ph-duotone ph-clipboard-text" aria-hidden="true"></i>${echap(bi('Ce que vous avez envoyé', 'What you sent'))}</h3><dl class="dm-recap">${recap}</dl></div>
           <div class="grille-2" style="margin-top:0">
