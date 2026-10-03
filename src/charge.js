@@ -68,6 +68,10 @@ const m = {
 const durees = [];                    // [horodatage, ms] des requêtes API terminées (60 s glissantes)
 const historique = [];                // échantillons toutes les 2 s (3 min)
 let auto = 'normal', autoDepuis = Date.now(), dernierDepassement = 0;
+// Un pic isolé (démarrage, compression d'un fichier, ramasse-miettes) n'est pas une surcharge :
+// pas de montée automatique pendant les 20 s qui suivent le démarrage, puis il faut 2 s de dépassement d'affilée.
+const GRACE_DEMARRAGE = 20000, SECONDES_POUR_MONTER = 2;
+let depassementsSuivis = 0;
 let force = null;                     // { niveau, jusqu, par }
 
 const pct = (l, p) => { if (!l.length) return 0; const s = l.slice().sort((a, b) => a - b); return s[Math.min(s.length - 1, Math.floor((p / 100) * s.length))]; };
@@ -92,7 +96,8 @@ setInterval(() => {
     : m.lag.p99 >= CONFIG.lagForte || m.enCours >= CONFIG.enCoursForte || (r10.n >= 20 && r10.p95 >= CONFIG.p95Forte) ? 'forte' : 'normal';
   const t = Date.now();
   if (rang(vise) >= rang(auto)) dernierDepassement = t;                                               // le niveau actuel est encore justifié
-  if (rang(vise) > rang(auto)) { auto = vise; autoDepuis = t; }                                       // monte tout de suite
+  depassementsSuivis = rang(vise) > rang(auto) ? depassementsSuivis + 1 : 0;
+  if (rang(vise) > rang(auto) && t - m.demarre >= GRACE_DEMARRAGE && depassementsSuivis >= SECONDES_POUR_MONTER) { auto = vise; autoDepuis = t; depassementsSuivis = 0; }   // monte après 2 s de dépassement
   else if (rang(vise) < rang(auto) && t - dernierDepassement >= CONFIG.retour) { auto = NIVEAUX[rang(auto) - 1]; autoDepuis = t; dernierDepassement = t; }   // redescend d'un palier après 15 s sous le seuil
   if (++tick % 2 === 0) {
     const d = latences(2000);
