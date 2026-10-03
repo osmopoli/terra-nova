@@ -11,12 +11,19 @@ import ArrivalPage from './pages/ArrivalPage.jsx';
 import ContactPage from './pages/ContactPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
+import ReportPage from './pages/ReportPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import ServicePage from './pages/ServicePage.jsx';
 import ServicesPage from './pages/ServicesPage.jsx';
 import { api, getToken, setToken } from './api/client.js';
 import { loginPath, safeRedirect } from './lib/redirect.js';
 import { navigate, useLocation } from './lib/router.jsx';
+
+// Page réservée aux connectés : redirection vers la connexion, retour prévu après.
+function LoginRedirect({ to }) {
+  useEffect(() => navigate(loginPath(to), { replace: true }), [to]);
+  return null;
+}
 
 function Route({ session }) {
   const { pathname, searchParams } = useLocation();
@@ -29,6 +36,13 @@ function Route({ session }) {
   if (pathname === '/accessibilite') return <AccessibilityPage />;
   const serviceMatch = pathname.match(/^\/services\/([a-z0-9-]+)$/);
   if (serviceMatch) return <ServicePage slug={serviceMatch[1]} meta={meta} user={user} />;
+  if (pathname === '/signaler') {
+    if (!user) return <LoginRedirect to="/signaler" />;
+    if (user.role !== 'citoyen') {
+      return <NotFoundPage message="Le signalement est réservé aux habitants." />;
+    }
+    return <ReportPage meta={meta} />;
+  }
   if (pathname === '/connexion' || pathname === '/profil') {
     return (
       <div className="flex flex-col items-center gap-6">
