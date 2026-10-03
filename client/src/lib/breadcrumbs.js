@@ -5,6 +5,7 @@ export const SECTION_LABELS = {
   '/services': 'Services',
   '/contact': 'Contact',
   '/accessibilite': 'Accessibilité',
+  '/sobriete': 'Sobriété numérique',
   '/actualites': 'Actualités',
   '/demandes': 'Mes demandes',
   '/admin/alertes': 'Alertes',
