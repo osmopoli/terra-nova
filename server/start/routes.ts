@@ -122,6 +122,8 @@ router
 
     // Annuaire des services municipaux : public, lecture seule.
     router.get('/services', [ServicesController, 'index'])
+    // Hôpitaux et services d'urgence (F46) : public, lecture seule.
+    router.get('/urgences', [ServicesController, 'emergency'])
     router.get('/services/:slug', [ServicesController, 'show']).where('slug', /^[a-z0-9-]{1,80}$/)
 
     router.any('/*', async ({ response }) => {

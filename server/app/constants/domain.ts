@@ -87,6 +87,7 @@ export const SERVICE_CATEGORIES = {
   cadre_de_vie: 'Cadre de vie',
   urbanisme: 'Urbanisme et logement',
   culture_sport: 'Culture et sport',
+  urgence_sante: 'Urgences et santé',
 } as const
 export type ServiceCategory = keyof typeof SERVICE_CATEGORIES
 export const SERVICE_CATEGORY_VALUES = Object.keys(SERVICE_CATEGORIES) as ServiceCategory[]
@@ -126,6 +127,21 @@ export type ContentLanguage = keyof typeof CONTENT_LANGUAGES
 export const CONTENT_LANGUAGE_VALUES = Object.keys(CONTENT_LANGUAGES) as ContentLanguage[]
 export const DEFAULT_CONTENT_LANGUAGE: ContentLanguage = 'fr'
 
+/** Thématique des hôpitaux et services d'urgence (page publique « Urgences et santé »). */
+export const EMERGENCY_CATEGORY: ServiceCategory = 'urgence_sante'
+
+/**
+ * Numéros d'urgence gratuits, affichés en tête de la page Urgences (numéro -> rôle).
+ * Libellés courts : les cinq tuiles tiennent sur une ligne à 360 px.
+ */
+export const EMERGENCY_NUMBERS = {
+  '15': 'SAMU',
+  '17': 'Police',
+  '18': 'Pompiers',
+  '112': 'Tout danger',
+  '114': 'Par SMS',
+} as const
+
 /** Listes fermées exposées au front par GET /api/meta (clé -> libellé). */
 export const META: Record<string, Record<string, string>> = {
   roles: ROLES,
@@ -136,4 +152,5 @@ export const META: Record<string, Record<string, string>> = {
   loginOutcomes: LOGIN_OUTCOMES,
   loginBlockScopes: LOGIN_BLOCK_SCOPES,
   contentLanguages: CONTENT_LANGUAGES,
+  emergencyNumbers: EMERGENCY_NUMBERS,
 }

@@ -137,6 +137,12 @@ export default function ArrivalPage() {
             >
               Découvrir les services municipaux
             </Link>
+            <Link
+              to="/urgences"
+              className="mt-3 block w-fit font-semibold text-flare underline-offset-4 hover:underline sm:ml-6 sm:mt-0 sm:inline-block"
+            >
+              Urgences et santé
+            </Link>
           </div>
         </main>
 

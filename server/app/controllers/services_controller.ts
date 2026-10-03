@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Service from '#models/service'
 import { serviceLanguageValidator } from '#validators/service'
+import { EMERGENCY_CATEGORY } from '#constants/domain'
 
 /** Annuaire public des services municipaux (lecture seule), contenus traduits si demandé (F27). */
 export default class ServicesController {
@@ -13,6 +14,14 @@ export default class ServicesController {
       const { id, slug, name, category, summary, phone, lang: served } = service.localized(lang)
       return { id, slug, name, category, summary, phone, lang: served }
     })
+  }
+
+  /** Hôpitaux et services d'urgence, avec de quoi appeler ou s'y rendre. */
+  async emergency() {
+    return Service.query()
+      .where('category', EMERGENCY_CATEGORY)
+      .select('id', 'slug', 'name', 'summary', 'hours', 'phone', 'address')
+      .orderBy('name', 'asc')
   }
 
   async show({ params, request, response }: HttpContext) {

@@ -32,6 +32,12 @@ export default function Layout({ user, children }) {
               Services
             </NavLink>
             <NavLink
+              to="/urgences"
+              className="font-bold text-danger underline-offset-4 hover:underline aria-[current=page]:underline aria-[current=page]:decoration-2"
+            >
+              Urgences
+            </NavLink>
+            <NavLink
               to={user ? '/profil' : '/connexion'}
               className="rounded-control bg-primary px-3 py-1.5 font-bold text-white hover:bg-primary-strong aria-[current=page]:bg-primary-strong aria-[current=page]:ring-2 aria-[current=page]:ring-accent aria-[current=page]:ring-offset-2"
             >

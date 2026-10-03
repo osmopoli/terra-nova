@@ -55,6 +55,32 @@ test.group('Annuaire des services', (group) => {
     response.assertBodyContains({ error: "Ce service n'existe pas." })
   })
 
+  test('GET /api/urgences liste seulement les services d’urgence, sans connexion', async ({
+    client,
+    assert,
+  }) => {
+    await createService('etat-civil-test', 'État civil test')
+    const hospital = await createService('hopital-test', 'Hôpital test')
+    hospital.category = 'urgence_sante'
+    await hospital.save()
+
+    const response = await client.get('/api/urgences')
+    response.assertStatus(200)
+    const slugs = response.body().map((s: { slug: string }) => s.slug)
+    assert.include(slugs, 'hopital-test')
+    assert.notInclude(slugs, 'etat-civil-test')
+    assert.properties(response.body()[0], ['name', 'hours', 'phone', 'address'])
+  })
+
+  test('GET /api/meta expose les numéros d’urgence', async ({ client, assert }) => {
+    const response = await client.get('/api/meta')
+    response.assertStatus(200)
+    assert.deepInclude(response.body().emergencyNumbers, {
+      value: '15',
+      label: 'SAMU',
+    })
+  })
+
   test('GET /api/meta expose les thématiques de services', async ({ client, assert }) => {
     const response = await client.get('/api/meta')
     response.assertStatus(200)

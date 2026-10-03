@@ -112,7 +112,10 @@ export default function HomePage({ user }) {
 
       <aside className="rounded-card bg-mist p-4 text-sm">
         <span className="font-bold">Urgence :</span> SAMU 15 · Police 17 · Pompiers 18 · Numéro
-        européen 112. La plateforme ne remplace pas les secours.
+        européen 112. La plateforme ne remplace pas les secours.{' '}
+        <Link to="/urgences" className="font-bold text-danger underline underline-offset-4">
+          Urgences et santé : hôpitaux et numéros
+        </Link>
       </aside>
     </div>
   );
