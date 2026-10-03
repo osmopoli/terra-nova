@@ -15,7 +15,35 @@
     'rec.aucuneRep': 'No response yet.', 'rec.vide': 'You have not sent any request yet.', 'rec.nouvelle': 'Make a request', 'rec.cap': 'Summary of all your requests, most recent first',
     'rec.par': 'by {p}', 'rec.genere': 'Summary generated on {d} for {n}.', 'rec.erreur': 'The summary could not be loaded. Please try again.', 'rec.ok': 'File downloaded.'
   };
-  NT.i18n.ajouter({ fr: {}, en: EN, es: EN, ar: EN });
+  const ES = {
+    'rec.ariane': 'Resumen de mis solicitudes',
+    'rec.titre': 'Resumen de mis solicitudes', 'rec.sous': 'Lo esencial de sus solicitudes en una página: en qué punto están, cuánto tardan y la última respuesta recibida.',
+    'rec.imprimer': 'Descargar (PDF / imprimir)', 'rec.csv': 'Descargar la tabla (CSV)', 'rec.retour': 'Volver al seguimiento',
+    'rec.aide': 'El archivo CSV se abre directamente en Excel o LibreOffice. Para un PDF, elija «Guardar como PDF» en la ventana de impresión.',
+    'rec.chiffres': 'En cifras', 'rec.liste': 'Mis solicitudes en detalle',
+    'rec.total': 'Solicitudes en total', 'rec.st.recue': 'Recibida, aún no tramitada', 'rec.st.en_cours': 'En tramitación', 'rec.st.traitee': 'Resuelta', 'rec.st.cloturee': 'Cerrada',
+    'rec.delai': 'Plazo medio de tramitación: {d}.', 'rec.delaiAucun': 'Todavía no se ha resuelto ninguna solicitud, por lo que no se puede indicar un plazo medio.',
+    'rec.h': '{n} h', 'rec.j': '{n} día(s)', 'rec.hj': 'unos {n} día(s) ({h} horas)',
+    'rec.c.ref': 'Número', 'rec.c.objet': 'Asunto', 'rec.c.cat': 'Categoría', 'rec.c.date': 'Enviada el', 'rec.c.statut': 'Estado', 'rec.c.maj': 'Última actualización', 'rec.c.rep': 'Última respuesta',
+    'rec.cat.contact': 'Contacto', 'rec.cat.signalement': 'Aviso de problema', 'rec.cat.demarche': 'Trámite',
+    'rec.aucuneRep': 'Todavía sin respuesta.', 'rec.vide': 'Todavía no ha enviado ninguna solicitud.', 'rec.nouvelle': 'Hacer una solicitud', 'rec.cap': 'Resumen de todas sus solicitudes, de la más reciente a la más antigua',
+    'rec.par': 'por {p}', 'rec.genere': 'Resumen generado el {d} para {n}.', 'rec.erreur': 'No se ha podido cargar el resumen. Vuelva a intentarlo.', 'rec.ok': 'Archivo descargado.'
+  };
+  const AR = {
+    'rec.ariane': 'ملخص طلباتي',
+    'rec.titre': 'ملخص طلباتي', 'rec.sous': 'أساسيات طلباتك في صفحة واحدة: أين وصلت، وكم تستغرق، وآخر رد تم استلامه.',
+    'rec.imprimer': 'تنزيل (PDF / طباعة)', 'rec.csv': 'تنزيل الجدول (CSV)', 'rec.retour': 'العودة إلى المتابعة',
+    'rec.aide': 'يُفتح ملف CSV مباشرة في Excel أو LibreOffice. للحصول على PDF، اختر «حفظ بصيغة PDF» في نافذة الطباعة.',
+    'rec.chiffres': 'بالأرقام', 'rec.liste': 'طلباتي بالتفصيل',
+    'rec.total': 'إجمالي الطلبات', 'rec.st.recue': 'مستلم، لم يُعالج بعد', 'rec.st.en_cours': 'قيد المعالجة', 'rec.st.traitee': 'تمت معالجته', 'rec.st.cloturee': 'مغلق',
+    'rec.delai': 'متوسط مدة المعالجة: {d}.', 'rec.delaiAucun': 'لم تتم معالجة أي طلب بعد، لذا لا يمكن تحديد متوسط مدة.',
+    'rec.h': '{n} س', 'rec.j': '{n} يوم', 'rec.hj': 'حوالي {n} يوم ({h} ساعة)',
+    'rec.c.ref': 'الرقم', 'rec.c.objet': 'الموضوع', 'rec.c.cat': 'الفئة', 'rec.c.date': 'أُرسل في', 'rec.c.statut': 'الحالة', 'rec.c.maj': 'آخر تحديث', 'rec.c.rep': 'آخر رد',
+    'rec.cat.contact': 'اتصال', 'rec.cat.signalement': 'بلاغ عن مشكلة', 'rec.cat.demarche': 'إجراء',
+    'rec.aucuneRep': 'لا يوجد رد بعد.', 'rec.vide': 'لم ترسل أي طلب بعد.', 'rec.nouvelle': 'تقديم طلب', 'rec.cap': 'ملخص جميع طلباتك، من الأحدث إلى الأقدم',
+    'rec.par': 'بواسطة {p}', 'rec.genere': 'ملخص أُنشئ في {d} لـ {n}.', 'rec.erreur': 'تعذر تحميل الملخص. حاول مجدداً.', 'rec.ok': 'تم تنزيل الملف.'
+  };
+  NT.i18n.ajouter({ fr: { 'rec.ariane': 'Récapitulatif de mes demandes' }, en: Object.assign({ 'rec.ariane': 'Summary of my requests' }, EN), es: ES, ar: AR });
   const L = (cle, fr, vars) => NT.t(cle, vars, fr);
   const E = s => NT.ui.echap(s);
   const $ = (sel, r) => (r || document).querySelector(sel);
