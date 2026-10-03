@@ -17,6 +17,7 @@
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/store.js"></script>
   <script src="assets/js/agent.js"></script>
+  <script src="assets/js/agent-doublons.js"></script>
   <script src="assets/js/ui.js" defer></script>
 </head>
 <body data-page="demandesAgent" data-ariane="nav.agent|agent.html;nav.demandesAgent" data-roles="agent,admin">
@@ -45,6 +46,10 @@
           <option value="normale" data-i18n="ag.prio.normale">Normale</option>
           <option value="basse" data-i18n="ag.prio.basse">Basse</option></select></div>
     </form>
+
+    <!-- F75 : demandes semblables (groupes calculés par le serveur) et filtres d'attention — assets/js/agent-doublons.js -->
+    <section class="panneau sg-panneau" id="sg-groupes" aria-labelledby="sg-h"></section>
+    <div class="sg-attention" id="sg-attention"></div>
 
     <p id="compte" class="doux" aria-live="polite"></p>
 
@@ -91,6 +96,8 @@
 
     NT.pret(() => {
       const { echap } = NT.ui, A = NT.agent, T = A.T;
+      const X = NT.doublons;   // F75 : demandes semblables, filtres et tri d'attention
+      if (X) X.recharger();
       const agent = NT.auth.utilisateur();
       const el = id => document.getElementById(id);
       const STATUTS = ['recue', 'en_cours', 'traitee', 'cloturee'];
@@ -111,6 +118,7 @@
       function filtrees(sansStatut) {
         const q = A.sansAccent(champQ.value.trim());
         return NT.demandes.toutes().filter(d => {
+          if (X && !X.filtre(d)) return false;
           if (sType.value && d.type !== sType.value) return false;
           if (sQ.value && A.quartierDe(d) !== sQ.value) return false;
           if (sP.value && (sP.value === 'haute' ? !A.estHaute(d.priorite) : d.priorite !== sP.value)) return false;
@@ -144,14 +152,14 @@
       }
 
       function tableau() {
-        const l = filtrees(false).sort(tri);
+        const l = filtrees(false).sort((X && X.tri()) || tri);
         el('compte').textContent = T('dm.compte', '{n} demande(s) affichée(s)', { n: l.length });
         el('lignes').innerHTML = l.length ? l.map(d => {
           const act = A.actionRequise(d);
           return `<tr class="${act ? 'ag-action' : ''}">
             <th scope="row" class="ag-code">${echap(d.id)}</th>
             <td><button type="button" class="ag-ouvrir" data-id="${echap(d.id)}">${echap(d.objet)}</button>
-              ${act ? `<span class="ag-action-lib"><i class="ph ph-warning-circle" aria-hidden="true"></i>${echap(T('ag.actionRequise', 'Action requise'))}</span>` : ''}</td>
+              ${act ? `<span class="ag-action-lib"><i class="ph ph-warning-circle" aria-hidden="true"></i>${echap(T('ag.actionRequise', 'Action requise'))}</span>` : ''}${X ? X.badge(d) : ''}</td>
             <td>${echap(A.typeLabel(d.type))}</td><td>${echap(A.service(d.serviceId) || '–')}</td><td>${echap(A.quartierDe(d) || '–')}</td>
             <td>${A.prioBadge(d.priorite)}</td><td>${A.statutBadge(d.statut)}</td>
             <td><time datetime="${echap(d.cree)}">${echap(NT.ui.depuis(d.cree))}</time></td></tr>`;
@@ -184,6 +192,7 @@
           ${c ? `<p style="margin:0">${echap(A.nomComplet(c))} · ${echap(c.email)}${c.telephone ? ' · ' + echap(c.telephone) : ''}<br>${echap(T('ag.quartier', 'Quartier'))} : ${echap(c.quartier || '–')}</p>
             ${c.vulnerable ? `<p class="ag-vuln" style="margin:.4rem 0 0"><i class="ph-duotone ph-heartbeat" aria-hidden="true"></i> ${echap(T('dm.vulnerable', 'Personne vulnérable : à traiter avec attention'))}</p>` : ''}`
             : `<p class="doux" style="margin:0">${echap(T('dm.anonyme', 'Compte anonymisé ou supprimé'))}</p>`}
+          ${X ? X.tiroirHtml(d) : ''}
           <h3>${echap(T('dm.historique', 'Historique'))}</h3>
           <ol class="etapes">${(d.historique || []).map(h => `<li class="faite"><strong>${echap(T('statut.' + h.statut, NT.STATUTS[h.statut] || h.statut))}</strong>
             <span class="doux"> · ${echap(NT.ui.dateHeure(h.date))} · ${echap(T('dm.par', 'par'))} ${echap(h.par || '')}</span>${h.note ? `<br>${echap(h.note)}` : ''}</li>`).join('')}</ol>
@@ -206,15 +215,17 @@
         ouverte = id;
         tiroir.label = T('dm.tiroirTitre', 'Demande {id}', { id: d.id });
         corps.innerHTML = contenu(d);
+        if (X) X.remplirTiroir(corps, d);
         tiroir.show();
       }
-      function rafraichirTiroir() { const d = NT.store.find('demandes', ouverte); if (d) corps.innerHTML = contenu(d); }
+      function rafraichirTiroir() { const d = NT.store.find('demandes', ouverte); if (d) { corps.innerHTML = contenu(d); if (X) X.remplirTiroir(corps, d); } }
 
       function appliquer(statut, note, toastMsg) {
         const d = NT.demandes.changerStatut(ouverte, statut, note);
         if (!d) return;
         if (!d.agent || (agent && d.agent !== A.nomComplet(agent) && statut === 'en_cours')) NT.store.update('demandes', d.id, { agent: A.nomComplet(agent) });
         NT.ui.toast(toastMsg, 'success');
+        if (X && (d.liees || []).length) { NT.recharger(); X.recharger(); X.rendre(); }   // F75 : les demandes rattachées ont suivi la réponse
         tout(); rafraichirTiroir();
       }
 
@@ -249,6 +260,7 @@
       el('onglets').addEventListener('click', ev => { const b = ev.target.closest('[data-statut]'); if (!b) return; etat.statut = b.dataset.statut; tout(); const n = document.querySelector(`#onglets [data-statut="${b.dataset.statut}"]`); if (n) n.focus(); });
       el('lignes').addEventListener('click', ev => { const b = ev.target.closest('.ag-ouvrir'); if (b) ouvrir(b.dataset.id); });
       [sType, sQ, sP, champQ].forEach(c => c.addEventListener('input', tout));
+      if (X) { X.onChange = tout; X.ouvrir = ouvrir; X.rendre(); }
       tout();
     });
   </script>

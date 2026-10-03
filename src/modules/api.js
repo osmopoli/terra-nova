@@ -81,7 +81,7 @@ router.post('/api/auth/supprimer', A.exigerRole('citoyen'), (req, res) => {
   for (const r of docs.tous('rdv').filter((x) => x.userId === u.id)) docs.suppr('rdv', r.id);
   for (const n of docs.tous('notifications').filter((x) => x.userId === u.id)) docs.suppr('notifications', n.id);
   // vague 12 : les avis restent comptés dans les résultats et les idées dans le suivi, mais sans lien avec la personne
-  for (const col of ['avis', 'idees']) for (const x of docs.tous(col).filter((d) => d.userId === u.id)) docs.patch(col, x.id, { userId: null, anonymise: true });
+  for (const col of ['avis', 'idees', 'avisServices']) for (const x of docs.tous(col).filter((d) => d.userId === u.id)) docs.patch(col, x.id, { userId: null, anonymise: true });
   docs.suppr('utilisateurs', u.id);
   A.fermerSession(req, res);
   db.prepare('DELETE FROM users WHERE doc_id = ?').run(u.id);
@@ -223,7 +223,10 @@ router.patch('/api/docs/:col/:id', (req, res) => {
   if (!avant) return erreur(res, 404, 'Élément introuvable.');
   const p = reglePatch(col, req, avant, req.body || {});
   if (!p) { if (req.user) journal('acces_refuse', req.user.email, `${col}/${id}`); return erreur(res, req.user ? 403 : 401, 'Action non autorisée pour votre profil.'); }
-  res.json(docs.patch(col, id, p));
+  const apres = docs.patch(col, id, p);
+  // F75 : répondre une fois à la demande principale met à jour et prévient toutes les demandes rattachées
+  if (col === 'demandes' && personnel(req)) require('./doublons').propager(avant, apres, req.user);
+  res.json(apres);
 });
 
 router.delete('/api/docs/:col/:id', A.exigerRole('agent', 'admin'), (req, res) => {
@@ -292,6 +295,7 @@ router.get('/api/mes-donnees', A.exigerRole(...A.ROLES), (req, res) => {
     rendezVous: docs.tous('rdv').filter((r) => r.userId === u.id), notifications: docs.tous('notifications').filter((n) => n.userId === u.id),
     contributions: docs.tous('contributions').filter((c) => c.userId === u.id),
     avis: docs.tous('avis').filter((x) => x.userId === u.id), idees: docs.tous('idees').filter((x) => x.userId === u.id),
+    avisServices: docs.tous('avisServices').filter((x) => x.userId === u.id),
     connexions: docs.tous('journal').filter((j) => j.email === u.email).slice(-50) });
 });
 

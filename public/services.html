@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="assets/css/services.css">
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/store.js"></script>
+  <script src="assets/js/avis-service.js"></script>
   <script src="assets/js/ui.js" defer></script>
 </head>
 <body data-page="services" data-ariane="nav.accueil|index.html;nav.services" data-roles="">
@@ -25,6 +26,9 @@
       <h1 data-i18n="sv.titre">Les services de la ville</h1>
       <p data-i18n="sv.intro">Trouvez le bon service, ses horaires, son contact et les démarches possibles. Les services indisponibles sont signalés avant que vous commenciez.</p>
     </header>
+
+    <!-- F76 : avis des habitants à traiter (agents et admins seulement) — assets/js/avis-service.js -->
+    <section class="panneau av-agents" id="sv-avis-agents" aria-labelledby="av-h-agents" hidden></section>
 
     <!-- D05 / F32 : recherche instantanée + filtres -->
     <section class="sv-outils" aria-labelledby="sv-lbl-recherche">
@@ -43,10 +47,14 @@
 
     <div id="sv-resultats"></div>
 
+    <!-- F74 : associations partenaires (horaires en direct, lieu, téléphone, actions) — assets/js/associations.js -->
+    <section class="section sv-section" id="sv-associations" aria-labelledby="as-h"></section>
+
     <!-- D05 : détail d'un service, ouvert via #id -->
     <sl-drawer id="sv-detail" placement="end" label="Service" class="sv-tiroir"></sl-drawer>
   </main>
 
+  <script src="assets/js/associations.js" defer></script>
   <script src="assets/js/services.js" defer></script>
 </body>
 </html>
