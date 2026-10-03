@@ -155,6 +155,21 @@ export const LOGIN_BLOCK_SCOPES = {
   ip: 'Adresse IP verrouillée',
 } as const
 export type LoginBlockScope = keyof typeof LOGIN_BLOCK_SCOPES
+
+/** Vérification en deux étapes (F53) : TOTP RFC 6238 et jeton intermédiaire de connexion. */
+export const TWO_FACTOR = {
+  issuer: 'Terra Nova',
+  digits: 6,
+  stepSeconds: 30,
+  /** Décalage d'horloge toléré, en pas de 30 s (avant et après). */
+  window: 1,
+  /** Durée de vie de l'étape « code » après un bon mot de passe. */
+  challengeMinutes: 5,
+  /** Codes faux acceptés sur une même étape avant de recommencer la connexion. */
+  maxAttempts: 5,
+  recoveryCodes: 8,
+} as const
+
 /**
  * Langues des contenus des services (F27), libellées dans leur propre langue.
  * Le français est la langue de référence : toute traduction manquante retombe sur lui.

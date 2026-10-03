@@ -4,8 +4,8 @@ import User from '#models/user'
 import { loginValidator, registerValidator } from '#validators/auth'
 import { DEFAULT_ROLE } from '#constants/domain'
 import { checkLock, lockMessage, recordAttempt } from '#services/login_guard'
-
-const TOKEN_TTL = '30 days'
+import { activeSetting, startLoginChallenge } from '#services/two_factor'
+import { TOKEN_TTL } from '#services/session'
 
 export default class AuthController {
   async register({ request, response }: HttpContext) {
@@ -34,6 +34,8 @@ export default class AuthController {
 
     try {
       const user = await User.verifyCredentials(email, password)
+      // F53 : mot de passe correct mais code demandé ; le jeton d'accès attend la 2e étape.
+      if (await activeSetting(user.id)) return await startLoginChallenge(user.id)
       await recordAttempt(email, ip, 'succes')
       const token = await User.accessTokens.create(user, ['*'], { expiresIn: TOKEN_TTL })
       return { user, token: token.value!.release() }

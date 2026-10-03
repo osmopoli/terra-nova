@@ -3,6 +3,7 @@ import { api, setToken } from '../api/client.js';
 import { APP_NAME } from '../lib/constants.js';
 import { focusFirstError } from '../lib/focusError.js';
 import Field, { FormError, inputClass } from './Field.jsx';
+import TwoFactorStep from './TwoFactorStep.jsx';
 
 const EMPTY = { fullName: '', email: '', password: '' };
 
@@ -11,6 +12,8 @@ export default function AuthScreen({ onAuthenticated }) {
   const [form, setForm] = useState(EMPTY);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  // Jeton intermédiaire quand la vérification en deux étapes est demandée (F53).
+  const [challengeToken, setChallengeToken] = useState(null);
   const isRegister = mode === 'register';
 
   const update = (key) => (e) => setForm({ ...form, [key]: e.target.value });
@@ -22,6 +25,10 @@ export default function AuthScreen({ onAuthenticated }) {
     try {
       const body = isRegister ? form : { email: form.email, password: form.password };
       const data = await api(`/auth/${mode}`, { method: 'POST', body });
+      if (data.twoFactorRequired) {
+        setChallengeToken(data.challengeToken);
+        return;
+      }
       setToken(data.token);
       onAuthenticated(data.user);
     } catch (err) {
@@ -70,6 +77,27 @@ export default function AuthScreen({ onAuthenticated }) {
       {label}
     </button>
   );
+
+  if (challengeToken) {
+    return (
+      <div className="w-full max-w-md rounded-card bg-surface p-5 shadow-card sm:p-8">
+        <h2 className="text-center font-display text-2xl font-bold text-primary sm:text-3xl">
+          {APP_NAME}
+        </h2>
+        <TwoFactorStep
+          challengeToken={challengeToken}
+          onAuthenticated={(data) => {
+            setToken(data.token);
+            onAuthenticated(data.user);
+          }}
+          onRestart={() => {
+            setChallengeToken(null);
+            setForm({ ...form, password: '' });
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-md rounded-card bg-surface p-5 shadow-card sm:p-8">
