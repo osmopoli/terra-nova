@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { applyHighContrast, getHighContrast } from '../lib/contrast.js';
 
-// Bouton bascule « Contraste élevé » : textes plus sombres, bordures marquées, liens soulignés.
+// Bouton bascule « Contraste élevé » : noir et blanc, bordures marquées, liens soulignés.
 export default function ContrastControl({ className = '' }) {
   const [enabled, setEnabled] = useState(getHighContrast);
   return (

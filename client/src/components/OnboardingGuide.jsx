@@ -52,11 +52,11 @@ export default function OnboardingGuide({ user, onDone }) {
           <li key={step.to}>
             <Link
               to={step.to}
-              className="flex h-full flex-col rounded-card border border-ink-muted/30 p-4 hover:border-primary hover:bg-primary/5"
+              className="flex h-full flex-col rounded-card border border-line-strong p-4 hover:border-primary hover:bg-primary/5"
             >
               <span
                 aria-hidden="true"
-                className="grid size-8 place-items-center rounded-full bg-primary font-bold text-white"
+                className="grid size-8 place-items-center rounded-full bg-primary font-bold text-on-primary"
               >
                 {i + 1}
               </span>
@@ -72,7 +72,7 @@ export default function OnboardingGuide({ user, onDone }) {
           type="button"
           onClick={finish}
           disabled={busy}
-          className="rounded-control bg-primary px-5 py-2.5 font-semibold text-white hover:bg-primary-strong disabled:opacity-60"
+          className="rounded-control bg-primary px-5 py-2.5 font-semibold text-on-primary hover:bg-primary-strong disabled:opacity-60"
         >
           J’ai compris
         </button>

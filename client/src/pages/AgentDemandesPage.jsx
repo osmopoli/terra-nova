@@ -5,9 +5,9 @@ import { labelOf } from '../lib/constants.js';
 import { useAsync } from '../lib/useAsync.js';
 
 const STATUS_CLASS = {
-  nouveau: 'bg-accent text-ink',
-  en_cours: 'bg-primary text-white',
-  traite: 'bg-ink text-surface',
+  nouveau: 'bg-accent text-on-primary',
+  en_cours: 'bg-primary text-on-primary',
+  traite: 'bg-success text-on-primary',
 };
 // Action proposée selon l'état : l'agent fait avancer la demande d'un cran.
 const NEXT = { nouveau: 'en_cours', en_cours: 'traite' };
@@ -96,7 +96,7 @@ function DemandeDetail({ id, meta, onChanged }) {
                 type="button"
                 disabled={busy}
                 onClick={() => move(next)}
-                className="rounded-control bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-strong disabled:opacity-60"
+                className="rounded-control bg-primary px-4 py-2 text-sm font-semibold text-on-primary hover:bg-primary-strong disabled:opacity-60"
               >
                 {NEXT_LABEL[next]}
               </button>
@@ -106,7 +106,7 @@ function DemandeDetail({ id, meta, onChanged }) {
                 type="button"
                 disabled={busy}
                 onClick={() => move('traite')}
-                className="rounded-control border border-ink-muted/40 px-4 py-2 text-sm font-semibold hover:bg-mist disabled:opacity-60"
+                className="rounded-control border border-line-strong px-4 py-2 text-sm font-semibold hover:bg-mist disabled:opacity-60"
               >
                 Traiter directement
               </button>
@@ -148,7 +148,7 @@ export default function AgentDemandesPage({ meta }) {
               setFilter(tab.value);
               setOpen(null);
             }}
-            className="rounded-control border border-ink-muted/40 px-3 py-1.5 text-sm font-semibold aria-selected:border-primary aria-selected:bg-primary aria-selected:text-white"
+            className="rounded-control border border-line-strong px-3 py-1.5 text-sm font-semibold aria-selected:border-primary aria-selected:bg-primary aria-selected:text-on-primary"
           >
             {tab.label} <span className="ml-1 opacity-80">{tab.count}</span>
           </button>

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { APP_NAME } from './constants.js';
 import { useLocation } from './router.jsx';
 
-// Titre d'onglet par page : « Contact — Nova Terra ». Le préfixe le plus long l'emporte
+// Titre d'onglet par page : « Contact — Terra Nova ». Le préfixe le plus long l'emporte
 // (/services/piscine -> « Services »). Une page peut préciser son titre avec usePageTitle().
 const TITLES = {
   '/': 'Accueil',

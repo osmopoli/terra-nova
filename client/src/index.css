@@ -6,46 +6,60 @@
  * (classes Tailwind générées : bg-primary, text-ink, rounded-card, font-display...).
  * Aucune valeur codée en dur dans les composants.
  *
- * Valeurs par défaut = espace citoyen (accueillant, clair). L'espace agent
- * (outil de travail, dense) redéfinit les mêmes variables sous [data-space="agent"].
+ * Direction artistique « Future Teal » : thème sombre, fond sarcelle profond, tout en
+ * bleu / sarcelle, primaire sarcelle lumineux, police Inter, rayons 0.5rem, ombres douces.
+ * `ink` = texte clair ; `surface`, `canvas`, `mist` = fonds sombres.
+ * L'espace agent (outil de travail, dense) redéfinit les mêmes variables sous [data-space="agent"].
  * Contrastes vérifiés WCAG AA (ratios dans la charte).
  */
 @theme {
-  --color-ink: #16242f;
-  --color-ink-muted: #4f5d68;
-  --color-surface: #ffffff;
-  --color-canvas: #f6f3ec;
-  --color-mist: #e9f1ef;
-  --color-line: #d6dfdc;
+  --color-ink: oklch(0.9396 0.0097 204.91);
+  --color-ink-muted: oklch(0.72 0.03 199.2);
+  /* Cartes, en-tête. */
+  --color-surface: oklch(0.1788 0.0202 201.33);
+  /* Fond de page : sarcelle profond. */
+  --color-canvas: oklch(0.1396 0.0155 195.52);
+  /* Fonds discrets dans une carte (onglets, encarts). */
+  --color-mist: oklch(0.215 0.025 200);
+  /* Séparateurs décoratifs. */
+  --color-line: oklch(0.2397 0.0193 201.59);
   /* Bordure de contrôle (champ, bouton secondaire) : ≥ 3:1 sur surface, canvas et mist (WCAG 1.4.11).
      `line` reste réservé aux séparateurs décoratifs. */
-  --color-line-strong: #6f7c86;
-  --color-primary: #0b6a6b;
-  --color-primary-strong: #074b4e;
-  --color-accent: #f08a4b;
-  /* Latérite lisible : texte ou pictogramme accent sur fond clair. `accent` seul = fond ou décor. */
-  --color-accent-strong: #a8501d;
-  --color-success: #1d6b3a;
-  --color-warning: #8a4b00;
-  --color-danger: #b42318;
+  --color-line-strong: oklch(0.55 0.03 200);
+  --color-primary: oklch(0.704 0.14 182.5);
+  /* Survol / actif d'un fond primary : plus lumineux (thème sombre). */
+  --color-primary-strong: oklch(0.8 0.12 182.5);
+  /* Texte sur un fond plein (primary, accent, success, danger, glow) : sombre, jamais blanc. */
+  --color-on-primary: oklch(0.1396 0.0155 195.52);
+  /* Violet « aurore » : pastilles « nouveau », décor. Aucun orange dans la DA. */
+  --color-accent: oklch(0.7217 0.1638 297.08);
+  /* Violet éclairci : texte ou pictogramme accent. */
+  --color-accent-strong: oklch(0.8 0.11 297);
+  /* Validé, traité : bleu, distinct du primaire. */
+  --color-success: oklch(0.67 0.1336 230.04);
+  --color-warning: oklch(0.8614 0.1165 74.23);
+  --color-danger: oklch(0.6593 0.2097 25.01);
 
-  --font-sans: "Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-display: "Space Grotesk", var(--font-sans);
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: var(--font-sans);
 
-  --radius-card: 20px;
-  --radius-control: 12px;
+  --radius-card: 0.75rem;
+  --radius-control: 0.5rem;
 
-  --shadow-card: 0 1px 2px rgb(22 36 47 / 0.06), 0 8px 24px -12px rgb(22 36 47 / 0.18);
-  --shadow-pop: 0 12px 32px -8px rgb(22 36 47 / 0.28);
+  /* Le fond surface se distingue peu du canvas : chaque carte porte un trait `line`. */
+  --shadow-card: 0 0 0 1px var(--color-line), 0 4px 10px 0 rgb(0 0 0 / 0.22), 0 4px 6px -1px rgb(0 0 0 / 0.18);
+  --shadow-pop: 0 0 0 1px var(--color-line-strong), 0 18px 50px -20px rgb(0 0 0 / 0.8);
 
-  /* Parcours d'arrivée (écran d'accueil visiteur + connexion) : ambiance spatiale. */
-  --color-space: #02040a;
-  --color-space-panel: #07101c;
-  --color-star: #edf6ff;
-  --color-star-muted: #b7c7d8;
-  --color-glow: #79e6ff;
-  --color-flare: #ff4d97;
-  --shadow-glow: 0 0 34px rgb(121 230 255 / 0.18);
+  /* Parcours d'arrivée (accueil visiteur, connexion, 404) : même famille sarcelle. */
+  --color-space: oklch(0.1396 0.0155 195.52);
+  --color-space-panel: oklch(0.1604 0.0209 201.08);
+  --color-star: oklch(0.9396 0.0097 204.91);
+  --color-star-muted: oklch(0.72 0.03 199.2);
+  --color-glow: oklch(0.704 0.14 182.5);
+  --color-flare: oklch(0.7217 0.1638 297.08);
+  --shadow-glow: 0 0 34px oklch(0.704 0.14 182.5 / 0.18);
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 
   --animate-ship-float: ship-float 0.45s ease-in-out infinite alternate;
   --animate-ship-launch: ship-launch 3s cubic-bezier(0.2, 0.8, 0.2, 1) both;
@@ -93,39 +107,54 @@
 }
 
 @layer base {
-  /* Espace agent : même noms de tokens, ambiance outil (indigo froid, rayons serrés, ombres plates). */
+  :root {
+    color-scheme: dark;
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Espace agent : mêmes tokens, même famille sarcelle, ambiance outil (fond panneau, rayons serrés, ombres plates). */
   [data-space="agent"] {
-    --color-ink: #0f1729;
-    --color-ink-muted: #475467;
-    --color-canvas: #f1f3f7;
-    --color-mist: #e4e8ef;
-    --color-line: #d0d5dd;
-    --color-line-strong: #6c7689;
-    --color-primary: #3046b0;
-    --color-primary-strong: #1f2f80;
-    --radius-card: 8px;
-    --radius-control: 6px;
-    --shadow-card: 0 1px 2px rgb(15 23 41 / 0.08);
-    --shadow-pop: 0 6px 16px -4px rgb(15 23 41 / 0.2);
+    --color-canvas: oklch(0.1604 0.0209 201.08);
+    --color-surface: oklch(0.1788 0.0202 201.33);
+    --radius-card: 0.5rem;
+    --radius-control: 0.375rem;
+    --shadow-card: 0 0 0 1px var(--color-line);
+    --shadow-pop: 0 0 0 1px var(--color-line-strong), 0 8px 20px -6px rgb(0 0 0 / 0.6);
   }
 
   /*
    * Contraste élevé (WEBC-19) : mêmes tokens, valeurs renforcées (ratios >= 7:1, WCAG AAA),
    * posé sur <html> par ContrastControl. Prioritaire sur toute ambiance [data-space].
+   * Noir et blanc, primaire cyan très clair, comme la maquette Future Teal.
    */
   :root[data-contrast="high"],
   :root[data-contrast="high"] [data-space] {
-    --color-ink: #000000;
-    --color-ink-muted: #1f2933;
-    --color-surface: #ffffff;
-    --color-canvas: #ffffff;
-    --color-mist: #ffffff;
-    --color-line: #000000;
-    --color-primary: #00366f;
-    --color-primary-strong: #001f42;
-    --color-danger: #7a0b0b;
+    --color-ink: #ffffff;
+    --color-ink-muted: #ffffff;
+    --color-surface: #000000;
+    --color-canvas: #000000;
+    --color-mist: #000000;
+    --color-line: #ffffff;
+    --color-line-strong: #ffffff;
+    --color-primary: #9ff0ff;
+    --color-primary-strong: #ccf7ff;
+    --color-on-primary: #000000;
+    --color-accent: #d6c8ff;
+    --color-accent-strong: #d6c8ff;
+    --color-success: #9fd8ff;
+    --color-warning: #ffe08a;
+    --color-danger: #ffa3a3;
+    --color-space: #000000;
+    --color-space-panel: #000000;
+    --color-star: #ffffff;
     --color-star-muted: #ffffff;
-    --shadow-card: 0 0 0 2px #000000;
+    --color-glow: #9ff0ff;
+    --color-flare: #d6c8ff;
+    --shadow-card: 0 0 0 2px #ffffff;
+    --shadow-pop: 0 0 0 2px #ffffff;
+    --shadow-glow: none;
   }
   :root[data-contrast="high"] a {
     text-decoration-line: underline;
@@ -133,12 +162,19 @@
   }
   :root[data-contrast="high"] :focus-visible {
     outline: 4px solid var(--color-ink);
-    box-shadow: 0 0 0 7px var(--color-surface);
+    box-shadow: 0 0 0 7px var(--color-canvas);
   }
 
   :focus-visible {
     outline: 3px solid var(--color-primary);
     outline-offset: 2px;
+  }
+
+  /* Retour visuel des contrôles : couleurs seulement, courbe ease-out, rapide. */
+  :where(a, button, [role="tab"], input, select, textarea) {
+    transition-property: color, background-color, border-color, text-decoration-color, box-shadow;
+    transition-duration: 150ms;
+    transition-timing-function: var(--ease-out);
   }
 
   /*
@@ -173,6 +209,58 @@
   }
 }
 
+@layer components {
+  /*
+   * Ciel Future Teal : deux halos (sarcelle, bleu) et quelques étoiles fixes, en CSS (aucune image).
+   * Décor pur, posé sur le fond de page ; masqué en contraste élevé.
+   */
+  .ciel {
+    background-color: var(--color-canvas);
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, oklch(1 0 0 / 0.55) 50%, transparent 51%),
+      radial-gradient(1px 1px at 72% 12%, oklch(0.85 0.08 185 / 0.55) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 33% 64%, oklch(1 0 0 / 0.45) 50%, transparent 51%),
+      radial-gradient(1px 1px at 88% 48%, oklch(1 0 0 / 0.5) 50%, transparent 51%),
+      radial-gradient(1px 1px at 52% 32%, oklch(0.85 0.08 185 / 0.5) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 6% 82%, oklch(1 0 0 / 0.45) 50%, transparent 51%),
+      radial-gradient(1px 1px at 64% 86%, oklch(1 0 0 / 0.5) 50%, transparent 51%),
+      radial-gradient(1px 1px at 94% 92%, oklch(0.88 0.06 297 / 0.5) 50%, transparent 51%),
+      radial-gradient(1200px 600px at 85% -10%, oklch(0.704 0.14 182.5 / 0.1), transparent 60%),
+      radial-gradient(900px 500px at -10% 10%, oklch(0.67 0.1336 230 / 0.08), transparent 60%);
+    background-size:
+      620px 620px, 620px 620px, 620px 620px, 620px 620px,
+      620px 620px, 620px 620px, 620px 620px, 620px 620px,
+      100% 100%, 100% 100%;
+    background-repeat: repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, no-repeat, no-repeat;
+  }
+  :root[data-contrast="high"] .ciel {
+    background-image: none;
+  }
+  /* Images de décor (galaxie) retirées en contraste élevé : rien derrière le texte. */
+  :root[data-contrast="high"] img[data-decor] {
+    display: none;
+  }
+
+  /*
+   * Emblème Terra Nova : la silhouette (webp) sert de masque, remplie d'un dégradé texte → sarcelle.
+   * Le nom à côté est du vrai texte ; l'emblème est décoratif (aria-hidden).
+   */
+  .logo-embleme {
+    display: inline-block;
+    flex: none;
+    height: 2.3rem;
+    aspect-ratio: 774 / 1068;
+    background: linear-gradient(180deg, var(--color-ink) 45%, var(--color-primary));
+    -webkit-mask: -webkit-image-set(url("./assets/logo-embleme-96.webp") 1x, url("./assets/logo-embleme-192.webp") 2x)
+      center / contain no-repeat;
+    mask: image-set(url("./assets/logo-embleme-96.webp") 1x, url("./assets/logo-embleme-192.webp") 2x) center / contain
+      no-repeat;
+  }
+  :root[data-contrast="high"] .logo-embleme {
+    background: var(--color-ink);
+  }
+}
+
 @layer utilities {
   /* Champ en erreur : bordure épaissie en plus de la couleur ; le message texte reste obligatoire. */
   input[aria-invalid="true"],
@@ -180,19 +268,5 @@
   textarea[aria-invalid="true"] {
     border-color: var(--color-danger);
     border-width: 2px;
-  }
-}
-
-/* Écrans sombres (parcours d'arrivée) : focus lumineux, sauf dans les cartes claires. */
-@layer base {
-  .bg-space :focus-visible {
-    outline-color: var(--color-glow);
-  }
-  .bg-space .bg-surface :focus-visible {
-    outline-color: var(--color-primary);
-  }
-  /* Bandeau sombre de l'espace agents : focus orangé, contrasté sur `ink`. */
-  .bg-ink :focus-visible {
-    outline-color: var(--color-accent);
   }
 }

@@ -94,7 +94,7 @@ export default function ServiceTranslationForm({ slug, languages = [], onSaved }
         <button
           type="submit"
           disabled={loading || saving}
-          className="w-full rounded-control bg-primary px-4 py-2.5 font-semibold text-white disabled:opacity-60 sm:w-auto"
+          className="w-full rounded-control bg-primary px-4 py-2.5 font-semibold text-on-primary disabled:opacity-60 sm:w-auto"
         >
           {saving ? 'Enregistrement...' : 'Enregistrer la traduction'}
         </button>

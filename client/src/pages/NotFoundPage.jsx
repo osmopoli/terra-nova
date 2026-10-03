@@ -1,4 +1,4 @@
-import orbite from '../assets/planete-orbite.svg';
+import GalaxyImage from '../components/GalaxyImage.jsx';
 import { Link } from '../lib/router.jsx';
 import { usePageTitle } from '../lib/title.js';
 
@@ -8,12 +8,11 @@ export default function NotFoundPage({ message = "Cette page n'existe pas ou a Ã
   return (
     <section
       aria-labelledby="introuvable-titre"
-      className="relative isolate mx-auto max-w-3xl overflow-hidden rounded-card bg-space px-6 py-14 text-center text-star shadow-glow sm:py-20"
+      className="relative isolate mx-auto max-w-3xl overflow-hidden rounded-card bg-space px-6 py-14 text-center text-star shadow-card sm:py-20"
     >
-      <img
-        src={orbite}
-        alt=""
-        className="pointer-events-none absolute inset-0 -z-20 size-full object-cover opacity-60"
+      <GalaxyImage
+        sizes="(min-width: 768px) 768px, 100vw"
+        className="absolute inset-0 -z-20 size-full object-cover opacity-60"
       />
       <div
         aria-hidden="true"
@@ -28,7 +27,7 @@ export default function NotFoundPage({ message = "Cette page n'existe pas ou a Ã
       <p className="mx-auto mt-3 max-w-sm text-star-muted">{message}</p>
       <Link
         to="/"
-        className="mt-8 inline-block rounded-control border border-glow/60 bg-glow px-6 py-3 font-bold text-space hover:bg-star focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-glow"
+        className="mt-8 inline-block rounded-control bg-glow px-6 py-3 font-bold text-on-primary hover:bg-primary-strong focus-visible:outline-offset-4"
       >
         Retour Ã  l'accueil
       </Link>

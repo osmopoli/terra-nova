@@ -115,7 +115,7 @@ export default function AccessibilityPage() {
         </p>
         <Link
           to="/contact"
-          className="mt-4 inline-block rounded-control bg-primary px-5 py-3 font-semibold text-white hover:bg-primary-strong"
+          className="mt-4 inline-block rounded-control bg-primary px-5 py-3 font-semibold text-on-primary hover:bg-primary-strong"
         >
           Signaler un problème d’accessibilité
         </Link>

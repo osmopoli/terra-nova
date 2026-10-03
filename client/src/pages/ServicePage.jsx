@@ -65,7 +65,7 @@ export default function ServicePage({ slug, meta, user }) {
                   <li key={procedure.title} className="flex gap-3 rounded-card bg-mist p-4">
                     <span
                       aria-hidden="true"
-                      className="grid size-7 shrink-0 place-items-center rounded-full bg-primary text-sm font-bold text-white"
+                      className="grid size-7 shrink-0 place-items-center rounded-full bg-primary text-sm font-bold text-on-primary"
                     >
                       {index + 1}
                     </span>
