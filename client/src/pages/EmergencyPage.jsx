@@ -15,10 +15,10 @@ export default function EmergencyPage({ meta }) {
 
   return (
     <section className="space-y-3 sm:space-y-6">
-      <header>
+      <header className="flex flex-wrap items-baseline gap-x-3 sm:block">
         <h1 className="font-display text-xl font-bold sm:text-3xl">Urgences et santé</h1>
-        <p className="mt-1 text-sm text-ink-muted sm:text-base">
-          Gratuit, 24 h/24, même sans crédit.
+        <p className="text-sm text-ink-muted sm:mt-1 sm:text-base">
+          Gratuit, 24 h/24<span className="hidden sm:inline">, même sans crédit</span>.
         </p>
       </header>
 

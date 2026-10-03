@@ -138,7 +138,7 @@ export const EMERGENCY_NUMBERS = {
   '15': 'SAMU',
   '17': 'Police',
   '18': 'Pompiers',
-  '112': 'Tout danger',
+  '112': 'Urgence',
   '114': 'Par SMS',
 } as const
 
