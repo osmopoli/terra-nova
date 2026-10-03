@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon'
 import type { HttpContext } from '@adonisjs/core/http'
 import { updateProfileValidator } from '#validators/auth'
 
@@ -12,6 +13,16 @@ export default class ProfileController {
     const payload = await request.validateUsing(updateProfileValidator)
     await user.merge(payload).save()
 
+    return user
+  }
+
+  /** Marque le guide de première connexion comme vu (idempotent : garde la première date). */
+  async completeOnboarding({ auth }: HttpContext) {
+    const user = auth.getUserOrFail()
+    if (!user.onboardedAt) {
+      user.onboardedAt = DateTime.now()
+      await user.save()
+    }
     return user
   }
 }
