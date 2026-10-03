@@ -5,10 +5,10 @@
    - toujours le RÉSEAU D'ABORD pour les pages, les scripts et les styles : la copie ne sert que si le réseau échoue,
      donc jamais d'ancien script après un déploiement. Aucune autre donnée de l'API n'est gardée (rien de personnel). */
 'use strict';
-const VERSION = 'v15-1';
+const VERSION = 'v15-2';
 const CACHE = 'terra-nova-' + VERSION;
 const COQUILLE = ['/', '/index.html', '/services.html', '/annonces.html', '/carte.html', '/simple',
-  '/assets/css/theme.css', '/assets/css/accueil.css', '/assets/css/services.css', '/assets/css/annonces.css',
+  '/assets/css/theme.css', '/assets/css/vague15.css', '/assets/css/accueil.css', '/assets/css/services.css', '/assets/css/annonces.css',
   '/assets/js/i18n.js', '/assets/js/store.js', '/assets/js/ui.js', '/assets/js/officiel.js', '/assets/js/resilience.js', '/assets/js/services.js'];
 const API_GARDEES = ['/api/officiels', '/api/charge'];
 
