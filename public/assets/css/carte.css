@@ -43,9 +43,9 @@
 .cm-t-sante{ --mc:var(--iono); } .cm-t-administration{ --mc:var(--aurore); } .cm-t-social{ --mc:var(--soleil); }
 .cm-t-transport{ --mc:var(--calme); } .cm-t-autre{ --mc:var(--brume); } .cm-t-urgence{ --mc:var(--corail); }
 /* Urgence : forme carrée arrondie, fond plein corail et croix — jamais la couleur seule */
-.cm-marqueur.cm-t-urgence{ width:2.8rem; height:2.8rem; border-radius:.7rem; background:var(--corail); color:#1b0308; border-color:var(--givre); }
+.cm-marqueur.cm-t-urgence{ width:2.8rem; height:2.8rem; border-radius:.7rem; background:var(--corail); color:var(--sur-corail); border-color:var(--givre); }
 .cm-croix{ display:block; position:relative; width:1.3rem; height:1.3rem; flex:none; }
-.cm-croix::before,.cm-croix::after{ content:""; position:absolute; background:#1b0308; border-radius:1px; }
+.cm-croix::before,.cm-croix::after{ content:""; position:absolute; background:var(--sur-corail); border-radius:1px; }
 .cm-croix::before{ left:0; right:0; top:50%; height:.34rem; transform:translateY(-50%); }
 .cm-croix::after{ top:0; bottom:0; left:50%; width:.34rem; transform:translateX(-50%); }
 .cm-marqueur::after{ content:attr(data-nom); position:absolute; bottom:calc(100% + .45rem); left:50%; transform:translateX(-50%); z-index:7;
@@ -62,7 +62,7 @@
 .cm-legende ul{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:.4rem 1rem; }
 .cm-legende li{ display:inline-flex; align-items:center; gap:.45rem; }
 .cm-leg-pt{ display:inline-grid; place-items:center; width:1.6rem; height:1.6rem; border-radius:50%; font-size:.95rem; color:var(--mc,var(--iono)); border:2px solid var(--mc,var(--iono)); background:var(--nuit); flex:none; }
-.cm-leg-pt.cm-t-urgence{ border-radius:.4rem; background:var(--corail); color:#1b0308; border-color:var(--givre); }
+.cm-leg-pt.cm-t-urgence{ border-radius:.4rem; background:var(--corail); color:var(--sur-corail); border-color:var(--givre); }
 .cm-leg-pt .cm-croix{ width:.9rem; height:.9rem; }
 .cm-leg-pt .cm-croix::before{ height:.24rem; } .cm-leg-pt .cm-croix::after{ width:.24rem; }
 .cm-leg-ligne{ display:inline-flex; align-items:center; gap:.4rem; }
@@ -85,9 +85,9 @@
 .cm-urgence-txt{ display:flex; flex-direction:column; gap:.1rem; }
 .cm-urgence-txt strong{ font-size:1.1rem; }
 .cm-urgence-sous{ font-size:.85rem; color:var(--brume); }
-.cm-urgence-btn[aria-pressed="true"]{ background:var(--corail); color:#1b0308; }
-.cm-urgence-btn[aria-pressed="true"] .cm-urgence-sous{ color:#1b0308; }
-.cm-urgence-btn[aria-pressed="true"] .cm-urgence-ic{ background:#1b0308; }
+.cm-urgence-btn[aria-pressed="true"]{ background:var(--corail); color:var(--sur-corail); }
+.cm-urgence-btn[aria-pressed="true"] .cm-urgence-sous{ color:var(--sur-corail); }
+.cm-urgence-btn[aria-pressed="true"] .cm-urgence-ic{ background:var(--sur-corail); }
 .cm-urgence-btn[aria-pressed="true"] .cm-croix::before,.cm-urgence-btn[aria-pressed="true"] .cm-croix::after{ background:var(--corail); }
 
 .cm-form .champ, .cm-champ-proche{ margin-bottom:0; }
@@ -112,7 +112,7 @@
 @media (hover:hover) and (pointer:fine){ .cm-item:hover{ background:oklch(0.7040 0.1400 182.5 / .07); } }
 .cm-item[aria-current="true"]{ background:oklch(0.7040 0.1400 182.5 / .14); box-shadow:inset 3px 0 0 var(--iono); }
 .cm-ic{ display:grid; place-items:center; width:2.1rem; height:2.1rem; flex:none; border-radius:50%; font-size:1.1rem; color:var(--mc,var(--iono)); border:2px solid var(--mc,var(--iono)); background:var(--nuit); }
-.cm-ic.cm-t-urgence{ border-radius:.45rem; background:var(--corail); color:#1b0308; border-color:var(--givre); }
+.cm-ic.cm-t-urgence{ border-radius:.45rem; background:var(--corail); color:var(--sur-corail); border-color:var(--givre); }
 .cm-ic .cm-croix{ width:1rem; height:1rem; } .cm-ic .cm-croix::before{ height:.27rem; } .cm-ic .cm-croix::after{ width:.27rem; }
 .cm-item-txt{ display:flex; flex-direction:column; gap:.15rem; min-width:0; }
 .cm-item-txt strong{ line-height:1.3; }

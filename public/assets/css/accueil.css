@@ -5,7 +5,7 @@
 
 .accueil-texte .lieu{ display:inline-flex; align-items:center; gap:.45rem; color:var(--iono); font-weight:700; font-size:.95rem; margin-bottom:1rem; }
 .accueil-texte .lieu i{ font-size:1.15rem; }
-.accueil-texte h1{ font-size:clamp(2.1rem,4.4vw,3.6rem); line-height:1.08; letter-spacing:-.02em; max-width:16ch; text-wrap:balance; margin-bottom:1.1rem; color:#fff; }
+.accueil-texte h1{ font-size:clamp(2.1rem,4.4vw,3.6rem); line-height:1.08; letter-spacing:-.02em; max-width:16ch; text-wrap:balance; margin-bottom:1.1rem; color:var(--givre); }
 .accueil-texte .intro{ font-size:clamp(1.05rem,1.4vw,1.2rem); color:var(--brume); max-width:44ch; margin-bottom:1.8rem; }
 
 .recherche{ display:flex; align-items:center; gap:.4rem; max-width:34rem; padding:.4rem .4rem .4rem 1.1rem; border-radius:var(--r);
@@ -38,12 +38,12 @@ html.contraste .baie::after{ background:none; }
 /* Fiche de la colonie posée sur la vitre */
 .fiche-colonie{ position:absolute; z-index:2; inset-inline:1rem; bottom:1rem; display:grid; grid-template-columns:repeat(3,1fr);
   border-radius:20px; background:oklch(0.1396 0.0155 195.5 / .72); backdrop-filter:blur(16px) saturate(140%); border:1px solid rgba(255,255,255,.12); }
-html.contraste .fiche-colonie{ background:#000; }
+html.contraste .fiche-colonie{ background:var(--nuit); }
 .fiche-colonie > div{ padding:.85rem 1rem; }
 .fiche-colonie > div + div{ border-inline-start:1px solid rgba(255,255,255,.1); }
 .fiche-colonie dt{ display:flex; align-items:center; gap:.35rem; font-size:.8rem; color:var(--brume); }
 .fiche-colonie dt i{ font-size:1rem; color:var(--iono); }
-.fiche-colonie dd{ margin:.2rem 0 0; font-family:var(--titre); font-size:1.15rem; font-weight:600; color:#fff; }
+.fiche-colonie dd{ margin:.2rem 0 0; font-family:var(--titre); font-size:1.15rem; font-weight:600; color:var(--givre); }
 @media (max-width:480px){ .fiche-colonie{ grid-template-columns:1fr 1fr; } .fiche-colonie > div:last-child{ grid-column:span 2; border-inline-start:0; border-top:1px solid rgba(255,255,255,.1); } }
 
 /* Les quatre actions */
@@ -56,7 +56,7 @@ html.contraste .fiche-colonie{ background:#000; }
 @media (hover:hover) and (pointer:fine){ .action:hover{ border-color:var(--iono); } }
 .action .icone{ width:3rem; height:3rem; flex:none; border-radius:14px; display:grid; place-items:center; font-size:1.65rem; color:var(--iono);
   background:oklch(0.7040 0.1400 182.5 / .1); border:1px solid var(--trait-2); }
-.action.signaler .icone{ color:#FFB27A; background:rgba(255,154,92,.12); border-color:rgba(255,178,122,.3); }
+.action.signaler .icone{ color:var(--corail); background:color-mix(in oklch, var(--corail) 12%, transparent); border-color:color-mix(in oklch, var(--corail) 30%, transparent); }
 .action strong{ display:block; font-size:1.05rem; margin-bottom:.15rem; }
 .action span{ color:var(--brume); font-size:.92rem; line-height:1.45; }
 

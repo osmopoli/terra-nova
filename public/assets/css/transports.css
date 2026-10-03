@@ -44,7 +44,7 @@
 .tr-h3{ font-size:1rem; margin:1.2rem 0 .5rem; }
 .tr-departs{ list-style:none; margin:0; padding:0; border-top:1px solid var(--trait); }
 .tr-departs li{ display:grid; grid-template-columns:5.5rem 9rem minmax(0,1fr); gap:.4rem 1rem; align-items:baseline; padding:.85rem .25rem; border-bottom:1px solid var(--trait); }
-.tr-heure{ font-family:var(--titre); font-size:1.5rem; font-weight:700; color:#fff; line-height:1.1; }
+.tr-heure{ font-family:var(--titre); font-size:1.5rem; font-weight:700; color:var(--givre); line-height:1.1; }
 .tr-quand{ font-weight:700; color:var(--iono); }
 .tr-quand.tr-now{ color:var(--soleil); }
 .tr-detail{ color:var(--brume); font-size:.92rem; }

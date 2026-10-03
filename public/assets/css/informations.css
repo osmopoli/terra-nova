@@ -34,19 +34,19 @@
 /* Impression : fond blanc, texte noir, sans en-tête ni pied du site ni boutons */
 @media print{
   @page{ margin:1.5cm; }
-  html,body{ background:#fff!important; color:#000!important; font-size:11pt; }
+  html,body{ background:var(--blanc)!important; color:var(--noir)!important; font-size:11pt; }
   body > *:not(main){ display:none!important; }
   main{ padding:0!important; margin:0!important; max-width:none!important; }
   .actions-doc,.sommaire-info,.sans-impression,.mention-doc{ display:none!important; }
   .doc-seulement-impression{ display:block; margin:.4rem 0 1rem; font-size:10pt; }
-  h1,h2,h3,p,li,dd,dt,td,th,caption,strong,span,a{ color:#000!important; text-shadow:none!important; }
-  .info-bloc,.chiffres li{ background:#fff!important; border:1px solid #888!important; border-radius:0!important; backdrop-filter:none!important; box-shadow:none!important; break-inside:avoid; }
+  h1,h2,h3,p,li,dd,dt,td,th,caption,strong,span,a{ color:var(--noir)!important; text-shadow:none!important; }
+  .info-bloc,.chiffres li{ background:var(--blanc)!important; border:1px solid color-mix(in srgb, var(--noir) 47%, var(--blanc))!important; border-radius:0!important; backdrop-filter:none!important; box-shadow:none!important; break-inside:avoid; }
   .info-bloc{ margin-top:1rem; }
   .info-bloc h2 i{ display:none; }
-  .info-pourquoi{ border-inline-start:3px solid #000!important; }
-  .table-info th,.table-info td{ border-bottom:1px solid #888!important; padding:.3rem .4rem; }
+  .info-pourquoi{ border-inline-start:3px solid var(--noir)!important; }
+  .table-info th,.table-info td{ border-bottom:1px solid color-mix(in srgb, var(--noir) 47%, var(--blanc))!important; padding:.3rem .4rem; }
   .table-info tr{ break-inside:avoid; }
-  .statut{ border:1px solid #000!important; background:#fff!important; }
+  .statut{ border:1px solid var(--noir)!important; background:var(--blanc)!important; }
   .statut::before{ display:none; }
   a{ text-decoration:none; }
 }

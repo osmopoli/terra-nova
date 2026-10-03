@@ -33,7 +33,7 @@
 .jr-id-cell{ display:block; font-family:var(--mono); font-size:.78rem; color:var(--brume); overflow-wrap:anywhere; }
 .jr-lien{ font:inherit; font-weight:700; color:var(--iono); background:none; border:0; padding:0; cursor:pointer; text-decoration:underline; text-underline-offset:3px; text-align:start; }
 .jr-lien:active{ transform:scale(.97); }
-@media (hover:hover) and (pointer:fine){ .jr-lien:hover{ color:#fff; } }
+@media (hover:hover) and (pointer:fine){ .jr-lien:hover{ color:var(--givre); } }
 .jr-av-ap{ display:flex; flex-wrap:wrap; gap:.3rem .45rem; align-items:center; }
 .jr-av{ color:var(--brume); text-decoration:line-through; text-decoration-thickness:1px; }
 .jr-ap{ font-weight:700; }

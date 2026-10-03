@@ -21,9 +21,22 @@
     },
     es: {
       'statut.recue': 'Recibida', 'statut.en_cours': 'En curso', 'statut.traitee': 'Tratada', 'statut.cloturee': 'Cerrada',
-      'ag.actionRequise': 'Acción requerida', 'ag.toutes': 'Todas', 'ag.etat.desactive': 'Desactivado (no disponible)'
+      'ag.type.contact': 'Pregunta', 'ag.type.signalement': 'Aviso', 'ag.type.demarche': 'Trámite',
+      'ag.prio.basse': 'Baja', 'ag.prio.normale': 'Normal', 'ag.prio.haute': 'Alta',
+      'ag.etat.ok': 'Disponible', 'ag.etat.maintenance': 'En mantenimiento', 'ag.etat.incident': 'Incidencia', 'ag.etat.desactive': 'Desactivado (no disponible)',
+      'ag.niv.info': 'Información', 'ag.niv.importante': 'Importante', 'ag.niv.alerte': 'Alerta',
+      'ag.diff.1': 'Fácil', 'ag.diff.2': 'Media', 'ag.diff.3': 'Difícil',
+      'ag.actionRequise': 'Acción requerida', 'ag.toutes': 'Todas', 'ag.quartier': 'Barrio', 'ag.aucun': 'Ninguno'
     },
-    ar: { 'ag.etat.desactive': 'معطّلة (غير متاحة)' }
+    ar: {
+      'statut.recue': 'مستلمة', 'statut.en_cours': 'قيد المعالجة', 'statut.traitee': 'تمت المعالجة', 'statut.cloturee': 'مغلقة',
+      'ag.type.contact': 'سؤال', 'ag.type.signalement': 'بلاغ', 'ag.type.demarche': 'إجراء',
+      'ag.prio.basse': 'منخفضة', 'ag.prio.normale': 'عادية', 'ag.prio.haute': 'عالية',
+      'ag.etat.ok': 'متاحة', 'ag.etat.maintenance': 'قيد الصيانة', 'ag.etat.incident': 'عطل', 'ag.etat.desactive': 'معطّلة (غير متاحة)',
+      'ag.niv.info': 'معلومة', 'ag.niv.importante': 'مهمة', 'ag.niv.alerte': 'تنبيه',
+      'ag.diff.1': 'سهلة', 'ag.diff.2': 'متوسطة', 'ag.diff.3': 'صعبة',
+      'ag.actionRequise': 'إجراء مطلوب', 'ag.toutes': 'الكل', 'ag.quartier': 'الحي', 'ag.aucun': 'لا شيء'
+    }
   });
 
   /* ---------- Libellés ---------- */
