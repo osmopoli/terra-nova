@@ -24,9 +24,60 @@
     'dem.nature': 'Type of procedure', 'dem.precisions': 'Details (optional)', 'dem.precisionsAide': 'Anything that can help the service: dates, file number, situation.',
     'dem.envoyer': 'Send the request', 'dem.annuler': 'Cancel'
   };
+  const ES = {
+    'dem.ariane': 'Hacer una solicitud', 'dem.titre': 'Hacer una solicitud',
+    'dem.intro': 'Elija lo que quiere hacer y le guiaremos. Recibirá un número de seguimiento en cuanto se envíe.',
+    'dem.typeLegende': '¿Qué desea hacer?',
+    'dem.t.contact': 'Contactar con un servicio', 'dem.t.contactD': 'Hacer una pregunta o explicar una dificultad.',
+    'dem.t.signalement': 'Avisar de un problema', 'dem.t.signalementD': 'Farola rota, residuos, fuga: encontramos el servicio adecuado.',
+    'dem.t.demarche': 'Iniciar un trámite', 'dem.t.demarcheD': 'Certificado, cambio de domicilio, licencia, ayuda.',
+    'dem.service': 'Servicio correspondiente', 'dem.serviceAide': 'Si tiene dudas, elija «No lo sé»: el ayuntamiento le orientará.',
+    'dem.objet': 'Asunto', 'dem.objetAide': 'En pocas palabras, por ejemplo «Pregunta sobre mi factura».',
+    'dem.message': 'Su mensaje', 'dem.messageAide': 'Explique su pregunta o dificultad con el mayor detalle posible.',
+    'dem.visiteur': 'No ha iniciado sesión: indique su nombre y su correo para recibir la respuesta.',
+    'dem.nom': 'Nombre y apellidos', 'dem.email': 'Correo electrónico para la respuesta', 'dem.emailAide': 'Ejemplo: nombre.apellido@ejemplo.es',
+    'dem.categorie': '¿Cuál es el problema?', 'dem.categorieAide': 'El servicio competente se elige automáticamente.',
+    'dem.description': '¿Qué ha pasado?', 'dem.descriptionAide': 'Por ejemplo: «La farola frente al número 12 lleva tres días apagada».',
+    'dem.lieuLegende': '¿Dónde está el problema?', 'dem.adresse': 'Dirección o punto de referencia', 'dem.adresseAide': 'Número y nombre de la calle, o un lugar conocido (parada de lanzadera, plaza…).',
+    'dem.quartier': 'Barrio', 'dem.quartierAide': 'Elija en la lista o pulse un barrio en el plano.',
+    'dem.urgence': '¿Es urgente?', 'dem.urgNormale': 'Normal', 'dem.urgNormaleD': 'Molesto, sin peligro inmediato',
+    'dem.urgDanger': 'Peligroso', 'dem.urgDangerD': 'Tratado con prioridad',
+    'dem.photo': 'Foto (opcional)', 'dem.photoAide': 'Una foto ayuda al equipo a actuar más rápido. Se redimensiona automáticamente.', 'dem.photoRetirer': 'Quitar la foto',
+    'dem.nature': 'Tipo de trámite', 'dem.precisions': 'Detalles (opcional)', 'dem.precisionsAide': 'Todo lo que pueda ayudar al servicio: fechas, número de expediente, situación.',
+    'dem.envoyer': 'Enviar la solicitud', 'dem.annuler': 'Cancelar'
+  };
+  const AR = {
+    'dem.ariane': 'تقديم طلب', 'dem.titre': 'تقديم طلب',
+    'dem.intro': 'اختر ما تريد القيام به وسنرشدك. ستحصل على رقم متابعة فور الإرسال.',
+    'dem.typeLegende': 'ماذا تريد أن تفعل؟',
+    'dem.t.contact': 'التواصل مع خدمة', 'dem.t.contactD': 'اطرح سؤالاً أو اشرح صعوبة.',
+    'dem.t.signalement': 'الإبلاغ عن مشكلة', 'dem.t.signalementD': 'عمود إنارة معطل، نفايات، تسرب: نجد الخدمة المناسبة.',
+    'dem.t.demarche': 'بدء إجراء', 'dem.t.demarcheD': 'شهادة، تغيير عنوان، رخصة، مساعدة.',
+    'dem.service': 'الخدمة المعنية', 'dem.serviceAide': 'إذا لم تكن متأكداً، اختر «لا أعرف»: ستوجّهك البلدية.',
+    'dem.objet': 'الموضوع', 'dem.objetAide': 'بكلمات قليلة، مثلاً «سؤال حول فاتورتي».',
+    'dem.message': 'رسالتك', 'dem.messageAide': 'اشرح سؤالك أو صعوبتك بأكبر قدر من التفاصيل.',
+    'dem.visiteur': 'لم تسجّل الدخول: أدخل اسمك وبريدك الإلكتروني لتلقي الرد.',
+    'dem.nom': 'الاسم الكامل', 'dem.email': 'البريد الإلكتروني لتلقي الرد', 'dem.emailAide': 'مثال: name@example.com',
+    'dem.categorie': 'ما هي المشكلة؟', 'dem.categorieAide': 'تُختار الخدمة المختصة تلقائياً.',
+    'dem.description': 'ماذا حدث؟', 'dem.descriptionAide': 'مثلاً: «عمود الإنارة أمام الرقم 12 مطفأ منذ ثلاثة أيام».',
+    'dem.lieuLegende': 'أين توجد المشكلة؟', 'dem.adresse': 'العنوان أو معلم قريب', 'dem.adresseAide': 'رقم الشارع واسمه، أو مكان معروف (محطة حافلة، ساحة…).',
+    'dem.quartier': 'الحي', 'dem.quartierAide': 'اختر من القائمة أو اضغط على حي في المخطط.',
+    'dem.urgence': 'هل الأمر مستعجل؟', 'dem.urgNormale': 'عادي', 'dem.urgNormaleD': 'مزعج، دون خطر فوري',
+    'dem.urgDanger': 'خطير', 'dem.urgDangerD': 'يُعالج بالأولوية',
+    'dem.photo': 'صورة (اختياري)', 'dem.photoAide': 'تساعد الصورة الفريق على التدخل بسرعة. يُعاد تحجيمها تلقائياً.', 'dem.photoRetirer': 'إزالة الصورة',
+    'dem.nature': 'نوع الإجراء', 'dem.precisions': 'تفاصيل (اختياري)', 'dem.precisionsAide': 'كل ما يمكن أن يساعد الخدمة: تواريخ، رقم ملف، الوضع.',
+    'dem.envoyer': 'إرسال الطلب', 'dem.annuler': 'إلغاء'
+  };
   NT.i18n.ajouter({
     fr: { 'dem.ariane': 'Faire une demande' },
-    en: EN, es: EN, ar: EN
+    en: EN, es: ES, ar: AR
+  });
+  /* Phrases avec variables (toutes langues) */
+  NT.i18n.ajouter({
+    fr: { 'dem.nbErreurs': 'Le formulaire contient {n} erreurs', 'dem.transmis': 'Votre demande est transmise au service « {s} ».', 'dem.reponseA': 'La réponse sera envoyée à {e}.', 'dem.votreEmail': 'votre adresse e-mail', 'dem.delaiPhrase': 'Délai de réponse indicatif : {d}.', 'dem.envoyeeNum': 'Votre demande a bien été envoyée. Numéro {n}.' },
+    en: { 'dem.nbErreurs': 'The form contains {n} errors', 'dem.transmis': 'Your request has been passed to the “{s}” service.', 'dem.reponseA': 'The answer will be sent to {e}.', 'dem.votreEmail': 'your e-mail address', 'dem.delaiPhrase': 'Estimated response time: {d}.', 'dem.envoyeeNum': 'Your request has been sent. Number {n}.' },
+    es: { 'dem.nbErreurs': 'El formulario contiene {n} errores', 'dem.transmis': 'Su solicitud se ha enviado al servicio «{s}».', 'dem.reponseA': 'La respuesta se enviará a {e}.', 'dem.votreEmail': 'su correo electrónico', 'dem.delaiPhrase': 'Plazo de respuesta orientativo: {d}.', 'dem.envoyeeNum': 'Su solicitud se ha enviado correctamente. Número {n}.' },
+    ar: { 'dem.nbErreurs': 'يحتوي النموذج على {n} أخطاء', 'dem.transmis': 'أُحيل طلبك إلى خدمة «{s}».', 'dem.reponseA': 'سيُرسل الرد إلى {e}.', 'dem.votreEmail': 'بريدك الإلكتروني', 'dem.delaiPhrase': 'مهلة الرد التقريبية: {d}.', 'dem.envoyeeNum': 'تم إرسال طلبك بنجاح. الرقم {n}.' }
   });
 
   /* F63 / F64 : état du service avant de commencer */
@@ -36,7 +87,61 @@
     es: { 'dem.perturbeSuite': 'Puede enviar su solicitud de todos modos: se tratará lo antes posible.', 'dem.errDesactive': 'Este servicio no está disponible: el trámite no puede empezarse en línea. Use la próxima acción posible indicada bajo el servicio.' },
     ar: { 'dem.perturbeSuite': 'يمكنك مع ذلك إرسال طلبك: ستتم معالجته في أقرب وقت.', 'dem.errDesactive': 'هذه الخدمة غير متاحة: لا يمكن بدء الإجراء عبر الإنترنت. استعمل الإجراء الممكن التالي المبيّن تحت الخدمة.' }
   });
-  const bi = (fr, en) => (NT.i18n.langue === 'fr' ? fr : en);
+  /* Textes courts : FR et EN dans l'appel bi(fr, en) ; ES et AR dans cette table (clé = texte FR), repli sur EN. */
+  const TR = {
+    'Service à déterminer': ['Servicio por determinar', 'خدمة يتم تحديدها لاحقاً'],
+    'Choisir un service…': ['Elegir un servicio…', 'اختر خدمة…'], 'Je ne sais pas': ['No lo sé', 'لا أعرف'],
+    'Choisir la démarche…': ['Elegir el trámite…', 'اختر الإجراء…'], 'Choisir un quartier…': ['Elegir un barrio…', 'اختر حيّاً…'],
+    'Plan des cinq quartiers de Terra Nova': ['Plano de los cinco barrios de Terra Nova', 'مخطط أحياء تيرا نوفا الخمسة'],
+    'Quartier ': ['Barrio ', 'حي '], 'Quartier choisi : ': ['Barrio elegido: ', 'الحي المختار: '],
+    'Choisissez le problème : nous indiquerons ici le service qui le traitera.': ['Elija el problema: aquí indicaremos el servicio que lo tratará.', 'اختر المشكلة: سنبيّن هنا الخدمة التي ستعالجها.'],
+    'Votre signalement sera transmis à : ': ['Su aviso se enviará a: ', 'سيُحال بلاغك إلى: '], 'Formulaire : ': ['Formulario: ', 'النموذج: '],
+    'Ce fichier n’est pas une image. Choisissez une photo (JPEG, PNG…).': ['Este archivo no es una imagen. Elija una foto (JPEG, PNG…).', 'هذا الملف ليس صورة. اختر صورة (JPEG، PNG…).'],
+    'Aperçu de la photo jointe': ['Vista previa de la foto adjunta', 'معاينة الصورة المرفقة'], 'Photo ajoutée': ['Foto añadida', 'تمت إضافة الصورة'], 'Photo retirée': ['Foto retirada', 'تمت إزالة الصورة'],
+    'Impossible de lire cette photo. Essayez une autre image ou envoyez sans photo.': ['No se pudo leer esta foto. Pruebe otra imagen o envíe sin foto.', 'تعذّر قراءة هذه الصورة. جرّب صورة أخرى أو أرسل بدون صورة.'],
+    'Choisissez le service concerné, ou « Je ne sais pas ».': ['Elija el servicio correspondiente o «No lo sé».', 'اختر الخدمة المعنية أو «لا أعرف».'],
+    'Indiquez l’objet de votre message (3 caractères minimum).': ['Indique el asunto de su mensaje (mínimo 3 caracteres).', 'أدخل موضوع رسالتك (3 أحرف على الأقل).'],
+    'Écrivez votre message (10 caractères minimum).': ['Escriba su mensaje (mínimo 10 caracteres).', 'اكتب رسالتك (10 أحرف على الأقل).'],
+    'Choisissez le type de problème.': ['Elija el tipo de problema.', 'اختر نوع المشكلة.'],
+    'Décrivez ce qui s’est passé (10 caractères minimum).': ['Describa lo ocurrido (mínimo 10 caracteres).', 'صف ما حدث (10 أحرف على الأقل).'],
+    'Indiquez l’adresse ou un repère où se trouve le problème.': ['Indique la dirección o un punto de referencia del problema.', 'أدخل العنوان أو معلماً يحدد مكان المشكلة.'],
+    'Choisissez le quartier, dans la liste ou sur le plan.': ['Elija el barrio, en la lista o en el plano.', 'اختر الحي من القائمة أو على المخطط.'],
+    'Choisissez le service concerné.': ['Elija el servicio correspondiente.', 'اختر الخدمة المعنية.'], 'Choisissez la nature de la démarche.': ['Elija el tipo de trámite.', 'اختر نوع الإجراء.'],
+    'Indiquez votre nom pour que nous puissions vous répondre.': ['Indique su nombre para que podamos responderle.', 'أدخل اسمك حتى نتمكن من الرد عليك.'],
+    'Indiquez une adresse e-mail valide, par exemple prenom.nom@exemple.fr.': ['Indique un correo electrónico válido, por ejemplo nombre.apellido@ejemplo.es.', 'أدخل بريداً إلكترونياً صالحاً، مثل name@example.com.'],
+    'Le formulaire contient 1 erreur': ['El formulario contiene 1 error', 'يحتوي النموذج على خطأ واحد'], 'Démarche : ': ['Trámite: ', 'الإجراء: '],
+    'Envoi en cours…': ['Enviando…', 'جارٍ الإرسال…'], 'Envoyer la demande': ['Enviar la solicitud', 'إرسال الطلب'], 'L’envoi a échoué': ['El envío ha fallado', 'فشل الإرسال'],
+    'Votre demande n’a pas pu être enregistrée. Vérifiez votre connexion, retirez la photo si vous en avez joint une, puis réessayez.': ['Su solicitud no se pudo guardar. Compruebe su conexión, retire la foto si adjuntó una y vuelva a intentarlo.', 'تعذّر تسجيل طلبك. تحقق من اتصالك، وأزل الصورة إن كنت أرفقت واحدة، ثم أعد المحاولة.'],
+    'À déterminer : la mairie orientera votre demande': ['Por determinar: el ayuntamiento orientará su solicitud', 'يُحدَّد لاحقاً: ستوجّه البلدية طلبك'],
+    'Type': ['Tipo', 'النوع'], 'Objet': ['Asunto', 'الموضوع'], 'Message': ['Mensaje', 'الرسالة'], 'Lieu': ['Lugar', 'المكان'], 'Urgence': ['Urgencia', 'درجة الاستعجال'],
+    'Dangereux, traité en priorité': ['Peligroso, tratado con prioridad', 'خطير، يُعالج بالأولوية'], 'Normale': ['Normal', 'عادية'], 'Photo': ['Foto', 'الصورة'],
+    'Photo jointe à la demande': ['Foto adjunta a la solicitud', 'صورة مرفقة بالطلب'], 'Réponse envoyée à': ['Respuesta enviada a', 'تُرسل الإجابة إلى'],
+    'Vous êtes prévenu dans votre espace à chaque étape : reçue, en cours, traitée.': ['Se le avisa en su espacio en cada etapa: recibida, en curso, resuelta.', 'ستُخطر في فضائك عند كل مرحلة: مستلمة، قيد المعالجة، تمت المعالجة.'],
+    'Suivre ma demande': ['Seguir mi solicitud', 'متابعة طلبي'], 'Me connecter pour suivre ma demande': ['Iniciar sesión para seguir mi solicitud', 'تسجيل الدخول لمتابعة طلبي'],
+    'Votre demande a bien été envoyée': ['Su solicitud se ha enviado correctamente', 'تم إرسال طلبك بنجاح'],
+    'Gardez ce numéro : il vous permet de retrouver votre demande.': ['Guarde este número: le permite encontrar su solicitud.', 'احتفظ بهذا الرقم: يتيح لك العثور على طلبك.'],
+    'Numéro de demande': ['Número de solicitud', 'رقم الطلب'], 'Copier le numéro': ['Copiar el número', 'نسخ الرقم'], 'Ce que vous avez envoyé': ['Lo que ha enviado', 'ما أرسلته'],
+    'Service destinataire': ['Servicio destinatario', 'الخدمة المستلمة'], 'Délai de réponse indicatif : ': ['Plazo de respuesta orientativo: ', 'مهلة الرد التقريبية: '],
+    'Et maintenant ?': ['¿Y ahora?', 'وماذا بعد؟'], 'Retour à l’accueil': ['Volver al inicio', 'العودة إلى الرئيسية'], 'Faire une autre demande': ['Hacer otra solicitud', 'تقديم طلب آخر'],
+    'Demande envoyée': ['Solicitud enviada', 'تم إرسال الطلب'], 'Numéro copié : ': ['Número copiado: ', 'تم نسخ الرقم: '],
+    'Copie impossible, notez le numéro ': ['No se pudo copiar, anote el número ', 'تعذّر النسخ، دوّن الرقم '],
+    /* catégories de signalement */
+    'Éclairage public': ['Alumbrado público', 'الإنارة العامة'], 'Lampadaire éteint ou cassé': ['Farola apagada o rota', 'عمود إنارة مطفأ أو مكسور'],
+    'Chaussée et trottoirs': ['Calzada y aceras', 'الطريق والأرصفة'], 'Trou, trottoir abîmé': ['Bache, acera dañada', 'حفرة، رصيف متضرر'],
+    'Déchets et propreté': ['Residuos y limpieza', 'النفايات والنظافة'], 'Conteneur plein, dépôt sauvage': ['Contenedor lleno, vertido ilegal', 'حاوية ممتلئة، رمي عشوائي'],
+    'Eau et fuites': ['Agua y fugas', 'الماء والتسربات'], 'Fuite, coupure, eau trouble': ['Fuga, corte, agua turbia', 'تسرب، انقطاع، ماء عكر'],
+    'Bruit et nuisances': ['Ruido y molestias', 'الضجيج والإزعاج'], 'Bruit répété, gêne du voisinage': ['Ruido repetido, molestias vecinales', 'ضجيج متكرر، إزعاج من الجوار'],
+    'Autre problème': ['Otro problema', 'مشكلة أخرى'], 'Nous l’orienterons vers le bon service': ['Lo dirigiremos al servicio adecuado', 'سنوجّهه إلى الخدمة المناسبة'],
+    /* natures de démarche */
+    'Acte de naissance': ['Certificado de nacimiento', 'شهادة ميلاد'], 'Acte de mariage': ['Certificado de matrimonio', 'عقد زواج'], 'Changement d’adresse': ['Cambio de domicilio', 'تغيير العنوان'],
+    'Papiers d’identité': ['Documentos de identidad', 'وثائق الهوية'], 'Aide au logement': ['Ayuda a la vivienda', 'مساعدة السكن'], 'Autorisation de travaux': ['Licencia de obras', 'رخصة أشغال'],
+    'Inscription scolaire ou crèche': ['Inscripción escolar o guardería', 'التسجيل المدرسي أو الحضانة'], 'Accompagnement emploi ou formation': ['Acompañamiento de empleo o formación', 'مرافقة في التوظيف أو التكوين'],
+    'Aide sociale': ['Ayuda social', 'مساعدة اجتماعية'], 'Autre démarche': ['Otro trámite', 'إجراء آخر'],
+    /* délais et types */
+    '3 jours ouvrés': ['3 días laborables', '3 أيام عمل'], '48 heures': ['48 horas', '48 ساعة'], '4 heures (urgence)': ['4 horas (urgencia)', '4 ساعات (استعجال)'], '5 jours ouvrés': ['5 días laborables', '5 أيام عمل'],
+    'Contact': ['Contacto', 'تواصل'], 'Signalement': ['Aviso', 'بلاغ'], 'Démarche': ['Trámite', 'إجراء']
+  };
+  const bi = (fr, en) => { const l = NT.i18n.langue; if (l === 'fr') return fr; const x = TR[fr]; return (l === 'es' && x && x[0]) || (l === 'ar' && x && x[1]) || en; };
   const { echap, $, $$ } = NT.ui;
   const nomService = s => (s ? NT.i18n.choisir(s.nom) : bi('Service à déterminer', 'Service to be determined'));
 
@@ -288,7 +393,7 @@
     function afficherResume(erreurs) {
       const r = $('#resume-erreurs');
       r.innerHTML = `<h2><i class="ph-duotone ph-warning-octagon" aria-hidden="true"></i>${echap(erreurs.length > 1
-        ? bi(`Le formulaire contient ${erreurs.length} erreurs`, `The form contains ${erreurs.length} errors`)
+        ? NT.t('dem.nbErreurs', { n: erreurs.length })
         : bi('Le formulaire contient 1 erreur', 'The form contains 1 error'))}</h2>
         <ul>${erreurs.map((e, i) => `<li><a href="#" data-i="${i}">${echap(e.msg)}</a></li>`).join('')}</ul>`;
       r.hidden = false;
@@ -369,10 +474,10 @@
         ligne(bi('Réponse envoyée à', 'Reply sent to'), d.contactEmail ? echap(d.contactNom + ' · ' + d.contactEmail) : '')
       ].join('');
       const suites = [
-        bi(`Votre demande est transmise au service « ${nomS} ».`, `Your request has been passed to the “${nomS}” service.`),
+        NT.t('dem.transmis', { s: nomS }),
         u ? bi('Vous êtes prévenu dans votre espace à chaque étape : reçue, en cours, traitée.', 'You are notified in your space at each stage: received, in progress, resolved.')
-          : bi(`La réponse sera envoyée à ${d.contactEmail || 'votre adresse e-mail'}.`, `The answer will be sent to ${d.contactEmail || 'your e-mail address'}.`),
-        bi(`Délai de réponse indicatif : ${delai[0]}.`, `Estimated response time: ${delai[1]}.`)
+          : NT.t('dem.reponseA', { e: d.contactEmail || NT.t('dem.votreEmail') }),
+        NT.t('dem.delaiPhrase', { d: bi(delai[0], delai[1]) })
       ];
       const suivi = u
         ? `<a class="btn btn-primaire" href="suivi.html?id=${encodeURIComponent(d.id)}"><i class="ph ph-list-checks" aria-hidden="true"></i>${echap(bi('Suivre ma demande', 'Track my request'))}</a>`
@@ -400,7 +505,7 @@
       $('#btn-copier').addEventListener('click', () => copier(d.id));
       window.scrollTo(0, 0);
       $('#conf-titre').focus();
-      NT.ui.annoncer(bi(`Votre demande a bien été envoyée. Numéro ${d.id}.`, `Your request has been sent. Number ${d.id}.`));
+      NT.ui.annoncer(NT.t('dem.envoyeeNum', { n: d.id }));
       document.title = bi('Demande envoyée', 'Request sent') + ' — Terra Nova';
     }
 
@@ -409,8 +514,9 @@
       const repli = () => {
         const t = document.createElement('textarea'); t.value = texte; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
         document.body.append(t); t.select();
-        try { document.execCommand('copy') ? ok() : NT.ui.toast(bi('Copie impossible, notez le numéro ' + texte, 'Copy failed, please note the number ' + texte), 'warning'); }
-        catch (e) { NT.ui.toast(bi('Copie impossible, notez le numéro ' + texte, 'Copy failed, please note the number ' + texte), 'warning'); }
+        const ko = () => NT.ui.toast(bi('Copie impossible, notez le numéro ', 'Copy failed, please note the number ') + texte, 'warning');
+        try { document.execCommand('copy') ? ok() : ko(); }
+        catch (e) { ko(); }
         t.remove();
       };
       if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(texte).then(ok, repli); else repli();

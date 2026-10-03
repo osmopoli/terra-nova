@@ -13,9 +13,97 @@
     'rdv.rappelCalendrier': 'For a reminder on your phone, also add the appointment to your calendar: the file contains the chosen alarm.',
     'rdv.exemple': 'See an example reminder'
   };
-  NT.i18n.ajouter({ en: EN, es: EN, ar: EN });
+  const ES = {
+    'rdv.titre': 'Pedir cita', 'rdv.intro': 'Tres pasos: el servicio, el horario y la confirmación. Sabrá exactamente cuándo venir y qué traer.',
+    'rdv.e1': 'Elija el servicio y el motivo', 'rdv.serviceLegende': 'Servicio', 'rdv.motif': 'Motivo de la cita', 'rdv.versJour': 'Elegir el día',
+    'rdv.e2': 'Elija el día y la hora', 'rdv.jour': 'Día', 'rdv.heure': 'Hora de inicio (30 minutos)', 'rdv.heureAide': 'Elija primero un día para ver los horarios libres.',
+    'rdv.retour': 'Atrás', 'rdv.versRecap': 'Ver el resumen', 'rdv.e3': 'Compruebe y confirme', 'rdv.rappelLegende': '¿Desea un recordatorio?', 'rdv.confirmer': 'Confirmar la cita',
+    'rdv.mes': 'Mis citas', 'rdv.avenir': 'Próximas', 'rdv.passes': 'Pasadas y canceladas',
+    'rdv.rappelTitre': '¿Cómo funciona el recordatorio?',
+    'rdv.rappelTexte': 'El recordatorio llega como notificación en su espacio (la campana en la parte superior de la página) en el momento elegido: 24 h antes, 2 h antes o ambos. La plataforma comprueba sus citas en cada página que abre.',
+    'rdv.rappelCalendrier': 'Para un recordatorio en su teléfono, añada también la cita a su calendario: el archivo contiene la alarma elegida.',
+    'rdv.exemple': 'Ver un ejemplo de recordatorio'
+  };
+  const AR = {
+    'rdv.titre': 'حجز موعد', 'rdv.intro': 'ثلاث خطوات: الخدمة، ثم الوقت، ثم التأكيد. ستعرف بدقة متى تأتي وماذا تحضر.',
+    'rdv.e1': 'اختر الخدمة والسبب', 'rdv.serviceLegende': 'الخدمة', 'rdv.motif': 'سبب الموعد', 'rdv.versJour': 'اختيار اليوم',
+    'rdv.e2': 'اختر اليوم والساعة', 'rdv.jour': 'اليوم', 'rdv.heure': 'ساعة البداية (30 دقيقة)', 'rdv.heureAide': 'اختر يوماً أولاً لرؤية الأوقات المتاحة.',
+    'rdv.retour': 'رجوع', 'rdv.versRecap': 'عرض الملخص', 'rdv.e3': 'تحقق وأكّد', 'rdv.rappelLegende': 'هل تريد تذكيراً؟', 'rdv.confirmer': 'تأكيد الموعد',
+    'rdv.mes': 'مواعيدي', 'rdv.avenir': 'القادمة', 'rdv.passes': 'السابقة والملغاة',
+    'rdv.rappelTitre': 'كيف يعمل التذكير؟',
+    'rdv.rappelTexte': 'يصل التذكير كإشعار في فضائك (الجرس أعلى الصفحة) في الوقت الذي اخترته: قبل 24 ساعة، أو قبل ساعتين، أو كليهما. تتحقق المنصة من مواعيدك في كل صفحة تفتحها.',
+    'rdv.rappelCalendrier': 'للحصول على تذكير على هاتفك، أضف الموعد أيضاً إلى تقويمك: يحتوي الملف على المنبّه المختار.',
+    'rdv.exemple': 'عرض مثال على التذكير'
+  };
+  NT.i18n.ajouter({ en: EN, es: ES, ar: AR });
 
-  const bi = (fr, en) => (NT.i18n.langue === 'fr' ? fr : en);
+  /* Textes courts : FR et EN dans l'appel bi(fr, en) ; ES et AR dans cette table (clé = texte FR), repli sur EN. */
+  const TR = {
+    'à': ['a las', 'الساعة'], 'Étapes du rendez-vous': ['Pasos de la cita', 'خطوات الموعد'], 'étape ': ['paso ', 'الخطوة '],
+    ', terminée': [', completada', '، مكتملة'], ', en cours': [', en curso', '، حالية'], 'Non réservable : ': ['No reservable: ', 'غير قابل للحجز: '],
+    'Aucun service ne propose de rendez-vous pour le moment.': ['Ningún servicio ofrece citas por el momento.', 'لا توجد خدمة تقدم مواعيد حالياً.'],
+    'Choisir le motif…': ['Elegir el motivo…', 'اختر السبب…'], 'Choisissez d’abord un service': ['Elija primero un servicio', 'اختر خدمة أولاً'],
+    ' n’est pas réservable pour le moment. ': [' no admite reservas por el momento. ', ' غير قابلة للحجز حالياً. '],
+    ' ne propose pas de rendez-vous en ligne. Choisissez un autre service.': [' no ofrece citas en línea. Elija otro servicio.', ' لا تقدم مواعيد عبر الإنترنت. اختر خدمة أخرى.'],
+    'Choisissez un service pour continuer.': ['Elija un servicio para continuar.', 'اختر خدمة للمتابعة.'], 'Choisissez le motif du rendez-vous.': ['Elija el motivo de la cita.', 'اختر سبب الموعد.'],
+    ' créneaux libres': [' horarios libres', ' أوقات متاحة'], 'complet': ['completo', 'ممتلئ'], 'libres': ['libres', 'متاحة'], 'Complet': ['Completo', 'ممتلئ'],
+    'Jour choisi : ': ['Día elegido: ', 'اليوم المختار: '], 'indisponible': ['no disponible', 'غير متاح'], 'Pris': ['Ocupado', 'محجوز'],
+    'Créneau choisi : ': ['Horario elegido: ', 'الوقت المختار: '], 'Aucun créneau choisi pour le moment.': ['Ningún horario elegido por el momento.', 'لم يُختر أي وقت بعد.'],
+    'Choisissez une heure pour continuer.': ['Elija una hora para continuar.', 'اختر ساعة للمتابعة.'], 'Choisissez un jour puis une heure pour continuer.': ['Elija un día y luego una hora para continuar.', 'اختر يوماً ثم ساعة للمتابعة.'],
+    'Votre rendez-vous : ': ['Su cita: ', 'موعدك: '], 'Service': ['Servicio', 'الخدمة'], 'Motif': ['Motivo', 'السبب'], 'Durée': ['Duración', 'المدة'], 'Lieu': ['Lugar', 'المكان'],
+    'À confirmer': ['Por confirmar', 'قيد التأكيد'], 'Agent': ['Agente', 'العون'], 'Pièces à apporter': ['Documentos que debe traer', 'الوثائق المطلوبة'], 'minutes': ['minutos', 'دقيقة'],
+    'Confirmation…': ['Confirmando…', 'جارٍ التأكيد…'], 'Confirmer le rendez-vous': ['Confirmar la cita', 'تأكيد الموعد'],
+    'Ce créneau vient d’être pris. Choisissez-en un autre.': ['Este horario acaba de ocuparse. Elija otro.', 'تم حجز هذا الوقت للتو. اختر وقتاً آخر.'],
+    'Votre rendez-vous est confirmé': ['Su cita está confirmada', 'تم تأكيد موعدك'], 'Rappel': ['Recordatorio', 'التذكير'], 'N’oubliez pas d’apporter': ['No olvide traer', 'لا تنسَ إحضار'],
+    'Ajouter à mon calendrier': ['Añadir a mi calendario', 'إضافة إلى تقويمي'], 'Voir mes rendez-vous': ['Ver mis citas', 'عرض مواعيدي'], 'Prendre un autre rendez-vous': ['Pedir otra cita', 'حجز موعد آخر'],
+    'Rendez-vous confirmé : ': ['Cita confirmada: ', 'تم تأكيد الموعد: '], 'Fichier du calendrier téléchargé.': ['Archivo de calendario descargado.', 'تم تنزيل ملف التقويم.'],
+    'Annulé': ['Cancelada', 'ملغى'], 'Confirmé': ['Confirmada', 'مؤكد'], 'Passé': ['Pasada', 'منقضٍ'], 'Rappel : ': ['Recordatorio: ', 'تذكير: '], ' avant': [' antes', ' قبل الموعد'],
+    'Sans rappel': ['Sin recordatorio', 'بدون تذكير'], 'Annuler ce rendez-vous': ['Cancelar esta cita', 'إلغاء هذا الموعد'],
+    'Aucun rendez-vous à venir.': ['No hay citas próximas.', 'لا توجد مواعيد قادمة.'], 'Aucun rendez-vous passé ou annulé.': ['No hay citas pasadas ni canceladas.', 'لا توجد مواعيد سابقة أو ملغاة.'],
+    'Annuler ce rendez-vous ?': ['¿Cancelar esta cita?', 'إلغاء هذا الموعد؟'], 'Le créneau sera de nouveau proposé aux autres habitants.': ['El horario volverá a ofrecerse a los demás habitantes.', 'سيُعرض هذا الوقت مجدداً على السكان الآخرين.'],
+    'Garder le rendez-vous': ['Mantener la cita', 'الاحتفاظ بالموعد'], 'Oui, annuler': ['Sí, cancelar', 'نعم، إلغاء'], 'Rendez-vous annulé.': ['Cita cancelada.', 'تم إلغاء الموعد.'],
+    'À apporter : ': ['Traer: ', 'أحضر: '], '⏰ Rappel : rendez-vous à ': ['⏰ Recordatorio: cita a las ', '⏰ تذكير: موعد الساعة '], ' (dans moins de 2 h)': [' (en menos de 2 h)', ' (خلال أقل من ساعتين)'],
+    '⏰ Rappel : rendez-vous ': ['⏰ Recordatorio: cita ', '⏰ تذكير: موعد '],
+    '⏰ Rappel (exemple) : rendez-vous demain à 10 h 30': ['⏰ Recordatorio (ejemplo): cita mañana a las 10:30', '⏰ تذكير (مثال): موعد غداً الساعة 10:30'],
+    'État civil — Hôtel de ville, niveau 1. À apporter : pièce d’identité, justificatif de domicile.': ['Registro civil — Ayuntamiento, nivel 1. Traer: documento de identidad, justificante de domicilio.', 'الحالة المدنية — دار البلدية، الطابق 1. أحضر: وثيقة هوية، إثبات سكن.'],
+    'Exemple de rappel ajouté : ouvrez la cloche en haut de la page pour le lire.': ['Ejemplo de recordatorio añadido: abra la campana en la parte superior de la página para leerlo.', 'تمت إضافة مثال على التذكير: افتح الجرس أعلى الصفحة لقراءته.'],
+    /* étapes et rappels */
+    'Service et motif': ['Servicio y motivo', 'الخدمة والسبب'], 'Jour et heure': ['Día y hora', 'اليوم والساعة'], 'Confirmation': ['Confirmación', 'التأكيد'],
+    '24 heures avant': ['24 horas antes', 'قبل 24 ساعة'], '2 heures avant': ['2 horas antes', 'قبل ساعتين'], '24 heures et 2 heures avant': ['24 horas y 2 horas antes', 'قبل 24 ساعة وقبل ساعتين'], 'Aucun rappel': ['Sin recordatorio', 'بدون تذكير'],
+    /* motifs */
+    'Renseignement': ['Información', 'استفسار'], 'Autre motif': ['Otro motivo', 'سبب آخر'],
+    'Acte de naissance ou de mariage': ['Certificado de nacimiento o de matrimonio', 'شهادة ميلاد أو عقد زواج'], 'Changement d’adresse': ['Cambio de domicilio', 'تغيير العنوان'], 'Papiers d’identité': ['Documentos de identidad', 'وثائق الهوية'],
+    'Vaccination': ['Vacunación', 'تطعيم'], 'Consultation de prévention': ['Consulta de prevención', 'استشارة وقائية'], 'Suivi médical': ['Seguimiento médico', 'متابعة طبية'],
+    'Demande de module d’habitation': ['Solicitud de módulo de vivienda', 'طلب وحدة سكنية'], 'Aide au logement': ['Ayuda a la vivienda', 'مساعدة السكن'], 'Travaux dans mon module': ['Obras en mi módulo', 'أشغال في وحدتي السكنية'],
+    'Inscription scolaire': ['Inscripción escolar', 'التسجيل المدرسي'], 'Place en crèche': ['Plaza en guardería', 'مكان في الحضانة'], 'Cantine et périscolaire': ['Comedor y actividades extraescolares', 'المطعم المدرسي والأنشطة'],
+    'Recherche d’emploi': ['Búsqueda de empleo', 'البحث عن عمل'], 'Formation': ['Formación', 'تكوين'], 'Arrivée dans la colonie': ['Llegada a la colonia', 'الوصول إلى المستعمرة'],
+    'Aide d’urgence': ['Ayuda de urgencia', 'مساعدة طارئة'], 'Aide pour un dossier': ['Ayuda con un expediente', 'مساعدة في ملف'], 'Accompagnement': ['Acompañamiento', 'مرافقة'],
+    'Permis d’extension de module': ['Licencia de ampliación de módulo', 'رخصة توسيع وحدة سكنية'], 'Plans du dôme': ['Planos de la cúpula', 'مخططات القبة'], 'Autorisation de travaux': ['Licencia de obras', 'رخصة أشغال']
+  };
+  const bi = (fr, en) => { const l = NT.i18n.langue; if (l === 'fr') return fr; const x = TR[fr]; return (l === 'es' && x && x[0]) || (l === 'ar' && x && x[1]) || en; };
+  /* Pièces à apporter et agent générique : stockés en FR dans le rendez-vous, traduits à l'affichage [en, es, ar] */
+  const PIECES = {
+    'Pièce d’identité': ['ID document', 'Documento de identidad', 'وثيقة هوية'],
+    'Justificatif de domicile de moins de 3 mois': ['Proof of address under 3 months old', 'Justificante de domicilio de menos de 3 meses', 'إثبات سكن لا يتجاوز 3 أشهر'],
+    'Livret de famille (si acte concerné)': ['Family record book (if relevant)', 'Libro de familia (si procede)', 'دفتر العائلة (إن كان معنياً)'],
+    'Carnet de santé ou de vaccination': ['Health or vaccination record', 'Cartilla sanitaria o de vacunación', 'الدفتر الصحي أو دفتر التطعيم'],
+    'Carte de couverture santé de la colonie': ['Colony health coverage card', 'Tarjeta de cobertura sanitaria de la colonia', 'بطاقة التغطية الصحية للمستعمرة'],
+    'Justificatif de revenus': ['Proof of income', 'Justificante de ingresos', 'إثبات الدخل'],
+    'Dernier avis de charges du module': ['Latest module service-charge notice', 'Último aviso de gastos del módulo', 'آخر إشعار بمصاريف الوحدة السكنية'],
+    'Pièce d’identité du responsable légal': ['Legal guardian’s ID', 'Documento de identidad del responsable legal', 'وثيقة هوية الولي الشرعي'],
+    'Livret de famille': ['Family record book', 'Libro de familia', 'دفتر العائلة'],
+    'Carnet de vaccination de l’enfant': ['Child’s vaccination record', 'Cartilla de vacunación del niño', 'دفتر تطعيم الطفل'],
+    'Justificatif de domicile': ['Proof of address', 'Justificante de domicilio', 'إثبات سكن'],
+    'CV à jour': ['Up-to-date CV', 'CV actualizado', 'سيرة ذاتية محدّثة'],
+    'Diplômes ou attestations de formation': ['Diplomas or training certificates', 'Títulos o certificados de formación', 'شهادات أو إثباتات تكوين'],
+    'Derniers justificatifs de ressources': ['Latest proof of resources', 'Últimos justificantes de recursos', 'آخر إثباتات الموارد'],
+    'Plan du module concerné': ['Plan of the module concerned', 'Plano del módulo correspondiente', 'مخطط الوحدة السكنية المعنية'],
+    'Description du projet de travaux': ['Description of the planned works', 'Descripción del proyecto de obras', 'وصف مشروع الأشغال'],
+    'Agent d’accueil': ['Front desk officer', 'Agente de recepción', 'عون الاستقبال']
+  };
+  const piece = p => { const x = PIECES[p], i = { en: 0, es: 1, ar: 2 }[NT.i18n.langue]; return x && i !== undefined ? x[i] : p; };
+  /* Motif stocké en FR dans le rendez-vous : retrouve sa version EN dans INFOS pour l'afficher dans la langue courante */
+  const motifTxt = fr => { const m = [GENERIQUE].concat(Object.values(INFOS)).flatMap(i => i.motifs).find(x => x[0] === fr); return m ? bi(m[0], m[1]) : fr; };
   const { echap, $, $$ } = NT.ui;
   const loc = () => ({ fr: 'fr-FR', en: 'en-GB', es: 'es-ES', ar: 'ar' }[NT.i18n.langue] || 'fr-FR');
   const pad = n => String(n).padStart(2, '0');
@@ -212,12 +300,12 @@
         <dl class="dm-recap">
           ${ligne(bi('Service', 'Service'), echap(nomService(s)))}
           ${ligne(bi('Motif', 'Reason'), echap(bi(m[0], m[1])))}
-          ${ligne(bi('Durée', 'Duration'), echap(bi(DUREE + ' minutes', DUREE + ' minutes')))}
+          ${ligne(bi('Durée', 'Duration'), echap(DUREE + ' ' + bi('minutes', 'minutes')))}
           ${ligne(bi('Lieu', 'Place'), echap(s.lieu || bi('À confirmer', 'To be confirmed')))}
-          ${ligne(bi('Agent', 'Staff member'), echap(inf.agent))}
+          ${ligne(bi('Agent', 'Staff member'), echap(piece(inf.agent)))}
         </dl>
         <div class="dm-bloc-conf"><h3><i class="ph-duotone ph-folder-simple" aria-hidden="true"></i>${echap(bi('Pièces à apporter', 'Documents to bring'))}</h3>
-          <ul class="dm-pieces">${inf.pieces.map(p => `<li>${echap(p)}</li>`).join('')}</ul></div>`;
+          <ul class="dm-pieces">${inf.pieces.map(p => `<li>${echap(piece(p))}</li>`).join('')}</ul></div>`;
       $('#liste-rappels').innerHTML = Object.keys(RAPPELS).map(k => `
         <label class="dm-choix compact"><input type="radio" name="rappel" value="${k}" ${etat.rappel === k ? 'checked' : ''}>
           <span class="dm-choix-corps"><i class="ph-duotone ${RAPPELS[k].icone} dm-ico" aria-hidden="true"></i><strong>${echap(bi(RAPPELS[k].fr, RAPPELS[k].en))}</strong></span>
@@ -263,14 +351,14 @@
         <div class="gauche">
           <div class="dm-bloc-conf"><dl class="dm-recap">
             ${ligne(bi('Service', 'Service'), echap(nomService(s)))}
-            ${ligne(bi('Motif', 'Reason'), echap(r.motif))}
-            ${ligne(bi('Durée', 'Duration'), echap(DUREE + ' minutes'))}
+            ${ligne(bi('Motif', 'Reason'), echap(motifTxt(r.motif)))}
+            ${ligne(bi('Durée', 'Duration'), echap(DUREE + ' ' + bi('minutes', 'minutes')))}
             ${ligne(bi('Lieu', 'Place'), echap(r.lieu))}
-            ${ligne(bi('Agent', 'Staff member'), echap(r.agent))}
+            ${ligne(bi('Agent', 'Staff member'), echap(piece(info(r.serviceId).agent)))}
             ${ligne(bi('Rappel', 'Reminder'), echap(bi(rap.fr, rap.en)))}
           </dl></div>
           <div class="dm-bloc-conf"><h3><i class="ph-duotone ph-folder-simple" aria-hidden="true"></i>${echap(bi('N’oubliez pas d’apporter', 'Remember to bring'))}</h3>
-            <ul class="dm-pieces">${(r.pieces || []).map(p => `<li>${echap(p)}</li>`).join('')}</ul></div>
+            <ul class="dm-pieces">${(r.pieces || []).map(p => `<li>${echap(piece(p))}</li>`).join('')}</ul></div>
         </div>
         <div class="dm-actions">
           <button class="btn btn-primaire" type="button" id="btn-ics"><i class="ph ph-calendar-plus" aria-hidden="true"></i>${echap(bi('Ajouter à mon calendrier', 'Add to my calendar'))}</button>
@@ -299,7 +387,7 @@
       const l = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Terra Nova//Rendez-vous//FR', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'BEGIN:VEVENT',
         'UID:' + r.id + '@terra-nova.nova-terra', 'DTSTAMP:' + fmtU(new Date()), 'DTSTART:' + fmtU(deb), 'DTEND:' + fmtU(fin),
         'SUMMARY:' + escIcs(r.libelle || 'Rendez-vous Terra Nova'), 'LOCATION:' + escIcs(r.lieu),
-        'DESCRIPTION:' + escIcs('Agent : ' + (r.agent || '') + (r.pieces && r.pieces.length ? '\nÀ apporter : ' + r.pieces.join(', ') : '')), 'STATUS:CONFIRMED'];
+        'DESCRIPTION:' + escIcs('Agent : ' + info(r.serviceId).agent + (r.pieces && r.pieces.length ? '\nÀ apporter : ' + r.pieces.join(', ') : '')), 'STATUS:CONFIRMED'];
       avants.forEach(h => l.push('BEGIN:VALARM', 'TRIGGER:-PT' + h + 'H', 'ACTION:DISPLAY', 'DESCRIPTION:' + escIcs('Rappel : ' + (r.libelle || 'rendez-vous') + ' dans ' + h + ' h'), 'END:VALARM'));
       l.push('END:VEVENT', 'END:VCALENDAR');
       return l.join('\r\n') + '\r\n';
@@ -321,7 +409,7 @@
         if (r.statut !== 'confirme' || !rp.actif || !(rp.avants || []).includes(2) || rp.avant === 2 || rp.envoye2) return;   // avant===2 : géré par le socle
         const debut = new Date(r.debut).getTime();
         if (debut > t && debut - t <= 2 * 3600 * 1000) {
-          NT.notif.ajouter(u.id, '⏰ Rappel : rendez-vous à ' + heureTxt(new Date(r.debut)) + ' (dans moins de 2 h)', (r.libelle || '') + (r.lieu ? ' — ' + r.lieu : ''), 'rendez-vous.html', 'importante');
+          NT.notif.ajouter(u.id, bi('⏰ Rappel : rendez-vous à ', '⏰ Reminder: appointment at ') + heureTxt(new Date(r.debut)) + bi(' (dans moins de 2 h)', ' (in less than 2 h)'), (r.libelle || '') + (r.lieu ? ' — ' + r.lieu : ''), 'rendez-vous.html', 'importante');
           NT.store.update('rdv', r.id, x => ({ rappel: Object.assign({}, x.rappel, { envoye2: true }) }));
         }
       });
@@ -338,7 +426,7 @@
       const rp = r.rappel && r.rappel.actif ? ((r.rappel.avants || [r.rappel.avant]).map(h => h + ' h').join(' + ')) : '';
       return `<li class="${annule ? 'annule' : ''}"><h4>${echap(s ? nomService(s) : r.libelle)} ${badge}</h4>
         <p style="margin:0"><strong>${echap(quand(d))}</strong></p>
-        <p class="meta"><i class="ph ph-map-pin" aria-hidden="true"></i> ${echap(r.lieu || '')}${r.agent ? ' · ' + echap(r.agent) : ''}${r.motif ? ' · ' + echap(r.motif) : ''}</p>
+        <p class="meta"><i class="ph ph-map-pin" aria-hidden="true"></i> ${echap(r.lieu || '')} · ${echap(piece(info(r.serviceId).agent))}${r.motif ? ' · ' + echap(motifTxt(r.motif)) : ''}</p>
         ${avenir && !annule ? `<p class="meta"><i class="ph ph-bell" aria-hidden="true"></i> ${echap(rp ? bi('Rappel : ', 'Reminder: ') + rp + bi(' avant', ' before') : bi('Sans rappel', 'No reminder'))}</p>
           <div class="ligne"><button class="btn" type="button" data-ics="${echap(r.id)}"><i class="ph ph-calendar-plus" aria-hidden="true"></i>${echap(bi('Ajouter à mon calendrier', 'Add to my calendar'))}</button>
           <button class="btn btn-danger" type="button" data-annuler="${echap(r.id)}"><i class="ph ph-x" aria-hidden="true"></i>${echap(bi('Annuler ce rendez-vous', 'Cancel this appointment'))}</button></div>` : ''}</li>`;
@@ -385,8 +473,8 @@
       let titre, texte;
       if (prochain) {
         const d = new Date(prochain.debut);
-        titre = '⏰ Rappel : rendez-vous ' + d.toLocaleString(loc(), { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
-        texte = (prochain.libelle || '') + (prochain.lieu ? ' — ' + prochain.lieu : '') + (prochain.pieces && prochain.pieces.length ? '. ' + bi('À apporter : ', 'Bring: ') + prochain.pieces.join(', ') : '');
+        titre = bi('⏰ Rappel : rendez-vous ', '⏰ Reminder: appointment ') + d.toLocaleString(loc(), { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
+        texte = (prochain.libelle || '') + (prochain.lieu ? ' — ' + prochain.lieu : '') + (prochain.pieces && prochain.pieces.length ? '. ' + bi('À apporter : ', 'Bring: ') + prochain.pieces.map(piece).join(', ') : '');
       } else {
         titre = bi('⏰ Rappel (exemple) : rendez-vous demain à 10 h 30', '⏰ Reminder (example): appointment tomorrow at 10:30');
         texte = bi('État civil — Hôtel de ville, niveau 1. À apporter : pièce d’identité, justificatif de domicile.', 'Civil registry — City hall, level 1. Bring: ID, proof of address.');
