@@ -1,13 +1,81 @@
 import { DateTime } from 'luxon'
 import type { HttpContext } from '@adonisjs/core/http'
 import hash from '@adonisjs/core/services/hash'
-import { DEFAULT_ROLE } from '#constants/domain'
+import {
+  CONTACT_SERVICES,
+  CONTACT_STATUSES,
+  DATA_EXPORT_MAX_CONNECTIONS,
+  DATA_SECTIONS,
+  DEFAULT_ROLE,
+  LOGIN_OUTCOMES,
+  ROLES,
+  type DataSection,
+} from '#constants/domain'
+import ContactMessage from '#models/contact_message'
+import LoginAttempt from '#models/login_attempt'
 import { checkLock, lockMessage, recordAttempt } from '#services/login_guard'
 import { deleteAccountValidator, updateProfileValidator } from '#validators/auth'
 
 export default class ProfileController {
   async show({ auth }: HttpContext) {
     return auth.getUserOrFail()
+  }
+
+  /**
+   * Export des données personnelles (portabilité, WEBC-82) : uniquement `auth.user`, aucun id
+   * lu dans la requête. Sérialisation explicite : ni mot de passe, ni jeton, ni champ interne.
+   */
+  async dataExport({ auth }: HttpContext) {
+    const user = auth.getUserOrFail()
+    const [messages, attempts] = await Promise.all([
+      ContactMessage.query().where('userId', user.id).orderBy('createdAt', 'desc'),
+      LoginAttempt.query()
+        .where('email', user.email)
+        .orderBy('attemptedAt', 'desc')
+        .limit(DATA_EXPORT_MAX_CONNECTIONS),
+    ])
+
+    const data: Record<DataSection, unknown> = {
+      identite: {
+        nomComplet: user.fullName,
+        email: user.email,
+        profil: ROLES[user.role],
+        compteCreeLe: user.createdAt.toISO(),
+        premiereConnexionTerminee: user.onboardedAt?.toISO() ?? null,
+      },
+      preferences: [],
+      demandes: messages.map((m) => ({
+        numeroSuivi: m.trackingCode,
+        objet: m.subject,
+        service: CONTACT_SERVICES[m.service] ?? m.service,
+        message: m.message,
+        statut: CONTACT_STATUSES[m.status] ?? m.status,
+        envoyeLe: m.createdAt.toISO(),
+      })),
+      rendez_vous: [],
+      notifications: [],
+      connexions: attempts.map((a) => ({
+        date: new Date(a.attemptedAt).toISOString(),
+        resultat: LOGIN_OUTCOMES[a.outcome] ?? a.outcome,
+        adresseIp: a.ip,
+      })),
+    }
+
+    return {
+      generatedAt: new Date().toISOString(),
+      format: 'nova-terra-data-export/1',
+      sections: (Object.keys(DATA_SECTIONS) as DataSection[]).map((key) => {
+        const value = data[key]
+        return {
+          key,
+          label: DATA_SECTIONS[key].label,
+          purpose: DATA_SECTIONS[key].purpose,
+          retention: DATA_SECTIONS[key].retention,
+          count: Array.isArray(value) ? value.length : 1,
+          data: value,
+        }
+      }),
+    }
   }
 
   /** Seul le nom est modifiable ici (pas d'e-mail ni de mot de passe). */

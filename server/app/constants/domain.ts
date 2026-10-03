@@ -126,6 +126,49 @@ export type ContentLanguage = keyof typeof CONTENT_LANGUAGES
 export const CONTENT_LANGUAGE_VALUES = Object.keys(CONTENT_LANGUAGES) as ContentLanguage[]
 export const DEFAULT_CONTENT_LANGUAGE: ContentLanguage = 'fr'
 
+/** Nombre maximum de connexions récentes incluses dans l'export des données. */
+export const DATA_EXPORT_MAX_CONNECTIONS = 50
+
+/**
+ * Rubriques de l'export des données personnelles (WEBC-82, GET /api/me/data-export).
+ * `purpose` : à quoi sert la donnée ; `retention` : combien de temps elle est conservée.
+ */
+export const DATA_SECTIONS = {
+  identite: {
+    label: 'Identité et compte',
+    purpose: 'Vous identifier, vous connecter et appliquer les droits de votre profil.',
+    retention: 'Tant que votre compte existe. Supprimé définitivement avec le compte.',
+  },
+  preferences: {
+    label: 'Préférences de langue et d’accessibilité',
+    purpose: 'Adapter l’affichage à vos besoins (langue, taille du texte, contraste).',
+    retention:
+      'Enregistrées uniquement dans votre navigateur, jamais sur nos serveurs : effacées avec les données du navigateur.',
+  },
+  demandes: {
+    label: 'Demandes et signalements',
+    purpose: 'Transmettre vos messages aux services municipaux et en suivre le traitement.',
+    retention: 'Tant que votre compte existe. Supprimées avec le compte.',
+  },
+  rendez_vous: {
+    label: 'Rendez-vous',
+    purpose: 'Gérer vos rendez-vous avec les services municipaux.',
+    retention: 'Aucune donnée : la prise de rendez-vous en ligne n’est pas encore ouverte.',
+  },
+  notifications: {
+    label: 'Notifications',
+    purpose: 'Vous prévenir de l’avancement de vos démarches.',
+    retention: 'Aucune donnée de notification n’est conservée pour l’instant.',
+  },
+  connexions: {
+    label: 'Connexions récentes',
+    purpose: 'Protéger votre compte contre les connexions abusives (limitation des essais).',
+    retention:
+      'Journal de sécurité conservé tant que la ville en a besoin pour protéger le service ; non supprimé avec le compte.',
+  },
+} as const
+export type DataSection = keyof typeof DATA_SECTIONS
+
 /** Listes fermées exposées au front par GET /api/meta (clé -> libellé). */
 export const META: Record<string, Record<string, string>> = {
   roles: ROLES,
@@ -136,4 +179,7 @@ export const META: Record<string, Record<string, string>> = {
   loginOutcomes: LOGIN_OUTCOMES,
   loginBlockScopes: LOGIN_BLOCK_SCOPES,
   contentLanguages: CONTENT_LANGUAGES,
+  dataSections: Object.fromEntries(
+    Object.entries(DATA_SECTIONS).map(([key, section]) => [key, section.label])
+  ),
 }

@@ -74,6 +74,7 @@ router
         router.post('/auth/logout', [AuthController, 'logout'])
         router.get('/me', [ProfileController, 'show'])
         router.patch('/me', [ProfileController, 'update'])
+        router.get('/me/data-export', [ProfileController, 'dataExport'])
         router.post('/me/onboarding', [ProfileController, 'completeOnboarding'])
         router.delete('/me', [ProfileController, 'destroy'])
 
