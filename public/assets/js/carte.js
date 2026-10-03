@@ -188,11 +188,17 @@
     { id: 'refraichi-sud', nom: ['Espace rafraîchi, dôme des Pionniers', 'Cooling space, Pioneers dome'], type: 'autre', serviceId: '', canicule: true, quartier: 'Sud', adresse: 'Dôme des Pionniers, quartier Sud', hr: ['Tous les jours 8h–22h pendant la vague de chaleur', 'Every day 8am–10pm during the heat wave'], plages: [[J7, '08:00', '22:00']], tel: '01 55 00 17 10', pmr: true, arret: 'pionniers', x: 330, y: 520, icone: 'ph-snowflake' },
     { id: 'refraichi-est', nom: ['Espace rafraîchi, Résidence Aurore', 'Cooling space, Aurore residence'], type: 'autre', serviceId: '', canicule: true, quartier: 'Est', adresse: 'Salle commune, Résidence Aurore, quartier Est', hr: ['Tous les jours 9h–21h pendant la vague de chaleur', 'Every day 9am–9pm during the heat wave'], plages: [[J7, '09:00', '21:00']], tel: '01 55 00 17 20', pmr: true, arret: 'aurore', x: 705, y: 345, icone: 'ph-snowflake' }
   ];
-  const TYPES = ['urgence', 'sante', 'administration', 'social', 'transport', 'autre'];
-  const ICONE_TYPE = { urgence: 'ph-first-aid-kit', sante: 'ph-stethoscope', administration: 'ph-buildings', social: 'ph-hand-heart', transport: 'ph-tram', autre: 'ph-map-pin' };
+  const TYPES = ['urgence', 'sante', 'administration', 'social', 'association', 'transport', 'autre'];
+  const ICONE_TYPE = { urgence: 'ph-first-aid-kit', sante: 'ph-stethoscope', administration: 'ph-buildings', social: 'ph-hand-heart', association: 'ph-handshake', transport: 'ph-tram', autre: 'ph-map-pin' };
+  /* Vague 14 (F74) : associations partenaires (assets/js/associations.js), libellés du type de lieu */
+  NT.i18n.ajouter({ fr: { 'cm.t.association': 'Associations partenaires', 'cm.fiche': 'Voir la fiche de l’association' }, en: { 'cm.t.association': 'Partner associations', 'cm.fiche': 'See the association card' },
+    es: { 'cm.t.association': 'Asociaciones colaboradoras', 'cm.fiche': 'Ver la ficha de la asociación' }, ar: { 'cm.t.association': 'الجمعيات الشريكة', 'cm.fiche': 'عرض بطاقة الجمعية' } });
 
   /* ---------- Code de page ---------- */
   NT.pret(() => {
+    // F74 : les associations partenaires deviennent des lieux du plan (horaires venant du serveur, modifiables par les agents)
+    if (NT.assos) NT.assos.liste().forEach(a => { if (!LIEUX.some(l => l.id === a.id)) LIEUX.push({ id: a.id, nom: [a.nom, a.nom], type: 'association', serviceId: '', quartier: a.quartier, adresse: a.adresse,
+      hr: [NT.assos.horairesCourts(a) || '—', NT.assos.horairesCourts(a) || '—'], plages: a.plages || [], tel: a.tel, pmr: !!a.pmr, arret: a.arret, x: a.x, y: a.y, icone: a.icone, asso: a }); });
     const t = NT.t;
     const { echap } = NT.ui;
     const $ = id => document.getElementById(id);
@@ -298,7 +304,7 @@
     }
 
     /* ----- Filtres ----- */
-    const CHIPS = [['', 'cm.tous'], ['sante', 'cm.t.sante'], ['administration', 'cm.t.administration'], ['social', 'cm.t.social'], ['transport', 'cm.t.transport'], ['autre', 'cm.t.autre']];
+    const CHIPS = [['', 'cm.tous'], ['sante', 'cm.t.sante'], ['administration', 'cm.t.administration'], ['social', 'cm.t.social'], ['association', 'cm.t.association'], ['transport', 'cm.t.transport'], ['autre', 'cm.t.autre']];
     function dessinerControles() {
       $('cm-chips').innerHTML = CHIPS.map(([v, k]) => `<button type="button" class="cm-chip" data-type="${v}" aria-pressed="false">${echap(t(k))}</button>`).join('');
       $('cm-opts').innerHTML = `<button type="button" class="cm-chip" data-opt="ouverts" aria-pressed="false"><i class="ph ph-clock" aria-hidden="true"></i>${echap(t('cm.ouverts'))}</button>
@@ -318,7 +324,7 @@
     function norm(s) { return String(s == null ? '' : s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim(); }
     function texteRecherche(l) {
       const s = serviceDe(l);
-      return norm([l.nom.join(' '), typeLabel(l.type), l.type, l.quartier, qLabel(l.quartier), l.adresse, l.hr.join(' '), arretNom(l.arret), l.id.replace(/-/g, ' '), s ? NT.i18n.choisir(s.nom) + ' ' + s.nom.fr : '', l.canicule ? 'canicule chaleur climatise rafraichi' : ''].join(' | '));
+      return norm([l.nom.join(' '), typeLabel(l.type), l.type, l.quartier, qLabel(l.quartier), l.adresse, l.hr.join(' '), arretNom(l.arret), l.id.replace(/-/g, ' '), s ? NT.i18n.choisir(s.nom) + ' ' + s.nom.fr : '', l.canicule ? 'canicule chaleur climatise rafraichi' : '', l.asso ? 'association partenaire ' + NT.assos.aide(l.asso).join(' ') + ' ' + (l.asso.themes || []).join(' ') : ''].join(' | '));
     }
 
     /* ----- Liste ----- */
@@ -426,6 +432,10 @@
           <div><dt><i class="ph ph-phone" aria-hidden="true"></i>${echap(t('cm.tel'))}</dt><dd><a href="${echap(lienTel)}">${echap(l.tel)}</a></dd></div>
           <div><dt><i class="ph ph-wheelchair" aria-hidden="true"></i>${echap(t('cm.acces'))}</dt><dd>${echap(t(l.pmr ? 'cm.pmrOui' : 'cm.pmrNon'))}</dd></div>
         </dl>
+        ${l.asso ? `<div class="cm-asso"><h3>${echap(t('as.aide'))}</h3><ul>${NT.assos.aide(l.asso).map(x => `<li>${echap(x)}</li>`).join('')}</ul>
+          ${l.asso.info ? `<p class="cm-note"><i class="ph-duotone ph-info" aria-hidden="true"></i><span>${echap(l.asso.info)}</span></p>` : ''}
+          <div class="cm-actions"><a class="btn btn-primaire" href="${echap(lienTel)}"><i class="ph ph-phone-call" aria-hidden="true"></i>${echap(t('as.appeler'))}</a>
+          <a class="btn" href="services.html#asso-${encodeURIComponent(l.id.replace(/^asso-/, ''))}"><i class="ph ph-hand-heart" aria-hidden="true"></i>${echap(t('cm.fiche'))}</a></div></div>` : ''}
         ${l.canicule ? `<p class="cm-note" style="margin-top:.9rem"><i class="ph-duotone ph-snowflake" aria-hidden="true"></i><span>${echap(t('cm.chaleurNote'))} <a href="annonces.html#ann-chaleur">${echap(t('cm.chaleur'))}</a></span></p>` : ''}
         <div class="cm-aller" role="group" aria-labelledby="cm-aller-t">
           <h3 id="cm-aller-t">${echap(t('cm.yAller'))}</h3>

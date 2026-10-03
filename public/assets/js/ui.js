@@ -277,12 +277,16 @@
   corps.append(panneauAlertes);
   function rendreAlertes() {
     const liste = NT.annonces.actives();
+    // F73 : messages officiels du Haut Conseil (assets/js/officiel.js) en tête du tiroir, la balise les met en évidence
+    const off = NT.ui.officiels ? NT.ui.officiels() : { n: 0, nonLus: 0, html: '' };
+    const total = liste.length + off.n;
     const alerte = liste.some(a => a.importance === 'alerte');
     balise.classList.toggle('active', alerte);
     balise.classList.toggle('importante', !alerte && liste.length > 0);
-    balise.querySelector('#nt-balise-nb').textContent = liste.length ? liste.length : '';
-    balise.setAttribute('aria-label', liste.length ? t('ui.alertesActives', { n: liste.length }) : t('ui.aucuneAlerte'));
-    panneauAlertes.innerHTML = liste.length ? liste.map(a => `
+    balise.classList.toggle('officiel', off.nonLus > 0);
+    balise.querySelector('#nt-balise-nb').textContent = total ? total : '';
+    balise.setAttribute('aria-label', total ? t('ui.alertesActives', { n: total }) + (off.nonLus ? ' · ' + t('off.baliseNonLu', null, 'message officiel à lire') : '') : t('ui.aucuneAlerte'));
+    panneauAlertes.innerHTML = off.html + (liste.length ? liste.map(a => `
       <article class="alerte-fiche niveau-${a.importance}">
         <h3><i class="ph-duotone ${a.importance === 'alerte' ? 'ph-warning-octagon' : 'ph-megaphone'}" aria-hidden="true"></i>${echap(a.titre)}</h3>
         <div class="zone"><i class="ph ph-map-pin" aria-hidden="true"></i> ${echap(a.zone)} · ${echap(ui.depuis(a.cree))}</div>
@@ -290,11 +294,12 @@
         ${a.consignes && a.consignes.length ? `<strong style="display:block;margin-top:.7rem">${echap(t('ui.consignes'))}</strong><ul>${a.consignes.map(c => `<li>${echap(c)}</li>`).join('')}</ul>` : ''}
         ${a.publics && a.publics.length ? `<p class="doux" style="margin:.6rem 0 0">${echap(t('ui.publics'))} : ${a.publics.map(echap).join(', ')}</p>` : ''}
         <a class="btn" style="margin-top:.8rem" href="annonces.html#${echap(a.id)}">${echap(t('ui.detail'))}</a>
-      </article>`).join('') : `<p class="vide">${echap(t('ui.aucuneAlerte'))}</p>`;
+      </article>`).join('') : (off.n ? '' : `<p class="vide">${echap(t('ui.aucuneAlerte'))}</p>`));
   }
   balise.addEventListener('click', () => customElements.whenDefined('sl-drawer').then(() => panneauAlertes.show()));
   rendreAlertes();
   NT.ui.rafraichirAlertes = rendreAlertes;
+  NT.ui.tiroirAlertes = panneauAlertes;
 
   /* Halo lumineux qui suit le pointeur sur les éléments .halo (inspiré SeraUI Spotlight) */
   document.addEventListener('pointermove', e => {
@@ -511,4 +516,8 @@
   // F61 : sur appareil peu puissant, ce script non essentiel attend que l'appareil soit libre
   if (NT.econome.actif() && window.requestIdleCallback) requestIdleCallback(activerLexique, { timeout: 4000 }); else setTimeout(activerLexique, 300);
   pretEnMs = performance.now();
+  // F73 : message officiel du Haut Conseil, sur toutes les pages, mis à jour en direct (même rythme que les notifications F49)
+  const scriptOfficiel = document.createElement('script');
+  scriptOfficiel.src = 'assets/js/officiel.js';
+  document.head.append(scriptOfficiel);
 })();

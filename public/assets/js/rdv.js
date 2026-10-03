@@ -429,7 +429,8 @@
         <p class="meta"><i class="ph ph-map-pin" aria-hidden="true"></i> ${echap(r.lieu || '')} · ${echap(piece(info(r.serviceId).agent))}${r.motif ? ' · ' + echap(motifTxt(r.motif)) : ''}</p>
         ${avenir && !annule ? `<p class="meta"><i class="ph ph-bell" aria-hidden="true"></i> ${echap(rp ? bi('Rappel : ', 'Reminder: ') + rp + bi(' avant', ' before') : bi('Sans rappel', 'No reminder'))}</p>
           <div class="ligne"><button class="btn" type="button" data-ics="${echap(r.id)}"><i class="ph ph-calendar-plus" aria-hidden="true"></i>${echap(bi('Ajouter à mon calendrier', 'Add to my calendar'))}</button>
-          <button class="btn btn-danger" type="button" data-annuler="${echap(r.id)}"><i class="ph ph-x" aria-hidden="true"></i>${echap(bi('Annuler ce rendez-vous', 'Cancel this appointment'))}</button></div>` : ''}</li>`;
+          <button class="btn btn-danger" type="button" data-annuler="${echap(r.id)}"><i class="ph ph-x" aria-hidden="true"></i>${echap(bi('Annuler ce rendez-vous', 'Cancel this appointment'))}</button></div>` : ''}
+        ${!avenir && !annule && NT.avisService ? `<div class="ligne">${NT.avisService.boutonPour('rdv:' + r.id)}</div>` : ''}</li>`;
     }
     function rendreMesRdv() {
       const t = Date.now(), tous = NT.rdv.pour(u.id);
@@ -441,6 +442,7 @@
         : `<p class="vide">${echap(bi('Aucun rendez-vous passé ou annulé.', 'No past or cancelled appointment.'))}</p>`;
     }
     rendreMesRdv();
+    if (NT.avisService) NT.avisService._apres = () => { NT.avisService.oublier(); rendreMesRdv(); };   // F76 : « Modifier mon avis » après l'envoi
 
     const dlg = $('#dlg-annul');
     let aAnnuler = null, declencheur = null;
