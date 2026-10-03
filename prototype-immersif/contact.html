@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#03070C">
+<title>Contacter la mairie — Terra Nova</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/nova.css">
+</head>
+<body data-page="contact">
+
+<!-- D04 : transmettre un message aux services municipaux et confirmer l'envoi -->
+<main id="contenu">
+  <header class="tete-page">
+    <img src="assets/terra-nova/backgrounds/colonie-dome.svg" width="780" height="630" alt="" style="object-position:center 60%">
+    <div class="contenu">
+      <h1>Contacter la mairie</h1>
+      <p>Une question, une difficulté ? Écrivez au service concerné. Si vous ne savez pas lequel choisir, l’accueil orientera votre message.</p>
+    </div>
+  </header>
+
+  <div class="grille-contact">
+    <div class="panneau">
+      <form id="form-contact" novalidate>
+        <fieldset class="champ" style="border:0;padding:0;margin:0 0 24px">
+          <legend style="margin-bottom:10px">Service concerné</legend>
+          <div class="choix-services" data-choix-services></div>
+        </fieldset>
+        <div class="champ">
+          <label for="objet">Objet</label>
+          <input id="objet" name="objet" maxlength="120" placeholder="Ex. : Coupure d’eau dans mon logement" aria-describedby="objet-erreur">
+          <span class="msg-erreur" id="objet-erreur" aria-live="polite"></span>
+        </div>
+        <div class="champ">
+          <label for="message">Votre message</label>
+          <textarea id="message" name="message" maxlength="1000" aria-describedby="message-erreur message-compteur"></textarea>
+          <div class="compteur" id="message-compteur" data-compteur></div>
+          <span class="msg-erreur" id="message-erreur" aria-live="polite"></span>
+        </div>
+        <div class="champ">
+          <label for="email">Adresse e-mail pour la réponse</label>
+          <input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="nom@exemple.tn" aria-describedby="email-erreur">
+          <span class="msg-erreur" id="email-erreur" aria-live="polite"></span>
+        </div>
+        <button class="btn btn-lime btn-envoi" type="submit"><span class="etat">Envoyer le message
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></button>
+      </form>
+
+      <div class="recu" role="status">
+        <div class="coche" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></div>
+        <h2 tabindex="-1">Message envoyé</h2>
+        <p>Votre message a été transmis <span data-recu-service></span>. La réponse sera envoyée à <strong data-recu-email></strong>.</p>
+        <div class="numero">
+          <div><small>Numéro de suivi</small><b data-recu-numero></b></div>
+          <button class="btn btn-verre" type="button" data-copier>Copier</button>
+        </div>
+        <p style="font-size:14px">Maquette : aucun message n’est réellement transmis.</p>
+        <button class="btn btn-verre" type="button" data-nouveau>Écrire un autre message</button>
+      </div>
+    </div>
+
+    <aside class="panneau revele" aria-label="Accueil de la mairie">
+      <h2>Accueil de la mairie</h2>
+      <dl class="infos">
+        <div><dt>Adresse</dt><dd>Dôme central, niveau 1</dd></div>
+        <div><dt>Horaires</dt><dd>Lun. – ven., 8 h – 16 h</dd></div>
+        <div><dt>Délai de réponse</dt><dd>2 jours ouvrés</dd></div>
+        <div><dt>Urgence vitale</dt><dd>Bornes d’alerte des dômes</dd></div>
+      </dl>
+    </aside>
+  </div>
+</main>
+
+<script src="assets/js/donnees.js"></script>
+<script src="assets/js/nova.js"></script>
+</body>
+</html>
+
