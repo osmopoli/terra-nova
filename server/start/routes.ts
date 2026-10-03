@@ -49,14 +49,16 @@ router
     })
 
     /** Listes fermées pour les formulaires du front. */
-    router.get('/meta', async () =>
-      Object.fromEntries(
+    router.get('/meta', async ({ response }) => {
+      // Listes quasi statiques : cache court côté navigateur.
+      response.header('Cache-Control', 'public, max-age=300')
+      return Object.fromEntries(
         Object.entries(META).map(([name, map]) => [
           name,
           Object.entries(map).map(([value, label]) => ({ value, label })),
         ])
       )
-    )
+    })
 
     /** Actualités de la ville : lecture publique, publication agent / admin. */
     router.get('/news', [NewsController, 'index'])

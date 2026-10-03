@@ -12,6 +12,12 @@ const staticServerConfig = defineConfig({
   etag: true,
   lastModified: true,
   dotFiles: 'ignore',
+  // Les fichiers de /assets/ sont hachés par Vite : cache long. Le reste (index.html…) se revalide.
+  headers: (path) => ({
+    'Cache-Control': path.replaceAll('\\', '/').includes('/assets/')
+      ? 'public, max-age=31536000, immutable'
+      : 'no-cache',
+  }),
 })
 
 export default staticServerConfig
