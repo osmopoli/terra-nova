@@ -4,6 +4,8 @@ import GalaxyImage from '../components/GalaxyImage.jsx';
 import SkipLink from '../components/SkipLink.jsx';
 import TextSizeControl from '../components/TextSizeControl.jsx';
 import ContrastControl from '../components/ContrastControl.jsx';
+import LightModeControl from '../components/LightModeControl.jsx';
+import { LightModeFooter } from '../components/LightModeStatus.jsx';
 import { APP_NAME } from '../lib/constants.js';
 import { Link } from '../lib/router.jsx';
 
@@ -36,6 +38,7 @@ export default function LoginPage({ onAuthenticated }) {
               </Link>
               <TextSizeControl className="text-star" />
               <ContrastControl className="text-star" />
+              <LightModeControl className="text-star" />
             </div>
           </div>
           <div className="max-w-2xl">
@@ -58,7 +61,10 @@ export default function LoginPage({ onAuthenticated }) {
           tabIndex={-1}
           aria-label="Connexion ou inscription"
           className="grid place-items-center border-t border-line bg-space-panel focus:outline-none px-4 py-10 md:border-t-0 md:border-l md:p-[clamp(24px,6vw,92px)]">
-          <AuthScreen onAuthenticated={onAuthenticated} />
+          <div className="w-full max-w-md">
+            <AuthScreen onAuthenticated={onAuthenticated} />
+            <LightModeFooter className="mt-6 text-center text-sm text-star-muted" />
+          </div>
         </section>
       </main>
     </>

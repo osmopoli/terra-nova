@@ -5,6 +5,9 @@ import GalaxyImage from '../components/GalaxyImage.jsx';
 import SkipLink from '../components/SkipLink.jsx';
 import TextSizeControl from '../components/TextSizeControl.jsx';
 import ContrastControl from '../components/ContrastControl.jsx';
+import LightModeControl from '../components/LightModeControl.jsx';
+import { LightModeFooter, LightModeNotice } from '../components/LightModeStatus.jsx';
+import { useLightMode } from '../lib/lightMode.js';
 import { Link, navigate } from '../lib/router.jsx';
 
 const TRAVEL_MS = 3000;
@@ -36,8 +39,10 @@ function Ship() {
 // Écran d'arrivée du visiteur : « Initier l'approche » lance un voyage de
 // 3 secondes, puis ouvre la vraie connexion (/connexion, API /auth/*).
 export default function ArrivalPage() {
+  const light = useLightMode();
   const [travelling, setTravelling] = useState(false);
   const cancelRef = useRef(null);
+  const skipRef = useRef(null);
   const launchRef = useRef(null);
   const cancelled = useRef(false);
 
@@ -60,7 +65,8 @@ export default function ArrivalPage() {
     const onKey = (e) => {
       if (e.key === 'Tab') {
         e.preventDefault();
-        cancelRef.current?.focus();
+        const next = document.activeElement === cancelRef.current ? skipRef : cancelRef;
+        next.current?.focus();
       }
       if (e.key === 'Escape') cancel();
     };
@@ -83,10 +89,13 @@ export default function ArrivalPage() {
           sizes="(min-width: 768px) 60vw, 100vw"
           className="absolute inset-x-0 top-0 -z-20 h-[70dvh] w-full object-cover object-center opacity-80 md:inset-x-auto md:right-0 md:h-full md:w-[60vw] md:opacity-90"
         />
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 -z-10 bg-linear-to-t from-space from-30% to-space/20 md:bg-linear-to-r md:from-space md:from-40% md:via-space/70 md:to-space/0"
-        />
+        {/* Version légère : GalaxyImage ne rend rien (fichier non téléchargé), voile inutile. */}
+        {!light && (
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 -z-10 bg-linear-to-t from-space from-30% to-space/20 md:bg-linear-to-r md:from-space md:from-40% md:via-space/70 md:to-space/0"
+          />
+        )}
         <header className="flex min-h-[4.625rem] flex-wrap items-center justify-between gap-3 border-b border-line px-6 py-3 backdrop-blur-md md:min-h-[5.625rem] md:px-[clamp(24px,6vw,92px)]">
           <Brand size="lg" />
           <p className="hidden text-xs font-semibold uppercase tracking-[0.12em] text-star-muted md:block">
@@ -99,8 +108,10 @@ export default function ArrivalPage() {
             </Link>
             <TextSizeControl className="text-star" />
             <ContrastControl className="text-star" />
+            <LightModeControl className="text-star" />
           </div>
         </header>
+        <LightModeNotice className="mx-6 mt-4 text-star md:mx-[clamp(24px,6vw,92px)]" />
 
         <main id="contenu" tabIndex={-1} className="flex flex-1 focus:outline-none items-end px-6 pb-40 pt-12 md:items-center md:px-[clamp(24px,7vw,110px)] md:pb-28">
           <div className="max-w-3xl">
@@ -119,11 +130,12 @@ export default function ArrivalPage() {
             <button
               ref={launchRef}
               type="button"
-              onClick={() => setTravelling(true)}
+              // Version légère : connexion directe, sans le voyage animé.
+              onClick={() => (light ? navigate('/connexion') : setTravelling(true))}
               disabled={travelling}
               className="min-h-14 rounded-control bg-glow px-6 font-bold text-on-primary shadow-glow hover:bg-primary-strong disabled:opacity-60"
             >
-              Initier l’approche
+              {light ? 'Se connecter' : 'Initier l’approche'}
             </button>
             <Link
               to="/services"
@@ -146,9 +158,10 @@ export default function ArrivalPage() {
             </div>
             <div>
               <dt>Arrivée estimée</dt>
-              <dd className="text-xs font-bold text-star md:text-sm">3 secondes</dd>
+              <dd className="text-xs font-bold text-star md:text-sm">{light ? 'Immédiate' : '3 secondes'}</dd>
             </div>
           </dl>
+          <LightModeFooter className="mt-2 text-xs normal-case tracking-normal" />
         </footer>
       </div>
 
@@ -183,6 +196,14 @@ export default function ArrivalPage() {
               className="mt-6 min-h-11 px-4 text-sm text-star-muted hover:text-star"
             >
               Annuler <kbd className="font-sans font-bold">Échap</kbd>
+            </button>
+            <button
+              ref={skipRef}
+              type="button"
+              onClick={() => navigate('/connexion')}
+              className="mt-6 min-h-11 px-4 text-sm font-bold text-star underline underline-offset-4"
+            >
+              Passer l’animation
             </button>
           </div>
         </div>

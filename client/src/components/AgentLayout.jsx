@@ -1,6 +1,8 @@
 import { Link } from '../lib/router.jsx';
 import Brand from './Brand.jsx';
 import ContrastControl from './ContrastControl.jsx';
+import LightModeControl from './LightModeControl.jsx';
+import { LightModeFooter, LightModeNotice } from './LightModeStatus.jsx';
 import SkipLink from './SkipLink.jsx';
 import TextSizeControl from './TextSizeControl.jsx';
 
@@ -21,6 +23,7 @@ export default function AgentLayout({ user, onLogout, children }) {
             <TextSizeControl className="text-ink" />
             {user && <span className="hidden text-ink-muted sm:inline">{user.fullName}</span>}
             <ContrastControl className="text-ink" />
+            <LightModeControl className="text-ink" />
             <Link to="/" className="font-semibold text-ink underline underline-offset-4 hover:text-primary">
               Espace citoyen
             </Link>
@@ -37,7 +40,9 @@ export default function AgentLayout({ user, onLogout, children }) {
         </div>
       </header>
       <main id="contenu" tabIndex={-1} className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8 focus:outline-none">
+        <LightModeNotice className="mb-4 bg-surface text-ink" />
         {children}
+        <LightModeFooter className="mt-8 text-sm text-ink-muted" />
       </main>
     </div>
   );
