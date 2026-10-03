@@ -1,16 +1,37 @@
+import orbite from '../assets/planete-orbite.svg';
 import { Link } from '../lib/router.jsx';
+import { usePageTitle } from '../lib/title.js';
 
-export default function NotFoundPage({ message = "Cette page n'existe pas." }) {
+// 404 dans l'ambiance d'arrivée (nuit spatiale) : un signal perdu, un seul chemin de retour.
+export default function NotFoundPage({ message = "Cette page n'existe pas ou a été déplacée." }) {
+  usePageTitle('Page introuvable');
   return (
-    <div className="mx-auto max-w-md py-16 text-center">
-      <h1 className="text-2xl font-bold">Introuvable</h1>
-      <p className="mt-2 text-ink-muted">{message}</p>
+    <section
+      aria-labelledby="introuvable-titre"
+      className="relative isolate mx-auto max-w-3xl overflow-hidden rounded-card bg-space px-6 py-14 text-center text-star shadow-glow sm:py-20"
+    >
+      <img
+        src={orbite}
+        alt=""
+        className="pointer-events-none absolute inset-0 -z-20 size-full object-cover opacity-60"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-linear-to-b from-space via-space/70 to-space/30"
+      />
+      <p className="font-display text-7xl font-extrabold leading-none tracking-tight text-glow sm:text-8xl">
+        404
+      </p>
+      <h1 id="introuvable-titre" className="mt-4 font-display text-2xl font-bold sm:text-3xl">
+        Coordonnées inconnues
+      </h1>
+      <p className="mx-auto mt-3 max-w-sm text-star-muted">{message}</p>
       <Link
         to="/"
-        className="mt-6 inline-block rounded-control bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-strong"
+        className="mt-8 inline-block rounded-control border border-glow/60 bg-glow px-6 py-3 font-bold text-space hover:bg-star focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-glow"
       >
         Retour à l'accueil
       </Link>
-    </div>
+    </section>
   );
 }
