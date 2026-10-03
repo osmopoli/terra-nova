@@ -17,6 +17,8 @@
 export const LIMITS = {
   fullName: 80,
   email: 254,
+  contactSubject: 120,
+  contactMessage: 2000,
 } as const
 
 /** Profils de la plateforme (colonne users.role). */
@@ -40,7 +42,32 @@ export const ACCESS = {
   admin: ['admin'],
 } as const satisfies Record<string, readonly Role[]>
 
+/** Services municipaux joignables par le formulaire de contact (colonne contact_messages.service). */
+export const CONTACT_SERVICES = {
+  etat_civil: 'État civil et démarches',
+  urbanisme: 'Urbanisme et logement',
+  voirie: 'Voirie et propreté',
+  social: 'Action sociale et santé',
+  education: 'Écoles et petite enfance',
+  culture_sport: 'Culture et sport',
+  autre: 'Autre demande',
+} as const
+export type ContactService = keyof typeof CONTACT_SERVICES
+export const CONTACT_SERVICE_VALUES = Object.keys(CONTACT_SERVICES) as ContactService[]
+
+/** Suivi d'un message d'habitant (colonne contact_messages.status). */
+export const CONTACT_STATUSES = {
+  nouveau: 'Nouveau',
+  en_cours: 'En cours',
+  traite: 'Traité',
+} as const
+export type ContactStatus = keyof typeof CONTACT_STATUSES
+export const CONTACT_STATUS_VALUES = Object.keys(CONTACT_STATUSES) as ContactStatus[]
+export const DEFAULT_CONTACT_STATUS: ContactStatus = 'nouveau'
+
 /** Listes fermées exposées au front par GET /api/meta (clé -> libellé). */
 export const META: Record<string, Record<string, string>> = {
   roles: ROLES,
+  contactServices: CONTACT_SERVICES,
+  contactStatuses: CONTACT_STATUSES,
 }
