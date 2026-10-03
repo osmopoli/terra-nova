@@ -43,6 +43,11 @@ export default function Layout({ user, children }) {
               </NavLink>
             )}
             {user && user.role !== 'citoyen' && (
+              <NavLink to="/agent/tableau-de-bord" className={linkClass}>
+                Tableau de bord
+              </NavLink>
+            )}
+            {user && user.role !== 'citoyen' && (
               <NavLink to="/agent/demandes" className={linkClass}>
                 Demandes des habitants
               </NavLink>

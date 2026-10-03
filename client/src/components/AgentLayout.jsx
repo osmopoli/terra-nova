@@ -24,6 +24,9 @@ export default function AgentLayout({ user, onLogout, children }) {
             {user && <span className="hidden text-ink-muted sm:inline">{user.fullName}</span>}
             <ContrastControl className="text-ink" />
             <LightModeControl className="text-ink" />
+            <Link to="/agent/tableau-de-bord" className="font-semibold text-ink underline underline-offset-4 hover:text-primary">
+              Tableau de bord
+            </Link>
             <Link to="/" className="font-semibold text-ink underline underline-offset-4 hover:text-primary">
               Espace citoyen
             </Link>
