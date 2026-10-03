@@ -26,6 +26,7 @@ export const LIMITS = {
   newsBody: 10000,
   alertTitle: 120,
   alertMessage: 2000,
+  location: 200,
 } as const
 
 /** Catégories des actualités de la ville (colonne news_posts.category). */
@@ -164,6 +165,33 @@ export const ALERT_LEVELS = {
 } as const
 export type AlertLevel = keyof typeof ALERT_LEVELS
 export const ALERT_LEVEL_VALUES = Object.keys(ALERT_LEVELS) as AlertLevel[]
+/** Nature d'une demande (colonne demandes.kind) : message aux services ou signalement d'un problème. */
+export const DEMANDE_KINDS = {
+  demande: 'Demande',
+  signalement: 'Signalement',
+} as const
+export type DemandeKind = keyof typeof DEMANDE_KINDS
+
+/** Problèmes signalables sur l'espace public (F25, colonne demandes.category). */
+export const ISSUE_CATEGORIES = {
+  eclairage: 'Éclairage public (lampadaire, feu)',
+  voirie: 'Chaussée, trottoir, nid-de-poule',
+  proprete: 'Propreté, dépôt sauvage',
+  espaces_verts: 'Espaces verts, arbre tombé',
+  eau: 'Fuite d’eau, inondation',
+  autre: 'Autre problème',
+} as const
+export type IssueCategory = keyof typeof ISSUE_CATEGORIES
+export const ISSUE_CATEGORY_VALUES = Object.keys(ISSUE_CATEGORIES) as IssueCategory[]
+/** Service qui traite chaque type de signalement : l'habitant n'a pas à le connaître. */
+export const ISSUE_SERVICE: Record<IssueCategory, Service> = {
+  eclairage: 'voirie',
+  voirie: 'voirie',
+  proprete: 'voirie',
+  espaces_verts: 'voirie',
+  eau: 'urbanisme',
+  autre: 'autre',
+}
 
 /** Listes fermées exposées au front par GET /api/meta (clé -> libellé). */
 export const META: Record<string, Record<string, string>> = {
@@ -178,4 +206,6 @@ export const META: Record<string, Record<string, string>> = {
   loginBlockScopes: LOGIN_BLOCK_SCOPES,
   contentLanguages: CONTENT_LANGUAGES,
   alertLevels: ALERT_LEVELS,
+  demandeKinds: DEMANDE_KINDS,
+  issueCategories: ISSUE_CATEGORIES,
 }

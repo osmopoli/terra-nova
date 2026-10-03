@@ -137,6 +137,7 @@ router
       .group(() => {
         router.get('/', [DemandesController, 'index'])
         router.post('/', [DemandesController, 'store'])
+        router.post('/signalements', [DemandesController, 'storeIssue'])
         router.get('/:id', [DemandesController, 'show'])
       })
       .prefix('/demandes')
