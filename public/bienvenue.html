@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Je viens d’arriver — Terra Nova</title>
+  <meta name="description" content="Nouvel arrivant à Terra Nova : choisissez votre langue, répondez à 3 questions et obtenez la liste des services utiles. Compte possible sans adresse e-mail.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/arrivee.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/fiche-accueil.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="bienvenue" data-ariane="nav.accueil|index.html;pied.bienvenue" data-roles="">
+  <main id="contenu" class="conteneur">
+    <header class="titre-page">
+      <span class="surtitre" data-i18n="bv.surtitre">Nouveaux arrivants</span>
+      <h1 data-i18n="bv.titre">Bienvenue à Terra Nova</h1>
+      <p data-i18n="bv.sous">Par où commencer ? Choisissez votre langue, répondez à 3 questions, et voici les services utiles pour vous, avec un lien direct.</p>
+    </header>
+
+    <!-- Langue : en premier, en gros, chaque langue écrite dans sa propre langue -->
+    <section class="panneau" id="langue" aria-labelledby="t-langue">
+      <h2 id="t-langue" class="titre-arr"><i class="ph-duotone ph-translate" aria-hidden="true"></i><span data-i18n="bv.langue">Votre langue</span></h2>
+      <p class="doux" data-i18n="bv.langueAide">Toute la plateforme s’affiche dans la langue choisie. Vous pourrez la changer à tout moment avec le globe en haut de la page.</p>
+      <div class="langues" id="langues" role="group" aria-labelledby="t-langue"></div>
+    </section>
+
+    <!-- F72 : trois questions -->
+    <section class="bloc-arr" id="guide" aria-labelledby="t-guide">
+      <h2 id="t-guide"><i class="ph-duotone ph-compass" aria-hidden="true"></i><span data-i18n="bv.guide">Par où commencer ?</span></h2>
+      <p class="doux" data-i18n="bv.guideAide">Trois questions, une minute. Rien n’est obligatoire et vous n’avez pas besoin de compte.</p>
+      <form id="form-guide" class="panneau" novalidate>
+        <fieldset class="question">
+          <legend><span data-i18n="bv.q1">1. Vous arrivez…</span></legend>
+          <div class="choix">
+            <label><input type="radio" name="situation" value="seul"><i class="ph-duotone ph-user" aria-hidden="true"></i><span data-i18n="bv.seul">Seul ou seule</span></label>
+            <label><input type="radio" name="situation" value="couple"><i class="ph-duotone ph-users" aria-hidden="true"></i><span data-i18n="bv.couple">À deux</span></label>
+            <label><input type="radio" name="situation" value="famille"><i class="ph-duotone ph-users-four" aria-hidden="true"></i><span data-i18n="bv.famille">En famille, avec enfants</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="question">
+          <legend><span data-i18n="bv.q2">2. De quoi avez-vous besoin en premier ?</span></legend>
+          <p class="aide" data-i18n="bv.q2aide">Plusieurs réponses possibles.</p>
+          <div class="choix">
+            <label><input type="checkbox" name="besoins" value="logement"><i class="ph-duotone ph-house-line" aria-hidden="true"></i><span data-i18n="bv.b.logement">Un logement</span></label>
+            <label><input type="checkbox" name="besoins" value="travail"><i class="ph-duotone ph-briefcase" aria-hidden="true"></i><span data-i18n="bv.b.travail">Un travail</span></label>
+            <label><input type="checkbox" name="besoins" value="sante"><i class="ph-duotone ph-first-aid-kit" aria-hidden="true"></i><span data-i18n="bv.b.sante">Me soigner</span></label>
+            <label><input type="checkbox" name="besoins" value="ecole"><i class="ph-duotone ph-student" aria-hidden="true"></i><span data-i18n="bv.b.ecole">L’école des enfants</span></label>
+            <label><input type="checkbox" name="besoins" value="deplacer"><i class="ph-duotone ph-bus" aria-hidden="true"></i><span data-i18n="bv.b.deplacer">Me déplacer</span></label>
+            <label><input type="checkbox" name="besoins" value="papiers"><i class="ph-duotone ph-identification-card" aria-hidden="true"></i><span data-i18n="bv.b.papiers">Mes papiers</span></label>
+            <label><input type="checkbox" name="besoins" value="aide"><i class="ph-duotone ph-hand-heart" aria-hidden="true"></i><span data-i18n="bv.b.aide">Une aide financière</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="question" id="q-email">
+          <legend><span data-i18n="bv.q3">3. Avez-vous une adresse e-mail ?</span></legend>
+          <div class="choix">
+            <label><input type="radio" name="email" value="oui"><i class="ph-duotone ph-envelope-simple" aria-hidden="true"></i><span data-i18n="bv.oui">Oui</span></label>
+            <label><input type="radio" name="email" value="non"><i class="ph-duotone ph-envelope-simple-open" aria-hidden="true"></i><span data-i18n="bv.non">Non, pas d’e-mail</span></label>
+          </div>
+        </fieldset>
+        <button class="btn btn-primaire" type="submit"><i class="ph-duotone ph-list-checks" aria-hidden="true"></i><span data-i18n="bv.voir">Voir ma liste</span></button>
+      </form>
+    </section>
+
+    <!-- Liste personnalisée -->
+    <section class="bloc-arr" id="liste" aria-labelledby="t-liste" tabindex="-1" hidden>
+      <h2 id="t-liste"><i class="ph-duotone ph-list-checks" aria-hidden="true"></i><span data-i18n="bv.liste">Votre liste pour bien démarrer</span></h2>
+      <div class="progression"><div class="barre" aria-hidden="true"><span id="barre"></span></div><span id="progres" aria-live="polite"></span></div>
+      <ol class="etapes-arr" id="etapes"></ol>
+      <p class="doux" id="liste-memo"></p>
+      <p class="ligne"><button class="btn" type="button" id="modifier"><i class="ph-duotone ph-pencil-simple" aria-hidden="true"></i><span data-i18n="bv.modifier">Modifier mes réponses</span></button></p>
+    </section>
+
+    <!-- F71 : remplacer le code provisoire -->
+    <section class="bloc-arr" id="code" aria-labelledby="t-code" hidden>
+      <h2 id="t-code"><i class="ph-duotone ph-key" aria-hidden="true"></i><span data-i18n="bv.codeTitre">Choisissez votre propre code secret</span></h2>
+      <p class="doux" data-i18n="bv.codeAide">Le code reçu à l’accueil est provisoire. Choisissez-en un que vous seul connaissez : 6 chiffres faciles à retenir pour vous, mais pas 123456.</p>
+      <form id="form-code" class="panneau form-arr" novalidate>
+        <div class="resume-arr" role="alert"></div>
+        <div class="grille-champs">
+          <div class="champ"><label for="nv-code" data-i18n="bv.nvCode">Nouveau code (6 chiffres) ou mot de passe</label><input id="nv-code" type="password" inputmode="numeric" autocomplete="new-password" class="code-saisie" required></div>
+          <div class="champ"><label for="nv-code2" data-i18n="bv.nvCode2">Retapez-le</label><input id="nv-code2" type="password" inputmode="numeric" autocomplete="new-password" class="code-saisie" required></div>
+        </div>
+        <button class="btn btn-primaire" type="submit" data-i18n="bv.enregistrer">Enregistrer mon code</button>
+      </form>
+    </section>
+
+    <!-- F71 : compte sans adresse e-mail -->
+    <section class="bloc-arr" id="sans-email" aria-labelledby="t-sans" hidden>
+      <h2 id="t-sans"><i class="ph-duotone ph-identification-card" aria-hidden="true"></i><span data-i18n="bv.sansTitre">Créer un compte sans adresse e-mail</span></h2>
+      <p class="doux" data-i18n="bv.sansAide">Vous recevez un identifiant (par exemple TN-482731) et vous choisissez un code secret de 6 chiffres. Vous pourrez aussi vous connecter avec votre numéro de téléphone.</p>
+      <form id="form-sans" class="panneau form-arr" novalidate>
+        <div class="resume-arr" role="alert"></div>
+        <div class="grille-champs">
+          <div class="champ"><label for="s-prenom" data-i18n="bv.prenom">Prénom</label><input id="s-prenom" autocomplete="given-name" maxlength="60" required></div>
+          <div class="champ"><label for="s-nom" data-i18n="bv.nom">Nom</label><input id="s-nom" autocomplete="family-name" maxlength="60" required></div>
+          <div class="champ"><label for="s-tel"><span data-i18n="bv.tel">Téléphone</span> <span class="doux" data-i18n="bv.facultatif">(facultatif)</span></label><input id="s-tel" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" aria-describedby="s-tel-aide"><p class="aide" id="s-tel-aide" data-i18n="bv.telAide">Pour vous connecter avec votre numéro. Il est chiffré et masqué pour les autres.</p></div>
+          <div class="champ"><label for="s-quartier"><span data-i18n="bv.quartier">Quartier</span> <span class="doux" data-i18n="bv.facultatif">(facultatif)</span></label><select id="s-quartier"></select></div>
+          <div class="champ"><label for="s-code" data-i18n="bv.code">Code secret (6 chiffres)</label><input id="s-code" type="password" inputmode="numeric" autocomplete="new-password" class="code-saisie" required aria-describedby="s-code-aide"><p class="aide" id="s-code-aide" data-i18n="bv.codeRegle">6 chiffres, sans suite (123456) ni répétition (111111). Un mot de passe est aussi accepté.</p></div>
+          <div class="champ"><label for="s-code2" data-i18n="bv.code2">Retapez le code</label><input id="s-code2" type="password" inputmode="numeric" autocomplete="new-password" class="code-saisie" required></div>
+        </div>
+        <button class="btn btn-primaire" type="submit"><i class="ph-duotone ph-user-plus" aria-hidden="true"></i><span data-i18n="bv.creer">Créer mon compte</span></button>
+        <p class="doux"><span data-i18n="bv.avecEmail">Vous avez une adresse e-mail ?</span> <a href="inscription.html" data-i18n="bv.avecEmailLien">Créer un compte avec e-mail</a> · <a href="connexion.html" data-i18n="bv.dejaCompte">J’ai déjà un compte</a></p>
+      </form>
+    </section>
+
+    <!-- Fiche d'accueil après inscription -->
+    <section class="bloc-arr" id="fiche" aria-labelledby="t-fiche" tabindex="-1" hidden>
+      <h2 id="t-fiche"><i class="ph-duotone ph-check-circle" aria-hidden="true"></i><span data-i18n="bv.ficheTitre">Votre compte est prêt</span></h2>
+      <p class="doux" data-i18n="bv.ficheAide">Notez bien votre identifiant : il remplace l’adresse e-mail pour vous connecter. Vous pouvez imprimer cette fiche.</p>
+      <div id="fiche-contenu"></div>
+      <p class="ligne"><button class="btn btn-primaire" type="button" id="imprimer-fiche"><i class="ph-duotone ph-printer" aria-hidden="true"></i><span data-i18n="bv.imprimer">Imprimer ma fiche</span></button>
+        <a class="btn" href="espace.html" data-i18n="bv.versEspace">Aller à mon espace</a></p>
+    </section>
+  </main>
+  <script src="assets/js/bienvenue.js" defer></script>
+</body>
+</html>

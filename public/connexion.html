@@ -59,11 +59,12 @@
             <fieldset class="sans-cadre" id="champs-connexion">
               <legend class="sr-only" data-i18n="c.con.formTitre">Formulaire de connexion</legend>
               <div class="champ">
-                <label for="email" data-i18n="c.con.email">Adresse e-mail</label>
-                <input id="email" name="email" type="email" autocomplete="username" inputmode="email" required>
+                <label for="email" data-i18n="v13.con.identifiant">E-mail, identifiant ou numéro de téléphone</label>
+                <input id="email" name="email" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required aria-describedby="aide-identifiant">
+                <p class="aide" id="aide-identifiant"><span data-i18n="v13.con.aide">Pas d’adresse e-mail ? Utilisez l’identifiant reçu à l’inscription (TN-…) ou votre numéro de téléphone.</span> <a href="bienvenue.html" data-i18n="pied.bienvenue">Je viens d’arriver</a></p>
               </div>
               <div class="champ">
-                <label for="motdepasse" data-i18n="c.con.mdp">Mot de passe</label>
+                <label for="motdepasse" data-i18n="v13.con.mdp">Mot de passe ou code secret</label>
                 <div class="mdp-ligne">
                   <input id="motdepasse" name="motdepasse" type="password" autocomplete="current-password" required>
                 </div>
@@ -77,6 +78,7 @@
                 <button class="btn btn-primaire" type="submit" id="btn-connexion" data-i18n="c.con.submit">Se connecter</button>
                 <button class="lien-bouton" type="button" id="btn-oublie" aria-expanded="false" aria-controls="aide-oubli" data-i18n="c.con.oublie">Mot de passe oublié ?</button>
               </div>
+              <p class="doux"><i class="ph-duotone ph-shield-check" aria-hidden="true"></i> <span data-i18n="v13.con.protege">Connexion protégée : verrouillage après plusieurs erreurs, données chiffrées.</span> <a href="securite.html" data-i18n="pied.securite">Sécurité de vos données</a></p>
             </fieldset>
           </form>
 

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sécurité de vos données — Terra Nova</title>
+  <meta name="description" content="Ce que Terra Nova fait pour protéger vos données : chiffrement, accès réservés, protection contre les intrusions, en langage clair.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/securite.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="securite-donnees" data-ariane="nav.accueil|index.html;pied.securite" data-roles="">
+  <main id="contenu" class="conteneur">
+    <header class="titre-page">
+      <span class="surtitre" data-i18n="sec.surtitre">Centre de sécurité numérique</span>
+      <h1 data-i18n="sec.titre">Sécurité de vos données</h1>
+      <p data-i18n="sec.sous">Des attaques ont visé des plateformes semblables. Voici, en clair, comment Terra Nova protège vos informations, sans rien vous compliquer.</p>
+    </header>
+
+    <!-- Protection perceptible : vérifiée en direct sur cette page -->
+    <section class="panneau sec-direct" aria-labelledby="t-direct">
+      <div class="sec-direct-tete">
+        <span class="icone-ronde" aria-hidden="true"><i class="ph-duotone ph-shield-check"></i></span>
+        <div>
+          <h2 id="t-direct" data-i18n="sec.directTitre">Protection active sur cette page</h2>
+          <p class="doux" data-i18n="sec.directSous">Vérifié à l’instant par votre navigateur, à chaque visite.</p>
+        </div>
+      </div>
+      <ul class="sec-verifs" id="sec-verifs" aria-live="polite"></ul>
+    </section>
+
+    <!-- Mes protections (habitant connecté) -->
+    <section class="bloc-sec" id="mes-protections" aria-labelledby="t-mes" hidden>
+      <h2 id="t-mes" data-i18n="sec.mesTitre">Mes protections</h2>
+      <p class="doux" data-i18n="sec.mesSous">Vos coordonnées sont masquées à l’écran par défaut : affichez-les seulement quand vous en avez besoin.</p>
+      <div class="grille-2">
+        <div class="panneau">
+          <dl class="sec-coord" id="sec-coord"></dl>
+        </div>
+        <div class="panneau">
+          <ul class="sec-etats" id="sec-etats"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="bloc-sec" aria-labelledby="t-protege">
+      <h2 id="t-protege" data-i18n="sec.protegeTitre">Ce qui est protégé</h2>
+      <div class="grille sec-cartes">
+        <article class="carte"><span class="icone-ronde" aria-hidden="true"><i class="ph-duotone ph-password"></i></span>
+          <h3 data-i18n="sec.c1">Mots de passe et codes secrets</h3><p data-i18n="sec.c1d">Jamais enregistrés lisibles : seule une empreinte brouillée est gardée. Même la mairie ne peut pas les lire.</p></article>
+        <article class="carte"><span class="icone-ronde" aria-hidden="true"><i class="ph-duotone ph-lock-key"></i></span>
+          <h3 data-i18n="sec.c2">Données sensibles chiffrées</h3><p data-i18n="sec.c2d">Votre téléphone et votre dossier administratif sont chiffrés dans la base de données : volés, ils seraient illisibles.</p></article>
+        <article class="carte"><span class="icone-ronde" aria-hidden="true"><i class="ph-duotone ph-identification-badge"></i></span>
+          <h3 data-i18n="sec.c3">Accès réservés</h3><p data-i18n="sec.c3d">Seuls les agents habilités voient les données administratives, avec un motif à chaque fois. Chaque consultation est enregistrée.</p></article>
+        <article class="carte"><span class="icone-ronde" aria-hidden="true"><i class="ph-duotone ph-hand-palm"></i></span>
+          <h3 data-i18n="sec.c4">Tentatives d’intrusion bloquées</h3><p data-i18n="sec.c4d">Trop d’essais : pause de quelques secondes ou minutes. Les programmes qui devinent les mots de passe sont arrêtés et signalés.</p></article>
+        <article class="carte"><span class="icone-ronde" aria-hidden="true"><i class="ph-duotone ph-browser"></i></span>
+          <h3 data-i18n="sec.c5">Pages protégées</h3><p data-i18n="sec.c5d">Seuls nos propres scripts s’exécutent, Terra Nova ne peut pas être cachée dans un autre site, et un site extérieur ne peut pas agir à votre place.</p></article>
+        <article class="carte"><span class="icone-ronde" aria-hidden="true"><i class="ph-duotone ph-devices"></i></span>
+          <h3 data-i18n="sec.c6">Connexion surveillée</h3><p data-i18n="sec.c6d">Session dans un cookie inaccessible aux scripts, vérification en deux étapes, clés d’accès, alerte si un nouvel appareil se connecte.</p></article>
+      </div>
+    </section>
+
+    <section class="bloc-sec" aria-labelledby="t-simple">
+      <h2 id="t-simple" data-i18n="sec.simpleTitre">Ce qui ne change pas pour vous</h2>
+      <ul class="liste-sec">
+        <li><i class="ph-duotone ph-check-circle" aria-hidden="true"></i><span data-i18n="sec.s1">Vous vous connectez comme d’habitude : rien à installer, aucune étape en plus.</span></li>
+        <li><i class="ph-duotone ph-check-circle" aria-hidden="true"></i><span data-i18n="sec.s2">Si vous vous trompez plusieurs fois, attendez simplement le temps indiqué : votre compte et vos données restent intacts.</span></li>
+        <li><i class="ph-duotone ph-check-circle" aria-hidden="true"></i><span data-i18n="sec.s3">Vos coordonnées restent visibles pour vous, masquées pour les autres.</span></li>
+      </ul>
+    </section>
+
+    <section class="bloc-sec" aria-labelledby="t-reflexes">
+      <h2 id="t-reflexes" data-i18n="sec.reflexesTitre">Trois bons réflexes</h2>
+      <ol class="liste-sec numerotee">
+        <li><i class="ph-duotone ph-chat-circle-slash" aria-hidden="true"></i><span data-i18n="sec.r1">Ne donnez jamais votre mot de passe ou votre code : la mairie ne vous le demandera jamais, ni par téléphone ni par message.</span></li>
+        <li><i class="ph-duotone ph-link" aria-hidden="true"></i><span data-i18n="sec.r2">Vérifiez l’adresse de la page avant de vous connecter, et méfiez-vous des liens reçus par message.</span></li>
+        <li><i class="ph-duotone ph-device-mobile" aria-hidden="true"></i><span data-i18n="sec.r3">Activez la vérification en deux étapes dans « Mon compte » : c’est le meilleur rempart.</span></li>
+      </ol>
+      <p class="ligne"><a class="btn" href="donnees.html"><i class="ph-duotone ph-database" aria-hidden="true"></i><span data-i18n="sec.lienDonnees">Ce que nous gardons sur vous</span></a>
+        <a class="btn" href="compte.html#securite-connexion" id="sec-lien-compte" hidden><i class="ph-duotone ph-gear" aria-hidden="true"></i><span data-i18n="sec.lienCompte">Régler ma sécurité</span></a></p>
+    </section>
+  </main>
+  <script src="assets/js/securite.js" defer></script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 // Accès aux documents métier : chaque document est un objet JSON identique à celui que manipule le navigateur.
 const crypto = require('node:crypto');
 const db = require('./db');
+const { sceller, ouvrir } = require('./chiffrement');   // F69 : champs sensibles chiffrés au repos
 
 const maintenant = () => new Date().toISOString();
 const uid = (prefixe) => (prefixe || 'id') + '-' + Date.now().toString(36) + crypto.randomBytes(3).toString('hex');
@@ -18,12 +19,12 @@ const q = {
 };
 
 const docs = {
-  tous: (col) => q.tous.all(col).map((r) => JSON.parse(r.data)),
-  get: (col, id) => { const r = q.un.get(col, String(id)); return r ? JSON.parse(r.data) : null; },
+  tous: (col) => q.tous.all(col).map((r) => ouvrir(col, JSON.parse(r.data))),
+  get: (col, id) => { const r = q.un.get(col, String(id)); return r ? ouvrir(col, JSON.parse(r.data)) : null; },
   put(col, obj) {
     if (!obj.id) obj.id = uid(col.slice(0, 3));
     if (!obj.cree) obj.cree = maintenant();
-    q.ecrire.run(col, String(obj.id), JSON.stringify(obj), obj.cree);
+    q.ecrire.run(col, String(obj.id), JSON.stringify(sceller(col, obj)), obj.cree);
     return obj;
   },
   patch(col, id, patch) {

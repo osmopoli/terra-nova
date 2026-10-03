@@ -122,4 +122,24 @@
       'garde.titre': 'دخول مقيد', 'garde.texte': 'هذه الصفحة مخصصة لملف آخر. تمت إعادة توجيهك.'
     }
   });
+  /* ---------- Vague 13 : sécurité (F69, F70), nouveaux arrivants (F71, F72) — textes communes à plusieurs pages ---------- */
+  i18n.ajouter({
+    fr: { 'nav.accueilAgent': 'Accueil arrivants', 'nav.securite': 'Sécurité', 'pied.securite': 'Sécurité de vos données', 'pied.bienvenue': 'Je viens d’arriver',
+      'v13.con.identifiant': 'E-mail, identifiant ou numéro de téléphone', 'v13.con.mdp': 'Mot de passe ou code secret', 'v13.con.aide': 'Pas d’adresse e-mail ? Utilisez l’identifiant reçu à l’inscription (TN-…) ou votre numéro de téléphone.',
+      'v13.con.erreur': 'Indiquez votre e-mail, votre identifiant (TN-123456) ou votre numéro de téléphone.', 'v13.con.protege': 'Connexion protégée : verrouillage après plusieurs erreurs, données chiffrées.',
+      'v13.ins.sansEmail': 'Pas d’adresse e-mail ?', 'v13.ins.sansEmailLien': 'Créer un compte avec un identifiant et un code' },
+    en: { 'nav.accueilAgent': 'Newcomers desk', 'nav.securite': 'Security', 'pied.securite': 'Security of your data', 'pied.bienvenue': 'I just arrived',
+      'v13.con.identifiant': 'E-mail, identifier or phone number', 'v13.con.mdp': 'Password or secret code', 'v13.con.aide': 'No e-mail address? Use the identifier you received when signing up (TN-…) or your phone number.',
+      'v13.con.erreur': 'Enter your e-mail, your identifier (TN-123456) or your phone number.', 'v13.con.protege': 'Protected sign-in: locked after several errors, encrypted data.',
+      'v13.ins.sansEmail': 'No e-mail address?', 'v13.ins.sansEmailLien': 'Create an account with an identifier and a code' },
+    es: { 'nav.accueilAgent': 'Acogida de recién llegados', 'nav.securite': 'Seguridad', 'pied.securite': 'Seguridad de sus datos', 'pied.bienvenue': 'Acabo de llegar',
+      'v13.con.identifiant': 'Correo, identificador o número de teléfono', 'v13.con.mdp': 'Contraseña o código secreto', 'v13.con.aide': '¿No tiene correo electrónico? Use el identificador recibido al registrarse (TN-…) o su número de teléfono.',
+      'v13.con.erreur': 'Indique su correo, su identificador (TN-123456) o su número de teléfono.', 'v13.con.protege': 'Conexión protegida: bloqueo tras varios errores, datos cifrados.',
+      'v13.ins.sansEmail': '¿No tiene correo electrónico?', 'v13.ins.sansEmailLien': 'Crear una cuenta con un identificador y un código' },
+    ar: { 'nav.accueilAgent': 'استقبال الوافدين', 'nav.securite': 'الأمان', 'pied.securite': 'أمان بياناتك', 'pied.bienvenue': 'وصلت للتو',
+      'v13.con.identifiant': 'البريد الإلكتروني أو المعرّف أو رقم الهاتف', 'v13.con.mdp': 'كلمة المرور أو الرمز السري', 'v13.con.aide': 'ليس لديك بريد إلكتروني؟ استخدم المعرّف الذي حصلت عليه عند التسجيل (TN-…) أو رقم هاتفك.',
+      'v13.con.erreur': 'أدخل بريدك الإلكتروني أو معرّفك (TN-123456) أو رقم هاتفك.', 'v13.con.protege': 'دخول محمي: قفل بعد عدة أخطاء، وبيانات مشفّرة.',
+      'v13.ins.sansEmail': 'ليس لديك بريد إلكتروني؟', 'v13.ins.sansEmailLien': 'أنشئ حساباً بمعرّف ورمز سري' }
+  });
+
 })();

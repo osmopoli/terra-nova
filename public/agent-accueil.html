@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Accueil des nouveaux arrivants — Terra Nova</title>
+  <meta name="description" content="Inscription des nouveaux arrivants au guichet, une personne ou un groupe, avec fiche d’accueil imprimable dans leur langue.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/arrivee.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/fiche-accueil.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="accueilAgent" data-ariane="nav.agent|agent.html;nav.accueilAgent" data-roles="agent,admin">
+  <main id="contenu" class="conteneur">
+    <header class="titre-page">
+      <span class="surtitre" data-i18n="ga.surtitre">Service d’accueil des nouveaux arrivants</span>
+      <h1 data-i18n="ga.titre">Inscrire au guichet</h1>
+      <p data-i18n="ga.sous">Pour les personnes sans adresse e-mail : un identifiant et un code provisoire sont créés, et la fiche d’accueil s’imprime dans la langue de la personne.</p>
+    </header>
+
+    <div class="grille-2">
+      <!-- Une personne à la fois, enchaînement rapide -->
+      <section class="panneau" aria-labelledby="t-une">
+        <h2 id="t-une" class="titre-arr"><i class="ph-duotone ph-user-plus" aria-hidden="true"></i><span data-i18n="ga.une">Une personne</span></h2>
+        <form id="form-une" class="form-arr" novalidate>
+          <div class="resume-arr" role="alert"></div>
+          <div class="grille-champs">
+            <div class="champ"><label for="g-prenom" data-i18n="bv.prenom">Prénom</label><input id="g-prenom" autocomplete="off" maxlength="60" required></div>
+            <div class="champ"><label for="g-nom" data-i18n="bv.nom">Nom</label><input id="g-nom" autocomplete="off" maxlength="60" required></div>
+            <div class="champ"><label for="g-langue" data-i18n="ga.langue">Langue de la personne</label><select id="g-langue"></select></div>
+            <div class="champ"><label for="g-tel"><span data-i18n="bv.tel">Téléphone</span> <span class="doux" data-i18n="bv.facultatif">(facultatif)</span></label><input id="g-tel" type="tel" inputmode="tel" autocomplete="off" maxlength="20"></div>
+            <div class="champ"><label for="g-quartier"><span data-i18n="bv.quartier">Quartier</span> <span class="doux" data-i18n="bv.facultatif">(facultatif)</span></label><select id="g-quartier"></select></div>
+            <div class="champ"><label for="g-situation"><span data-i18n="ga.situation">Situation</span> <span class="doux" data-i18n="bv.facultatif">(facultatif)</span></label><select id="g-situation"></select></div>
+          </div>
+          <button class="btn btn-primaire" type="submit"><i class="ph-duotone ph-identification-card" aria-hidden="true"></i><span data-i18n="ga.creer">Créer le compte et la fiche</span></button>
+          <p class="doux" data-i18n="ga.enchainer">Après l’enregistrement, le formulaire se vide pour la personne suivante.</p>
+        </form>
+      </section>
+
+      <!-- Inscription groupée -->
+      <section class="panneau" aria-labelledby="t-lot">
+        <h2 id="t-lot" class="titre-arr"><i class="ph-duotone ph-users-three" aria-hidden="true"></i><span data-i18n="ga.lot">Un groupe</span></h2>
+        <form id="form-lot" class="form-arr" novalidate>
+          <div class="resume-arr" role="alert"></div>
+          <div class="champ">
+            <label for="g-lot" data-i18n="ga.lotLabel">Une personne par ligne : prénom ; nom ; téléphone ; langue</label>
+            <textarea id="g-lot" class="lot" spellcheck="false" aria-describedby="g-lot-aide g-lot-apercu" placeholder="Amadou ; Diallo ; 0639 12 34 56 ; fr&#10;Lucía ; García ; ; es&#10;Samira ; Haddad ; ; ar"></textarea>
+            <p class="aide" id="g-lot-aide" data-i18n="ga.lotAide">Téléphone et langue facultatifs (fr, en, es ou ar ; français par défaut). Une liste copiée depuis un tableur fonctionne aussi. 50 personnes au plus par envoi.</p>
+            <p class="lot-apercu" id="g-lot-apercu" aria-live="polite"></p>
+          </div>
+          <button class="btn btn-primaire" type="submit"><i class="ph-duotone ph-users-three" aria-hidden="true"></i><span data-i18n="ga.creerLot">Créer tous les comptes</span></button>
+        </form>
+      </section>
+    </div>
+
+    <section class="bloc-arr" aria-labelledby="t-inscrits">
+      <div class="ligne entre">
+        <h2 id="t-inscrits" class="titre-arr"><i class="ph-duotone ph-list-checks" aria-hidden="true"></i><span data-i18n="ga.inscrits">Inscrits pendant cette session</span></h2>
+        <button class="btn" type="button" id="tout-imprimer" hidden><i class="ph-duotone ph-printer" aria-hidden="true"></i><span data-i18n="ga.toutImprimer">Imprimer toutes les fiches</span></button>
+      </div>
+      <p class="note-info" data-i18n="ga.unique">Les codes provisoires ne s’affichent qu’ici, une seule fois : imprimez ou montrez la fiche avant de quitter la page. La personne choisira son propre code à sa première connexion.</p>
+      <ul class="inscrits" id="inscrits"></ul>
+      <p class="vide" id="aucun-inscrit" data-i18n="ga.aucun">Personne n’a encore été inscrit pendant cette session.</p>
+    </section>
+  </main>
+  <script src="assets/js/agent-accueil.js" defer></script>
+</body>
+</html>
