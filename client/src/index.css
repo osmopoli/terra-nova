@@ -109,6 +109,33 @@
     --shadow-pop: 0 6px 16px -4px rgb(15 23 41 / 0.2);
   }
 
+  /*
+   * Contraste élevé (WEBC-19) : mêmes tokens, valeurs renforcées (ratios >= 7:1, WCAG AAA),
+   * posé sur <html> par ContrastControl. Prioritaire sur toute ambiance [data-space].
+   */
+  :root[data-contrast="high"],
+  :root[data-contrast="high"] [data-space] {
+    --color-ink: #000000;
+    --color-ink-muted: #1f2933;
+    --color-surface: #ffffff;
+    --color-canvas: #ffffff;
+    --color-mist: #ffffff;
+    --color-line: #000000;
+    --color-primary: #00366f;
+    --color-primary-strong: #001f42;
+    --color-danger: #7a0b0b;
+    --color-star-muted: #ffffff;
+    --shadow-card: 0 0 0 2px #000000;
+  }
+  :root[data-contrast="high"] a {
+    text-decoration-line: underline;
+    text-underline-offset: 3px;
+  }
+  :root[data-contrast="high"] :focus-visible {
+    outline: 4px solid var(--color-ink);
+    box-shadow: 0 0 0 7px var(--color-surface);
+  }
+
   :focus-visible {
     outline: 3px solid var(--color-primary);
     outline-offset: 2px;

@@ -25,6 +25,8 @@ const ContactMessagesController = () => import('#controllers/contact_messages_co
 const ServicesController = () => import('#controllers/services_controller')
 const NotificationsController = () => import('#controllers/notifications_controller')
 const AgentMessagesController = () => import('#controllers/agent_messages_controller')
+const AdminServiceTranslationsController = () =>
+  import('#controllers/admin_service_translations_controller')
 
 router
   .group(() => {
@@ -73,6 +75,7 @@ router
         router.post('/auth/logout', [AuthController, 'logout'])
         router.get('/me', [ProfileController, 'show'])
         router.patch('/me', [ProfileController, 'update'])
+        router.post('/me/onboarding', [ProfileController, 'completeOnboarding'])
 
         /** Notifications de changement d'état de mes demandes (WEBC-76). */
         router.get('/me/notifications', [NotificationsController, 'index'])
@@ -107,7 +110,17 @@ router
       .group(() => {
         router.get('/users', [AdminUsersController, 'index'])
         router.patch('/users/:id/role', [AdminUsersController, 'updateRole'])
+        router.get('/login-attempts', [AdminUsersController, 'loginAttempts'])
         router.post('/webcup/refresh', [WebcupController, 'refresh'])
+        // F27 : traduction des contenus d'un service (ex. version EN).
+        router.get('/services/:slug/translations/:lang', [
+          AdminServiceTranslationsController,
+          'show',
+        ])
+        router.put('/services/:slug/translations/:lang', [
+          AdminServiceTranslationsController,
+          'update',
+        ])
       })
       .prefix('/admin')
       .use([middleware.auth(), middleware.role({ roles: ACCESS.admin })])

@@ -4,9 +4,14 @@ import './index.css';
 import App from './App.jsx';
 import { TitleSync } from './lib/title.js';
 import { applyTextSize, getTextSize } from './lib/textSize.js';
+import { getHighContrast, setContrastAttribute } from './lib/contrast.js';
 
 // Taille du texte mémorisée appliquée avant le premier rendu (pas de saut visuel).
 applyTextSize(getTextSize());
+
+// Contraste appliqué avant le premier rendu (pas de flash), sans figer le choix :
+// tant que l'utilisateur n'a rien choisi, la préférence système reste suivie.
+setContrastAttribute(getHighContrast());
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

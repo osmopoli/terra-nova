@@ -28,6 +28,10 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare role: Role
 
+  /** Guide de première connexion terminé ou passé (D12) ; null = à afficher. */
+  @column.dateTime()
+  declare onboardedAt: DateTime | null
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

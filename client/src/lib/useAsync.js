@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 
 // Exécute `load(signal)` à chaque changement de `deps` et annule la requête
 // précédente, pour qu'un filtre changé vite n'affiche pas un résultat périmé.
+// `reload()` relance le chargement (bouton « Réessayer » de ListState).
 export function useAsync(load, deps) {
   const [state, setState] = useState({ status: 'loading', data: null, error: null });
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -17,7 +19,7 @@ export function useAsync(load, deps) {
       });
     return () => controller.abort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, deps);
+  }, [...deps, attempt]);
 
-  return state;
+  return { ...state, reload: () => setAttempt((n) => n + 1) };
 }

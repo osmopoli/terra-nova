@@ -1,6 +1,7 @@
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import Service, { type ServiceProcedure } from '#models/service'
 import type { ServiceCategory } from '#constants/domain'
+import { SERVICE_TRANSLATIONS } from '#constants/services_translations'
 
 type ServiceSeed = {
   slug: string
@@ -232,7 +233,10 @@ export const DEMO_SERVICES: ServiceSeed[] = [
 export default class extends BaseSeeder {
   async run() {
     for (const { slug, ...attrs } of DEMO_SERVICES) {
-      await Service.updateOrCreate({ slug }, attrs)
+      await Service.updateOrCreate(
+        { slug },
+        { ...attrs, translations: SERVICE_TRANSLATIONS[slug] ?? {} }
+      )
     }
   }
 }

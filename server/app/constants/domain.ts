@@ -97,6 +97,41 @@ export const SERVICE_CATEGORIES = {
 export type ServiceCategory = keyof typeof SERVICE_CATEGORIES
 export const SERVICE_CATEGORY_VALUES = Object.keys(SERVICE_CATEGORIES) as ServiceCategory[]
 
+/** Protection contre les connexions abusives (WEBC-60) : seuils et durée de verrouillage. */
+export const LOGIN_LIMITS = {
+  maxFailuresPerAccount: 5,
+  maxFailuresPerIp: 20,
+  /** Fenêtre de comptage des échecs = durée du verrouillage. */
+  windowMinutes: 15,
+} as const
+
+/** Résultat d'une tentative de connexion (colonne login_attempts.outcome). */
+export const LOGIN_OUTCOMES = {
+  succes: 'Réussie',
+  echec: 'Échec',
+  bloque: 'Bloquée',
+} as const
+export type LoginOutcome = keyof typeof LOGIN_OUTCOMES
+
+/** Origine d'un blocage (colonne login_attempts.reason). */
+export const LOGIN_BLOCK_SCOPES = {
+  compte: 'Compte verrouillé',
+  ip: 'Adresse IP verrouillée',
+} as const
+export type LoginBlockScope = keyof typeof LOGIN_BLOCK_SCOPES
+/**
+ * Langues des contenus des services (F27), libellées dans leur propre langue.
+ * Le français est la langue de référence : toute traduction manquante retombe sur lui.
+ */
+export const CONTENT_LANGUAGES = {
+  fr: 'Français',
+  en: 'English',
+  es: 'Español',
+} as const
+export type ContentLanguage = keyof typeof CONTENT_LANGUAGES
+export const CONTENT_LANGUAGE_VALUES = Object.keys(CONTENT_LANGUAGES) as ContentLanguage[]
+export const DEFAULT_CONTENT_LANGUAGE: ContentLanguage = 'fr'
+
 /** Listes fermées exposées au front par GET /api/meta (clé -> libellé). */
 export const META: Record<string, Record<string, string>> = {
   roles: ROLES,
@@ -105,4 +140,7 @@ export const META: Record<string, Record<string, string>> = {
   contactStatusActions: CONTACT_STATUS_ACTIONS,
   serviceCategories: SERVICE_CATEGORIES,
   newsCategories: NEWS_CATEGORIES,
+  loginOutcomes: LOGIN_OUTCOMES,
+  loginBlockScopes: LOGIN_BLOCK_SCOPES,
+  contentLanguages: CONTENT_LANGUAGES,
 }
