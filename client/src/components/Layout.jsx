@@ -3,6 +3,7 @@ import Breadcrumb from './Breadcrumb.jsx';
 import { APP_NAME } from '../lib/constants.js';
 import Brand from './Brand.jsx';
 import TextSizeControl from './TextSizeControl.jsx';
+import NotificationBell from './NotificationBell.jsx';
 import ContrastControl from './ContrastControl.jsx';
 import LightModeControl from './LightModeControl.jsx';
 import { LightModeFooter, LightModeNotice } from './LightModeStatus.jsx';
@@ -26,6 +27,7 @@ export default function Layout({ user, children }) {
             <TextSizeControl className="text-ink" />
             <ContrastControl className="text-ink" />
             <LightModeControl className="text-ink" />
+            {user && <NotificationBell />}
             <NavLink to="/" className={linkClass}>
               Accueil
             </NavLink>
