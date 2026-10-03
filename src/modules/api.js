@@ -80,6 +80,8 @@ router.post('/api/auth/supprimer', A.exigerRole('citoyen'), (req, res) => {
   for (const d of docs.tous('demandes').filter((x) => x.userId === u.id)) docs.patch('demandes', d.id, { userId: null, anonymise: true, contactNom: '', contactEmail: '' });
   for (const r of docs.tous('rdv').filter((x) => x.userId === u.id)) docs.suppr('rdv', r.id);
   for (const n of docs.tous('notifications').filter((x) => x.userId === u.id)) docs.suppr('notifications', n.id);
+  // vague 12 : les avis restent comptés dans les résultats et les idées dans le suivi, mais sans lien avec la personne
+  for (const col of ['avis', 'idees']) for (const x of docs.tous(col).filter((d) => d.userId === u.id)) docs.patch(col, x.id, { userId: null, anonymise: true });
   docs.suppr('utilisateurs', u.id);
   A.fermerSession(req, res);
   db.prepare('DELETE FROM users WHERE doc_id = ?').run(u.id);
@@ -289,6 +291,7 @@ router.get('/api/mes-donnees', A.exigerRole(...A.ROLES), (req, res) => {
   res.json({ exporte: maintenant(), profil: sans(u, '_uid'), demandes: docs.tous('demandes').filter((d) => d.userId === u.id),
     rendezVous: docs.tous('rdv').filter((r) => r.userId === u.id), notifications: docs.tous('notifications').filter((n) => n.userId === u.id),
     contributions: docs.tous('contributions').filter((c) => c.userId === u.id),
+    avis: docs.tous('avis').filter((x) => x.userId === u.id), idees: docs.tous('idees').filter((x) => x.userId === u.id),
     connexions: docs.tous('journal').filter((j) => j.email === u.email).slice(-50) });
 });
 

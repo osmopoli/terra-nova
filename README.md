@@ -48,12 +48,13 @@ Réinitialiser les données de démonstration : connecté en admin, `POST /api/d
 - `server.js` — Express : API, fichiers statiques, polling de l'API Webcup.
 - `src/db.js` — schéma SQLite : `users` (identifiants scrypt + rôle), `sessions`, `docs` (documents métier JSON), `securite` (anti-intrusion), `api_requests` / `api_state` (API Webcup).
 - `src/auth.js` — sessions par cookie httpOnly, hachage scrypt, rôles, verrouillage progressif après échecs (F37).
+- `src/modules/participation.js` — consultations, avis (un par habitant), projets et idées (F65-F68), droits contrôlés par le serveur.
 - `src/modules/api.js` — `GET /api/etat` (tout ce que le profil a le droit de voir), écritures `POST/PATCH /api/docs/:collection` contrôlées par règle (un citoyen ne voit et ne modifie que ses données ; seuls agents / admins traitent les demandes, diffusent les alertes, changent l'état des services ; seul l'admin change un rôle), soutiens (F52), contributions données (F51), indicateurs (F50), flux Webcup pour les agents (D19, clé jamais exposée).
 - `src/webcup.js` — interroge l'API toutes les `POLL_INTERVAL_SECONDS` (dédoublonnage sur `request_code`).
 - `public/assets/js/store.js` — client du serveur, même interface pour toutes les pages (`NT.store`, `NT.auth`, `NT.demandes`…).
 - `data/demo-seed.json` — données de démonstration (dates relatives).
 
-## Couverture des demandes (50)
+## Couverture des demandes
 
 Le détail « où et comment le montrer au jury » est dans [`docs/RENDU-JURY.md`](docs/RENDU-JURY.md).
 
@@ -65,7 +66,7 @@ Le détail « où et comment le montrer au jury » est dans [`docs/RENDU-JURY.md
 | Espace agents | D17, D19, F22, F47, F48, F50 | `agent`, `agent-tableau`, `agent-demandes`, `agent-journal` |
 | Alertes et annonces | D06, D18, F29, F30, F31 | `annonces`, `agent-alertes` |
 | Rendez-vous, transports, carte | F36, F39, F40, F45, F46 | `rendez-vous`, `transports`, `carte` |
-| Participation, données | F51, F52 | `soutenir`, `donnees` |
+| Participation, données | F51, F52, F65, F66, F67, F68 | `soutenir`, `participer`, `donnees`, `espace` |
 | Accessibilité, langues, langage clair | D13, D14, D20, F21, F23, F24, F41, F42, F43, F44 | toutes (panneau ♿, touche `?`, `aide`) |
 | Légèreté, appareils peu puissants, version simple | F61, F62 | panneau ♿, pied de page, `/simple` (`src/modules/simple.js`) |
 | État des services (désactivation admin, avant toute démarche) | F63, F64 | `agent-alertes`, `services`, `demande`, `rendez-vous` |

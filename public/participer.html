@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Participer — Terra Nova</title>
+  <meta name="description" content="Donnez votre avis sur les décisions et les projets de Terra Nova, suivez les chantiers de votre quartier et proposez vos idées.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/participer.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/participer.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="participer" data-ariane="nav.accueil|index.html;nav.participer" data-roles="">
+  <main id="contenu" class="conteneur">
+    <header class="titre-page">
+      <h1 data-i18n="par.titre">Participer à la vie de Terra Nova</h1>
+      <p data-i18n="par.sous">Donnez votre avis sur les décisions et les projets de la ville, suivez les chantiers de votre quartier et proposez vos idées. Chaque participation vous donne un reçu et une réponse.</p>
+    </header>
+
+    <nav class="sommaire-par" aria-labelledby="t-som">
+      <h2 id="t-som" class="sr-only" data-i18n="par.sommaire">Sur cette page</h2>
+      <ul>
+        <li><a href="#consultations"><i class="ph-duotone ph-chats-circle" aria-hidden="true"></i><span data-i18n="par.consultations">Consultations</span></a></li>
+        <li><a href="#projets"><i class="ph-duotone ph-crane" aria-hidden="true"></i><span data-i18n="par.projets">Projets de la ville</span></a></li>
+        <li><a href="#idees"><i class="ph-duotone ph-lightbulb-filament" aria-hidden="true"></i><span data-i18n="par.idees">Proposer une idée</span></a></li>
+      </ul>
+    </nav>
+
+    <div id="invitation" class="note-par" hidden></div>
+
+    <!-- F65 / F66 : consultations du Haut Conseil et avis sur les projets -->
+    <section class="bloc-par" id="consultations" aria-labelledby="t-consultations">
+      <h2 id="t-consultations" data-i18n="par.consultations">Consultations</h2>
+      <p class="doux" data-i18n="par.consultationsD">Certaines décisions de la ville sont soumises à l’avis des habitants avant d’être prises. Lisez la question, choisissez une réponse et suivez la décision.</p>
+      <p class="consultatif"><i class="ph-duotone ph-scales" aria-hidden="true"></i><span><strong data-i18n="par.consultatifT">Avis consultatif, pas un vote officiel.</strong> <span data-i18n="par.consultatifD">Votre avis éclaire la décision ; c’est l’instance indiquée sur chaque consultation qui décide, et elle explique ensuite comment les avis ont été pris en compte.</span></span></p>
+      <div id="gestion-consultation"></div>
+      <h3 class="sous-titre-par" data-i18n="par.ouvertes">En cours</h3>
+      <ul class="liste-par" id="liste-ouvertes"></ul>
+      <h3 class="sous-titre-par" data-i18n="par.terminees">Terminées : résultats et décisions</h3>
+      <ul class="liste-par" id="liste-terminees"></ul>
+    </section>
+
+    <!-- F67 : projets en cours -->
+    <section class="bloc-par" id="projets" aria-labelledby="t-projets">
+      <h2 id="t-projets" data-i18n="par.projets">Projets de la ville</h2>
+      <p class="doux" data-i18n="par.projetsD">Les chantiers et projets de Terra Nova, expliqués simplement : où ils en sont, combien ils coûtent et ce qui vient ensuite.</p>
+      <form class="filtres-par" id="filtres-projets" role="search" onsubmit="return false">
+        <div class="champ">
+          <label for="f-quartier" data-i18n="par.quartier">Quartier</label>
+          <select id="f-quartier"></select>
+        </div>
+        <div class="champ">
+          <label for="f-statut" data-i18n="par.statut">État du projet</label>
+          <select id="f-statut"></select>
+        </div>
+      </form>
+      <p class="doux" id="resultat-projets" aria-live="polite"></p>
+      <ul class="liste-par grille-projets" id="liste-projets"></ul>
+    </section>
+
+    <!-- F68 : idées des habitants -->
+    <section class="bloc-par" id="idees" aria-labelledby="t-idees">
+      <h2 id="t-idees" data-i18n="par.idees">Proposer une idée</h2>
+      <p class="doux" data-i18n="par.ideesD">Une idée pour améliorer la vie dans la colonie ? Envoyez-la au Service Projets : vous recevez un numéro de suivi et une réponse, même si elle n’est pas retenue.</p>
+      <div id="zone-idee"></div>
+      <div id="mes-idees" hidden>
+        <h3 class="sous-titre-par" data-i18n="par.mesIdees">Mes idées</h3>
+        <ul class="liste-par" id="liste-mes-idees"></ul>
+      </div>
+      <div id="idees-recues" hidden>
+        <h3 class="sous-titre-par" data-i18n="par.ideesRecues">Idées reçues à traiter</h3>
+        <p class="doux" data-i18n="par.ideesRecuesD">Changez le statut de chaque idée : l’habitant est prévenu et l’action est inscrite au journal.</p>
+        <ul class="liste-par" id="liste-idees-recues"></ul>
+      </div>
+      <h3 class="sous-titre-par" data-i18n="par.ideesPubliques">Idées déjà étudiées</h3>
+      <p class="doux" data-i18n="par.ideesPubliquesD">Sans nom ni coordonnées : seul le titre et la réponse de la ville sont publics.</p>
+      <ul class="liste-par" id="liste-idees-publiques"></ul>
+    </section>
+  </main>
+</body>
+</html>

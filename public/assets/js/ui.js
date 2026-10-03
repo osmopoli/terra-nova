@@ -191,9 +191,9 @@
 
   /* ---------- En-tête ---------- */
   const page = corps.dataset.page || '';
-  const liens = !u ? [['accueil', 'index.html'], ['services', 'services.html'], ['carte', 'carte.html'], ['annonces', 'annonces.html'], ['transports', 'transports.html']]
-    : u.role === 'citoyen' ? [['accueil', 'index.html'], ['services', 'services.html'], ['carte', 'carte.html'], ['annonces', 'annonces.html'], ['soutenir', 'soutenir.html'], ['rdv', 'rendez-vous.html'], ['espace', 'espace.html']]
-    : [['agent', 'agent.html'], ['tableau', 'agent-tableau.html'], ['demandesAgent', 'agent-demandes.html'], ['alertes', 'agent-alertes.html'], ['comptes', 'admin-comptes.html'], ['journal', 'agent-journal.html'], ['services', 'services.html']];
+  const liens = !u ? [['accueil', 'index.html'], ['services', 'services.html'], ['carte', 'carte.html'], ['annonces', 'annonces.html'], ['participer', 'participer.html'], ['transports', 'transports.html']]
+    : u.role === 'citoyen' ? [['accueil', 'index.html'], ['services', 'services.html'], ['carte', 'carte.html'], ['annonces', 'annonces.html'], ['soutenir', 'soutenir.html'], ['participer', 'participer.html'], ['rdv', 'rendez-vous.html'], ['espace', 'espace.html']]
+    : [['agent', 'agent.html'], ['tableau', 'agent-tableau.html'], ['demandesAgent', 'agent-demandes.html'], ['alertes', 'agent-alertes.html'], ['comptes', 'admin-comptes.html'], ['journal', 'agent-journal.html'], ['participer', 'participer.html'], ['services', 'services.html']];
   if (u) NT.rdv.verifierRappels();   // avant le compteur de la cloche, pour que les rappels dus soient comptés
   const nbNotif = u ? NT.notif.nonLues(u.id) : 0;
   const optionsLangue = Object.entries(NT.i18n.LANGUES).map(([c, n]) => `<option value="${c}" ${c === NT.i18n.langue ? 'selected' : ''} lang="${c}">${n}</option>`).join('');

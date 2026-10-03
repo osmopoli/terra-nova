@@ -28,9 +28,17 @@
     'jr.v.active': 'Active', 'jr.v.levee': 'Lifted', 'jr.v.actif': 'Active', 'jr.v.desactive': 'Deactivated', 'jr.v.verrouille': 'Locked', 'jr.v.supprime': 'Deleted',
     'ag.derniers': 'Latest actions', 'ag.voirJournal': 'Open the action log', 'ag.aucuneAction': 'No action recorded yet.'
   } });
+  // Vague 12 : actions de participation (consultations, projets, idées) dans le journal
+  NT.i18n.ajouter({
+    en: { 'jr.c.consultation': 'Consultation', 'jr.c.projet': 'Project', 'jr.c.idee': 'Idea', 'jr.a.ouvCons': 'Consultation opened', 'jr.a.cloCons': 'Consultation closed', 'jr.a.decCons': 'Decision published', 'jr.a.majProjet': 'Project updated', 'jr.a.idee': 'Idea processed' },
+    es: { 'jr.c.consultation': 'Consulta', 'jr.c.projet': 'Proyecto', 'jr.c.idee': 'Idea', 'jr.a.ouvCons': 'Apertura de una consulta', 'jr.a.cloCons': 'Cierre de una consulta', 'jr.a.decCons': 'Publicación de una decisión', 'jr.a.majProjet': 'Actualización de un proyecto', 'jr.a.idee': 'Tratamiento de una idea' },
+    ar: { 'jr.c.consultation': 'استشارة', 'jr.c.projet': 'مشروع', 'jr.c.idee': 'فكرة', 'jr.a.ouvCons': 'فتح استشارة', 'jr.a.cloCons': 'إغلاق استشارة', 'jr.a.decCons': 'نشر قرار', 'jr.a.majProjet': 'تحديث مشروع', 'jr.a.idee': 'معالجة فكرة' }
+  });
 
-  const CATS = { demande: ['ph-tray', 'Demande'], annonce: ['ph-megaphone', 'Annonce'], service: ['ph-buildings', 'Service'], compte: ['ph-users', 'Compte'], rdv: ['ph-calendar-check', 'Rendez-vous'] };
+  const CATS = { demande: ['ph-tray', 'Demande'], annonce: ['ph-megaphone', 'Annonce'], service: ['ph-buildings', 'Service'], compte: ['ph-users', 'Compte'], rdv: ['ph-calendar-check', 'Rendez-vous'],
+    consultation: ['ph-chats-circle', 'Consultation'], projet: ['ph-crane', 'Projet'], idee: ['ph-lightbulb-filament', 'Idée'] };
   const ACTIONS = {
+    'Ouverture d’une consultation': ['jr.a.ouvCons'], 'Clôture d’une consultation': ['jr.a.cloCons'], 'Publication d’une décision': ['jr.a.decCons'], 'Mise à jour d’un projet': ['jr.a.majProjet'], 'Traitement d’une idée': ['jr.a.idee'],
     'Changement de statut': ['jr.a.statut'], 'Diffusion d’une alerte': ['jr.a.diffAlerte'], 'Publication d’une annonce': ['jr.a.pubAnnonce'], 'Changement d’état du service': ['jr.a.etatService'],
     'Changement de rôle': ['jr.a.role'], 'Désactivation du compte': ['jr.a.desactivation'], 'Réactivation du compte': ['jr.a.reactivation'], 'Déblocage du compte': ['jr.a.deblocage'],
     'Suppression du compte par son titulaire': ['jr.a.suppression'], 'Modification du profil': ['jr.a.profil'], 'Levée d’une alerte': ['jr.a.levee'], 'Retrait d’une annonce': ['jr.a.retrait']
@@ -68,6 +76,7 @@
       case 'service': return 'services.html#' + encodeURIComponent(id);
       case 'compte': return 'admin-comptes.html';
       case 'rdv': return 'rendez-vous.html';
+      case 'consultation': case 'projet': case 'idee': return 'participer.html#' + encodeURIComponent(id);
       default: return '';
     }
   }

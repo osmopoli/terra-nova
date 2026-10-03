@@ -50,7 +50,7 @@
   /* Interface commune (en-tête, pied, accessibilité, statuts, rôles) */
   i18n.ajouter({
     fr: {
-      'nav.soutenir': 'Soutenir', 'nav.tableau': 'Tableau de bord', 'pied.donnees': 'Vos données', 
+      'nav.soutenir': 'Soutenir', 'nav.participer': 'Participer', 'nav.tableau': 'Tableau de bord', 'pied.donnees': 'Vos données', 
       'nav.carte': 'Carte', 'nav.journal': 'Journal', 
       'a11y.contraste': 'Contraste renforcé', 'a11y.espace': 'Espacement du texte augmenté', 'a11y.calme': 'Réduire les animations', 'a11y.souligne': 'Souligner tous les liens', 'a11y.lexique': 'Expliquer les mots difficiles', 'pied.aide': 'Aide et lexique', 'clavier.titre': 'Raccourcis clavier', 'clavier.intro': 'Toute la plateforme s’utilise au clavier : Tab pour avancer, Maj + Tab pour reculer, Entrée pour valider, Échap pour fermer une fenêtre.', 'clavier.touches': 'Touches', 'clavier.action': 'Action', 'clavier.recherche': 'Aller à la recherche', 'clavier.alertes': 'Ouvrir les alertes', 'clavier.notifs': 'Ouvrir mes notifications', 'clavier.menu': 'Aller au menu principal', 'clavier.contenu': 'Aller au contenu principal', 'clavier.affichage': 'Ouvrir les réglages d’affichage', 'clavier.aide': 'Afficher cette aide', 'clavier.connecte': 'Connectez-vous pour voir vos notifications.',
       'ui.alertes': 'Alertes', 'ui.alertesTitre': 'Alertes et informations importantes', 'ui.alertesActives': '{n} alerte(s) en cours, ouvrir les consignes', 'ui.aucuneAlerte': 'Aucune alerte en cours. Tout est calme sur Terra Nova.', 'ui.publics': 'Personnes concernées en priorité', 'ui.detail': 'Lire l’annonce complète', 
@@ -68,7 +68,7 @@
       'garde.titre': 'Accès réservé', 'garde.texte': 'Cette page est réservée à un autre profil. Vous avez été redirigé.'
     },
     en: {
-      'nav.soutenir': 'Support', 'nav.tableau': 'Dashboard', 'pied.donnees': 'Your data', 
+      'nav.soutenir': 'Support', 'nav.participer': 'Take part', 'nav.tableau': 'Dashboard', 'pied.donnees': 'Your data', 
       'nav.carte': 'Map', 'nav.journal': 'Audit log', 
       'a11y.souligne': 'Underline all links', 'a11y.lexique': 'Explain difficult words', 'pied.aide': 'Help and glossary', 'clavier.titre': 'Keyboard shortcuts', 'clavier.intro': 'The whole platform works with a keyboard: Tab to move forward, Shift + Tab to go back, Enter to confirm, Esc to close a window.', 'clavier.touches': 'Keys', 'clavier.action': 'Action', 'clavier.recherche': 'Go to search', 'clavier.alertes': 'Open alerts', 'clavier.notifs': 'Open my notifications', 'clavier.menu': 'Go to main menu', 'clavier.contenu': 'Go to main content', 'clavier.affichage': 'Open display settings', 'clavier.aide': 'Show this help', 'clavier.connecte': 'Sign in to see your notifications.',
       'ui.alertes': 'Alerts', 'ui.alertesTitre': 'Alerts and important information', 'ui.alertesActives': '{n} active alert(s), open instructions', 'ui.aucuneAlerte': 'No active alerts. All calm on Terra Nova.', 'ui.publics': 'People most concerned', 'ui.detail': 'Read the full notice', 
@@ -86,7 +86,7 @@
       'garde.titre': 'Restricted access', 'garde.texte': 'This page is reserved for another profile. You have been redirected.'
     },
     es: {
-      'nav.soutenir': 'Apoyar', 'nav.tableau': 'Panel', 'pied.donnees': 'Sus datos', 
+      'nav.soutenir': 'Apoyar', 'nav.participer': 'Participar', 'nav.tableau': 'Panel', 'pied.donnees': 'Sus datos', 
       'nav.carte': 'Mapa', 'nav.journal': 'Registro', 
       'a11y.souligne': 'Subrayar todos los enlaces', 'a11y.lexique': 'Explicar las palabras difíciles', 'pied.aide': 'Ayuda y glosario', 'clavier.titre': 'Atajos de teclado', 'clavier.intro': 'Toda la plataforma se usa con el teclado: Tab para avanzar, Mayús + Tab para retroceder, Intro para validar, Esc para cerrar una ventana.', 'clavier.touches': 'Teclas', 'clavier.action': 'Acción', 'clavier.recherche': 'Ir a la búsqueda', 'clavier.alertes': 'Abrir las alertas', 'clavier.notifs': 'Abrir mis notificaciones', 'clavier.menu': 'Ir al menú principal', 'clavier.contenu': 'Ir al contenido principal', 'clavier.affichage': 'Abrir los ajustes de visualización', 'clavier.aide': 'Mostrar esta ayuda', 'clavier.connecte': 'Inicie sesión para ver sus notificaciones.',
       'ui.alertes': 'Alertas', 'ui.alertesTitre': 'Alertas e información importante', 'ui.alertesActives': '{n} alerta(s) activa(s), abrir las instrucciones', 'ui.aucuneAlerte': 'No hay alertas activas. Todo tranquilo en Terra Nova.', 'ui.publics': 'Personas más afectadas', 'ui.detail': 'Leer el anuncio completo', 
@@ -104,7 +104,7 @@
       'garde.titre': 'Acceso restringido', 'garde.texte': 'Esta página está reservada a otro perfil. Ha sido redirigido.'
     },
     ar: {
-      'nav.soutenir': 'دعم', 'nav.tableau': 'لوحة القيادة', 'pied.donnees': 'بياناتك', 
+      'nav.soutenir': 'دعم', 'nav.participer': 'شارك', 'nav.tableau': 'لوحة القيادة', 'pied.donnees': 'بياناتك', 
       'nav.carte': 'الخريطة', 'nav.journal': 'السجل', 
       'a11y.souligne': 'تسطير كل الروابط', 'a11y.lexique': 'شرح الكلمات الصعبة', 'pied.aide': 'المساعدة والمعجم', 'clavier.titre': 'اختصارات لوحة المفاتيح', 'clavier.intro': 'يمكن استخدام المنصة كاملة بلوحة المفاتيح: Tab للتقدم، Shift + Tab للرجوع، Enter للتأكيد، Esc لإغلاق نافذة.', 'clavier.touches': 'المفاتيح', 'clavier.action': 'الإجراء', 'clavier.recherche': 'الانتقال إلى البحث', 'clavier.alertes': 'فتح التنبيهات', 'clavier.notifs': 'فتح إشعاراتي', 'clavier.menu': 'الانتقال إلى القائمة الرئيسية', 'clavier.contenu': 'الانتقال إلى المحتوى الرئيسي', 'clavier.affichage': 'فتح إعدادات العرض', 'clavier.aide': 'عرض هذه المساعدة', 'clavier.connecte': 'سجّل الدخول لرؤية إشعاراتك.',
       'ui.alertes': 'تنبيهات', 'ui.alertesTitre': 'التنبيهات والمعلومات المهمة', 'ui.alertesActives': '{n} تنبيه نشط، افتح التعليمات', 'ui.aucuneAlerte': 'لا توجد تنبيهات حالياً. الهدوء يعم تيرا نوفا.', 'ui.publics': 'الفئات المعنية أولاً', 'ui.detail': 'قراءة الإعلان كاملاً', 

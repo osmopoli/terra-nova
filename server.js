@@ -22,6 +22,7 @@ app.use(require('./src/modules/api'));
 app.use(require('./src/renfort').router);   // vague 9 : clés d'accès, deux étapes, appareils
 app.use(require('./src/modules/sobriete'));   // vague 10 : diagnostic de sobriété (F57)
 app.use(require('./src/modules/simple'));   // vague 11 : version simple et rapide des pages essentielles (F62)
+app.use(require('./src/modules/participation'));   // vague 12 : consultations, avis, projets, idées (F65-F68)
 app.use(require('./src/statique').statique(path.join(__dirname, 'public')));   // F58 : fichiers compressés + cache navigateur
 app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
 

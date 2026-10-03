@@ -14,9 +14,11 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
   <link rel="stylesheet" href="assets/css/theme.css">
   <link rel="stylesheet" href="assets/css/comptes.css">
+  <link rel="stylesheet" href="assets/css/participer.css">
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/store.js"></script>
   <script src="assets/js/comptes.js"></script>
+  <script src="assets/js/participer.js"></script>
   <script src="assets/js/ui.js" defer></script>
 </head>
 <body data-page="espace" data-ariane="nav.accueil|index.html;nav.espace" data-roles="citoyen">
@@ -39,6 +41,7 @@
       <a class="btn btn-primaire" href="demande.html?type=signalement"><i class="ph-duotone ph-map-pin" aria-hidden="true"></i><span data-i18n="c.esp.signaler">Signaler un problème</span></a>
       <a class="btn" href="demande.html?type=demarche"><i class="ph-duotone ph-file-text" aria-hidden="true"></i><span data-i18n="c.esp.demarche">Nouvelle démarche</span></a>
       <a class="btn" href="rendez-vous.html"><i class="ph-duotone ph-calendar-check" aria-hidden="true"></i><span data-i18n="c.esp.rdv">Prendre rendez-vous</span></a>
+      <a class="btn" href="participer.html#idees"><i class="ph-duotone ph-lightbulb-filament" aria-hidden="true"></i><span data-i18n="par.idees">Proposer une idée</span></a>
       <a class="btn" href="compte.html"><i class="ph-duotone ph-user-gear" aria-hidden="true"></i><span data-i18n="c.esp.compte">Mon compte</span></a>
       <a class="btn" href="mes-informations.html"><i class="ph-duotone ph-identification-card" aria-hidden="true"></i><span data-i18n="c.esp.infos">Mes informations</span></a>
       <a class="btn" href="recapitulatif.html"><i class="ph-duotone ph-file-arrow-down" aria-hidden="true"></i><span data-i18n="c.esp.recap">Récapitulatif de mes demandes</span></a>
@@ -66,6 +69,17 @@
         <div id="liste-notifs"></div>
       </section>
     </div>
+
+    <!-- Vague 12 (F65, F66, F68) : reçus d'avis et idées -->
+    <section class="bloc" aria-labelledby="t-participation" id="ma-participation" hidden>
+      <div class="titre-section"><div><h2 id="t-participation" data-i18n="par.esp.titre">Ma participation</h2>
+        <p data-i18n="par.esp.d">Vos avis aux consultations et vos idées, avec leur reçu et leur suivi.</p></div>
+        <a class="btn" href="participer.html"><i class="ph-duotone ph-chats-circle" aria-hidden="true"></i><span data-i18n="par.esp.voir">Tout voir dans Participer</span></a></div>
+      <div class="grille-2">
+        <div><h3 data-i18n="par.esp.avis">Mes avis</h3><ul class="liste-par" id="liste-mes-avis"></ul></div>
+        <div><h3 data-i18n="par.esp.idees">Mes idées</h3><ul class="liste-par" id="liste-mes-idees-esp"></ul></div>
+      </div>
+    </section>
 
     <!-- F26 : historique complet -->
     <section class="bloc" aria-labelledby="t-hist" id="historique">
@@ -108,6 +122,6 @@
     </section>
   </main>
 
-  <script>NT.pret(() => NT.comptes.espace());</script>
+  <script>NT.pret(() => { NT.comptes.espace(); NT.participation.espace(document.getElementById('ma-participation')); });</script>
 </body>
 </html>
