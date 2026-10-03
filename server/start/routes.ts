@@ -12,11 +12,12 @@ import app from '@adonisjs/core/services/app'
 import router from '@adonisjs/core/services/router'
 import db from '@adonisjs/lucid/services/db'
 import { middleware } from '#start/kernel'
-import { META } from '#constants/domain'
+import { ACCESS, META } from '#constants/domain'
 import env from '#start/env'
 
 const AuthController = () => import('#controllers/auth_controller')
 const ProfileController = () => import('#controllers/profile_controller')
+const AlertsController = () => import('#controllers/alerts_controller')
 
 router
   .group(() => {
@@ -56,6 +57,18 @@ router
         router.patch('/me', [ProfileController, 'update'])
       })
       .use(middleware.auth())
+
+    /** Alertes générales : bannière publique, gestion réservée aux administrateurs. */
+    router.get('/alerts/active', [AlertsController, 'active'])
+    router
+      .group(() => {
+        router.get('/', [AlertsController, 'index'])
+        router.post('/', [AlertsController, 'store'])
+        router.patch('/:id', [AlertsController, 'update'])
+        router.delete('/:id', [AlertsController, 'destroy'])
+      })
+      .prefix('/alerts')
+      .use([middleware.auth(), middleware.role({ roles: ACCESS.admin })])
 
     // Routes métier : à ajouter ici (préfixe /api déjà appliqué, jamais de /spike).
 
