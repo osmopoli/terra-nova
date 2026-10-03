@@ -2,7 +2,7 @@
   "name": "nova-terra",
   "private": true,
   "version": "0.1.0",
-  "description": "Nova Terra, plateforme municipale (24h by Webcup 2026) : React 19 + Vite 7 + Tailwind 4 / AdonisJS 6 + MySQL, déployable HODI (Hodifly/Passenger)",
+  "description": "Terra Nova, plateforme municipale (24h by Webcup 2026) : React 19 + Vite 7 + Tailwind 4 / AdonisJS 6 + MySQL, déployable HODI (Hodifly/Passenger)",
   "scripts": {
     "postinstall": "npm ci --prefix client && npm ci --prefix server",
     "dev": "concurrently -n server,client -c blue,green \"npm run dev --prefix server\" \"npm run dev --prefix client\"",

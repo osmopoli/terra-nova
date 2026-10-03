@@ -17,7 +17,7 @@ type ServiceSeed = {
 }
 
 /**
- * Annuaire des services municipaux de Nova Terra (données de démo, D05).
+ * Annuaire des services municipaux de Terra Nova (données de démo, D05).
  * Rejouable : chaque service est mis à jour par son slug.
  */
 export const DEMO_SERVICES: ServiceSeed[] = [
@@ -28,11 +28,11 @@ export const DEMO_SERVICES: ServiceSeed[] = [
     summary:
       "Actes de naissance, mariage, décès, papiers d'identité et inscription sur les listes électorales.",
     description:
-      "Le service État civil enregistre les naissances, mariages, PACS et décès survenus à Nova Terra et délivre les copies d'actes. Il instruit aussi les demandes de carte d'identité et de passeport, et tient les listes électorales de la ville.",
+      "Le service État civil enregistre les naissances, mariages, PACS et décès survenus à Terra Nova et délivre les copies d'actes. Il instruit aussi les demandes de carte d'identité et de passeport, et tient les listes électorales de la ville.",
     hours: 'Lundi au vendredi : 8 h – 16 h\nSamedi : 8 h – 12 h (sur rendez-vous)',
     phone: '02 69 61 10 01',
     email: 'etat-civil@novaterra.test',
-    address: 'Hôtel de ville, 1 place de la Fondation, Nova Terra',
+    address: 'Hôtel de ville, 1 place de la Fondation, Terra Nova',
     procedures: [
       {
         title: "Demander un acte d'état civil",
@@ -61,7 +61,7 @@ export const DEMO_SERVICES: ServiceSeed[] = [
     hours: 'Lundi, mardi, jeudi : 8 h – 15 h 30\nMercredi : 8 h – 12 h\nVendredi : 8 h – 12 h',
     phone: '02 69 61 10 20',
     email: 'enfance@novaterra.test',
-    address: 'Maison des familles, 12 rue des Alizés, Nova Terra',
+    address: 'Maison des familles, 12 rue des Alizés, Terra Nova',
     procedures: [
       {
         title: 'Inscrire son enfant à l’école',
@@ -88,7 +88,7 @@ export const DEMO_SERVICES: ServiceSeed[] = [
     hours: 'Lundi au vendredi : 7 h 30 – 15 h\nPermanence sans rendez-vous le mardi matin',
     phone: '02 69 61 10 30',
     email: 'ccas@novaterra.test',
-    address: '4 allée des Fougères, Nova Terra',
+    address: '4 allée des Fougères, Terra Nova',
     procedures: [
       {
         title: 'Demander une aide ponctuelle',
@@ -116,7 +116,7 @@ export const DEMO_SERVICES: ServiceSeed[] = [
     hours: 'Accueil : lundi au vendredi, 7 h – 14 h\nDéchetterie : mardi au samedi, 7 h – 17 h',
     phone: '02 69 61 10 40',
     email: 'proprete@novaterra.test',
-    address: 'Centre technique municipal, zone des Brisants, Nova Terra',
+    address: 'Centre technique municipal, zone des Brisants, Terra Nova',
     procedures: [
       {
         title: 'Faire enlever un encombrant',
@@ -138,11 +138,11 @@ export const DEMO_SERVICES: ServiceSeed[] = [
     category: 'urbanisme',
     summary: 'Permis de construire, déclarations de travaux et conseils pour votre logement.',
     description:
-      "Le service Urbanisme instruit les autorisations de construire et de modifier un bâtiment, conformément au plan local d'urbanisme de Nova Terra. Un architecte-conseil reçoit gratuitement les habitants pour les aider à préparer leur projet.",
+      "Le service Urbanisme instruit les autorisations de construire et de modifier un bâtiment, conformément au plan local d'urbanisme de Terra Nova. Un architecte-conseil reçoit gratuitement les habitants pour les aider à préparer leur projet.",
     hours: 'Lundi au jeudi : 8 h – 12 h, sur rendez-vous l’après-midi',
     phone: '02 69 61 10 50',
     email: 'urbanisme@novaterra.test',
-    address: 'Hôtel de ville, 1 place de la Fondation, Nova Terra',
+    address: 'Hôtel de ville, 1 place de la Fondation, Terra Nova',
     procedures: [
       {
         title: 'Déposer une déclaration préalable de travaux',
@@ -169,7 +169,7 @@ export const DEMO_SERVICES: ServiceSeed[] = [
     hours: 'Mardi, jeudi, vendredi : 9 h – 17 h\nMercredi et samedi : 9 h – 18 h\nFermée le lundi',
     phone: '02 69 61 10 60',
     email: 'mediatheque@novaterra.test',
-    address: '20 boulevard des Navigateurs, Nova Terra',
+    address: '20 boulevard des Navigateurs, Terra Nova',
     procedures: [
       {
         title: "S'inscrire à la médiathèque",
@@ -191,7 +191,7 @@ export const DEMO_SERVICES: ServiceSeed[] = [
     hours: 'Lundi au vendredi : 8 h – 16 h\nPiscine : tous les jours, 6 h 30 – 19 h',
     phone: '02 69 61 10 70',
     email: 'sports@novaterra.test',
-    address: 'Complexe sportif du Lagon, route du Littoral, Nova Terra',
+    address: 'Complexe sportif du Lagon, route du Littoral, Terra Nova',
     procedures: [
       {
         title: "Inscrire son enfant à l'école des sports",
@@ -214,7 +214,7 @@ export const DEMO_SERVICES: ServiceSeed[] = [
     hours: 'Accueil : lundi au samedi, 7 h – 19 h\nPatrouilles 7 jours sur 7',
     phone: '02 69 61 10 80',
     email: 'police-municipale@novaterra.test',
-    address: '3 rue du Port, Nova Terra',
+    address: '3 rue du Port, Terra Nova',
     procedures: [
       {
         title: 'Opération tranquillité vacances',

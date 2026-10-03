@@ -5,7 +5,7 @@ import User from '#models/user'
 import type { NewsCategory } from '#constants/domain'
 
 /**
- * Actualités de démo de Nova Terra (dates relatives au jour du seed).
+ * Actualités de démo de Terra Nova (dates relatives au jour du seed).
  * Rejouable : les actualités sont mises à jour par titre. Auteur : le premier admin s'il existe.
  */
 export const DEMO_NEWS: {
@@ -19,7 +19,7 @@ export const DEMO_NEWS: {
     title: 'Ouverture de la nouvelle médiathèque du quartier Horizon',
     summary:
       'La médiathèque Horizon ouvre ses portes samedi : 12 000 ouvrages, un espace numérique et des ateliers pour tous les âges.',
-    body: "La ville de Nova Terra inaugure samedi à 10 h la médiathèque du quartier Horizon.\n\nAu programme : visite libre, inscription gratuite pour les habitants sur présentation d'un justificatif de domicile, atelier de découverte de l'espace numérique et lecture de contes à 15 h.\n\nLa médiathèque sera ensuite ouverte du mardi au samedi, de 9 h à 18 h.",
+    body: "La ville de Terra Nova inaugure samedi à 10 h la médiathèque du quartier Horizon.\n\nAu programme : visite libre, inscription gratuite pour les habitants sur présentation d'un justificatif de domicile, atelier de découverte de l'espace numérique et lecture de contes à 15 h.\n\nLa médiathèque sera ensuite ouverte du mardi au samedi, de 9 h à 18 h.",
     category: 'annonce',
     daysAgo: 0,
   },
