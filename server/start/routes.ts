@@ -22,6 +22,7 @@ const AdminUsersController = () => import('#controllers/admin_users_controller')
 const WebcupController = () => import('#controllers/webcup_controller')
 const ContactMessagesController = () => import('#controllers/contact_messages_controller')
 const ServicesController = () => import('#controllers/services_controller')
+const AgentMessagesController = () => import('#controllers/agent_messages_controller')
 
 router
   .group(() => {
@@ -73,6 +74,11 @@ router
         router.get('/overview', [AgentController, 'overview'])
         router.get('/webcup/requests', [WebcupController, 'index'])
         router.post('/webcup/requests/seen', [WebcupController, 'markSeen'])
+        /** Messages des habitants (F22) : liste, filtre « à traiter », changement de statut. */
+        router.get('/contact-messages', [AgentMessagesController, 'index'])
+        router
+          .patch('/contact-messages/:code', [AgentMessagesController, 'updateStatus'])
+          .where('code', /^NT-[A-Za-z0-9]{6}$/)
       })
       .prefix('/agent')
       .use([middleware.auth(), middleware.role({ roles: ACCESS.agent })])
