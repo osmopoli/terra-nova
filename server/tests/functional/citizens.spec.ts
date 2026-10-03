@@ -40,7 +40,7 @@ test.group('Comptes citoyens (F34)', (group) => {
     await login('citoyen', 'lea.martin@test.local')
     await login('citoyen', 'paul@test.local')
 
-    const all = await client.get('/api/agent/citizens').bearerToken(token)
+    const all = await client.get('/api/agent/citizens?q=test.local').bearerToken(token)
     all.assertStatus(200)
     assert.lengthOf(all.body().data, 2)
     assert.isUndefined(all.body().data[0].password)

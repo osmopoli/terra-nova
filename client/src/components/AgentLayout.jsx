@@ -18,26 +18,26 @@ export default function AgentLayout({ user, onLogout, children }) {
             </span>
           </Link>
           <nav aria-label="Navigation agents" className="ml-auto flex flex-wrap items-center gap-3 text-sm">
-            <Link to="/agent" aria-current={pathname === '/agent' ? 'page' : undefined} className="font-bold text-surface underline-offset-4 hover:underline aria-[current=page]:underline">
+            <Link to="/agent" aria-current={pathname === '/agent' ? 'page' : undefined} className="inline-flex min-h-10 items-center font-bold text-surface underline-offset-4 hover:underline aria-[current=page]:underline">
               Demandes
             </Link>
             <Link
               to="/agent/citoyens"
               aria-current={pathname === '/agent/citoyens' ? 'page' : undefined}
-              className="font-bold text-surface underline-offset-4 hover:underline aria-[current=page]:underline"
+              className="inline-flex min-h-10 items-center font-bold text-surface underline-offset-4 hover:underline aria-[current=page]:underline"
             >
               Comptes citoyens
             </Link>
             {user && <span className="hidden text-mist sm:inline">{user.fullName}</span>}
             <ContrastControl className="text-surface" />
-            <Link to="/" className="font-bold text-surface underline-offset-4 hover:underline">
+            <Link to="/" className="inline-flex min-h-10 items-center font-bold text-surface underline-offset-4 hover:underline">
               Espace citoyen
             </Link>
             {user && (
               <button
                 type="button"
                 onClick={onLogout}
-                className="rounded-control border border-mist px-3 py-1.5 font-bold text-surface hover:bg-surface hover:text-ink"
+                className="rounded-control border border-mist min-h-10 px-3 py-1.5 font-bold text-surface hover:bg-surface hover:text-ink"
               >
                 Se déconnecter
               </button>

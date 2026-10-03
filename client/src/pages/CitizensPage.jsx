@@ -29,7 +29,7 @@ function CitizenRow({ citizen, busy, onToggle }) {
         disabled={busy}
         onClick={() => onToggle(citizen)}
         aria-label={`${disabled ? 'Réactiver' : 'Désactiver'} le compte de ${name}`}
-        className={`rounded-control px-3 py-1.5 text-sm font-bold disabled:opacity-60 ${
+        className={`min-h-10 rounded-control px-3 py-1.5 text-sm font-bold disabled:opacity-60 ${
           disabled
             ? 'bg-primary text-surface hover:bg-primary-strong'
             : 'border border-danger text-danger hover:bg-danger hover:text-surface'
