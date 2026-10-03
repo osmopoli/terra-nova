@@ -28,6 +28,7 @@ export const LIMITS = {
   alertMessage: 2000,
   location: 200,
   demandeNote: 1000,
+  alertInstructions: 2000,
 } as const
 
 /** Catégories des actualités de la ville (colonne news_posts.category). */
@@ -194,6 +195,20 @@ export const ISSUE_SERVICE: Record<IssueCategory, Service> = {
   autre: 'autre',
 }
 
+/**
+ * Quartiers de Nova Terra (colonnes users.district et alerts.districts) :
+ * une alerte peut cibler un ou plusieurs quartiers, l'habitant déclare le sien dans son profil.
+ */
+export const DISTRICTS = {
+  centre: 'Centre-ville',
+  nord: 'Quartier nord',
+  sud: 'Quartier sud',
+  est: 'Quartier est',
+  ouest: 'Quartier ouest',
+} as const
+export type District = keyof typeof DISTRICTS
+export const DISTRICT_VALUES = Object.keys(DISTRICTS) as District[]
+
 /** Listes fermées exposées au front par GET /api/meta (clé -> libellé). */
 export const META: Record<string, Record<string, string>> = {
   roles: ROLES,
@@ -209,4 +224,5 @@ export const META: Record<string, Record<string, string>> = {
   alertLevels: ALERT_LEVELS,
   demandeKinds: DEMANDE_KINDS,
   issueCategories: ISSUE_CATEGORIES,
+  districts: DISTRICTS,
 }

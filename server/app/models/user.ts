@@ -4,7 +4,7 @@ import { compose } from '@adonisjs/core/helpers'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
-import { ROLE_VALUES, type Role } from '#constants/domain'
+import { ROLE_VALUES, type District, type Role } from '#constants/domain'
 
 // Hasher par défaut de config/hash.ts (bcrypt).
 const AuthFinder = withAuthFinder(() => hash.use(), {
@@ -31,6 +31,10 @@ export default class User extends compose(BaseModel, AuthFinder) {
   /** Guide de première connexion terminé ou passé (D12) ; null = à afficher. */
   @column.dateTime()
   declare onboardedAt: DateTime | null
+
+  /** Quartier déclaré par l'habitant (ciblage des alertes), null si non renseigné. */
+  @column()
+  declare district: District | null
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

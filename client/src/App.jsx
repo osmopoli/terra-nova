@@ -7,6 +7,7 @@ import MyMessages from './components/MyMessages.jsx';
 import OnboardingGuide from './components/OnboardingGuide.jsx';
 import AccessibilityPage from './pages/AccessibilityPage.jsx';
 import AgentPage from './pages/AgentPage.jsx';
+import AdminAlertsPage from './pages/AdminAlertsPage.jsx';
 import ArrivalPage from './pages/ArrivalPage.jsx';
 import ContactPage from './pages/ContactPage.jsx';
 import AgentDemandesPage from './pages/AgentDemandesPage.jsx';
@@ -32,6 +33,10 @@ function Route({ session }) {
 
   if (pathname === '/') return <HomePage user={user} />;
   // Ajouter les routes métier ici (ex. /items, /items/:id).
+  if (pathname === '/admin/alertes') {
+    if (user?.role !== 'admin') return <NotFoundPage message="Page réservée aux administrateurs." />;
+    return <AdminAlertsPage meta={meta} />;
+  }
   if (pathname === '/contact') return <ContactPage user={user} meta={meta} onExpired={expire} />;
   if (pathname === '/services') return <ServicesPage meta={meta} />;
   if (pathname === '/accessibilite') return <AccessibilityPage />;
@@ -55,7 +60,7 @@ function Route({ session }) {
       <div className="flex flex-col items-center gap-6">
         {user ? (
           <>
-            <ProfileScreen user={user} onUpdated={setUser} onLogout={logout} onDeleted={accountDeleted} />
+            <ProfileScreen user={user} meta={meta} onUpdated={setUser} onLogout={logout} onDeleted={accountDeleted} />
             <MyMessages meta={meta} />
           </>
         ) : (
@@ -153,7 +158,7 @@ export default function App() {
   }
 
   return (
-    <Layout user={user}>
+    <Layout user={user} meta={meta}>
       {notice && !user && (
         <p
           role="status"

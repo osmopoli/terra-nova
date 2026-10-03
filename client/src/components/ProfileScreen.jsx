@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { api } from '../api/client.js';
-import Field, { FormError, inputClass } from './Field.jsx';
+import Field, { FormError, OptionSelect, inputClass } from './Field.jsx';
 
-export default function ProfileScreen({ user, onUpdated, onLogout, onDeleted }) {
-  const [form, setForm] = useState({ fullName: user.fullName ?? '' });
+export default function ProfileScreen({ user, meta = {}, onUpdated, onLogout, onDeleted }) {
+  const [form, setForm] = useState({ fullName: user.fullName ?? '', district: user.district ?? '' });
   const [error, setError] = useState(null);
   const [saved, setSaved] = useState(false);
   const [confirming, setConfirming] = useState(false);
@@ -29,7 +29,7 @@ export default function ProfileScreen({ user, onUpdated, onLogout, onDeleted }) 
     setError(null);
     setSaved(false);
     try {
-      onUpdated(await api('/me', { method: 'PATCH', body: form }));
+      onUpdated(await api('/me', { method: 'PATCH', body: { ...form, district: form.district || null } }));
       setSaved(true);
     } catch (err) {
       setError(err);
@@ -62,6 +62,18 @@ export default function ProfileScreen({ user, onUpdated, onLogout, onDeleted }) 
             className={inputClass}
             value={form.fullName}
             onChange={(e) => setForm({ ...form, fullName: e.target.value })}
+          />
+        </Field>
+        <Field
+          label="Mon quartier"
+          hint="Pour recevoir en priorité les alertes qui concernent votre quartier."
+          error={error?.fields?.district}
+        >
+          <OptionSelect
+            options={meta.districts}
+            placeholder="Choisissez votre quartier"
+            value={form.district}
+            onChange={(e) => setForm({ ...form, district: e.target.value })}
           />
         </Field>
         <FormError error={error} />

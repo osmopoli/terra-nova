@@ -1,5 +1,5 @@
 import vine, { SimpleMessagesProvider } from '@vinejs/vine'
-import { ALERT_LEVEL_VALUES, LIMITS } from '#constants/domain'
+import { ALERT_LEVEL_VALUES, DISTRICT_VALUES, LIMITS } from '#constants/domain'
 
 const messages = new SimpleMessagesProvider(
   {
@@ -8,6 +8,8 @@ const messages = new SimpleMessagesProvider(
     minLength: 'Au moins {{ min }} caractères.',
     maxLength: 'Au plus {{ max }} caractères.',
     enum: 'Valeur non autorisée.',
+    array: 'Liste attendue.',
+    distinct: 'Quartier en double.',
     date: 'Date invalide (format ISO 8601 attendu).',
     number: 'Identifiant invalide.',
     withoutDecimals: 'Identifiant invalide.',
@@ -19,12 +21,17 @@ const messages = new SimpleMessagesProvider(
     level: 'niveau',
     startsAt: 'début',
     endsAt: 'fin',
+    districts: 'quartiers',
+    instructions: 'consignes',
   }
 )
 
 const title = () => vine.string().trim().minLength(3).maxLength(LIMITS.alertTitle)
 const message = () => vine.string().trim().minLength(3).maxLength(LIMITS.alertMessage)
 const level = () => vine.enum(ALERT_LEVEL_VALUES)
+/** Liste vide ou null = toute la ville. */
+const districts = () => vine.array(vine.enum(DISTRICT_VALUES)).distinct().nullable()
+const instructions = () => vine.string().trim().maxLength(LIMITS.alertInstructions).nullable()
 const date = () => vine.date({ formats: ['iso8601'] })
 const params = () => vine.object({ id: vine.number().withoutDecimals().positive() })
 
@@ -36,6 +43,8 @@ export const createAlertValidator = vine.compile(
     level: level(),
     startsAt: date().optional(),
     endsAt: date(),
+    districts: districts().optional(),
+    instructions: instructions().optional(),
   })
 )
 createAlertValidator.messagesProvider = messages
@@ -47,6 +56,8 @@ export const updateAlertValidator = vine.compile(
     level: level().optional(),
     startsAt: date().optional(),
     endsAt: date().optional(),
+    districts: districts().optional(),
+    instructions: instructions().optional(),
     params: params(),
   })
 )

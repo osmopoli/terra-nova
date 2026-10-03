@@ -4,8 +4,9 @@ import { APP_NAME } from '../lib/constants.js';
 import TextSizeControl from './TextSizeControl.jsx';
 import ContrastControl from './ContrastControl.jsx';
 import SkipLink from './SkipLink.jsx';
+import AlertBanner from './AlertBanner.jsx';
 
-export default function Layout({ user, children }) {
+export default function Layout({ user, meta, children }) {
   // Entrée active : soulignée en couleur primaire (aria-current posé par NavLink).
   const linkClass =
     'font-bold text-ink underline-offset-4 hover:underline aria-[current=page]:text-primary aria-[current=page]:underline aria-[current=page]:decoration-2';
@@ -41,6 +42,11 @@ export default function Layout({ user, children }) {
                 Demandes des habitants
               </NavLink>
             )}
+            {user?.role === 'admin' && (
+              <NavLink to="/admin/alertes" className={linkClass}>
+                Alertes
+              </NavLink>
+            )}
             <NavLink
               to={user ? '/profil' : '/connexion'}
               className="rounded-control bg-primary px-3 py-1.5 font-bold text-white hover:bg-primary-strong aria-[current=page]:bg-primary-strong aria-[current=page]:ring-2 aria-[current=page]:ring-accent aria-[current=page]:ring-offset-2"
@@ -50,6 +56,7 @@ export default function Layout({ user, children }) {
           </nav>
         </div>
       </header>
+      <AlertBanner user={user} meta={meta} />
       <main id="contenu" tabIndex={-1} className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10 focus:outline-none">
         <Breadcrumb />
         {children}

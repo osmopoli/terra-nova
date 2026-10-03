@@ -1,5 +1,5 @@
 import vine, { SimpleMessagesProvider } from '@vinejs/vine'
-import { LIMITS } from '#constants/domain'
+import { DISTRICT_VALUES, LIMITS } from '#constants/domain'
 
 /** bcrypt ignore tout ce qui dépasse 72 octets : on borne la saisie. */
 const PASSWORD = { min: 8, max: 72 } as const
@@ -9,6 +9,7 @@ const messages = new SimpleMessagesProvider(
     'required': 'Ce champ est obligatoire.',
     'string': 'Ce champ doit être un texte.',
     'email': 'Adresse e-mail invalide.',
+    'enum': 'Valeur non autorisée.',
     'minLength': 'Au moins {{ min }} caractères.',
     'maxLength': 'Au plus {{ max }} caractères.',
     'database.unique': 'Un compte existe déjà avec cet e-mail.',
@@ -17,6 +18,7 @@ const messages = new SimpleMessagesProvider(
     fullName: 'nom',
     email: 'e-mail',
     password: 'mot de passe',
+    district: 'quartier',
   }
 )
 
@@ -48,6 +50,7 @@ loginValidator.messagesProvider = messages
 export const updateProfileValidator = vine.compile(
   vine.object({
     fullName: fullName().optional(),
+    district: vine.enum(DISTRICT_VALUES).nullable().optional(),
   })
 )
 updateProfileValidator.messagesProvider = messages
