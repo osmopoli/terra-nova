@@ -76,6 +76,8 @@ export const CONTACT_STATUSES = {
 export type ContactStatus = keyof typeof CONTACT_STATUSES
 export const CONTACT_STATUS_VALUES = Object.keys(CONTACT_STATUSES) as ContactStatus[]
 export const DEFAULT_CONTACT_STATUS: ContactStatus = 'nouveau'
+/** Messages qui attendent encore une action d'un agent (filtre « à traiter »). */
+export const CONTACT_STATUSES_TO_HANDLE: ContactStatus[] = ['nouveau', 'en_cours']
 
 /** Thématiques de l'annuaire des services municipaux (colonne services.category). */
 export const SERVICE_CATEGORIES = {
