@@ -31,7 +31,7 @@ function SessionPanel({ data, now }) {
   ];
   return (
     <section aria-label="Session en cours" className="rounded-card bg-surface p-4 shadow-card sm:p-5">
-      <dl className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <dl className="grid grid-cols-[repeat(auto-fit,minmax(7.5rem,1fr))] gap-4">
         {items.map(([label, value]) => (
           <div key={label}>
             <dt className="text-sm text-ink-muted">{label}</dt>

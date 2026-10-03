@@ -16,7 +16,7 @@ export default function MyMessages({ meta }) {
       className="w-full max-w-md rounded-card bg-surface p-5 shadow-card sm:p-8"
       aria-labelledby="mes-messages"
     >
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 id="mes-messages" className="font-semibold text-ink">
           Mes messages aux services
         </h2>

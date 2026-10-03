@@ -136,6 +136,14 @@
     box-shadow: 0 0 0 7px var(--color-surface);
   }
 
+  /*
+   * Reflow (WCAG 1.4.10, WEBC-69) : à 320 px ou 200 % de zoom, un mot trop long
+   * (e-mail, nom composé, code) passe à la ligne au lieu de créer un défilement horizontal.
+   */
+  body {
+    overflow-wrap: break-word;
+  }
+
   :focus-visible {
     outline: 3px solid var(--color-primary);
     outline-offset: 2px;
