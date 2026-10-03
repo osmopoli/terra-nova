@@ -19,6 +19,7 @@ const AuthController = () => import('#controllers/auth_controller')
 const ProfileController = () => import('#controllers/profile_controller')
 const AgentController = () => import('#controllers/agent_controller')
 const AdminUsersController = () => import('#controllers/admin_users_controller')
+const WebcupController = () => import('#controllers/webcup_controller')
 
 router
   .group(() => {
@@ -63,6 +64,8 @@ router
     router
       .group(() => {
         router.get('/overview', [AgentController, 'overview'])
+        router.get('/webcup/requests', [WebcupController, 'index'])
+        router.post('/webcup/requests/seen', [WebcupController, 'markSeen'])
       })
       .prefix('/agent')
       .use([middleware.auth(), middleware.role({ roles: ACCESS.agent })])
@@ -72,6 +75,7 @@ router
       .group(() => {
         router.get('/users', [AdminUsersController, 'index'])
         router.patch('/users/:id/role', [AdminUsersController, 'updateRole'])
+        router.post('/webcup/refresh', [WebcupController, 'refresh'])
       })
       .prefix('/admin')
       .use([middleware.auth(), middleware.role({ roles: ACCESS.admin })])

@@ -25,6 +25,11 @@ Comptes de démo (un par rôle, créés par `node ace db:seed`) : `citoyen@novat
 `admin@novaterra.test` (administrateur). Mot de passe commun : variable d'environnement `DEMO_PASSWORD` (8 caractères minimum), à définir
 dans `server/.env` ou au lancement : `DEMO_PASSWORD=... node ace db:seed`. Le rôle est renvoyé par `GET /api/me` (`role`) et la liste par `GET /api/meta` (`roles`).
 
+Synchro de l'API Webcup (WEBC-2) : `server/app/services/webcup_sync.ts`. Le serveur interroge l'API toutes les 20 s avec `WEBCUP_API_KEY`
+(jamais exposée au navigateur), dédoublonne sur `request_code` et stocke les demandes en base (`webcup_requests`). Routes :
+`GET /api/agent/webcup/requests[?onlyNew=true]` (demandes, session, `newCount`, `isNew`), `POST /api/agent/webcup/requests/seen`
+(`{ codes?: string[] }`, sans `codes` tout est marqué vu) et `POST /api/admin/webcup/refresh` (polling immédiat, admin).
+
 Contrôle d'accès par profil : middleware `role` (`server/app/middleware/role_middleware.ts`), profils autorisés dans `ACCESS`
 (`server/app/constants/domain.ts`). `/api/agent/*` : agent et admin ; `/api/admin/*` : admin seul. 401 sans token, 403 `{ error }` sinon.
 
