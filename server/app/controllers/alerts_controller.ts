@@ -8,9 +8,18 @@ const PERIOD_ERROR = {
 }
 
 export default class AlertsController {
-  /** Public (connecté ou non) : alertes à afficher en bannière maintenant. */
-  async active() {
-    return Alert.sortForDisplay(await Alert.query().withScopes((s) => s.active()))
+  /**
+   * Public (connecté ou non) : alertes à afficher en bannière maintenant.
+   * Avec un token, `concernsYou` dit si l'alerte vise le quartier de l'habitant
+   * (null s'il n'a pas de quartier) et celles de son quartier passent en tête.
+   */
+  async active({ auth }: HttpContext) {
+    const district = (await auth.check()) ? auth.user!.district : null
+    const alerts = Alert.sortForDisplay(await Alert.query().withScopes((s) => s.active()), district)
+    return alerts.map((alert) => ({
+      ...alert.serialize(),
+      concernsYou: district ? alert.concerns(district) : null,
+    }))
   }
 
   /** Admin : toutes les alertes, à venir comme expirées. */

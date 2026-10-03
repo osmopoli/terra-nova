@@ -6,7 +6,7 @@ export default class ProfileController {
     return auth.getUserOrFail()
   }
 
-  /** Seul le nom est modifiable ici (pas d'e-mail ni de mot de passe). */
+  /** Nom et quartier modifiables ici (pas d'e-mail ni de mot de passe). */
   async update({ auth, request }: HttpContext) {
     const user = auth.getUserOrFail()
     const payload = await request.validateUsing(updateProfileValidator)

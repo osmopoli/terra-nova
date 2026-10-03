@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Layout from './components/Layout.jsx';
 import AuthScreen from './components/AuthScreen.jsx';
 import ProfileScreen from './components/ProfileScreen.jsx';
+import AdminAlertsPage from './pages/AdminAlertsPage.jsx';
 import ArrivalPage from './pages/ArrivalPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
@@ -12,15 +13,19 @@ import { navigate, useLocation } from './lib/router.jsx';
 
 function Route({ session }) {
   const { pathname, searchParams } = useLocation();
-  const { user, setUser, logout } = session;
+  const { user, meta, setUser, logout } = session;
 
   if (pathname === '/') return <HomePage user={user} />;
   // Ajouter les routes métier ici (ex. /items, /items/:id).
+  if (pathname === '/admin/alertes') {
+    if (user?.role !== 'admin') return <NotFoundPage message="Page réservée aux administrateurs." />;
+    return <AdminAlertsPage meta={meta} />;
+  }
   if (pathname === '/connexion' || pathname === '/profil') {
     return (
       <div className="flex justify-center">
         {user ? (
-          <ProfileScreen user={user} onUpdated={setUser} onLogout={logout} />
+          <ProfileScreen user={user} meta={meta} onUpdated={setUser} onLogout={logout} />
         ) : (
           <AuthScreen
             onAuthenticated={(u) => {
@@ -89,7 +94,7 @@ export default function App() {
   }
 
   return (
-    <Layout user={user}>
+    <Layout user={user} meta={meta}>
       {loading ? (
         <p className="text-ink-muted">Chargement...</p>
       ) : (

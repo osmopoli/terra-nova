@@ -1,7 +1,8 @@
 import { Link } from '../lib/router.jsx';
 import { APP_NAME } from '../lib/constants.js';
+import AlertBanner from './AlertBanner.jsx';
 
-export default function Layout({ user, children }) {
+export default function Layout({ user, meta, children }) {
   const linkClass = 'font-bold text-ink underline-offset-4 hover:underline';
   return (
     <div className="min-h-screen bg-surface font-sans text-ink">
@@ -20,6 +21,11 @@ export default function Layout({ user, children }) {
             <Link to="/" className={linkClass}>
               Accueil
             </Link>
+            {user?.role === 'admin' && (
+              <Link to="/admin/alertes" className={linkClass}>
+                Alertes
+              </Link>
+            )}
             <Link
               to={user ? '/profil' : '/connexion'}
               className="rounded-control bg-primary px-3 py-1.5 font-bold text-white hover:bg-primary-strong"
@@ -29,6 +35,7 @@ export default function Layout({ user, children }) {
           </nav>
         </div>
       </header>
+      <AlertBanner user={user} meta={meta} />
       <main id="contenu" className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
         {children}
       </main>

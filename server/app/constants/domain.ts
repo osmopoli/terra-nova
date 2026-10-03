@@ -19,6 +19,7 @@ export const LIMITS = {
   email: 254,
   alertTitle: 120,
   alertMessage: 2000,
+  alertInstructions: 2000,
 } as const
 
 /** Profils de la plateforme (colonne users.role). */
@@ -54,8 +55,23 @@ export const ALERT_LEVELS = {
 export type AlertLevel = keyof typeof ALERT_LEVELS
 export const ALERT_LEVEL_VALUES = Object.keys(ALERT_LEVELS) as AlertLevel[]
 
+/**
+ * Quartiers de Nova Terra (colonnes users.district et alerts.districts) :
+ * une alerte peut cibler un ou plusieurs quartiers, l'habitant déclare le sien dans son profil.
+ */
+export const DISTRICTS = {
+  centre: 'Centre-ville',
+  nord: 'Quartier nord',
+  sud: 'Quartier sud',
+  est: 'Quartier est',
+  ouest: 'Quartier ouest',
+} as const
+export type District = keyof typeof DISTRICTS
+export const DISTRICT_VALUES = Object.keys(DISTRICTS) as District[]
+
 /** Listes fermées exposées au front par GET /api/meta (clé -> libellé). */
 export const META: Record<string, Record<string, string>> = {
   roles: ROLES,
   alertLevels: ALERT_LEVELS,
+  districts: DISTRICTS,
 }
