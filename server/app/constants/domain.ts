@@ -27,6 +27,7 @@ export const LIMITS = {
   alertTitle: 120,
   alertMessage: 2000,
   location: 200,
+  demandeNote: 1000,
 } as const
 
 /** Catégories des actualités de la ville (colonne news_posts.category). */

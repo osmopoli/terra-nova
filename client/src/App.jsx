@@ -9,6 +9,7 @@ import AccessibilityPage from './pages/AccessibilityPage.jsx';
 import AgentPage from './pages/AgentPage.jsx';
 import ArrivalPage from './pages/ArrivalPage.jsx';
 import ContactPage from './pages/ContactPage.jsx';
+import AgentDemandesPage from './pages/AgentDemandesPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import ReportPage from './pages/ReportPage.jsx';
@@ -42,6 +43,12 @@ function Route({ session }) {
       return <NotFoundPage message="Le signalement est réservé aux habitants." />;
     }
     return <ReportPage meta={meta} />;
+  }
+  if (pathname === '/agent/demandes') {
+    if (!user || user.role === 'citoyen') {
+      return <NotFoundPage message="Page réservée aux agents municipaux." />;
+    }
+    return <AgentDemandesPage meta={meta} />;
   }
   if (pathname === '/connexion' || pathname === '/profil') {
     return (

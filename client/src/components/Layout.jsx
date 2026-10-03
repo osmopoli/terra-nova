@@ -36,6 +36,11 @@ export default function Layout({ user, children }) {
                 Signaler un problème
               </NavLink>
             )}
+            {user && user.role !== 'citoyen' && (
+              <NavLink to="/agent/demandes" className={linkClass}>
+                Demandes des habitants
+              </NavLink>
+            )}
             <NavLink
               to={user ? '/profil' : '/connexion'}
               className="rounded-control bg-primary px-3 py-1.5 font-bold text-white hover:bg-primary-strong aria-[current=page]:bg-primary-strong aria-[current=page]:ring-2 aria-[current=page]:ring-accent aria-[current=page]:ring-offset-2"

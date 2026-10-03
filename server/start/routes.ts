@@ -28,6 +28,7 @@ const AdminServiceTranslationsController = () =>
 const AgentMessagesController = () => import('#controllers/agent_messages_controller')
 const AlertsController = () => import('#controllers/alerts_controller')
 const DemandesController = () => import('#controllers/demandes_controller')
+const AgentDemandesController = () => import('#controllers/agent_demandes_controller')
 
 router
   .group(() => {
@@ -97,6 +98,9 @@ router
         router
           .patch('/contact-messages/:code', [AgentMessagesController, 'updateStatus'])
           .where('code', /^NT-[A-Za-z0-9]{6}$/)
+        router.get('/demandes', [AgentDemandesController, 'index'])
+        router.get('/demandes/:id', [AgentDemandesController, 'show'])
+        router.patch('/demandes/:id', [AgentDemandesController, 'update'])
       })
       .prefix('/agent')
       .use([middleware.auth(), middleware.role({ roles: ACCESS.agent })])
