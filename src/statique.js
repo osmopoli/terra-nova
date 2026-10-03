@@ -1,7 +1,7 @@
 /* Terra Nova — envoi sobre des fichiers (F58, F59)
    - textes (HTML, CSS, JS, SVG, JSON) compressés en Brotli ou gzip, compressés une seule fois puis gardés en mémoire ;
    - empreinte (ETag) : un fichier inchangé n'est pas renvoyé (304) ;
-   - cache navigateur : pages revalidées à chaque visite, ressources gardées 1 h, puis revalidées en arrière-plan (304 si inchangées) ;
+   - cache navigateur : pages, scripts et styles revalidés à chaque visite (304 si inchangés), images et polices gardées 1 h ;
    - réponses JSON de l'API compressées en gzip au-delà de 1,4 Ko. */
 const fs = require('node:fs');
 const path = require('node:path');
@@ -39,7 +39,8 @@ function statique(racine) {
     res.setHeader('Content-Type', type);
     res.setHeader('ETag', e.etag);
     res.setHeader('Vary', 'Accept-Encoding');
-    res.setHeader('Cache-Control', ext === '.html' ? 'no-cache' : 'public, max-age=3600, stale-while-revalidate=604800');
+    // pages, scripts et styles revalidés à chaque visite (304 sans corps si inchangés) : jamais d'ancien script après un déploiement
+    res.setHeader('Cache-Control', TYPES[ext] ? 'no-cache' : 'public, max-age=3600, stale-while-revalidate=604800');
     if (req.headers['if-none-match'] === e.etag) { res.statusCode = 304; return res.end(); }
     const accepte = String(req.headers['accept-encoding'] || '');
     let corps = e.brut;
