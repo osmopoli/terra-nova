@@ -104,7 +104,7 @@ export default function NotificationBell() {
         {data.unread > 0 && (
           <span
             aria-hidden="true"
-            className="absolute -right-0.5 -top-0.5 min-w-5 rounded-full bg-accent-strong px-1 text-center text-xs font-bold leading-5 text-white"
+            className="absolute -right-0.5 -top-0.5 min-w-5 rounded-full bg-accent px-1 text-center text-xs font-bold leading-5 text-on-primary"
           >
             {data.unread}
           </span>
