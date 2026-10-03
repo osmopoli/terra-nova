@@ -24,7 +24,6 @@ const WebcupController = () => import('#controllers/webcup_controller')
 const ContactMessagesController = () => import('#controllers/contact_messages_controller')
 const ServicesController = () => import('#controllers/services_controller')
 const NotificationsController = () => import('#controllers/notifications_controller')
-const AgentMessagesController = () => import('#controllers/agent_messages_controller')
 const AdminServiceTranslationsController = () =>
   import('#controllers/admin_service_translations_controller')
 const AgentMessagesController = () => import('#controllers/agent_messages_controller')
