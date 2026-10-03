@@ -6,9 +6,9 @@
 
 /* Résumé d'erreurs */
 .dm-erreurs{ border:2px solid var(--corail); background:rgba(255,107,127,.08); border-radius:var(--r); padding:1rem 1.2rem; margin-bottom:1.5rem; }
-.dm-erreurs h2{ font-size:1.05rem; margin:0 0 .5rem; display:flex; gap:.5rem; align-items:center; color:#FFD9DF; }
+.dm-erreurs h2{ font-size:1.05rem; margin:0 0 .5rem; display:flex; gap:.5rem; align-items:center; color:var(--corail-clair); }
 .dm-erreurs ul{ margin:0; padding-inline-start:1.2rem; }
-.dm-erreurs a{ color:#FFD9DF; font-weight:700; }
+.dm-erreurs a{ color:var(--corail-clair); font-weight:700; }
 .dm-erreurs:focus{ outline:3px solid var(--iono); outline-offset:3px; }
 .dm-err{ display:flex; gap:.4rem; align-items:flex-start; }
 .dm-err[hidden]{ display:none; }
@@ -53,12 +53,12 @@
 .dm-zone{ cursor:pointer; }
 .dm-zone path,.dm-zone circle{ fill:oklch(0.7040 0.1400 182.5 / .07); stroke:var(--trait-2); stroke-width:1.5; transition:fill 150ms ease; }
 .dm-zone text{ fill:var(--givre); font:600 11px var(--police); text-anchor:middle; dominant-baseline:middle; pointer-events:none; }
-.dm-zone[aria-pressed="true"] path,.dm-zone[aria-pressed="true"] circle{ fill:var(--iono); stroke:#fff; stroke-width:3; }
+.dm-zone[aria-pressed="true"] path,.dm-zone[aria-pressed="true"] circle{ fill:var(--iono); stroke:var(--givre); stroke-width:3; }
 .dm-zone[aria-pressed="true"] text{ fill:var(--sur-iono); font-weight:800; }
 .dm-zone:focus{ outline:none; }
-.dm-zone:focus-visible path,.dm-zone:focus-visible circle{ stroke:#fff; stroke-width:4; stroke-dasharray:6 3; }
+.dm-zone:focus-visible path,.dm-zone:focus-visible circle{ stroke:var(--givre); stroke-width:4; stroke-dasharray:6 3; }
 @media (hover:hover) and (pointer:fine){ .dm-zone:hover path,.dm-zone:hover circle{ fill:oklch(0.7040 0.1400 182.5 / .22); } .dm-zone[aria-pressed="true"]:hover path,.dm-zone[aria-pressed="true"]:hover circle{ fill:var(--iono); } }
-html.contraste .dm-zone[aria-pressed="true"] path,html.contraste .dm-zone[aria-pressed="true"] circle{ fill:#fff; }
+html.contraste .dm-zone[aria-pressed="true"] path,html.contraste .dm-zone[aria-pressed="true"] circle{ fill:var(--givre); }
 
 /* Photo */
 .dm-photo{ display:flex; gap:1rem; align-items:center; flex-wrap:wrap; margin-top:.5rem; }
@@ -76,7 +76,7 @@ input[type=file]::file-selector-button{ font:inherit; font-weight:700; margin-in
 .dm-confirm h2:focus-visible{ outline:3px solid var(--iono); outline-offset:6px; }
 .dm-numero{ display:inline-flex; align-items:center; gap:.8rem; flex-wrap:wrap; justify-content:center; margin:.5rem 0 1.5rem; padding:.7rem 1rem .7rem 1.4rem; border:1px solid var(--iono); border-radius:999px;
   background:oklch(0.7040 0.1400 182.5 / .08); box-shadow:0 0 30px -10px var(--lueur); }
-.dm-numero .nb{ font-family:var(--titre); font-size:clamp(1.4rem,4vw,2rem); font-weight:700; letter-spacing:.02em; color:#fff; }
+.dm-numero .nb{ font-family:var(--titre); font-size:clamp(1.4rem,4vw,2rem); font-weight:700; letter-spacing:.02em; color:var(--givre); }
 .dm-confirm .gauche{ text-align:start; }
 .dm-recap{ display:grid; grid-template-columns:minmax(7rem,max-content) 1fr; gap:.55rem 1.2rem; margin:0; text-align:start; }
 .dm-recap dt{ color:var(--brume); font-weight:700; font-size:.9rem; }
@@ -143,7 +143,7 @@ input[type=file]::file-selector-button{ font:inherit; font-weight:700; margin-in
 .dm-pastille small{ font-weight:600; color:var(--brume); font-size:.76rem; }
 .dm-pastille:active:not([disabled]){ transform:scale(.97); }
 @media (hover:hover) and (pointer:fine){ .dm-pastille:hover:not([disabled]){ border-color:var(--iono); } }
-.dm-pastille[aria-pressed="true"]{ background:var(--iono); color:var(--sur-iono); border-color:#fff; box-shadow:0 0 0 2px var(--iono); }
+.dm-pastille[aria-pressed="true"]{ background:var(--iono); color:var(--sur-iono); border-color:var(--givre); box-shadow:0 0 0 2px var(--iono); }
 .dm-pastille[aria-pressed="true"] small{ color:var(--sur-iono); }
 .dm-pastille[disabled]{ opacity:.45; cursor:not-allowed; text-decoration:line-through; }
 .dm-pastille[disabled] small{ text-decoration:none; }

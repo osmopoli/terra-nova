@@ -47,7 +47,7 @@
 .an-consignes li::marker{ font-weight:800; color:var(--iono); }
 .an-alerte .an-consignes{ font-size:1.02rem; }
 .an-publics, .an-lieux{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:.5rem; }
-.an-publics li{ display:inline-flex; align-items:center; gap:.4rem; padding:.3rem .8rem; border-radius:99px; border:1px solid var(--soleil); color:#FFE3B5; background:rgba(255,196,107,.08); font-size:.92rem; font-weight:600; }
+.an-publics li{ display:inline-flex; align-items:center; gap:.4rem; padding:.3rem .8rem; border-radius:99px; border:1px solid var(--soleil); color:var(--givre); background:color-mix(in oklch, var(--soleil) 8%, transparent); font-size:.92rem; font-weight:600; }
 .an-publics i{ font-size:1.2rem; color:var(--soleil); }
 .an-lieux{ flex-direction:column; gap:.3rem; }
 .an-lieux li{ padding-inline-start:1.5rem; position:relative; }
