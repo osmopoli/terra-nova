@@ -111,7 +111,8 @@ export default function NotificationBell() {
         )}
       </button>
       {open && (
-        <div className="absolute right-0 z-20 mt-2 w-[min(22rem,calc(100vw-2rem))] rounded-card border border-line bg-surface p-3 shadow-pop">
+        // Mobile : panneau calé sur la largeur de l'écran (la cloche peut être à gauche quand la nav passe à la ligne).
+        <div className="fixed inset-x-4 z-20 mt-2 rounded-card sm:absolute sm:inset-x-auto sm:right-0 sm:w-[22rem] border border-line bg-surface p-3 shadow-pop">
           <h2 className="px-1 pb-2 text-sm font-semibold text-ink">Notifications</h2>
           {data.notifications.length === 0 ? (
             <p className="px-1 py-2 text-sm text-ink-muted">Aucune notification pour le moment.</p>
