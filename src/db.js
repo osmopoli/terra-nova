@@ -81,4 +81,9 @@ CREATE TABLE IF NOT EXISTS news (
 );
 `);
 
+// Migration légère : désactivation de compte (F34)
+if (!db.prepare('PRAGMA table_info(users)').all().some((c) => c.name === 'disabled')) {
+  db.exec('ALTER TABLE users ADD COLUMN disabled INTEGER NOT NULL DEFAULT 0');
+}
+
 module.exports = db;

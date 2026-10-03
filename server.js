@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 });
 
 // Chaque demande de l'API = un module. Ajouter une vague = ajouter un fichier dans src/modules.
-for (const mod of ['home', 'accounts', 'services', 'news', 'contact', 'espace', 'agent', 'admin']) {
+for (const mod of ['home', 'accounts', 'services', 'news', 'contact', 'espace', 'agent', 'citoyens', 'admin']) {
   app.use(require(`./src/modules/${mod}`));
 }
 

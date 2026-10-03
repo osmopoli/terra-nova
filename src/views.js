@@ -12,6 +12,7 @@ function nav(user, active) {
   const items = [link('/', 'Accueil', 'home'), link('/services', 'Services', 'services'), link('/actualites', 'Actualités', 'news'), link('/contact', 'Contact', 'contact')];
   if (user) items.push(link('/espace', 'Mon espace', 'espace'));
   if (user && ['agent', 'admin'].includes(user.role)) items.push(link('/agent', 'Espace agents', 'agent'));
+  if (user && ['agent', 'admin'].includes(user.role)) items.push(link('/agent/citoyens', 'Comptes citoyens', 'citoyens'));
   if (user && user.role === 'admin') items.push(link('/admin', 'Administration', 'admin'));
   return items;
 }

@@ -54,7 +54,7 @@ function loadUser(req, res, next) {
   req.user = null;
   if (token) {
     const row = db.prepare(`SELECT u.id, u.email, u.name, u.role, u.created_at, s.expires_at
-      FROM sessions s JOIN users u ON u.id = s.user_id WHERE s.token = ?`).get(token);
+      FROM sessions s JOIN users u ON u.id = s.user_id WHERE s.token = ? AND u.disabled = 0`).get(token);
     if (row && row.expires_at > Date.now()) req.user = row;
     else if (row) db.prepare('DELETE FROM sessions WHERE token = ?').run(token);
   }

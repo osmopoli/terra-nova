@@ -60,6 +60,7 @@ router.post('/connexion', (req, res) => {
   const { email = '', password = '' } = req.body;
   const user = findUserByEmail(email);
   if (!user || !verifyPassword(password, user.password_hash)) return loginForm(req, res, { error: 'E-mail ou mot de passe incorrect.', email });
+  if (user.disabled) return loginForm(req, res, { error: 'Ce compte est désactivé. Contactez la mairie pour le réactiver.', email });
   createSession(res, user.id);
   const fallback = user.role === 'citoyen' ? '/espace' : '/agent';
   res.redirect(req.body.next && req.body.next !== '/espace' ? safeNext(req.body.next) : fallback);
