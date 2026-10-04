@@ -515,7 +515,7 @@
       const l = NT.notif.pour(u.id).map(n => Object.assign({}, n, { lien: lienInterne(n.lien) }));
       tiroir.innerHTML = (l.length ? `<ul class="notifs">${l.map(n => `
         <li class="notif${n.lu ? ' notif-lue' : ''}" data-notif="${echap(n.id)}">
-          <div class="notif-tete"><strong>${n.lu ? '' : '<span class="sr-only">Non lu : </span><span class="notif-point" aria-hidden="true"></span>'}${echap(n.titre)}</strong><span class="doux notif-quand">${echap(ui.depuis(n.cree))}</span>
+          <div class="notif-tete"><strong>${n.lu ? '' : '<span class="sr-only">' + echap(t('ui.nonLu')) + ' : </span><span class="notif-point" aria-hidden="true"></span>'}${echap(n.titre)}</strong><span class="doux notif-quand">${echap(ui.depuis(n.cree))}</span>
             <button type="button" class="notif-x" data-notif-x="${echap(n.id)}" aria-label="${echap(t('ui.supprNotif', { t: n.titre }))}" title="${echap(t('ui.suppr'))}"><i class="ph ph-x" aria-hidden="true"></i></button></div>
           <p class="notif-texte">${echap(n.texte)}</p>
           ${n.lien ? `<a href="${echap(n.lien)}" data-lu="${n.id}">${echap(t('ui.voir'))} →</a>` : ''}

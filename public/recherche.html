@@ -19,7 +19,7 @@
   <script src="assets/js/ui.js" defer></script>
   <script src="assets/js/recherche.js" defer></script>
 </head>
-<body data-page="services" data-ariane="nav.accueil|index.html;rc.titre">
+<body data-page="recherche" data-ariane="nav.accueil|index.html;rc.titre">
   <main id="contenu" class="conteneur" style="max-width:52rem">
     <header class="titre-page">
       <h1 data-i18n="rc.titre">Rechercher</h1>
@@ -31,7 +31,7 @@
         <input id="rc-q" name="q" type="search" autocomplete="off" enterkeyhint="search" maxlength="200" data-i18n-attr="placeholder:rc.ph" placeholder="Ex. : ma poubelle déborde, papier pour me marier…">
         <button class="btn btn-primaire" type="submit"><span data-i18n="rc.chercher">Rechercher</span></button></div>
     </form>
-    <div id="rc-resultats" data-or-champ="rc-q" aria-live="polite" style="margin-top:1.2rem"></div>
+    <div id="rc-resultats" data-or-champ="rc-q" style="margin-top:1.2rem"></div>
   </main>
 </body>
 </html>
