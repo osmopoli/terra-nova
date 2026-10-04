@@ -166,3 +166,6 @@
 .ao-ok{ border:1px solid var(--calme); border-radius:var(--r); padding:.7rem .9rem; color:var(--calme); font-size:var(--t-s); }
 .ao-officiel{ font-size:var(--t-s); background:var(--surface-2); border-radius:var(--r); padding:.7rem .9rem; }
 .ao-officiel p{ margin:0 0 .5rem; }
+
+#ao-questions, #ao-synonymes, #ao-explications{ overflow-x:auto; }
+.ao-type, .ao-table td:last-child{ white-space:nowrap; }

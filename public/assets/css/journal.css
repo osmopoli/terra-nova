@@ -40,3 +40,13 @@
 .jr-av-ap i{ color:var(--brume); }
 .jr-vide{ color:var(--brume); }
 .jr-note{ white-space:pre-line; }
+
+/* Colonnes lisibles : les mots ne se coupent plus au milieu (« Systèm e »), date et intervenant ont leur largeur */
+.jr-table{ min-width:64rem; }
+.jr-table td, .jr-table th{ overflow-wrap:normal; word-break:normal; }
+.jr-table thead th:nth-child(1){ width:9rem; }
+.jr-table thead th:nth-child(2){ width:11rem; }
+.jr-quand strong, .jr-quand .doux{ white-space:nowrap; }
+.jr-qui .badge-role{ margin-inline-start:0; white-space:nowrap; }
+.jr-lien{ overflow-wrap:anywhere; }
+.jr-id-cell, .jr-note{ overflow-wrap:anywhere; }

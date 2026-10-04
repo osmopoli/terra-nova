@@ -606,3 +606,6 @@ body:not(.affiche):not(.simple) #contenu{ visibility:hidden; animation:v19-montr
 [dir="rtl"] .notif-x{ margin:-.45rem 0 0 -.35rem; }
 [dir="rtl"] .notif-sort{ transform:translateX(-1.25rem); }
 @media (prefers-reduced-motion:reduce){ .notif,.notif-x{ transition:none; } }
+
+/* Cellules de tableau : coupure seulement si un mot ne tient vraiment pas (le body coupe « n'importe où ») */
+td, th{ overflow-wrap:break-word; }
