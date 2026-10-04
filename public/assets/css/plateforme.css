@@ -18,6 +18,8 @@
 .pf-legende{ display:flex; flex-wrap:wrap; gap:.5rem 1.25rem; list-style:none; margin:.6rem 0 0; padding:0; font-size:.88rem; color:var(--brume); }
 .pf-legende span{ display:inline-block; width:1.4rem; height:.25rem; vertical-align:middle; margin-inline-end:.4rem; border-radius:2px; }
 .pf-legende .k-p95{ background:var(--iono); } .pf-legende .k-lag{ background:var(--aurore); } .pf-legende .k-rps{ background:color-mix(in oklch, var(--calme) 50%, transparent); height:.7rem; }
+/* Sous-titre h3 qui suit un bloc dans une section : plus d’air au-dessus (1.5rem, comme .panneau h3 de comptes.css) qu’en dessous (.6em) — proximité. */
+.bloc-sec > * + h3{ margin-block-start:1.5rem; }
 .pf-classes{ display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr)); }
 .pf-classes .carte h3{ display:flex; gap:.5rem; align-items:center; font-size:1rem; }
 .pf-classes ul{ margin:.5rem 0 0; padding-inline-start:1.1rem; }
@@ -37,4 +39,12 @@
 .ct-alerte{ color:var(--soleil); }
 #ct-form{ margin-top:1rem; }
 #ct-form h3{ margin:0 0 .4rem; font-size:1.05rem; }
-@media (max-width:560px){ .ct-liste > div{ grid-template-columns:1fr; } }
+/* Formulaires de la page (mode dégradé, simulation d’incident) : champs « Durée » et « Motif » à la même hauteur de contrôle
+   (le select fait 2.875rem, l’input montait à ~3.1rem par sa hauteur de ligne : libellés décalés de 4px) ; bouton détaché de la rangée de champs. */
+.bloc-sec form .filtres-sec{ margin-block-end:1.25rem; }
+.bloc-sec form .filtres-sec input{ block-size:2.875rem; }
+@media (max-width:560px){
+  .ct-liste > div{ grid-template-columns:1fr; }
+  .bloc-sec form .filtres-sec .champ{ flex:1 1 100%; }
+  .bloc-sec form > .btn, .bloc-sec form > .ligne > .btn{ flex:1 1 100%; inline-size:100%; padding-inline:.9rem; text-align:center; }
+}
