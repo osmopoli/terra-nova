@@ -19,7 +19,12 @@
 .pr-ouvrir{ font:inherit; background:none; border:0; color:var(--givre); text-align:start; cursor:pointer; padding:.2rem 0; text-decoration:underline; text-underline-offset:3px; min-height:2rem; }
 .pr-liste .pr-ouvrir{ grid-column:2; grid-row:1; min-width:0; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-clamp:2; overflow:hidden; font-size:.92rem; min-height:1.75rem; }
 .pr-raison{ font-size:.78rem; color:var(--brume); grid-column:2; grid-row:2; margin-top:-.2rem; }
-.pr-plus{ margin-top:.4rem; }
+/* « Voir les N autres » : centré sous la liste, discret, gabarit d'une ligne de liste (.btn.petit absent d'agent-demandes, d'où la spécificité) */
+.pr-files .btn.pr-plus{ display:flex; width:fit-content; margin:.6rem auto 0; min-height:2.5rem; padding:0 1rem; gap:.4rem; font-size:.85rem; font-weight:600;
+  color:var(--brume); background:transparent; border:1px solid var(--trait-2); border-radius:99px; box-shadow:none; }
+.pr-files .btn.pr-plus i{ font-size:1rem; }
+.pr-files .btn.pr-plus:focus-visible{ outline:3px solid var(--iono); outline-offset:2px; border-radius:99px; }
+@media (hover:hover) and (pointer:fine){ .pr-files .btn.pr-plus:hover{ color:var(--givre); border-color:var(--iono); background:color-mix(in oklch, var(--iono) 8%, transparent); } }
 .pr-tiroir{ margin-top:1rem; padding-top:.5rem; border-top:1px solid var(--trait); }
 .pr-lbl{ font-weight:700; margin:.6rem 0 .3rem; }
 .pr-raisons{ list-style:none; margin:0; padding:0; display:grid; gap:.25rem; }
