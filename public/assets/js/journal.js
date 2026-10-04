@@ -243,7 +243,7 @@
         return `<tr>
           <th scope="row" class="jr-quand"><time datetime="${E(e.date)}"><strong>${E(NT.ui.depuis(e.date))}</strong><span class="doux">${E(absolu(e.date))}</span></time></th>
           <td><div class="jr-qui"><button type="button" class="jr-lien" data-acteur="${E(nomActeur(e))}" title="${E(T('jr.filtrerPar', 'Voir uniquement les actions de {nom}', { nom: nomActeur(e) }))}">${E(nomActeur(e))}</button>
-            <span class="badge-role">${E(roleLabel(e.acteurRole))}</span></div></td>
+            ${roleLabel(e.acteurRole) === nomActeur(e) ? '' : `<span class="badge-role">${E(roleLabel(e.acteurRole))}</span>`}</div></td>
           <td><span class="jr-cat"><i class="ph-duotone ${catIcone(e.categorie)}" aria-hidden="true"></i>${E(catLabel(e.categorie))}</span><span class="jr-action">${E(actionLabel(e.action))}</span></td>
           <td>${lien ? `<a href="${E(lien)}">${E(lib)}</a>` : E(lib)}
             ${e.objetId ? `<span class="jr-id-cell">${E(e.objetId)}</span>
