@@ -35,10 +35,11 @@ html[lang="es"] .champ .erreur::before{ content:"Error: "; }
 html[lang="ar"] .champ .erreur::before{ content:"خطأ: "; }
 
 /* ---------- Encadrés d'information ---------- */
-.note-info,.note-alerte,.note-verrou{ border:1px solid var(--trait-2); border-radius:var(--r); padding:1rem 1.15rem; margin-bottom:1.25rem; background:oklch(0.7040 0.1400 182.5 / .05); }
-.note-info p:last-child,.note-alerte p:last-child,.note-verrou p:last-child{ margin-bottom:0; }
-.note-alerte{ border-color:var(--soleil); background:rgba(255,196,107,.07); }
-.note-verrou{ border-color:var(--corail); background:rgba(255,107,127,.07); }
+/* .note-info : theme.css (partagé) */
+.note-alerte,.note-verrou{ border:1px solid var(--trait-2); border-radius:var(--r); padding:1rem 1.15rem; margin-bottom:1.25rem; }
+.note-alerte p:last-child,.note-verrou p:last-child{ margin-bottom:0; }
+.note-alerte{ border-color:var(--soleil); background:color-mix(in oklch, var(--soleil) 7%, transparent); }
+.note-verrou{ border-color:var(--corail); background:color-mix(in oklch, var(--corail) 7%, transparent); }
 .note-alerte i,.note-verrou i{ font-size:1.3em; vertical-align:-.2em; }
 .rebours{ font-family:var(--titre); font-size:1.5rem; letter-spacing:.02em; margin-inline:.4rem; }
 

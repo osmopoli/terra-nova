@@ -118,6 +118,11 @@ h3{ font-size:1.0625rem; letter-spacing:-.01em; }
 p{ text-wrap:pretty; }
 p{ margin:0 0 1em; }
 .doux{ color:var(--brume); }
+/* Encadré d'information (comptes, accueil, guichet) ; .note-lien : icône + question + liens sur une ligne qui se replie */
+.note-info{ border:1px solid var(--trait-2); border-radius:var(--r); padding:1rem 1.15rem; margin-bottom:1.25rem; background:color-mix(in oklch, var(--iono) 5%, transparent); }
+.note-info p:last-child{ margin-bottom:0; }
+.note-info.note-lien{ display:flex; flex-wrap:wrap; align-items:center; gap:.3rem .6rem; font-size:var(--t-s); }
+.note-info.note-lien > i{ color:var(--iono); font-size:1.3em; flex:none; }
 .sr-only{ position:absolute!important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 .evitement{ position:absolute; left:1rem; top:-5rem; z-index:1000; background:var(--iono); color:var(--sur-iono); padding:.7rem 1.1rem; border-radius:12px; font-weight:700; text-decoration:none; }
 .evitement:focus{ top:1rem; }
