@@ -116,6 +116,35 @@
     'sob.resume': 'Moyenne sur {n} pages : {poids} Ko, {req} requêtes, environ {co2} g de CO2 par visite, note {note}.',
     'sob.depuisCache': 'depuis la mémoire', 'sob.nonDispo': 'non disponible', 'sob.unKo': 'Ko' } });
 
+  /* Vague 19 (F95) : avant / après mesurés dans un vrai navigateur (data/mesures-vague19.json via /api/sobriete) */
+  NT.i18n.ajouter({
+    fr: { 'sob.v19Resume': 'Moyenne par page sur ordinateur : {ra} → {rp} requêtes, {ka} → {kp} Ko. Sur téléphone (360 px, 3G lente) : {mra} → {mrp} requêtes, {mka} → {mkp} Ko, décalage de mise en page {ca} → {cp}. Mesuré le {d}.' },
+    en: { 'sob.v19': 'Before and after the wave 19 lightening', 'sob.v19D': 'Measured in a real browser (headless Edge), empty cache, for each page: number of files requested and data transferred.',
+      'sob.v19Cap': 'Requests and kilobytes transferred per page, before and after, on a computer', 'sob.v19ReqAv': 'Requests before', 'sob.v19ReqAp': 'Requests after', 'sob.v19KoAv': 'KB before', 'sob.v19KoAp': 'KB after',
+      'sob.v19Resume': 'Average per page on a computer: {ra} → {rp} requests, {ka} → {kp} KB. On a phone (360 px, slow 3G): {mra} → {mrp} requests, {mka} → {mkp} KB, layout shift {ca} → {cp}. Measured on {d}.',
+      'sob.f9': 'Wave 19: windows and drawers loaded only when opened, icons reduced to those used, search assistant loaded on demand, one live update per page instead of three, and a “nothing changed” answer (304) when data is identical.',
+      'sob.f10': 'On a phone or slow connection, the essentials first: secondary sections folded (“Show more”), decorative image and map loaded only on request, no page shift while loading.' },
+    es: { 'sob.v19': 'Antes y después del aligeramiento de la ola 19', 'sob.v19D': 'Medido en un navegador real (Edge sin ventana), caché vacía, para cada página: número de archivos pedidos y datos transferidos.',
+      'sob.v19Cap': 'Peticiones y kilobytes transferidos por página, antes y después, en ordenador', 'sob.v19ReqAv': 'Peticiones antes', 'sob.v19ReqAp': 'Peticiones después', 'sob.v19KoAv': 'KB antes', 'sob.v19KoAp': 'KB después',
+      'sob.v19Resume': 'Media por página en ordenador: {ra} → {rp} peticiones, {ka} → {kp} KB. En teléfono (360 px, 3G lenta): {mra} → {mrp} peticiones, {mka} → {mkp} KB, desplazamiento de diseño {ca} → {cp}. Medido el {d}.',
+      'sob.f9': 'Ola 19: ventanas y paneles cargados solo al abrirlos, iconos reducidos a los usados, asistente de búsqueda cargado a petición, una sola actualización en directo por página en lugar de tres y respuesta «nada ha cambiado» (304) cuando los datos son idénticos.',
+      'sob.f10': 'En teléfono o conexión lenta, lo esencial primero: secciones secundarias plegadas («Mostrar más»), imagen decorativa y mapa cargados solo si se piden, sin desplazamientos durante la carga.' },
+    ar: { 'sob.v19': 'قبل وبعد التخفيف في الموجة 19', 'sob.v19D': 'قيس في متصفح حقيقي (Edge دون نافذة)، بذاكرة فارغة، لكل صفحة: عدد الملفات المطلوبة والبيانات المنقولة.',
+      'sob.v19Cap': 'الطلبات والكيلوبايتات المنقولة لكل صفحة، قبل وبعد، على الحاسوب', 'sob.v19ReqAv': 'الطلبات قبل', 'sob.v19ReqAp': 'الطلبات بعد', 'sob.v19KoAv': 'كيلوبايت قبل', 'sob.v19KoAp': 'كيلوبايت بعد',
+      'sob.v19Resume': 'المتوسط لكل صفحة على الحاسوب: {ra} ← {rp} طلباً، {ka} ← {kp} كيلوبايت. على الهاتف (360 بكسل، 3G بطيئة): {mra} ← {mrp} طلباً، {mka} ← {mkp} كيلوبايت، إزاحة التخطيط {ca} ← {cp}. قيس بتاريخ {d}.',
+      'sob.f9': 'الموجة 19: النوافذ والألواح لا تُحمَّل إلا عند فتحها، الأيقونات مقتصرة على المستخدمة، مساعد البحث عند الطلب، تحديث مباشر واحد لكل صفحة بدلاً من ثلاثة، وجواب «لم يتغير شيء» (304) عند تطابق البيانات.',
+      'sob.f10': 'على الهاتف أو الاتصال البطيء، الأساسي أولاً: الأقسام الثانوية مطوية («عرض المزيد»)، الصورة الزخرفية والخريطة لا تُحمَّلان إلا عند الطلب، ولا إزاحة للصفحة أثناء التحميل.' }
+  });
+  function afficherV19(m) {
+    const sec = $('#mesures-v19');
+    if (!sec || !m || !m.pages) return;
+    const r = (x) => nf(Math.round(x * 10) / 10), c = (x) => nf2(x);
+    $('#v19-resume').textContent = L('sob.v19Resume', '', { ra: r(m.bureau.avant.requetes), rp: r(m.bureau.apres.requetes), ka: r(m.bureau.avant.ko), kp: r(m.bureau.apres.ko),
+      mra: r(m.mobile.avant.requetes), mrp: r(m.mobile.apres.requetes), mka: r(m.mobile.avant.ko), mkp: r(m.mobile.apres.ko), ca: c(m.mobile.avant.cls), cp: c(m.mobile.apres.cls), d: new Date(m.date).toLocaleDateString(NT.i18n.langue) });
+    $('#corps-v19').innerHTML = m.pages.map(p => `<tr><th scope="row">${E(p.page)}</th><td class="num">${E(nf(p.avant.requetes))}</td><td class="num">${E(nf(p.apres.requetes))}</td><td class="num">${E(nf(Math.round(p.avant.ko)))}</td><td class="num">${E(nf(Math.round(p.apres.ko)))}</td></tr>`).join('');
+    sec.hidden = false;
+  }
+
   const noteHtml = n => `<span class="note note-${classeNote(n)}"><b aria-hidden="true">${E(n)}</b><span>${E(L('sob.noteDe', 'Note {n}, {mot}', { n, mot: motNote(n) }))}</span></span>`;
 
   /* ---------- Chiffres du serveur ---------- */
@@ -135,6 +164,7 @@
     const r = d.resume;
     $('#resume-pages').textContent = L('sob.resume', 'Moyenne sur {n} pages : {poids} Ko, {req} requêtes, environ {co2} g de CO2 par visite, note {note}.',
       { n: r.pages, poids: nf(r.poidsMoyenKo), req: nf(r.requetesMoyennes), co2: nf2(r.co2MoyenG), note: r.note });
+    afficherV19(d.mesures);   // vague 19 (F95)
   }
 
   /* ---------- Mesures du navigateur (Performance API) ---------- */

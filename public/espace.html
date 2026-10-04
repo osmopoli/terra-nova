@@ -11,8 +11,7 @@
   <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css"></noscript>
   <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css"></noscript>
-  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css"></noscript>
+  <link rel="stylesheet" href="assets/css/icones.css"><!-- vague 19 (F95) : icônes utilisées seulement (tools/icones.js) -->
   <link rel="stylesheet" href="assets/css/theme.css">
   <link rel="stylesheet" href="assets/css/comptes.css">
   <link rel="stylesheet" href="assets/css/participer.css">
@@ -82,7 +81,7 @@
         <div id="liste-rdv"></div>
       </section>
       <!-- Notifications -->
-      <section aria-labelledby="t-notifs">
+      <section aria-labelledby="t-notifs" data-secondaire>
         <div class="titre-section"><h2 id="t-notifs" data-i18n="c.esp.notifs">Notifications récentes</h2>
           <button class="btn" type="button" id="btn-tout-lu" data-i18n="c.esp.toutLu">Tout marquer comme lu</button></div>
         <div id="astuces-notifs" class="astuces"></div>
@@ -98,7 +97,7 @@
     <section class="bloc" aria-labelledby="t-mes-avis" id="mes-avis-services" hidden></section>
 
     <!-- Vague 12 (F65, F66, F68) : reçus d'avis et idées -->
-    <section class="bloc" aria-labelledby="t-participation" id="ma-participation" hidden>
+    <section class="bloc" aria-labelledby="t-participation" id="ma-participation" hidden data-secondaire>
       <div class="titre-section"><div><h2 id="t-participation" data-i18n="par.esp.titre">Ma participation</h2>
         <p data-i18n="par.esp.d">Vos avis aux consultations et vos idées, avec leur reçu et leur suivi.</p></div>
         <a class="btn" href="participer.html"><i class="ph-duotone ph-chats-circle" aria-hidden="true"></i><span data-i18n="par.esp.voir">Tout voir dans Participer</span></a></div>
@@ -112,7 +111,7 @@
 
     <div class="panneau-onglet" role="tabpanel" id="pn-historique" aria-labelledby="og-historique" tabindex="0" hidden>
     <!-- F26 : historique complet -->
-    <section class="bloc" aria-labelledby="t-hist" id="historique">
+    <section class="bloc" aria-labelledby="t-hist" id="historique" data-secondaire>
       <div class="titre-section"><div><h2 id="t-hist" data-i18n="c.esp.hist">Historique de mes demandes</h2>
         <p data-i18n="c.esp.histD">Toutes vos demandes depuis votre inscription, pour retrouver ce que vous avez déjà envoyé.</p></div></div>
       <div id="astuces-hist" class="astuces"></div>

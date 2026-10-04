@@ -137,7 +137,10 @@
   /* ---------- Lecture périodique (15 s pour le personnel, 30 s pour l'habitant ; rien quand l'onglet est caché) ---------- */
   function lire() {
     if (document.hidden) return;
-    fetch('/api/veille', { cache: 'no-store', credentials: 'same-origin' }).then((r) => (r.ok ? r.json() : null)).then((d) => {
+    fetch('/api/veille', { cache: 'no-store', credentials: 'same-origin' }).then((r) => (r.ok ? r.json() : null)).then(traiter).catch(() => {});
+  }
+  function traiter(d) {   // vague 19 (F95) : pour l'habitant, alimenté par le « pouls » groupé (assets/js/continuite.js)
+    {
       if (!d) return;
       const ids = new Set((d.urgences || []).filter((x) => x.statut === 'signalee').map((x) => x.id));
       if (staff && connues) for (const id of ids) if (!connues.has(id)) NT.ui.toast(t('vl.nouvelle', { id }), 'danger', 15000);
@@ -145,13 +148,17 @@
       donnees = d;
       if (NT.ui.rafraichirAlertes) NT.ui.rafraichirAlertes();
       document.dispatchEvent(new CustomEvent('nt:veille', { detail: d }));
-    }).catch(() => {});
+    }
   }
   const rythme = () => (NT.leger && NT.leger.actif() ? 120000 : staff ? 15000 : 30000);
   let minuterie = null;
   const planifier = () => { clearTimeout(minuterie); minuterie = setTimeout(() => { lire(); planifier(); }, NT.econome ? NT.econome.delai(rythme()) : rythme()); };
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) { lire(); planifier(); } });
-  lire(); planifier();
+  // vague 19 (F95) : habitant → même lecture groupée que les messages officiels ; personnel → 15 s (urgences médicales en direct)
+  if (!staff && NT.pouls && !NT.horsLigne) NT.pouls.ecouter('veille', traiter);
+  else {
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) { lire(); planifier(); } });
+    lire(); planifier();
+  }
 
   /* ---------- Page « Sécurité de vos données » : historique des alertes (#activite) ---------- */
   function historique() {

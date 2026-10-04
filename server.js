@@ -14,7 +14,11 @@ const bouclier = require('./src/bouclier');   // vague 13 (F69) : en-têtes stri
 app.use(bouclier.avant(path.join(__dirname, 'public')));
 app.use(charge.proteger);   // vague 15 : l'essentiel passe toujours, le non essentiel attend quand le serveur est surchargé
 app.use(express.json({ limit: '1mb' }));   // photos de signalement (miniatures ~60 Ko)
-app.use(chargerUtilisateur);
+/* Vague 19 (F93, F94) : lecture de session protégée (base en panne → visiteur), lectures essentielles servies depuis la dernière
+   copie bonne pendant un incident (src/continuite.js) */
+const continuite = require('./src/continuite');
+app.use(continuite.contexte(chargerUtilisateur));
+app.use(continuite.secours);
 /* Vague 17 (F85) : registre d'audit scellé (chargé avant toute écriture d'audit) et surveillance de l'activité inhabituelle */
 const integrite = require('./src/modules/integrite');
 app.use(require('./src/modules/anomalies').surveiller);
@@ -26,6 +30,7 @@ app.get('/api/health', (req, res) => {
   res.status(database === 'ok' ? 200 : 503).json({ status: database === 'ok' ? 'ok' : 'degraded', service: 'terra-nova', database, time: new Date().toISOString() });
 });
 app.use('/api', require('./src/statique').jsonCompresse);   // F58 : réponses JSON compressées
+app.use(require('./src/etag-api').etagApi);   // vague 19 (F95) : JSON inchangé → 304 (If-None-Match)
 app.use(bouclier.apres);   // vague 13 (F69, F70) : validation des entrées, filtrage des champs réservés, journal des refus
 /* Vague 18 (D10, F89-F92) : recherche globale, assistant d'orientation, langage clair. Monté avant la mémoïsation de la vague 15 :
    un message à l'assistant (POST) n'est pas une écriture et ne doit pas vider le cache des autres lectures. */
@@ -33,7 +38,9 @@ const orientation = require('./src/modules/orientation');
 app.use(orientation);
 app.use(require('./src/modules/formulaires').garde);   // vague 16 : formulaires protégés contre les robots (F81), envois sans doublon (F82)
 app.use(charge.memo);   // vague 15 : lectures chaudes (GET /api/etat…) mémorisées par profil, invalidées à chaque écriture
-app.use(charge.router);   // vague 15 : GET /api/charge (public), /api/charge/details, POST /api/charge/forcer (admin)
+app.use(charge.router);
+app.use(continuite.router);   // vague 19 (F93-F95) : paquet essentiel, résumé personnel, « pouls », incident simulé
+app.use(require('./src/modules/essentiel').router);   // vague 19 (F94) : page « Infos essentielles » (/essentiel), favicon   // vague 15 : GET /api/charge (public), /api/charge/details, POST /api/charge/forcer (admin)
 app.use(require('./src/modules/priorites'));   // vague 15 : priorité des dossiers pour les agents (F80)
 const seedVague15 = require('./src/seed-vague15');
 app.post('/api/demo/reinitialiser', (req, res, next) => { res.on('finish', () => { if (res.statusCode === 200) seedVague15.semer(); }); next(); });
@@ -65,6 +72,7 @@ app.use(require('./src/modules/exports'));
 app.use(require('./src/statique').statique(path.join(__dirname, 'public')));   // F58 : fichiers compressés + cache navigateur
 app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
 
+app.use(continuite.erreur);   // vague 19 (F93) : panne de la base → 503 clair ou page essentielle, jamais 500
 app.use('/api', (req, res) => res.status(404).json({ erreur: 'Route inconnue.' }));
 app.use((req, res) => res.status(404).sendFile(path.join(__dirname, 'public', 'index.html')));
 app.use((err, req, res, _next) => {
@@ -79,7 +87,8 @@ seedVague15.semer();   // vague 15 : données de démonstration ajoutées une se
 comptesEquipe();
 startPolling();
 seedVague17.semer();   // vague 17 : modèles d'export, urgence médicale traitée (une seule fois)
-orientation.semer();   // vague 18 (F89) : versions en langage clair, ajoutées une seule fois, jamais écrasées
+orientation.semer();
+continuite.semer();   // vague 19 (F93, F94) : numéros d'urgence, contacts utiles et consignes (une seule fois)   // vague 18 (F89) : versions en langage clair, ajoutées une seule fois, jamais écrasées
 integrite.planifier();   // vague 17 : contrôle d'intégrité 30 s après le démarrage puis toutes les 6 h
 sauvegardes.planifier();   // vague 17 : sauvegarde automatique quotidienne + rétention
 

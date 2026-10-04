@@ -158,7 +158,10 @@
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && fenetre) fermerFenetre(true); });
 
   function charger() {
-    return fetch('/api/officiels', { cache: 'no-store', credentials: 'same-origin' }).then(r => (r.ok ? r.json() : null)).then(j => {
+    return fetch('/api/officiels', { cache: 'no-store', credentials: 'same-origin' }).then(r => (r.ok ? r.json() : null)).then(traiter).catch(() => {});
+  }
+  function traiter(j) {   // vague 19 (F95) : aussi alimenté par le « pouls » groupé (NT.pouls, assets/js/continuite.js)
+    {
       if (!j) return;
       const avant = JSON.stringify(messages);
       messages = j.messages || [];
@@ -167,7 +170,7 @@
       if (JSON.stringify(messages) !== avant) rendre();
       nouveaux.forEach(m => NT.ui.annoncer(t('off.nouveau', { t: contenu(m).titre })));
       montrerFenetre();
-    }).catch(() => {});
+    }
   }
 
   /* « Ce que vous devez faire » / « Voir l'alerte » : le tiroir des alertes quand Shoelace est prêt ; sans CDN, le message complet
@@ -214,7 +217,11 @@
 
   let minuterie = null;
   const planifier = () => { clearTimeout(minuterie); minuterie = setTimeout(() => { if (!document.hidden) charger(); planifier(); }, NT.leger.actif() ? 120000 : NT.econome.delai(30000)); };
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) { charger(); planifier(); } });
   NT.officiel = { charger, messages: () => messages.slice() };
-  charger(); planifier();
+  // vague 19 (F95) : une seule lecture périodique pour toute la page (« pouls ») ; sinon (hors connexion, ancien script) comme avant
+  if (NT.pouls && !NT.horsLigne) NT.pouls.ecouter('officiels', l => traiter({ messages: l }));
+  else {
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) { charger(); planifier(); } });
+    charger(); planifier();
+  }
 })();

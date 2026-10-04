@@ -178,13 +178,17 @@ router.get('/api/urgences-points', (req, res) => { res.set('Cache-Control', 'pub
 
 /* Veille en direct pour la balise « Alertes » (toutes les pages, utilisateur connecté) :
    personnel → urgences ouvertes ; habitant → ses urgences en cours ; tous → alertes « activité inhabituelle » à confirmer */
-router.get('/api/veille', A.exigerRole(...A.ROLES), (req, res) => {
-  const staff = A.estPersonnel(req.user);
-  const ouvertes = toutes().filter((d) => d.urgenceMedicale.statut !== 'close' && (staff || d.userId === req.user.id)).sort(ordre);
-  res.set('Cache-Control', 'no-store');
-  res.json({ personnel: staff, delaiMinutes: DELAI_MIN, maintenant: maintenant(),
+/* Vague 19 (F95) : même contenu réutilisé par GET /api/pouls (une lecture périodique au lieu de trois), sans l'heure du serveur */
+function veillePour(u) {
+  const staff = A.estPersonnel(u);
+  const ouvertes = toutes().filter((d) => d.urgenceMedicale.statut !== 'close' && (staff || d.userId === u.id)).sort(ordre);
+  return { personnel: staff, delaiMinutes: DELAI_MIN,
     urgences: ouvertes.slice(0, 10).map((d) => Object.assign(vue(d, false), staff ? { objet: d.objet } : {})),
-    activite: docs.tous('activites').filter((a) => a.userId === req.user.id && a.statut === 'a_confirmer').slice(-3).map((a) => ({ id: a.id, date: a.date, raisons: a.raisons, libelles: a.libelles })) });
+    activite: docs.tous('activites').filter((a) => a.userId === u.id && a.statut === 'a_confirmer').slice(-3).map((a) => ({ id: a.id, date: a.date, raisons: a.raisons, libelles: a.libelles })) };
+}
+router.get('/api/veille', A.exigerRole(...A.ROLES), (req, res) => {
+  res.set('Cache-Control', 'no-store');
+  res.json(Object.assign(veillePour(req.user), { maintenant: maintenant() }));
 });
 
 /* ---------- Escalade : aucune prise en charge dans le délai ---------- */
@@ -207,3 +211,4 @@ module.exports = router;
 module.exports.avantCreation = avantCreation;
 module.exports.detecter = detecter;
 module.exports.LIEUX = LIEUX;
+module.exports.veillePour = veillePour;   // vague 19 (F95) : GET /api/pouls

@@ -1,0 +1,1036 @@
+{
+ "date": "2026-10-04T04:11:53.940Z",
+ "outil": "node tools/mesure-pages.js (Edge sans fenêtre, protocole DevTools, cache vide, base de démonstration neuve)",
+ "bureau": {
+  "avant": {
+   "requetes": 87.4,
+   "ko": 661.2,
+   "cdn": 66,
+   "jsKo": 490.3,
+   "cssKo": 406.7,
+   "lcpMs": 2080,
+   "cls": 0.18
+  },
+  "apres": {
+   "requetes": 33.4,
+   "ko": 531.9,
+   "cdn": 11.6,
+   "jsKo": 283.7,
+   "cssKo": 144,
+   "lcpMs": 2103,
+   "cls": 0.064
+  }
+ },
+ "mobile": {
+  "avant": {
+   "requetes": 87.5,
+   "ko": 663.3,
+   "cdn": 66,
+   "jsKo": 490.3,
+   "cssKo": 406.8,
+   "lcpMs": 6469,
+   "cls": 0.281
+  },
+  "apres": {
+   "requetes": 32.5,
+   "ko": 371.8,
+   "cdn": 10.7,
+   "jsKo": 283.7,
+   "cssKo": 144.2,
+   "lcpMs": 5714,
+   "cls": 0.045
+  },
+  "conditions": "360 × 740 px, 3G lente émulée (400 ms, 400 kbit/s)"
+ },
+ "essentiel": null,
+ "pages": [
+  {
+   "page": "accuse.html",
+   "profil": "visiteur",
+   "avant": {
+    "requetes": 78,
+    "ko": 647.8,
+    "cls": 0.122
+   },
+   "apres": {
+    "requetes": 27,
+    "ko": 502.4,
+    "cls": 0.011
+   },
+   "mobileAvant": {
+    "requetes": 78,
+    "ko": 647.9,
+    "lcpMs": 6440,
+    "cls": 0.345
+   },
+   "mobileApres": {
+    "requetes": 26,
+    "ko": 341.3,
+    "lcpMs": 6680,
+    "cls": 0.001
+   }
+  },
+  {
+   "page": "admin-comptes.html",
+   "profil": "agent",
+   "avant": {
+    "requetes": 98,
+    "ko": 672.8,
+    "cls": 0.002
+   },
+   "apres": {
+    "requetes": 30,
+    "ko": 554.8,
+    "cls": 0.001
+   },
+   "mobileAvant": {
+    "requetes": 99,
+    "ko": 720.9,
+    "lcpMs": 5296,
+    "cls": 0.049
+   },
+   "mobileApres": {
+    "requetes": 29,
+    "ko": 393.4,
+    "lcpMs": 5068,
+    "cls": 0
+   }
+  },
+  {
+   "page": "admin-sauvegardes.html",
+   "profil": "admin",
+   "avant": {
+    "requetes": 98,
+    "ko": 687.8,
+    "cls": 0.138
+   },
+   "apres": {
+    "requetes": 29,
+    "ko": 520.4,
+    "cls": 0.002
+   },
+   "mobileAvant": {
+    "requetes": 99,
+    "ko": 711.2,
+    "lcpMs": 5172,
+    "cls": 0.061
+   },
+   "mobileApres": {
+    "requetes": 29,
+    "ko": 382,
+    "lcpMs": 5240,
+    "cls": 0
+   }
+  },
+  {
+   "page": "agent-accueil.html",
+   "profil": "agent",
+   "avant": {
+    "requetes": 99,
+    "ko": 710.5,
+    "cls": 0.073
+   },
+   "apres": {
+    "requetes": 30,
+    "ko": 544.8,
+    "cls": 0.02
+   },
+   "mobileAvant": {
+    "requetes": 99,
+    "ko": 710.9,
+    "lcpMs": 4296,
+    "cls": 0.034
+   },
+   "mobileApres": {
+    "requetes": 29,
+    "ko": 383.4,
+    "lcpMs": 4992,
+    "cls": 0
+   }
+  },
+  {
+   "page": "agent-alertes.html",
+   "profil": "agent",
+   "avant": {
+    "requetes": 99,
+    "ko": 708.7,
+    "cls": 0.037
+   },
+   "apres": {
+    "requetes": 68,
+    "ko": 611.1,
+    "cls": 0.004
+   },
+   "mobileAvant": {
+    "requetes": 99,
+    "ko": 709.2,
+    "lcpMs": 5224,
+    "cls": 0.048
+   },
+   "mobileApres": {
+    "requetes": 67,
+    "ko": 449.6,
+    "lcpMs": 5268,
+    "cls": 0.001
+   }
+  },
+  {
+   "page": "agent-demandes.html",
+   "profil": "agent",
+   "avant": {
+    "requetes": 107,
+    "ko": 756.9,
+    "cls": 0.132
+   },
+   "apres": {
+    "requetes": 76,
+    "ko": 661.3,
+    "cls": 0.119
+   },
+   "mobileAvant": {
+    "requetes": 108,
+    "ko": 760.2,
+    "lcpMs": 7344,
+    "cls": 0.247
+   },
+   "mobileApres": {
+    "requetes": 76,
+    "ko": 452.1,
+    "lcpMs": 8764,
+    "cls": 0.175
+   }
+  },
+  {
+   "page": "agent-exports.html",
+   "profil": "agent",
+   "avant": {
+    "requetes": 101,
+    "ko": 699.3,
+    "cls": 0.017
+   },
+   "apres": {
+    "requetes": 32,
+    "ko": 531.9,
+    "cls": 0.001
+   },
+   "mobileAvant": {
+    "requetes": 101,
+    "ko": 700.2,
+    "lcpMs": 6672,
+    "cls": 0.088
+   },
+   "mobileApres": {
+    "requetes": 31,
+    "ko": 370.5,
+    "lcpMs": 7404,
+    "cls": 0.015
+   }
+  },
+  {
+   "page": "agent-journal.html",
+   "profil": "agent",
+   "avant": {
+    "requetes": 100,
+    "ko": 717.2,
+    "cls": 0.033
+   },
+   "apres": {
+    "requetes": 31,
+    "ko": 551.5,
+    "cls": 0.01
+   },
+   "mobileAvant": {
+    "requetes": 100,
+    "ko": 717.6,
+    "lcpMs": 4712,
+    "cls": 0.052
+   },
+   "mobileApres": {
+    "requetes": 30,
+    "ko": 390.1,
+    "lcpMs": 4964,
+    "cls": 0
+   }
+  },
+  {
+   "page": "agent-orientation.html",
+   "profil": "agent",
+   "avant": {
+    "requetes": 100,
+    "ko": 695.9,
+    "cls": 0.074
+   },
+   "apres": {
+    "requetes": 32,
+    "ko": 533.9,
+    "cls": 0.033
+   },
+   "mobileAvant": {
+    "requetes": 100,
+    "ko": 696.2,
+    "lcpMs": 4556,
+    "cls": 0.017
+   },
+   "mobileApres": {
+    "requetes": 31,
+    "ko": 372.5,
+    "lcpMs": 3468,
+    "cls": 0.006
+   }
+  },
+  {
+   "page": "agent-plateforme.html",
+   "profil": "agent",
+   "avant": {
+    "requetes": 100,
+    "ko": 713.1,
+    "cls": 0.189
+   },
+   "apres": {
+    "requetes": 33,
+    "ko": 556.8,
+    "cls": 0.149
+   },
+   "mobileAvant": {
+    "requetes": 102,
+    "ko": 713,
+    "lcpMs": 7600,
+    "cls": 0.043
+   },
+   "mobileApres": {
+    "requetes": 33,
+    "ko": 399.3,
+    "lcpMs": 4984,
+    "cls": 0.009
+   }
+  },
+  {
+   "page": "agent-securite.html",
+   "profil": "admin",
+   "avant": {
+    "requetes": 106,
+    "ko": 727.1,
+    "cls": 0.095
+   },
+   "apres": {
+    "requetes": 37,
+    "ko": 559.5,
+    "cls": 0.002
+   },
+   "mobileAvant": {
+    "requetes": 106,
+    "ko": 727.3,
+    "lcpMs": 6376,
+    "cls": 0.043
+   },
+   "mobileApres": {
+    "requetes": 36,
+    "ko": 397.9,
+    "lcpMs": 6940,
+    "cls": 0
+   }
+  },
+  {
+   "page": "agent-tableau.html",
+   "profil": "agent",
+   "avant": {
+    "requetes": 101,
+    "ko": 700.9,
+    "cls": 0.205
+   },
+   "apres": {
+    "requetes": 32,
+    "ko": 535.2,
+    "cls": 0.172
+   },
+   "mobileAvant": {
+    "requetes": 101,
+    "ko": 701.3,
+    "lcpMs": 4492,
+    "cls": 0.047
+   },
+   "mobileApres": {
+    "requetes": 31,
+    "ko": 373.8,
+    "lcpMs": 5976,
+    "cls": 0
+   }
+  },
+  {
+   "page": "agent.html",
+   "profil": "agent",
+   "avant": {
+    "requetes": 108,
+    "ko": 771.8,
+    "cls": 0.209
+   },
+   "apres": {
+    "requetes": 38,
+    "ko": 582.3,
+    "cls": 0.182
+   },
+   "mobileAvant": {
+    "requetes": 109,
+    "ko": 775.1,
+    "lcpMs": 6032,
+    "cls": 0.221
+   },
+   "mobileApres": {
+    "requetes": 38,
+    "ko": 442.8,
+    "lcpMs": 6136,
+    "cls": 0.182
+   }
+  },
+  {
+   "page": "aide.html",
+   "profil": "visiteur",
+   "avant": {
+    "requetes": 74,
+    "ko": 617.6,
+    "cls": 0.012
+   },
+   "apres": {
+    "requetes": 27,
+    "ko": 525.1,
+    "cls": 0.001
+   },
+   "mobileAvant": {
+    "requetes": 74,
+    "ko": 617.5,
+    "lcpMs": 4292,
+    "cls": 0.293
+   },
+   "mobileApres": {
+    "requetes": 26,
+    "ko": 364,
+    "lcpMs": 3500,
+    "cls": 0.002
+   }
+  },
+  {
+   "page": "annonces.html",
+   "profil": "visiteur",
+   "avant": {
+    "requetes": 74,
+    "ko": 618.9,
+    "cls": 0.645
+   },
+   "apres": {
+    "requetes": 24,
+    "ko": 495.5,
+    "cls": 0.151
+   },
+   "mobileAvant": {
+    "requetes": 74,
+    "ko": 619.4,
+    "lcpMs": 3860,
+    "cls": 0.497
+   },
+   "mobileApres": {
+    "requetes": 23,
+    "ko": 334.4,
+    "lcpMs": 4608,
+    "cls": 0.338
+   }
+  },
+  {
+   "page": "bienvenue.html",
+   "profil": "visiteur",
+   "avant": {
+    "requetes": 80,
+    "ko": 648.2,
+    "cls": 0.059
+   },
+   "apres": {
+    "requetes": 30,
+    "ko": 524.5,
+    "cls": 0.022
+   },
+   "mobileAvant": {
+    "requetes": 80,
+    "ko": 648.2,
+    "lcpMs": 4436,
+    "cls": 0.298
+   },
+   "mobileApres": {
+    "requetes": 29,
+    "ko": 363.4,
+    "lcpMs": 4520,
+    "cls": 0
+   }
+  },
+  {
+   "page": "carte.html",
+   "profil": "visiteur",
+   "avant": {
+    "requetes": 77,
+    "ko": 654.1,
+    "cls": 0.164
+   },
+   "apres": {
+    "requetes": 27,
+    "ko": 530.6,
+    "cls": 0.001
+   },
+   "mobileAvant": {
+    "requetes": 77,
+    "ko": 654.5,
+    "lcpMs": 15176,
+    "cls": 0.327
+   },
+   "mobileApres": {
+    "requetes": 26,
+    "ko": 369.5,
+    "lcpMs": 6212,
+    "cls": 0
+   }
+  },
+  {
+   "page": "compte.html",
+   "profil": "citoyen",
+   "avant": {
+    "requetes": 99,
+    "ko": 723.2,
+    "cls": 0.037
+   },
+   "apres": {
+    "requetes": 29,
+    "ko": 553.4,
+    "cls": 0
+   },
+   "mobileAvant": {
+    "requetes": 99,
+    "ko": 721.8,
+    "lcpMs": 12736,
+    "cls": 0.378
+   },
+   "mobileApres": {
+    "requetes": 28,
+    "ko": 392,
+    "lcpMs": 7584,
+    "cls": 0
+   }
+  },
+  {
+   "page": "connexion.html",
+   "profil": "visiteur",
+   "avant": {
+    "requetes": 76,
+    "ko": 658.7,
+    "cls": 0.265
+   },
+   "apres": {
+    "requetes": 26,
+    "ko": 535.3,
+    "cls": 0.003
+   },
+   "mobileAvant": {
+    "requetes": 76,
+    "ko": 658.9,
+    "lcpMs": 18316,
+    "cls": 0.293
+   },
+   "mobileApres": {
+    "requetes": 25,
+    "ko": 374.2,
+    "lcpMs": 4948,
+    "cls": 0
+   }
+  },
+  {
+   "page": "demande.html",
+   "profil": "visiteur",
+   "avant": {
+    "requetes": 84,
+    "ko": 681.7,
+    "cls": 0.577
+   },
+   "apres": {
+    "requetes": 37,
+    "ko": 589.2,
+    "cls": 0.1
+   },
+   "mobileAvant": {
+    "requetes": 84,
+    "ko": 681.7,
+    "lcpMs": 15108,
+    "cls": 0.732
+   },
+   "mobileApres": {
+    "requetes": 36,
+    "ko": 428.1,
+    "lcpMs": 12624,
+    "cls": 0.456
+   }
+  },
+  {
+   "page": "donnees.html",
+   "profil": "visiteur",
+   "avant": {
+    "requetes": 81,
+    "ko": 649.7,
+    "cls": 0.249
+   },
+   "apres": {
+    "requetes": 34,
+    "ko": 557.4,
+    "cls": 0.192
+   },
+   "mobileAvant": {
+    "requetes": 81,
+    "ko": 650.1,
+    "lcpMs": 14872,
+    "cls": 0.544
+   },
+   "mobileApres": {
+    "requetes": 33,
+    "ko": 396.3,
+    "lcpMs": 9780,
+    "cls": 0.244
+   }
+  },
+  {
+   "page": "espace.html",
+   "profil": "citoyen",
+   "avant": {
+    "requetes": 107,
+    "ko": 777.2,
+    "cls": 0.261
+   },
+   "apres": {
+    "requetes": 37,
+    "ko": 607.2,
+    "cls": 0.001
+   },
+   "mobileAvant": {
+    "requetes": 107,
+    "ko": 775.7,
+    "lcpMs": 6776,
+    "cls": 0.404
+   },
+   "mobileApres": {
+    "requetes": 36,
+    "ko": 446.1,
+    "lcpMs": 7352,
+    "cls": 0
+   }
+  },
+  {
+   "page": "index.html",
+   "profil": "visiteur",
+   "avant": {
+    "requetes": 77,
+    "ko": 647.6,
+    "cls": 0.26
+   },
+   "apres": {
+    "requetes": 30,
+    "ko": 555.4,
+    "cls": 0.032
+   },
+   "mobileAvant": {
+    "requetes": 77,
+    "ko": 648.1,
+    "lcpMs": 6304,
+    "cls": 0.349
+   },
+   "mobileApres": {
+    "requetes": 28,
+    "ko": 374.1,
+    "lcpMs": 3920,
+    "cls": 0.074
+   }
+  },
+  {
+   "page": "inscription.html",
+   "profil": "visiteur",
+   "avant": {
+    "requetes": 79,
+    "ko": 665.2,
+    "cls": 0.044
+   },
+   "apres": {
+    "requetes": 29,
+    "ko": 541.5,
+    "cls": 0.003
+   },
+   "mobileAvant": {
+    "requetes": 79,
+    "ko": 665.1,
+    "lcpMs": 4416,
+    "cls": 0.331
+   },
+   "mobileApres": {
+    "requetes": 28,
+    "ko": 380.5,
+    "lcpMs": 4652,
+    "cls": 0
+   }
+  },
+  {
+   "page": "mes-informations.html",
+   "profil": "citoyen",
+   "avant": {
+    "requetes": 98,
+    "ko": 684.9,
+    "cls": 0.595
+   },
+   "apres": {
+    "requetes": 28,
+    "ko": 516.6,
+    "cls": 0.001
+   },
+   "mobileAvant": {
+    "requetes": 98,
+    "ko": 685,
+    "lcpMs": 4880,
+    "cls": 0.492
+   },
+   "mobileApres": {
+    "requetes": 27,
+    "ko": 307.6,
+    "lcpMs": 5348,
+    "cls": 0
+   }
+  },
+  {
+   "page": "participer.html",
+   "profil": "visiteur",
+   "avant": {
+    "requetes": 79,
+    "ko": 652.7,
+    "cls": 0.055
+   },
+   "apres": {
+    "requetes": 29,
+    "ko": 529.2,
+    "cls": 0.89
+   },
+   "mobileAvant": {
+    "requetes": 79,
+    "ko": 653.2,
+    "lcpMs": 5088,
+    "cls": 0.322
+   },
+   "mobileApres": {
+    "requetes": 28,
+    "ko": 368.2,
+    "lcpMs": 5588,
+    "cls": 0
+   }
+  },
+  {
+   "page": "recapitulatif.html",
+   "profil": "citoyen",
+   "avant": {
+    "requetes": 98,
+    "ko": 683.3,
+    "cls": 0.042
+   },
+   "apres": {
+    "requetes": 28,
+    "ko": 513.4,
+    "cls": 0
+   },
+   "mobileAvant": {
+    "requetes": 98,
+    "ko": 683.6,
+    "lcpMs": 4756,
+    "cls": 0.393
+   },
+   "mobileApres": {
+    "requetes": 27,
+    "ko": 352.3,
+    "lcpMs": 7584,
+    "cls": 0
+   }
+  },
+  {
+   "page": "recherche.html",
+   "profil": "visiteur",
+   "avant": {
+    "requetes": 74,
+    "ko": 611.8,
+    "cls": 0.45
+   },
+   "apres": {
+    "requetes": 27,
+    "ko": 519.6,
+    "cls": 0.001
+   },
+   "mobileAvant": {
+    "requetes": 74,
+    "ko": 612,
+    "lcpMs": 3540,
+    "cls": 0.208
+   },
+   "mobileApres": {
+    "requetes": 26,
+    "ko": 358.5,
+    "lcpMs": 4504,
+    "cls": 0
+   }
+  },
+  {
+   "page": "rendez-vous.html",
+   "profil": "citoyen",
+   "avant": {
+    "requetes": 103,
+    "ko": 721.9,
+    "cls": 0.012
+   },
+   "apres": {
+    "requetes": 33,
+    "ko": 551.9,
+    "cls": 0.007
+   },
+   "mobileAvant": {
+    "requetes": 103,
+    "ko": 722.1,
+    "lcpMs": 5300,
+    "cls": 0.371
+   },
+   "mobileApres": {
+    "requetes": 32,
+    "ko": 390.8,
+    "lcpMs": 5996,
+    "cls": 0
+   }
+  },
+  {
+   "page": "securite.html",
+   "profil": "visiteur",
+   "avant": {
+    "requetes": 77,
+    "ko": 627.1,
+    "cls": 0.119
+   },
+   "apres": {
+    "requetes": 27,
+    "ko": 506,
+    "cls": 0.043
+   },
+   "mobileAvant": {
+    "requetes": 77,
+    "ko": 627.3,
+    "lcpMs": 4004,
+    "cls": 0.413
+   },
+   "mobileApres": {
+    "requetes": 26,
+    "ko": 297,
+    "lcpMs": 4412,
+    "cls": 0.042
+   }
+  },
+  {
+   "page": "services.html",
+   "profil": "visiteur",
+   "avant": {
+    "requetes": 82,
+    "ko": 667.3,
+    "cls": 0.494
+   },
+   "apres": {
+    "requetes": 66,
+    "ko": 630.7,
+    "cls": 0.258
+   },
+   "mobileAvant": {
+    "requetes": 82,
+    "ko": 667.5,
+    "lcpMs": 5304,
+    "cls": 0.64
+   },
+   "mobileApres": {
+    "requetes": 65,
+    "ko": 469.5,
+    "lcpMs": 5472,
+    "cls": 0
+   }
+  },
+  {
+   "page": "sobriete.html",
+   "profil": "visiteur",
+   "avant": {
+    "requetes": 76,
+    "ko": 625.9,
+    "cls": 0.016
+   },
+   "apres": {
+    "requetes": 26,
+    "ko": 504.5,
+    "cls": 0.005
+   },
+   "mobileAvant": {
+    "requetes": 76,
+    "ko": 626.1,
+    "lcpMs": 3868,
+    "cls": 0.296
+   },
+   "mobileApres": {
+    "requetes": 25,
+    "ko": 338.9,
+    "lcpMs": 4856,
+    "cls": 0.014
+   }
+  },
+  {
+   "page": "soutenir.html",
+   "profil": "visiteur",
+   "avant": {
+    "requetes": 80,
+    "ko": 643.5,
+    "cls": 0.501
+   },
+   "apres": {
+    "requetes": 30,
+    "ko": 519.7,
+    "cls": 0.001
+   },
+   "mobileAvant": {
+    "requetes": 80,
+    "ko": 643.7,
+    "lcpMs": 3868,
+    "cls": 0.522
+   },
+   "mobileApres": {
+    "requetes": 29,
+    "ko": 358.6,
+    "lcpMs": 5476,
+    "cls": 0.109
+   }
+  },
+  {
+   "page": "suivi.html",
+   "profil": "citoyen",
+   "avant": {
+    "requetes": 104,
+    "ko": 736.6,
+    "cls": 0.047
+   },
+   "apres": {
+    "requetes": 34,
+    "ko": 568.2,
+    "cls": 0.001
+   },
+   "mobileAvant": {
+    "requetes": 104,
+    "ko": 736.8,
+    "lcpMs": 5140,
+    "cls": 0.379
+   },
+   "mobileApres": {
+    "requetes": 33,
+    "ko": 407.1,
+    "lcpMs": 5464,
+    "cls": 0
+   }
+  },
+  {
+   "page": "transports.html",
+   "profil": "visiteur",
+   "avant": {
+    "requetes": 90,
+    "ko": 645,
+    "cls": 0.236
+   },
+   "apres": {
+    "requetes": 60,
+    "ko": 558.9,
+    "cls": 0.001
+   },
+   "mobileAvant": {
+    "requetes": 90,
+    "ko": 644.8,
+    "lcpMs": 3800,
+    "cls": 0.294
+   },
+   "mobileApres": {
+    "requetes": 59,
+    "ko": 397.8,
+    "lcpMs": 4412,
+    "cls": 0
+   }
+  },
+  {
+   "page": "urgence.html",
+   "profil": "visiteur",
+   "avant": {
+    "requetes": 77,
+    "ko": 629.4,
+    "cls": 0.172
+   },
+   "apres": {
+    "requetes": 27,
+    "ko": 506,
+    "cls": 0.019
+   },
+   "mobileAvant": {
+    "requetes": 77,
+    "ko": 630,
+    "lcpMs": 10752,
+    "cls": 0.305
+   },
+   "mobileApres": {
+    "requetes": 26,
+    "ko": 344.9,
+    "lcpMs": 6676,
+    "cls": 0
+   }
+  },
+  {
+   "page": "verifier-accuse.html",
+   "profil": "visiteur",
+   "avant": {
+    "requetes": 76,
+    "ko": 624,
+    "cls": 0.2
+   },
+   "apres": {
+    "requetes": 26,
+    "ko": 500.3,
+    "cls": 0.001
+   },
+   "mobileAvant": {
+    "requetes": 76,
+    "ko": 624.2,
+    "lcpMs": 3648,
+    "cls": 0.292
+   },
+   "mobileApres": {
+    "requetes": 25,
+    "ko": 339.2,
+    "lcpMs": 4292,
+    "cls": 0.028
+   }
+  },
+  {
+   "page": "/simple",
+   "profil": "visiteur",
+   "avant": {
+    "requetes": 3,
+    "ko": 19,
+    "cls": 0
+   },
+   "apres": {
+    "requetes": 4,
+    "ko": 25.5,
+    "cls": 0
+   },
+   "mobileAvant": {
+    "requetes": 3,
+    "ko": 19,
+    "lcpMs": 1376,
+    "cls": 0
+   },
+   "mobileApres": {
+    "requetes": 4,
+    "ko": 25.5,
+    "lcpMs": 1456,
+    "cls": 0
+   }
+  }
+ ]
+}

@@ -18,13 +18,21 @@ const KO = 1024;
    Ces fichiers sont servis par des CDN : on ne peut pas les mesurer hors ligne, donc on retient
    des ordres de grandeur fixes (premier chargement, sans cache). C'est une estimation, pas une mesure.
    Ces polices ne sont pas chargées du tout en « Mode connexion lente ». */
+/* Vague 19 (F95) : valeurs MESURÉES dans un navigateur sans fenêtre (tools/mesure-pages.js).
+   Shoelace : les fenêtres et tiroirs ne sont plus chargés qu'à leur ouverture (avant : ≈ 55 fichiers à chaque page).
+   Phosphor : feuille locale réduite aux icônes utilisées (assets/css/icones.css) ; restent les deux polices, gardées un an
+   par le navigateur ; la police « duotone » n'est pas téléchargée en mode connexion lente ni en « l'essentiel d'abord ». */
 const EXTERNES = [
-  { motif: /shoelace.*autoloader/i, nom: 'Shoelace — chargeur + composants utilisés', octets: 90 * KO },
-  { motif: /shoelace.*themes\/dark\.css/i, nom: 'Shoelace — thème sombre', octets: 8 * KO },
-  { motif: /phosphor.*\/regular\/style\.css/i, nom: 'Phosphor — icônes (CSS + police « regular »)', octets: 80 * KO },
-  { motif: /phosphor.*\/duotone\/style\.css/i, nom: 'Phosphor — icônes (CSS + police « duotone »)', octets: 120 * KO },
-  { motif: /fonts\.googleapis\.com\/css2/i, nom: 'Google Fonts — Inter + JetBrains Mono (CSS + polices)', octets: 70 * KO }
+  { motif: /shoelace.*autoloader/i, nom: 'Shoelace — chargeur et noyau (composants des fenêtres chargés à leur ouverture)', octets: 6 * KO },
+  { motif: /shoelace.*themes\/dark\.css/i, nom: 'Shoelace — thème sombre', octets: 5 * KO },
+  { motif: /phosphor.*\/regular\/style\.css/i, nom: 'Phosphor — icônes (CSS + police « regular »)', octets: 161 * KO },
+  { motif: /phosphor.*\/duotone\/style\.css/i, nom: 'Phosphor — icônes (CSS + police « duotone »)', octets: 188 * KO },
+  { motif: /fonts\.googleapis\.com\/css2/i, nom: 'Google Fonts — Inter (CSS + police)', octets: 50 * KO }
 ];
+// Vague 19 : feuilles locales qui font charger des polices externes, comptées comme ressources externes
+const POLICES_DE = { 'assets/css/icones.css': [
+  { url: 'https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/Phosphor.woff2', nom: 'Phosphor — police « regular »', octets: 148 * KO },
+  { url: 'https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/Phosphor-Duotone.woff2', nom: 'Phosphor — police « duotone » (pas en mode léger)', octets: 165 * KO }] };
 const EXTERNE_INCONNU = 20 * KO;   // ressource externe non répertoriée ci-dessus
 
 let cache = null;
@@ -101,6 +109,7 @@ function analyserPage(nom) {
     const e = EXTERNES.find(x => x.motif.test(u));
     return { url: u, nom: e ? e.nom : 'Ressource externe', octetsEstimes: e ? e.octets : EXTERNE_INCONNU };
   });
+  for (const l of locales) for (const p of POLICES_DE[l] || []) ext.push({ url: p.url, nom: p.nom, octetsEstimes: p.octets });   // vague 19
   const octetsExternes = ext.reduce((s, e) => s + e.octetsEstimes, 0);
   const requetes = ressources.length + nbSrcset + ext.length;
   const totalKo = Math.round((baseLocale + bureau + octetsExternes) / KO);
@@ -141,8 +150,13 @@ function calculer() {
       poidsKo: accueil.poidsTotalKo, poidsMobileKo: accueil.poidsTotalMobileKo, requetes: accueil.requetes,
       co2G: co2g(accueil.poidsTotalKo), note: accueil.note, score: accueil.score
     },
-    pages
+    pages,
+    mesures: mesuresVague19()   // vague 19 (F95) : avant / après mesurés dans un vrai navigateur
   };
+}
+// Résultats de tools/mesure-pages.js (avant / après la vague 19), gardés dans data/mesures-vague19.json
+function mesuresVague19() {
+  try { return JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'mesures-vague19.json'), 'utf8')); } catch { return null; }
 }
 
 router.get('/api/sobriete', (req, res) => {

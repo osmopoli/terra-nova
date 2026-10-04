@@ -11,8 +11,7 @@
   <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css"></noscript>
   <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css"></noscript>
-  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css"></noscript>
+  <link rel="stylesheet" href="assets/css/icones.css"><!-- vague 19 (F95) : icônes utilisées seulement (tools/icones.js) -->
   <link rel="stylesheet" href="assets/css/theme.css">
   <link rel="stylesheet" href="assets/css/demandes.css">
   <link rel="stylesheet" href="assets/css/vague16.css">
@@ -184,7 +183,7 @@
                 <dt>${echap(bi('Envoyée le', 'Sent on'))}</dt><dd>${echap(dateLongue(d.cree))}</dd>
                 <dt>${echap(bi('Priorité', 'Priority'))}</dt><dd>${haute ? `<span class="dm-prio-haute"><i class="ph-duotone ph-warning" aria-hidden="true"></i>${echap(bi('Haute (dangereux)', 'High (dangerous)'))}</span>` : echap(bi('Normale', 'Normal'))}</dd>
                 <dt>${echap(bi('Traitée par', 'Handled by'))}</dt><dd>${d.agent ? `<i class="ph ph-user-circle" aria-hidden="true"></i> ${echap(d.agent)}` : `<span class="doux">${echap(bi('Pas encore attribuée à un agent', 'Not yet assigned to an agent'))}</span>`}</dd>
-                ${d.photo ? `<dt>${echap(bi('Photo', 'Photo'))}</dt><dd><img src="${echap(d.photo)}" alt="${echap(bi('Photo jointe au signalement', 'Photo attached to the report'))}"></dd>` : ''}
+                ${d.photo ? `<dt>${echap(bi('Photo', 'Photo'))}</dt><dd><img src="${echap(d.photo)}" alt="${echap(bi('Photo jointe au signalement', 'Photo attached to the report'))}" loading="lazy" decoding="async"></dd>` : ''}
               </dl>
             </aside>
           </div>`;
