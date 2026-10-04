@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <title>Rapport d’activité — Terra Nova</title>
+  <meta name="description" content="Agents et responsables : synthèse de l’activité de la plateforme (demandes, délais, urgences, satisfaction, participation, sécurité), points clés, points d’attention et recommandations.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net"><link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css"></noscript>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="assets/css/icones.css"><!-- vague 19 (F95) : icônes utilisées seulement (tools/icones.js) -->
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/agent.css">
+  <link rel="stylesheet" href="assets/css/vague20.css">
+  <link rel="stylesheet" href="assets/css/rapport.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="agent-rapport" data-ariane="nav.agent|agent.html;ra.titre" data-roles="agent,admin">
+  <main id="contenu" data-lc-non class="conteneur ag v20-page ra">
+    <!-- Couverture (impression / PDF seulement) -->
+    <section class="ra-couverture" aria-hidden="true">
+      <img src="assets/img/logo-embleme-192.webp" alt="" width="96" height="96">
+      <p class="ra-couv-ville">Terra Nova</p>
+      <h2 class="ra-couv-titre" data-i18n="ra.titre">Rapport d’activité</h2>
+      <p class="ra-couv-periode" id="ra-couv-periode"></p>
+      <p class="ra-couv-date" id="ra-couv-date"></p>
+      <p class="ra-couv-note" data-i18n="ra.couvNote">Document interne · données agrégées, sans information personnelle</p>
+    </section>
+
+    <header class="titre-page ra-tete">
+      <h1 data-i18n="ra.titre">Rapport d’activité</h1>
+      <p data-i18n="ra.intro">La synthèse de l’activité de la plateforme, prête à partager : chiffres clés comparés à la période précédente, ce qui va bien, ce qui doit être surveillé et quoi faire.</p>
+    </header>
+    <form class="ra-filtres" id="ra-filtres" aria-label="Période" data-i18n-attr="aria-label:ra.periode">
+      <fieldset class="ra-periodes"><legend data-i18n="ra.periode">Période</legend>
+        <label><input type="radio" name="ra-p" value="7"> <span data-i18n="ra.p7">7 jours</span></label>
+        <label><input type="radio" name="ra-p" value="30" checked> <span data-i18n="ra.p30">30 jours</span></label>
+        <label><input type="radio" name="ra-p" value="90"> <span data-i18n="ra.p90">90 jours</span></label>
+        <label><input type="radio" name="ra-p" value="perso"> <span data-i18n="ra.perso">Personnalisée</span></label>
+      </fieldset>
+      <div class="ra-dates" id="ra-dates" hidden>
+        <div class="champ"><label for="ra-du" data-i18n="ra.du">Du</label><input type="date" id="ra-du"></div>
+        <div class="champ"><label for="ra-au" data-i18n="ra.au">Au</label><input type="date" id="ra-au"></div>
+        <button type="submit" class="btn" data-i18n="ra.appliquer">Afficher</button>
+      </div>
+      <div class="ra-telecharger">
+        <button type="button" class="btn btn-primaire" id="ra-pdf"><i class="ph ph-file-pdf" aria-hidden="true"></i><span data-i18n="ra.pdf">Télécharger le rapport (PDF)</span></button>
+        <a class="btn" id="ra-csv" href="#"><i class="ph ph-download-simple" aria-hidden="true"></i><span>CSV</span></a>
+        <a class="btn" id="ra-json" href="#"><i class="ph ph-brackets-curly" aria-hidden="true"></i><span>JSON</span></a>
+      </div>
+    </form>
+    <p class="doux ra-periode-txt" id="ra-periode-txt" aria-live="polite"></p>
+    <p class="erreur" id="ra-erreur" role="alert" hidden></p>
+
+    <section aria-labelledby="ra-t-chiffres"><h2 id="ra-t-chiffres" class="ra-h2"><i class="ph-duotone ph-gauge" aria-hidden="true"></i><span data-i18n="ra.chiffres">L’essentiel en chiffres</span></h2>
+      <ul class="ra-kpis" id="ra-kpis"></ul></section>
+
+    <div class="ra-trois">
+      <section class="ag-bloc ra-bloc ra-cles" aria-labelledby="ra-t-cles"><h2 id="ra-t-cles"><i class="ph-duotone ph-check-circle" aria-hidden="true"></i><span data-i18n="ra.cles">Points clés</span></h2><ul id="ra-cles" class="ra-phrases"></ul></section>
+      <section class="ag-bloc ra-bloc ra-attention" aria-labelledby="ra-t-attention"><h2 id="ra-t-attention"><i class="ph-duotone ph-warning" aria-hidden="true"></i><span data-i18n="ra.attention">Points d’attention</span></h2><ul id="ra-attention" class="ra-phrases"></ul></section>
+      <section class="ag-bloc ra-bloc ra-recos" aria-labelledby="ra-t-recos"><h2 id="ra-t-recos"><i class="ph-duotone ph-list-checks" aria-hidden="true"></i><span data-i18n="ra.recos">Recommandations</span></h2><ol id="ra-recos" class="ra-phrases"></ol></section>
+    </div>
+
+    <section class="ag-bloc ra-bloc" aria-labelledby="ra-t-top"><h2 id="ra-t-top"><i class="ph-duotone ph-ranking" aria-hidden="true"></i><span data-i18n="ra.top">Services les plus utilisés</span></h2>
+      <p class="doux" data-i18n="ra.topD">Mesure anonyme de l’usage (demandes, rendez-vous, démarches commencées) — détail dans « Usage ».</p><div id="ra-top"></div></section>
+    <section class="ag-bloc ra-bloc" aria-labelledby="ra-t-services"><h2 id="ra-t-services"><i class="ph-duotone ph-buildings" aria-hidden="true"></i><span data-i18n="ra.services">Par service</span></h2><div id="ra-services"></div></section>
+    <section class="ag-bloc ra-bloc" aria-labelledby="ra-t-quartiers"><h2 id="ra-t-quartiers"><i class="ph-duotone ph-map-trifold" aria-hidden="true"></i><span data-i18n="ra.quartiers">Par quartier</span></h2><div id="ra-quartiers"></div></section>
+    <section class="ag-bloc ra-bloc" aria-labelledby="ra-t-comparaison"><h2 id="ra-t-comparaison"><i class="ph-duotone ph-arrows-left-right" aria-hidden="true"></i><span data-i18n="ra.comparaison">Comparaison avec la période précédente</span></h2><div id="ra-comparaison"></div></section>
+    <p class="doux ra-methode"><i class="ph ph-info" aria-hidden="true"></i> <span id="ra-methode"></span></p>
+  </main>
+
+  <script src="assets/js/v20-commun.js" defer></script>
+  <script src="assets/js/agent-rapport.js" defer></script>
+</body>
+</html>

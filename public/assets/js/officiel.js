@@ -53,12 +53,29 @@
       'cr.points': 'نقاط الاستقبال والشحن', 'cr.avancement': 'آخر المستجدات', 'cr.critique': 'حيّك متضرر', 'cr.info': 'للعلم: حيّك غير متضرر',
       'cr.zone': 'المنطقة المتضررة: {q}', 'cr.leger': 'نسخة خفيفة (توفر البطارية)', 'cr.t.panne-electrique': 'انقطاع الكهرباء', 'cr.t.crise-localisee': 'أزمة محلية' }
   });
+  /* vague 22 (F104) : tempête solaire (toute la ville) : compte à rebours « Perturbations attendues dans 12 min », durée prévue,
+     liste « Se préparer » (cases gardées sur l'appareil) et confirmation « Infos essentielles enregistrées » (assets/js/tempete.js) */
+  NT.i18n.ajouter({
+    fr: { 'cr.t.tempete-solaire': 'Tempête solaire', 'tp.ville': 'Toute la ville est concernée', 'tp.dans': 'Perturbations attendues dans {n} min', 'tp.dansS': 'Perturbations attendues dans {m} min {s} s', 'tp.enCours': 'Perturbations en cours depuis {h}',
+      'tp.duree': 'Durée prévue : environ {d} · fin prévue vers {h}', 'tp.preparer': 'Se préparer', 'tp.fait': '{n} sur {t} fait', 'tp.enregistrer': 'Enregistrer les infos essentielles maintenant', 'tp.rassemblement': 'Points de rassemblement',
+      'tp.p1': 'Infos essentielles enregistrées sur cet appareil', 'tp.p2': 'Numéros d’urgence notés sur papier : 15, 17, 18, 112', 'tp.p3': 'Téléphone et batterie de secours chargés', 'tp.p4': 'Radio locale repérée : Radio Dôme 98.4 FM', 'tp.p5': 'Point de rassemblement le plus proche repéré', 'tp.p6': 'Proches et voisins isolés prévenus' },
+    en: { 'cr.t.tempete-solaire': 'Solar storm', 'tp.ville': 'The whole city is concerned', 'tp.dans': 'Disruption expected in {n} min', 'tp.dansS': 'Disruption expected in {m} min {s} s', 'tp.enCours': 'Disruption in progress since {h}',
+      'tp.duree': 'Expected duration: about {d} · expected end around {h}', 'tp.preparer': 'Get ready', 'tp.fait': '{n} of {t} done', 'tp.enregistrer': 'Save the essential information now', 'tp.rassemblement': 'Gathering points',
+      'tp.p1': 'Essential information saved on this device', 'tp.p2': 'Emergency numbers written on paper: 15, 17, 18, 112', 'tp.p3': 'Phone and power bank charged', 'tp.p4': 'Local radio found: Radio Dôme 98.4 FM', 'tp.p5': 'Nearest gathering point located', 'tp.p6': 'Relatives and isolated neighbours told' },
+    es: { 'cr.t.tempete-solaire': 'Tormenta solar', 'tp.ville': 'Toda la ciudad está afectada', 'tp.dans': 'Perturbaciones previstas dentro de {n} min', 'tp.dansS': 'Perturbaciones previstas dentro de {m} min {s} s', 'tp.enCours': 'Perturbaciones en curso desde las {h}',
+      'tp.duree': 'Duración prevista: unas {d} · fin prevista hacia las {h}', 'tp.preparer': 'Prepararse', 'tp.fait': '{n} de {t} hecho', 'tp.enregistrer': 'Guardar ahora la información esencial', 'tp.rassemblement': 'Puntos de encuentro',
+      'tp.p1': 'Información esencial guardada en este dispositivo', 'tp.p2': 'Números de emergencia anotados en papel: 15, 17, 18, 112', 'tp.p3': 'Teléfono y batería externa cargados', 'tp.p4': 'Radio local localizada: Radio Dôme 98.4 FM', 'tp.p5': 'Punto de encuentro más cercano localizado', 'tp.p6': 'Familiares y vecinos aislados avisados' },
+    ar: { 'cr.t.tempete-solaire': 'عاصفة شمسية', 'tp.ville': 'المدينة كلها معنية', 'tp.dans': 'اضطرابات متوقعة خلال {n} د', 'tp.dansS': 'اضطرابات متوقعة خلال {m} د {s} ث', 'tp.enCours': 'اضطرابات جارية منذ {h}',
+      'tp.duree': 'المدة المتوقعة: حوالي {d} · النهاية المتوقعة حوالي {h}', 'tp.preparer': 'الاستعداد', 'tp.fait': 'تم {n} من {t}', 'tp.enregistrer': 'احفظ المعلومات الأساسية الآن', 'tp.rassemblement': 'نقاط التجمع',
+      'tp.p1': 'المعلومات الأساسية محفوظة على هذا الجهاز', 'tp.p2': 'أرقام الطوارئ مكتوبة على ورق: 15، 17، 18، 112', 'tp.p3': 'الهاتف والبطارية الاحتياطية مشحونان', 'tp.p4': 'تم تحديد الإذاعة المحلية: راديو القبة 98.4 FM', 'tp.p5': 'تم تحديد أقرب نقطة تجمع', 'tp.p6': 'تم إبلاغ الأقارب والجيران المعزولين' }
+  });
   const t = NT.t, { echap } = NT.ui;
-  const heureCrise = iso => { const l = NT.i18n.langue, h = new Date(iso).toLocaleTimeString(l === 'ar' ? 'ar' : l, { hour: '2-digit', minute: '2-digit' }); return l === 'fr' ? h.replace(':', ' h ') : h; };
+  const heureCrise =iso => { const l = NT.i18n.langue, h = new Date(iso).toLocaleTimeString(l === 'ar' ? 'ar' : l, { hour: '2-digit', minute: '2-digit' }); return l === 'fr' ? h.replace(':', ' h ') : h; };
   const majCrise = iso => { const n = Math.max(0, Math.round((Date.now() - Date.parse(iso)) / 60000)); return n < 1 ? t('cr.majMaint') : t('cr.maj', { n }); };
   const zoneCrise = m => m.crise.quartiers.map(q => t('off.quartier', { q: t('cm.q.' + q, null, q) })).join(', ');
   function blocCrise(m, mode) {   // mode : 'carte' (complet), 'compact', 'fenetre'
     if (!m.crise) return '';
+    if (m.crise.type === 'tempete-solaire') return blocTempete(m, mode);   // vague 22 (F104)
     const c = m.crise, u = NT.auth && NT.auth.utilisateur && NT.auth.utilisateur();
     const qui = m.critique ? `<strong>${echap(t('cr.critique'))}</strong>` : u && u.role === 'citoyen' ? echap(t('cr.info')) : echap(t('cr.zone', { q: zoneCrise(m) }));
     const temps = `<p class="cr-temps"><i class="ph-duotone ph-clock-countdown" aria-hidden="true"></i><span><strong>${echap(c.retablissement ? t('cr.ret', { h: heureCrise(c.retablissement) }) : t('cr.retInconnu'))}</strong>
@@ -71,6 +88,27 @@
     return tete + temps + (c.progression && mode !== 'fenetre' ? `<p class="cr-avancement"><strong>${echap(t('cr.avancement'))} :</strong> ${echap(c.progression)}</p>` : '') + actions + points
       + (mode !== 'fenetre' ? `<p class="cr-leger"><a href="/essentiel?lang=${echap(NT.i18n.langue)}"><i class="ph ph-battery-low" aria-hidden="true"></i>${echap(t('cr.leger'))}</a></p>` : '');
   }
+  /* vague 22 (F104) : bloc « tempête solaire » ; le compte à rebours et les cases sont animés par assets/js/tempete.js (data-tp-*) */
+  const dureeTp = min => { const h = Math.floor(min / 60), r = min % 60; return h ? (r ? `${h} h ${r} min` : `${h} h`) : `${r} min`; };
+  const compteTp = iso => { const ms = Date.parse(iso) - Date.now(); if (ms <= 0) return t('tp.enCours', { h: heureCrise(iso) }); const s = Math.ceil(ms / 1000);
+    return s < 600 ? t('tp.dansS', { m: Math.floor(s / 60), s: String(s % 60).padStart(2, '0') }) : t('tp.dans', { n: Math.ceil(s / 60) }); };
+  function blocTempete(m, mode) {
+    const c = m.crise, c2 = contenu(m);
+    const tete = `<p class="cr-statut cr-statut-critique"><i class="ph-duotone ph-sun-horizon" aria-hidden="true"></i><span>${echap(t('cr.t.tempete-solaire'))} · <strong>${echap(t('tp.ville'))}</strong></span></p>`;
+    const temps = `<p class="cr-temps tp-temps"><i class="ph-duotone ph-clock-countdown" aria-hidden="true"></i><span><strong data-tp-compte="${echap(c.perturbations)}">${echap(compteTp(c.perturbations))}</strong>
+      <small>${echap(t('tp.duree', { d: dureeTp(c.duree || 120), h: heureCrise(c.retablissement) }))}</small><small data-crise-maj="${echap(c.majLe)}">${echap(majCrise(c.majLe))}</small></span></p>`;
+    const paquet = `<p class="tp-paquet${NT.tempete && NT.tempete.enregistre(m.id) ? ' ok' : ''}" data-tp-paquet="${echap(m.id)}" role="status">${NT.tempete ? NT.tempete.paquetHtml(m.id) : ''}</p>`;
+    if (mode === 'compact') return tete + temps + paquet;
+    const actions = mode === 'fenetre' ? `<h3 class="off-quoi">${echap(t('off.quoi'))}</h3><ol class="off-actions" lang="${c2.langue}">${c2.actions.map(a => `<li>${echap(a)}</li>`).join('')}</ol>` : '';
+    const coches = NT.tempete ? NT.tempete.coches(m.id) : [];
+    const preparer = mode === 'fenetre' ? '' : `<details class="tp-preparer" open><summary><i class="ph-duotone ph-list-checks" aria-hidden="true"></i>${echap(t('tp.preparer'))} <span class="tp-fait" data-tp-fait="${echap(m.id)}">${echap(t('tp.fait', { n: coches.length, t: 6 }))}</span></summary>
+      <ul class="tp-liste">${[1, 2, 3, 4, 5, 6].map(i => `<li><label><input type="checkbox" data-tp-case="${echap(m.id)}" value="${i}"${coches.includes(i) ? ' checked' : ''}> ${echap(t('tp.p' + i))}</label></li>`).join('')}</ul>
+      <button type="button" class="btn" data-tp-enregistrer="${echap(m.id)}"><i class="ph ph-download-simple" aria-hidden="true"></i>${echap(t('tp.enregistrer'))}</button></details>`;
+    const points = (c.points || []).length && mode !== 'fenetre' ? `<h4 class="off-quoi"><i class="ph-duotone ph-map-pin" aria-hidden="true"></i>${echap(t('tp.rassemblement'))}</h4><ul class="cr-points">${c.points.map(p => `<li>${echap(p)}</li>`).join('')}</ul>` : '';
+    return tete + temps + paquet + (c.progression && mode !== 'fenetre' ? `<p class="cr-avancement"><strong>${echap(t('cr.avancement'))} :</strong> ${echap(c.progression)}</p>` : '') + actions + preparer + points
+      + (mode !== 'fenetre' ? `<p class="cr-leger"><a href="/essentiel?lang=${echap(NT.i18n.langue)}"><i class="ph ph-battery-low" aria-hidden="true"></i>${echap(t('cr.leger'))}</a></p>` : '');
+  }
+  NT.officielTempete = { compte: compteTp };
   // « il y a N min » avance tout seul (aucune requête : l'heure de mise à jour vient du dernier « pouls »)
   setInterval(() => { if (document.hidden) return; document.querySelectorAll('[data-crise-maj]').forEach(el => { el.textContent = majCrise(el.dataset.criseMaj); }); }, 30000);
   const lireL = (cle) => { try { return JSON.parse(localStorage.getItem('nt:' + cle)) || []; } catch (e) { return []; } };
@@ -201,7 +239,9 @@
     {
       if (!j) return;
       const avant = JSON.stringify(messages);
-      messages = (j.messages || []).slice().sort((a, b) => (b.critique ? 2 : b.crise ? 1 : 0) - (a.critique ? 2 : a.crise ? 1 : 0));   // vague 21 : crise critique d'abord
+      const rang = x => (x.crise && x.crise.type === 'tempete-solaire' ? 3 : x.critique ? 2 : x.crise ? 1 : 0);   // vague 22 : tempête (toute la ville) d'abord
+      messages = (j.messages || []).slice().sort((a, b) => rang(b) - rang(a) || String(a.debut).localeCompare(String(b.debut)));   // vague 21 : crise critique d'abord
+      if (NT.tempete) NT.tempete.verifier(messages);   // vague 22 (F104) : paquet essentiel rafraîchi tout de suite
       const nouveaux = connus ? messages.filter(m => !connus.has(m.id)) : [];
       connus = new Set(messages.map(m => m.id));
       if (JSON.stringify(messages) !== avant) rendre();
@@ -255,7 +295,7 @@
 
   let minuterie = null;
   const planifier = () => { clearTimeout(minuterie); minuterie = setTimeout(() => { if (!document.hidden) charger(); planifier(); }, NT.leger.actif() ? 120000 : NT.econome.delai(30000)); };
-  NT.officiel = { charger, messages: () => messages.slice() };
+  NT.officiel = { charger, messages: () => messages.slice(), rendre };   // vague 22 : rendre (tempete.js)
   // vague 19 (F95) : une seule lecture périodique pour toute la page (« pouls ») ; sinon (hors connexion, ancien script) comme avant
   if (NT.pouls && !NT.horsLigne) NT.pouls.ecouter('officiels', l => traiter({ messages: l }));
   else {

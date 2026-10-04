@@ -54,6 +54,10 @@ app.post('/api/demo/reinitialiser', (req, res, next) => { res.on('finish', () =>
 const seedVague20 = require('./src/seed-vague20');
 app.post('/api/demo/reinitialiser', (req, res, next) => { res.on('finish', () => { if (res.statusCode === 200) seedVague20.semer(); }); next(); });
 app.use(vague20.apresEcriture);   // vague 20 (F98) : demandes et rendez-vous comptés (compteurs anonymes) à leur enregistrement
+/* Vague 22 (F103, F104) : historique du rapport d'activité et tempête solaire de démonstration, rechargés après réinitialisation */
+const rapport = require('./src/modules/rapport');
+app.post('/api/demo/reinitialiser', (req, res, next) => { res.on('finish', () => { if (res.statusCode === 200) { rapport.semer(); require('./src/modules/crise').semerTempete(); } }); next(); });
+app.use(rapport.router);
 const crise = require('./src/modules/crise');   // vague 21 (F101) : crise de démonstration rechargée après réinitialisation
 app.post('/api/demo/reinitialiser', (req, res, next) => { res.on('finish', () => { if (res.statusCode === 200) crise.semer(); }); next(); });
 app.use(require('./src/modules/api'));
@@ -106,6 +110,8 @@ require('./src/modules/mobilite').planifier();   // vague 20 (F97) : abonnés pr
 integrite.planifier();   // vague 17 : contrôle d'intégrité 30 s après le démarrage puis toutes les 6 h
 sauvegardes.planifier();   // vague 17 : sauvegarde automatique quotidienne + rétention
 crise.semer();   // vague 21 (F101) : panne électrique en cours dans le secteur Nord (une seule fois)
+rapport.semer();   // vague 22 (F103) : 180 jours d'historique pour le rapport d'activité (une seule fois)
+crise.semerTempete();   // vague 22 (F104) : tempête solaire annoncée (perturbations dans 20 min), en plus de la panne du Nord (une seule fois)
 
 const port = Number(process.env.PORT) || 3000;
 charge.regler(app.listen(port, () => console.log(`Terra Nova sur http://localhost:${port}`)));

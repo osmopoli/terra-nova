@@ -1,0 +1,66 @@
+/* Terra Nova — vague 22 (F103) : « Rapport d'activité ». Jetons de theme.css ; évolutions en texte + icône (jamais la couleur seule) ;
+   mobile d'abord (360 px) ; sens arabe par propriétés logiques ; feuille d'impression : couverture (logo, date, période) puis une
+   synthèse lisible en noir sur blanc (« Enregistrer au format PDF »). */
+.ra-couverture{ display:none; }
+.ra-filtres{ display:flex; flex-wrap:wrap; gap:.75rem 1.25rem; align-items:flex-end; margin:0 0 .75rem; }
+.ra-periodes{ display:flex; flex-wrap:wrap; gap:.4rem; border:0; margin:0; padding:0; }
+.ra-periodes legend{ font-size:var(--t-s); font-weight:700; color:var(--brume); margin-bottom:.35rem; }
+.ra-periodes label{ display:inline-flex; align-items:center; gap:.35rem; min-height:2.75rem; padding:.3rem .85rem; border:1px solid var(--trait-2); border-radius:99px; background:var(--surface-2); cursor:pointer; }
+.ra-periodes label:has(input:checked){ border-color:var(--iono); box-shadow:inset 0 0 0 1px var(--iono); font-weight:700; }
+.ra-periodes input{ accent-color:var(--iono); }
+.ra-dates{ display:flex; flex-wrap:wrap; gap:.6rem; align-items:flex-end; }
+.ra-dates[hidden]{ display:none; }
+.ra-dates .champ{ margin:0; }
+.ra-telecharger{ display:flex; flex-wrap:wrap; gap:.5rem; margin-inline-start:auto; }
+.ra-periode-txt{ margin:0 0 1.1rem; }
+.ra-h2{ display:flex; gap:.5rem; align-items:center; font-size:var(--t-l); margin:0 0 .75rem; }
+.ra-h2 i, .ra-bloc h2 i{ color:var(--iono); }
+.ra-kpis{ list-style:none; margin:0 0 1.25rem; padding:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr)); gap:.75rem; }
+.ra-kpi{ display:grid; gap:.25rem; align-content:start; padding:1rem; border:1px solid var(--trait); border-radius:var(--r-l); background:var(--surface-1); box-shadow:var(--liseré); }
+.ra-kpi-l{ display:flex; gap:.4rem; align-items:center; font-size:var(--t-s); color:var(--brume); }
+.ra-kpi-l i{ font-size:1.25rem; color:var(--iono); }
+.ra-kpi strong{ font-size:var(--t-xl); font-variant-numeric:tabular-nums; line-height:1.15; }
+.ra-kpi-s{ font-size:var(--t-xs); color:var(--brume); }
+.ra-ev{ display:inline-flex; flex-wrap:wrap; gap:.25rem; align-items:center; font-size:var(--t-xs); font-weight:700; white-space:nowrap; }
+.ra-ev.bon{ color:var(--calme); }
+.ra-ev.mauvais{ color:var(--corail-clair); }
+.ra-ev-sens{ font-weight:600; }
+.ra-trois{ display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr)); margin:0 0 1.25rem; }
+.ra-trois .ag-bloc{ margin:0; }
+.ra-bloc h2{ display:flex; gap:.5rem; align-items:center; }
+.ra-phrases{ margin:0; padding-inline-start:1.2rem; display:grid; gap:.55rem; line-height:1.5; }
+.ra-cles{ border-inline-start:4px solid var(--calme); }
+.ra-attention{ border-inline-start:4px solid var(--soleil); }
+.ra-attention h2 i{ color:var(--soleil); }
+.ra-recos{ border-inline-start:4px solid var(--iono); }
+.ra-table td{ vertical-align:middle; }
+.ra-sous{ font-weight:800; text-decoration:underline dotted; text-underline-offset:3px; }
+.ra-methode{ display:flex; gap:.45rem; align-items:flex-start; font-size:var(--t-xs); margin-top:1.25rem; }
+
+/* ---------- Impression / PDF ---------- */
+@media print{
+  @page{ size:A4; margin:14mm 12mm; }
+  html, body{ background:var(--blanc)!important; color:var(--noir)!important; }
+  body *{ color:var(--noir)!important; box-shadow:none!important; text-shadow:none!important; }
+  .entete, .pied, .barre-pouce, .ra-filtres, .ra-periode-txt, .ariane, nav, .off-fenetre, .nt-toast, sl-alert, sl-drawer, .v19-note, .lien-evitement, .ra-tete p{ display:none!important; }
+  main.conteneur{ max-width:none!important; padding:0!important; margin:0!important; }
+  .ra-couverture{ display:flex!important; flex-direction:column; justify-content:center; align-items:center; text-align:center; min-height:250mm; break-after:page; page-break-after:always; }
+  .ra-couverture img{ inline-size:30mm; block-size:30mm; padding:3mm; margin-bottom:6mm; border-radius:50%; background:var(--nuit)!important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .ra-couv-ville{ font-size:16pt; font-weight:700; letter-spacing:.06em; margin:0; }
+  .ra .ra-couv-titre{ font-size:28pt; margin:4mm 0 8mm; }
+  .ra-couv-periode{ font-size:13pt; margin:0 0 3mm; max-width:150mm; }
+  .ra-couv-date, .ra-couv-note{ font-size:10pt; margin:1mm 0; }
+  .ra-tete h1{ font-size:18pt; margin:0 0 4mm; }
+  .ra-kpis{ grid-template-columns:repeat(3,1fr); gap:3mm; }
+  .ra-kpi, .ag-bloc, .table-defile{ background:none!important; border:1px solid var(--brume)!important; break-inside:avoid; }
+  .ra-trois{ grid-template-columns:1fr; }
+  .ra-bloc{ break-inside:avoid; }
+  .table-defile{ overflow:visible!important; }
+  .us-table{ font-size:7.5pt; inline-size:100%; }
+  .us-table th, .us-table td{ background:none!important; white-space:normal!important; padding:1mm 1.2mm!important; min-width:0!important; }
+  .us-table thead th{ border-bottom:1px solid var(--noir)!important; font-weight:700; }
+  .us-cell-barre{ min-width:0!important; }
+  .us-barre{ display:none!important; }
+  .ra-ev i, .ra-kpi-l i, .ra-bloc h2 i, .ra-h2 i{ display:none!important; }
+  a[href]::after{ content:none!important; }
+}

@@ -1,4 +1,4 @@
-/* Terra Nova — icônes Phosphor 2.1.1 (licence MIT) réduites aux 236 icônes utilisées. Fichier produit par tools/icones.js : ne pas modifier à la main. */
+/* Terra Nova — icônes Phosphor 2.1.1 (licence MIT) réduites aux 240 icônes utilisées. Fichier produit par tools/icones.js : ne pas modifier à la main. */
 @font-face{font-family:"Phosphor";src:url("https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/Phosphor.woff2") format("woff2"),url("https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/Phosphor.woff") format("woff");font-weight:normal;font-style:normal;font-display:block}
 @font-face{font-family:"Phosphor-Duotone";src:url("https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/Phosphor-Duotone.woff2") format("woff2"),url("https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/Phosphor-Duotone.woff") format("woff");font-weight:normal;font-style:normal;font-display:block}
 .ph,.ph-duotone{display:inline-block;width:1em;text-align:center;speak:never;font-style:normal;font-weight:normal;font-variant:normal;text-transform:none;line-height:1;letter-spacing:0;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
@@ -179,6 +179,8 @@ html.leger .ph-duotone:after,html.essentiel-dabord .ph-duotone:after{content:non
 .ph-duotone.ph-file-csv:before{content:"\eb1c";opacity:.2}.ph-duotone.ph-file-csv:after{content:"\eb1d";margin-inline-start:-1em}
 .ph.ph-file-lock:before{content:"\e95c"}
 .ph-duotone.ph-file-lock:before{content:"\e95c";opacity:.2}.ph-duotone.ph-file-lock:after{content:"\e95d";margin-inline-start:-1em}
+.ph.ph-file-pdf:before{content:"\e702"}
+.ph-duotone.ph-file-pdf:before{content:"\e702";opacity:.2}.ph-duotone.ph-file-pdf:after{content:"\e703";margin-inline-start:-1em}
 .ph.ph-file-text:before{content:"\e23a"}
 .ph-duotone.ph-file-text:before{content:"\e23a";opacity:.2}.ph-duotone.ph-file-text:after{content:"\e23b";margin-inline-start:-1em}
 .ph.ph-file-zip:before{content:"\e958"}
@@ -383,6 +385,8 @@ html.leger .ph-duotone:after,html.essentiel-dabord .ph-duotone:after{content:non
 .ph-duotone.ph-siren:before{content:"\e9b8";opacity:.2}.ph-duotone.ph-siren:after{content:"\e9b9";margin-inline-start:-1em}
 .ph.ph-sliders-horizontal:before{content:"\e434"}
 .ph-duotone.ph-sliders-horizontal:before{content:"\e434";opacity:.2}.ph-duotone.ph-sliders-horizontal:after{content:"\e435";margin-inline-start:-1em}
+.ph.ph-smiley:before{content:"\e436"}
+.ph-duotone.ph-smiley:before{content:"\e436";opacity:.2}.ph-duotone.ph-smiley:after{content:"\e437";margin-inline-start:-1em}
 .ph.ph-snowflake:before{content:"\e5aa"}
 .ph-duotone.ph-snowflake:before{content:"\e5aa";opacity:.2}.ph-duotone.ph-snowflake:after{content:"\e5ab";margin-inline-start:-1em}
 .ph.ph-speaker-high:before{content:"\e44a"}
@@ -403,6 +407,10 @@ html.leger .ph-duotone:after,html.essentiel-dabord .ph-duotone:after{content:non
 .ph-duotone.ph-student:before{content:"\e73e";opacity:.2}.ph-duotone.ph-student:after{content:"\e73f";margin-inline-start:-1em}
 .ph.ph-suitcase-rolling:before{content:"\e9b0"}
 .ph-duotone.ph-suitcase-rolling:before{content:"\e9b0";opacity:.2}.ph-duotone.ph-suitcase-rolling:after{content:"\e9b1";margin-inline-start:-1em}
+.ph.ph-sun-horizon:before{content:"\e5b6"}
+.ph-duotone.ph-sun-horizon:before{content:"\e5b6";opacity:.2}.ph-duotone.ph-sun-horizon:after{content:"\e5b7";margin-inline-start:-1em}
+.ph.ph-target:before{content:"\e47c"}
+.ph-duotone.ph-target:before{content:"\e47c";opacity:.2}.ph-duotone.ph-target:after{content:"\e47d";margin-inline-start:-1em}
 .ph.ph-text-aa:before{content:"\e6ee"}
 .ph-duotone.ph-text-aa:before{content:"\e6ee";opacity:.2}.ph-duotone.ph-text-aa:after{content:"\e6ef";margin-inline-start:-1em}
 .ph.ph-thermometer-hot:before{content:"\e5ca"}

@@ -199,6 +199,9 @@
   if (u && u.role === 'admin') liens.push(['securite', 'agent-securite.html']);   // vague 13 (F69, F70) : centre de sécurité
   if (u && u.role === 'admin') liens.push(['plateforme', 'agent-plateforme.html']);   // vague 15 (F77, F78) : état de la plateforme
   if (u && u.role !== 'citoyen') liens.push(['exports', 'agent-exports.html']);   // vague 17 (F88) : exports des données de suivi
+  /* Vague 22 (F103) : rapport d'activité synthétique pour les responsables (clé = page, pour aria-current) */
+  NT.i18n.ajouter({ fr: { 'nav.agent-rapport': 'Rapport d’activité' }, en: { 'nav.agent-rapport': 'Activity report' }, es: { 'nav.agent-rapport': 'Informe de actividad' }, ar: { 'nav.agent-rapport': 'تقرير النشاط' } });
+  if (u && u.role !== 'citoyen') liens.splice(2, 0, ['agent-rapport', 'agent-rapport.html']);
   if (u && u.role === 'admin') liens.push(['sauvegardes', 'admin-sauvegardes.html']);   // vague 17 (F87) : sauvegardes vérifiées
   /* Vague 18 (F89, F91) : questions sans réponse de l'assistant d'orientation, langage clair */
   NT.i18n.ajouter({ fr: { 'nav.orientation': 'Orientation' }, en: { 'nav.orientation': 'Guidance' }, es: { 'nav.orientation': 'Orientación' }, ar: { 'nav.orientation': 'التوجيه' } });
@@ -678,4 +681,6 @@
   if (PAGES_ORIENTATION.includes(page) || ui.param('assistant') === '1') chargerOrientation();
   // Vague 20 (F97-F100) : lignes interrompues dans « Alertes », usage anonyme, offres des partenaires, menus des agents
   const scriptVague20 = document.createElement('script'); scriptVague20.src = 'assets/js/vague20.js'; document.head.append(scriptVague20);
+  // Vague 22 (F103, F104) : tempête solaire (paquet essentiel, compte à rebours, « Se préparer »), menu « Rapport d'activité » des agents
+  const scriptVague22 = document.createElement('script'); scriptVague22.src = 'assets/js/tempete.js'; document.head.append(scriptVague22);
 })();
