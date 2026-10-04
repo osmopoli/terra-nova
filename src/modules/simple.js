@@ -116,7 +116,8 @@ function page(req, res, { l, titre, corps, complete, prive }) {
   const ici = req.path;
   const langues = Object.entries(LANGUES).map(([c, n]) => (c === l ? `<strong lang="${c}">${n}</strong>`
     : `<a href="${e(ici)}?${e(new URLSearchParams({ ...req.query, lang: c }).toString())}" lang="${c}" hreflang="${c}">${n}</a>`)).join(' · ');
-  const nav = [['/simple', t.accueil], ['/simple/services', t.services], ['/simple/suivi', t.suivi]]
+  const ESS = { fr: 'Infos essentielles', en: 'Essential information', es: 'Información esencial', ar: 'معلومات أساسية' };   // vague 19 (F94)
+  const nav = [['/simple', t.accueil], ['/essentiel', ESS[l]], ['/simple/services', t.services], ['/simple/suivi', t.suivi]]
     .map(([h, n]) => `<a href="${h}?lang=${l}"${ici === h ? ' aria-current="page"' : ''}>${e(n)}</a>`).join('');
   const rendu = (poids) => `<!doctype html>
 <html lang="${l}" dir="${l === 'ar' ? 'rtl' : 'ltr'}">

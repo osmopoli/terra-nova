@@ -52,6 +52,15 @@ node tools/charge.js --clients 40 --duree 10 --meme-ip                          
 ```
 Résultats mesurés (avant / après) dans [`docs/RENDU-JURY.md`](docs/RENDU-JURY.md#mesures-de-tenue-en-charge-f77-f78). `--ecritures 0.005` ajoute des dépôts de demandes : à ne pas utiliser sur la base de production.
 
+## Mesurer les pages (vague 19)
+```bash
+node tools/mesure-pages.js --url http://localhost:3000                 # toutes les pages, cache vide, profil qui y a accès
+node tools/mesure-pages.js --mobile --lent --pages index,services       # 360 px, 3G lente émulée
+node tools/mesure-pages.js --pages index,espace --observer 65          # appels à l'API pendant 65 s (mises à jour en direct)
+node tools/icones.js                                                    # après l'ajout d'une icône Phosphor : régénère assets/css/icones.css
+```
+Edge ou Chrome sans fenêtre, piloté par le protocole DevTools (aucune dépendance) : requêtes, Ko transférés, JS / CSS chargés et part utilisée, doublons, appels à l'API après chargement, LCP et décalage de mise en page (CLS). Résultats avant / après dans [`docs/RENDU-JURY.md`](docs/RENDU-JURY.md#mesures-avant--après-f95-f96) et sur la page « Sobriété numérique » (`data/mesures-vague19.json`).
+
 ## Comptes de démonstration (créés au premier démarrage)
 
 | Profil | E-mail | Mot de passe |
@@ -63,6 +72,7 @@ Résultats mesurés (avant / après) dans [`docs/RENDU-JURY.md`](docs/RENDU-JURY
 Autres habitants : `marc@`, `amina@`, `jean@nova.test` (mot de passe `Citoyen2026`). Vague 13 : agent habilité aux données réservées `social@nova.test` (mot de passe `AGENT_PASSWORD`) ; nouvel arrivant sans e-mail `TN-100001` (ou `06 39 48 21 77`) / code `482915`.
 Comptes d'équipe supplémentaires possibles via `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `AGENT_EMAIL` / `AGENT_PASSWORD` dans `.env`. En production, ces
 mêmes `ADMIN_PASSWORD` / `AGENT_PASSWORD` remplacent les mots de passe des comptes de démo admin et agents (voir Déploiement HODI).
+Vague 19 : aucun compte nouveau ; l'incident simulé se lance avec `admin@nova.test` (page « Plateforme »), la vue habitant se vérifie avec `citoyen@nova.test` dans une fenêtre privée. Numéros d'urgence, contacts utiles et consignes : clé `vague19` de `data/demo-seed.json` (chargés une seule fois, collection `essentiel`).
 Réinitialiser les données de démonstration : connecté en admin, `POST /api/demo/reinitialiser` (ou console : `NT.store.reset()`).
 
 ## Architecture
@@ -78,6 +88,7 @@ Réinitialiser les données de démonstration : connecté en admin, `POST /api/d
 - Vague 15 : `src/charge.js` (mesure de la charge, délestage 503 + `Retry-After` du non essentiel, file équitable par IP, délai maximal, mémoïsation des lectures chaudes invalidée à chaque écriture, mode dégradé forcé par l'admin, F77/F78), `src/modules/priorites.js` (priorité des dossiers calculée et corrigeable, F80), `src/seed-vague15.js` ; navigateur : `assets/js/resilience.js` (avis calme, recul exponentiel, brouillons, nouveaux essais), `sw.js` (copie hors connexion, réseau d'abord), `assets/js/sujets.js` (tri par sujet, F79), `assets/js/agent-priorites.js`, `assets/js/agent-plateforme.js` ; `tools/charge.js` (test de charge).
 - Vague 17 : `src/modules/integrite.js` (registre d’audit scellé SHA-256 + HMAC, contrôles de cohérence et réparations, F85), `anomalies.js` (habitudes, score de risque, mot de passe redemandé, ralentissement, sessions fermées, « C’était moi », F85), `src/incidents.js`, `urgences.js` (urgence médicale, escalade, F86), `sauvegardes.js` (VACUUM INTO, test de restauration, F87), `exports.js` (exports pseudonymisés, modèles, F88), `src/seed-vague17.js` ; navigateur : `veille.js` (balise « Alertes » : urgences, activité inhabituelle, fenêtre de confirmation du mot de passe), `urgence-medicale.js`, `agent-urgences.js`, `agent-incidents.js`, `admin-sauvegardes.js`, `agent-exports.js`, `assets/css/vague17.css`.
 - Vague 18 : moteur d’orientation hors ligne et déterministe, sans IA générative ni appel réseau (`src/orientation/texte.js` normalisation, racines, fautes ; `base.js` familles de mots FR/EN/ES/AR, besoins, réponses ; `moteur.js` BM25 + familles + expressions, confiance, question de précision ; `clair.js` contenus en langage clair et contrôle des éléments obligatoires), `src/modules/orientation.js` (`GET /api/recherche`, `POST /api/orientation`, questions sans réponse, `/api/langage-clair`, `/api/explications`, D10, F89-F92) ; navigateur : `orientation.js` (bouton Rechercher, fenêtre recherche + assistant), `recherche.js`, `orientation-demande.js`, `langage-clair.js`, `agent-orientation.js`, `assets/css/orientation.css` ; banc d’essai `node tools/test-orientation.js` (précision top-1 / top-3).
+- Vague 19 : `src/continuite.js` (paquet essentiel, dernière copie bonne en mémoire et dans `instantane-essentiel.json` à côté de la base, lectures essentielles servies avec `stale: true` pendant une panne de la base au lieu d'une erreur 500, incident simulé par l'administrateur, `GET /api/essentiel`, `/api/essentiel/moi`, `/api/pouls`, `/api/continuite`, F93-F95), `src/etag-api.js` (ETag sur le JSON de l'API, 304 si inchangé, F95), `src/modules/essentiel.js` (page `/essentiel` produite par le serveur, sans script nécessaire, F94) ; navigateur : `continuite.js` (indicateur en ligne / hors connexion, boîte d'envoi IndexedDB rejouée avec la clé d'idempotence, « pouls », l'essentiel d'abord), `essentiel.js`, `agent-continuite.js`, `sw.js` (paquet essentiel hors connexion), `assets/css/icones.css` (icônes utilisées seulement), `assets/css/essentiel.css` ; outils `tools/mesure-pages.js`, `tools/icones.js`.
 - `src/webcup.js` — interroge l'API toutes les `POLL_INTERVAL_SECONDS` (dédoublonnage sur `request_code`).
 - `public/assets/js/store.js` — client du serveur, même interface pour toutes les pages (`NT.store`, `NT.auth`, `NT.demandes`…).
 - `data/demo-seed.json` — données de démonstration (dates relatives).
@@ -121,3 +132,8 @@ Le détail « où et comment le montrer au jury » est dans [`docs/RENDU-JURY.md
 
 | Trouver le bon service : recherche globale tolérante, assistant d’orientation (vague 18) | D10, F91, F92 | en-tête (toutes les pages), `index`, `recherche`, `aide`, `demande`, `agent-orientation` |
 | Langage clair, « Expliquer plus simplement » (vague 18) | F89, F90 | `services` (fiche), `demande`, `donnees`, `agent-orientation` |
+
+| Hors connexion et panne : l'essentiel reste compréhensible et récupérable (vague 19) | F93 | toutes (pied de page, balise « Alertes », boîte d'envoi), `sw.js`, `agent-plateforme#continuite` |
+| Infos essentielles toujours disponibles (vague 19) | F94 | `/essentiel` (pied de page, `/simple`, note d'incident, page de secours hors connexion) |
+| Moins de ressources et de requêtes inutiles, mesurées (vague 19) | F95 | toutes, `tools/mesure-pages.js`, `sobriete` |
+| Mobile et connexion limitée : l'essentiel d'abord (vague 19) | F96 | toutes (« Afficher plus »), `index`, `espace`, `carte`, `transports`, `aide`, `services` |

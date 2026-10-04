@@ -33,7 +33,7 @@
   NT.leger.actif = () => html.classList.contains('leger');
   // image décorative : chargée seulement hors mode léger (appelée juste après la balise <img data-srcset>)
   NT.leger.image = img => {
-    if (!img || NT.leger.actif()) return;
+    if (!img || NT.leger.actif() || html.classList.contains('essentiel-dabord')) return;   // vague 19 (F96) : ni en connexion lente ni « l'essentiel d'abord »
     if (img.dataset.srcset) img.srcset = img.dataset.srcset;
     if (img.dataset.src) img.src = img.dataset.src;
   };
@@ -50,6 +50,19 @@
   NT.econome = { coeurs, memoire, raisons, auto: prefs.econome === undefined && raisons.length > 0 };
   if (prefs.econome === true || NT.econome.auto) html.classList.add('econome');
   NT.econome.actif = () => html.classList.contains('econome');
+  /* Vague 19 (F96) : « l'essentiel d'abord » — même mécanisme que le mode connexion lente (F59), pas un mode de plus.
+     Petit écran, réseau modeste (3G ou moins, débit < 1,5 Mbit/s), économiseur de données ou mode connexion lente :
+     la page montre d'abord l'action principale, l'état et les informations clés ; les sections secondaires (data-secondaire)
+     sont repliées derrière « Afficher plus », la carte ne se charge qu'au toucher (assets/js/continuite.js, theme.css). */
+  const raisonsEss = [];
+  if (window.matchMedia && matchMedia('(max-width: 640px)').matches) raisonsEss.push('ecran');
+  if (/(^|-)(2g|3g)$/.test(reseau.effectiveType || '') || (reseau.downlink > 0 && reseau.downlink < 1.5)) raisonsEss.push('reseau');
+  if (reseau.saveData) raisonsEss.push('economie');
+  if (html.classList.contains('leger')) raisonsEss.push('leger');
+  NT.essentiel = { raisons: raisonsEss, actif: () => html.classList.contains('essentiel-dabord') };
+  // vague 19 (F96) : le contenu s'affiche d'un bloc quand l'en-tête et les scripts de la page ont fini (theme.css), sans glisser
+  document.addEventListener('DOMContentLoaded', () => document.body.classList.add('affiche'));
+  if (prefs.essentielDabord === true || (raisonsEss.length && prefs.essentielDabord !== false)) html.classList.add('essentiel-dabord');
   /* Vague 15 (F77, F78) : forte affluence. Le serveur indique son niveau de charge dans l'en-tête X-Charge
      (normal / forte / critique) et répond 503 + Retry-After aux fonctions non essentielles quand il est surchargé.
      Ici : état partagé par toutes les pages. Les mises à jour en direct ralentissent (recul exponentiel + gigue pour que
@@ -84,6 +97,26 @@
       return fetchOrigine(entree, init).then(r => { if (api) charge.observer(r.status, r.headers.get('X-Charge')); return r; },
         err => { if (api) charge.observer(0); throw err; });
     };
+    /* Vague 19 (F95) : lectures répétées de l'API sans retélécharger une réponse inchangée. L'empreinte (ETag) de la dernière
+       réponse est renvoyée (If-None-Match) ; le serveur répond 304 sans corps et la page reçoit la copie déjà connue
+       (en-tête X-Non-Modifie: 1 pour ne pas redessiner). Copies en mémoire de la page seulement. */
+    const etags = new Map();
+    const fetchSuivant = window.fetch;
+    window.fetch = (entree, init) => {
+      let u = null;
+      try { if (typeof entree === 'string') u = new URL(entree, location.href); } catch (e) { /* adresse illisible */ }
+      const methode = String((init && init.method) || 'GET').toUpperCase();
+      if (!u || u.origin !== location.origin || !u.pathname.startsWith('/api/') || methode !== 'GET') return fetchSuivant(entree, init);
+      const cle = u.pathname + u.search, connu = etags.get(cle);
+      const i = Object.assign({}, init);
+      if (connu) { i.headers = new Headers((init && init.headers) || {}); i.headers.set('If-None-Match', connu.etag); }
+      return fetchSuivant(entree, i).then(r => {
+        if (r.status === 304 && connu) return new Response(connu.corps, { status: 200, headers: { 'Content-Type': connu.type, 'X-Non-Modifie': '1' } });
+        const etag = r.headers.get('ETag');
+        if (r.ok && etag) r.clone().text().then(t => { if (t.length < 400000) { etags.set(cle, { etag, corps: t, type: r.headers.get('Content-Type') || 'application/json' }); if (etags.size > 40) etags.delete(etags.keys().next().value); } }).catch(() => {});
+        return r;
+      });
+    };
   }
   // Mesure concrète : tâches longues (> 50 ms) qui bloquent l'appareil pendant le chargement (Chrome, Edge)
   NT.econome.taches = { n: 0, ms: 0 };
@@ -106,15 +139,27 @@
     x.open(methode, url, false);
     x.setRequestHeader('Content-Type', 'application/json');
     try { x.send(corps === undefined ? null : JSON.stringify(corps)); }
-    catch (e) { charge.observer(0); if (methode !== 'GET') charge.echecsEcriture++; return { statut: 0, donnees: { erreur: 'Serveur injoignable. Vérifiez votre connexion.' } }; }
+    catch (e) {
+      charge.observer(0); if (methode !== 'GET') charge.echecsEcriture++;
+      // vague 19 (F93) : hors connexion, une demande ou un message part dans la boîte d'envoi (même clé d'idempotence, aucun doublon au renvoi)
+      const att = methode !== 'GET' && NT.boite && NT.boite.intercepter({ methode, url, corps, entetes: x._tnEntetes || {} });
+      return att || { statut: 0, donnees: { erreur: 'Serveur injoignable. Vérifiez votre connexion.' } };
+    }
     let donnees = null;
     try { donnees = x.responseText ? JSON.parse(x.responseText) : null; } catch (e) { /* réponse non JSON */ }
+    if (x.status === 503 && donnees && donnees.incident && methode !== 'GET' && NT.boite) {   // vague 19 : incident technique côté serveur → même boîte d'envoi
+      const att = NT.boite.intercepter({ methode, url, corps, entetes: x._tnEntetes || {} });
+      if (att) { charge.observer(503); return att; }
+    }
     charge.observer(x.status, x.getResponseHeader('X-Charge'));   // F77, F78
     if (x.status === 428 && donnees && donnees.reauth && NT.reauth) setTimeout(() => NT.reauth({ auto: true, methode, url }), 0);   // vague 17 (F85) : confirmation du mot de passe demandée
     if (methode !== 'GET') { if (x.status >= 200 && x.status < 300) charge.ecrituresOk++; else if (x.status === 0 || x.status >= 500 || x.status === 429) charge.echecsEcriture++; }
     return { statut: x.status, donnees };
   }
   NT.api = api;
+  // vague 19 (F93) : en-têtes posés sur chaque requête (Idempotency-Key, jeton de formulaire…), pour pouvoir la rejouer à l'identique
+  const poserEntete = XMLHttpRequest.prototype.setRequestHeader;
+  XMLHttpRequest.prototype.setRequestHeader = function (nom, valeur) { (this._tnEntetes = this._tnEntetes || {})[nom] = valeur; return poserEntete.apply(this, arguments); };
 
   // État en mémoire, rechargé depuis le serveur
   let etat = {};
@@ -125,6 +170,8 @@
     if (r.statut === 503 || r.statut === 0) r = api('GET', '/api/etat');   // un nouvel essai immédiat (file d'attente pleine, réseau qui flanche)
     if (r.statut === 200 && r.donnees) {
       etat = r.donnees;
+      // vague 19 (F93) : incident technique côté serveur → copie de secours datée (stale), affichée comme des données hors connexion
+      if (etat.stale) { NT.horsLigne = { statut: 200, depuis: etat.majLe || '', incident: true }; return; }
       NT.horsLigne = null;
       ecrire('dernierEtat', { date: maintenant(), services: etat.services || [], annonces: (etat.annonces || []).filter(a => a.active) });
       return;
@@ -147,6 +194,7 @@
   }
   function refus(r) {
     const msg = (r.donnees && r.donnees.erreur) || 'Action impossible.';
+    if (r.statut === 202 && r.donnees && r.donnees.enAttente) return null;   // vague 19 (F93) : gardé dans la boîte d'envoi, message calme affiché par continuite.js
     console.warn('[Terra Nova]', msg);
     // F77, F78 : serveur surchargé ou injoignable → message calme, brouillon gardé, nouvel essai automatique (resilience.js)
     if ((r.statut === 0 || r.statut === 429 || r.statut >= 502) && charge.reessayer) { charge.reessayer(r); return null; }
@@ -219,7 +267,9 @@
     deconnecter() {
       api('POST', '/api/auth/deconnecter');
       // poste partagé : la copie hors connexion (Service Worker) des pages personnelles est purgée, sans bloquer la déconnexion
-      try { if (window.caches) caches.keys().then(l => Promise.all(l.filter(k => k.startsWith('terra-nova-')).map(k => caches.delete(k)))).catch(() => {}); } catch (e) { /* stockage bloqué */ }
+      // vague 19 (F93) : seule la copie personnelle (résumé de mes demandes) est purgée ; le paquet public (pages, alertes, numéros d'urgence) reste disponible hors connexion
+      try { if (window.caches) caches.keys().then(l => Promise.all(l.filter(k => k.startsWith('terra-nova-perso')).map(k => caches.delete(k)))).catch(() => {}); } catch (e) { /* stockage bloqué */ }
+      if (NT.boite) NT.boite.viderPersonnel();
       recharger();
     },
     verifierMotDePasse(u, mdp) { return !!(api('POST', '/api/auth/verifier', { motdepasse: mdp || '' }).donnees || {}).ok; },
@@ -378,19 +428,21 @@
   document.head.append(feuille);
   const scriptResilience = Object.assign(document.createElement('script'), { src: 'assets/js/resilience.js' });
   document.head.append(scriptResilience);
+  // Vague 19 (F93, F95, F96) : hors connexion (indicateur, boîte d'envoi, paquet essentiel), « pouls » groupé, l'essentiel d'abord
+  document.head.append(Object.assign(document.createElement('script'), { src: 'assets/js/continuite.js' }));
   if (NT.i18n && NT.i18n.ajouter) NT.i18n.ajouter({
     fr: { 'nav.plateforme': 'Plateforme', 'secours.titre': 'Le serveur ne répond pas pour le moment', 'secours.texte': 'Votre espace revient dès que possible. Rien n’est perdu : vos brouillons restent sur cet appareil. L’essentiel en attendant :',
       'secours.urgences': 'Urgences : SAMU 15 · numéro européen 112', 'secours.alertes': 'Dernières alertes connues', 'secours.aucune': 'Aucune alerte en cours lors de la dernière connexion.', 'secours.date': 'Informations enregistrées le {d}.',
-      'secours.simple': 'Version simple et rapide', 'secours.reessayer': 'Réessayer', 'secours.accueil': 'Accueil' },
+      'secours.simple': 'Version simple et rapide', 'secours.essentiel': 'Infos essentielles', 'secours.reessayer': 'Réessayer', 'secours.accueil': 'Accueil' },
     en: { 'nav.plateforme': 'Platform', 'secours.titre': 'The server is not responding right now', 'secours.texte': 'Your space will be back as soon as possible. Nothing is lost: your drafts stay on this device. The essentials meanwhile:',
       'secours.urgences': 'Emergencies: ambulance 15 · European number 112', 'secours.alertes': 'Last known alerts', 'secours.aucune': 'No alert in progress at the last connection.', 'secours.date': 'Information saved on {d}.',
-      'secours.simple': 'Simple, fast version', 'secours.reessayer': 'Try again', 'secours.accueil': 'Home' },
+      'secours.simple': 'Simple, fast version', 'secours.essentiel': 'Essential information', 'secours.reessayer': 'Try again', 'secours.accueil': 'Home' },
     es: { 'nav.plateforme': 'Plataforma', 'secours.titre': 'El servidor no responde por ahora', 'secours.texte': 'Su espacio volverá lo antes posible. No se pierde nada: sus borradores quedan en este dispositivo. Lo esencial mientras tanto:',
       'secours.urgences': 'Urgencias: SAMU 15 · número europeo 112', 'secours.alertes': 'Últimas alertas conocidas', 'secours.aucune': 'Ninguna alerta en curso en la última conexión.', 'secours.date': 'Información guardada el {d}.',
-      'secours.simple': 'Versión sencilla y rápida', 'secours.reessayer': 'Reintentar', 'secours.accueil': 'Inicio' },
+      'secours.simple': 'Versión sencilla y rápida', 'secours.essentiel': 'Información esencial', 'secours.reessayer': 'Reintentar', 'secours.accueil': 'Inicio' },
     ar: { 'nav.plateforme': 'المنصة', 'secours.titre': 'الخادم لا يستجيب حالياً', 'secours.texte': 'سيعود فضاؤك في أقرب وقت. لن يضيع شيء: تبقى مسوداتك على هذا الجهاز. الأساسي في الأثناء:',
       'secours.urgences': 'الطوارئ: الإسعاف 15 · الرقم الأوروبي 112', 'secours.alertes': 'آخر التنبيهات المعروفة', 'secours.aucune': 'لا يوجد تنبيه جارٍ عند آخر اتصال.', 'secours.date': 'معلومات محفوظة بتاريخ {d}.',
-      'secours.simple': 'النسخة المبسطة والسريعة', 'secours.reessayer': 'إعادة المحاولة', 'secours.accueil': 'الرئيسية' }
+      'secours.simple': 'النسخة المبسطة والسريعة', 'secours.essentiel': 'معلومات أساسية', 'secours.reessayer': 'إعادة المحاولة', 'secours.accueil': 'الرئيسية' }
   });
   charge.pageSecours = () => {
     const t = (k, v) => NT.t(k, v);
@@ -406,6 +458,7 @@
       ${alertes.length ? `<ul>${alertes.map(a => `<li><strong>${echap(a.titre)}</strong> — ${echap(a.zone || '')}${a.resume ? '<br>' + echap(a.resume) : ''}</li>`).join('')}</ul>` : `<p class="doux">${echap(t('secours.aucune'))}</p>`}
       ${depuis ? `<p class="doux">${echap(t('secours.date', { d: depuis }))}</p>` : ''}
       <p class="ligne"><button type="button" class="btn" id="secours-reessayer"><i class="ph ph-arrow-clockwise" aria-hidden="true"></i>${echap(t('secours.reessayer'))}</button>
+        <a class="btn btn-primaire" href="/essentiel?lang=${echap(NT.i18n.langue)}"><i class="ph ph-first-aid-kit" aria-hidden="true"></i>${echap(t('secours.essentiel'))}</a>
         <a class="btn" href="/simple?lang=${echap(NT.i18n.langue)}"><i class="ph ph-article" aria-hidden="true"></i>${echap(t('secours.simple'))}</a>
         <a class="btn" href="index.html">${echap(t('secours.accueil'))}</a></p></section>`;
     main.querySelector('#secours-reessayer').addEventListener('click', () => location.reload());

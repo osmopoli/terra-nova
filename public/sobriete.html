@@ -10,8 +10,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
   <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
-  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/icones.css"><!-- vague 19 (F95) : icônes utilisées seulement (tools/icones.js) -->
   <link rel="stylesheet" href="assets/css/theme.css">
   <link rel="stylesheet" href="assets/css/sobriete.css">
   <script src="assets/js/i18n.js"></script>
@@ -63,6 +62,26 @@
       <p class="doux" id="resume-pages"></p>
     </section>
 
+    <!-- Vague 19 (F95) : avant / après mesurés dans un vrai navigateur (tools/mesure-pages.js → data/mesures-vague19.json) -->
+    <section class="bloc-sob" aria-labelledby="t-v19" id="mesures-v19" hidden>
+      <h2 id="t-v19" data-i18n="sob.v19">Avant et après l’allègement de la vague 19</h2>
+      <p data-i18n="sob.v19D">Mesuré dans un vrai navigateur (Edge sans fenêtre), cache vide, pour chaque page : nombre de fichiers demandés et données transférées.</p>
+      <p class="doux" id="v19-resume"></p>
+      <div class="table-defile">
+        <table class="table-sob">
+          <caption data-i18n="sob.v19Cap">Requêtes et kilo-octets transférés par page, avant et après, sur ordinateur</caption>
+          <thead><tr>
+            <th scope="col" data-i18n="sob.tPage">Page</th>
+            <th scope="col" data-i18n="sob.v19ReqAv">Requêtes avant</th>
+            <th scope="col" data-i18n="sob.v19ReqAp">Requêtes après</th>
+            <th scope="col" data-i18n="sob.v19KoAv">Ko avant</th>
+            <th scope="col" data-i18n="sob.v19KoAp">Ko après</th>
+          </tr></thead>
+          <tbody id="corps-v19"></tbody>
+        </table>
+      </div>
+    </section>
+
     <section class="bloc-sob panneau" aria-labelledby="t-visite">
       <h2 id="t-visite" data-i18n="sob.visite">Mesuré sur cette visite</h2>
       <p data-i18n="sob.visiteD">Ces chiffres viennent de votre navigateur, pour la page que vous lisez en ce moment.</p>
@@ -85,6 +104,8 @@
         <li><i class="ph-duotone ph-text-aa" aria-hidden="true"></i><span data-i18n="sob.f5">Polices chargées sans bloquer l’affichage, et pas chargées du tout en mode léger.</span></li>
         <li><i class="ph-duotone ph-cell-signal-low" aria-hidden="true"></i><span data-i18n="sob.f6">« Mode connexion lente » : ni images décoratives ni animations, polices du système, mises à jour en direct toutes les 2 minutes au lieu de 30 secondes. Il est proposé automatiquement quand le navigateur signale une connexion lente ou l’économie de données.</span></li>
         <li><i class="ph-duotone ph-pause-circle" aria-hidden="true"></i><span data-i18n="sob.f7">Mises à jour en direct mises en pause quand l’onglet est caché.</span></li>
+        <li><i class="ph-duotone ph-stack-minus" aria-hidden="true"></i><span data-i18n="sob.f9">Vague 19 : fenêtres et tiroirs chargés seulement quand on les ouvre, icônes réduites à celles utilisées, assistant de recherche chargé à la demande, une seule mise à jour en direct par page au lieu de trois, et réponse « rien n’a changé » (304) quand les données sont identiques.</span></li>
+        <li><i class="ph-duotone ph-device-mobile" aria-hidden="true"></i><span data-i18n="sob.f10">Sur téléphone ou connexion lente, l’essentiel d’abord : sections secondaires repliées (« Afficher plus »), image décorative et carte chargées seulement si on les demande, aucun décalage de la page pendant le chargement.</span></li>
         <li><i class="ph-duotone ph-arrows-in-line-vertical" aria-hidden="true"></i><span data-i18n="sob.f8">Réponses du serveur (données des pages) compressées, et fichiers inchangés jamais renvoyés : le navigateur réutilise sa copie.</span></li>
       </ul>
     </section>

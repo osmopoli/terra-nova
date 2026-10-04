@@ -36,7 +36,7 @@ const rang = (n) => NIVEAUX.indexOf(n);
 /* ---------- Classement des chemins ---------- */
 // Toujours servis (jamais délestés, passent devant dans la file d'attente)
 const ESSENTIEL = [
-  /^\/api\/(health|charge)(\/|$)/, /^\/api\/auth\//, /^\/api\/etat$/, /^\/api\/officiels(\/[^/]+\/compris)?$/,
+  /^\/api\/(health|charge)(\/|$)/, /^\/api\/auth\//, /^\/api\/etat$/, /^\/api\/(essentiel(\/moi)?|pouls|continuite(\/simuler)?)$/,   // vague 19 (F93-F95) /^\/api\/officiels(\/[^/]+\/compris)?$/,
   /^\/api\/services\//, /^\/api\/notifications\//, /^\/api\/accueil\/(code|inscrire)$/, /^\/api\/securite\/etat$/,
   /^\/api\/urgences(\/|-points|$)/, /^\/api\/veille$/, /^\/api\/activite(\/|$)/,   // vague 17 (F86) : urgences médicales et veille, jamais délestées
   /^\/api\/recherche$/, /^\/api\/orientation(\/suggestions)?$/, /^\/api\/langage-clair(\/[^/]+)?$/   // vague 18 (D10, F89, F91, F92) : trouver le bon service, jamais délesté
@@ -189,7 +189,8 @@ const MEMO = [
   { test: (r) => r.path === '/api/demandes/publiques', ttl: 10000 },
   { test: (r) => r.path === '/api/associations', ttl: 30000 },
   { test: (r) => r.path === '/api/avis-services/resume', ttl: 30000 },
-  { test: (r) => r.path === '/api/charge', ttl: 1000, public: true }
+  { test: (r) => r.path === '/api/charge', ttl: 1000, public: true },
+  { test: (r) => r.path === '/api/pouls', ttl: 10000 }   // vague 19 (F95) : lecture périodique groupée
 ];
 const memoire = new Map();
 function memo(req, res, next) {
@@ -207,6 +208,8 @@ function memo(req, res, next) {
   const e = memoire.get(cle);
   if (e && e.v === v && Date.now() - e.t < regle.ttl) {
     m.cacheHits++;
+    /* Vague 19 (F95) : réponse mémorisée inchangée pour ce navigateur → 304 sans corps (ETag posé par src/etag-api.js) */
+    if (e.etag) { res.setHeader('ETag', e.etag); res.setHeader('X-Cache', 'HIT'); if (require('./etag-api').correspond(req.headers['if-none-match'], e.etag)) { res.statusCode = 304; return res.end(); } }
     res.setHeader('Content-Type', e.type);
     if (e.enc) { res.setHeader('Content-Encoding', e.enc); res.setHeader('Vary', 'Accept-Encoding'); }
     res.setHeader('X-Cache', 'HIT');
@@ -221,7 +224,7 @@ function memo(req, res, next) {
     if (res.statusCode === 200 && corps != null && !res.locals.deleste) {
       const buf = Buffer.isBuffer(corps) ? corps : Buffer.from(typeof corps === 'string' ? corps : JSON.stringify(corps));
       memoire.delete(cle);
-      memoire.set(cle, { v, t: Date.now(), corps: buf, enc: res.getHeader('Content-Encoding') || '', type: res.getHeader('Content-Type') || 'application/json; charset=utf-8' });
+      memoire.set(cle, { v, t: Date.now(), corps: buf, enc: res.getHeader('Content-Encoding') || '', etag: res.getHeader('ETag') || '', type: res.getHeader('Content-Type') || 'application/json; charset=utf-8' });
       if (memoire.size > 1500) memoire.delete(memoire.keys().next().value);
     }
     return send.call(this, corps);

@@ -366,7 +366,7 @@
 
   /* ---------- En-tête : bouton « Rechercher » (ouvre la fenêtre ; « / » ou Ctrl + K au clavier) ---------- */
   const outils = document.querySelector('.entete .outils-entete');
-  if (outils && !outils.querySelector('.or-entete')) {
+  if (outils && !document.querySelector('.entete .or-entete')) {   // vague 19 : d'habitude déjà posé par ui.js (orientation.js chargé à la demande)
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'or-entete'; b.id = 'nt-btn-recherche'; b.title = t('or.boutonTitre');
     b.setAttribute('aria-haspopup', 'dialog');

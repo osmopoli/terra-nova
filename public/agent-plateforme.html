@@ -10,14 +10,14 @@
   <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
   <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
-  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/icones.css"><!-- vague 19 (F95) : icônes utilisées seulement (tools/icones.js) -->
   <link rel="stylesheet" href="assets/css/theme.css">
   <link rel="stylesheet" href="assets/css/securite.css">
   <link rel="stylesheet" href="assets/css/plateforme.css">
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/store.js"></script>
   <script src="assets/js/agent-plateforme.js"></script>
+  <script src="assets/js/agent-continuite.js" defer></script>
   <script src="assets/js/ui.js" defer></script>
 </head>
 <body data-page="plateforme" data-ariane="nav.agent|agent.html;pf.titre" data-roles="agent,admin">
@@ -70,6 +70,25 @@
         <button type="submit" class="btn btn-primaire" id="pf-appliquer"><i class="ph ph-sliders-horizontal" aria-hidden="true"></i><span data-i18n="pf.appliquer">Appliquer</span></button>
       </form>
       <p class="doux" id="pf-lecture" hidden data-i18n="pf.lecture">Seul l’administrateur peut forcer le mode dégradé.</p>
+    </section>
+
+    <!-- Vague 19 (F93) : continuité de service — copie de secours des informations essentielles, incident simulé (assets/js/agent-continuite.js) -->
+    <section class="bloc-sec" id="continuite" aria-labelledby="ct-h">
+      <h2 id="ct-h" data-i18n="ct.titre">Continuité de service (panne de la base ou d’une dépendance)</h2>
+      <p class="doux" data-i18n="ct.aide">Si la base de données ou une dépendance tombe en panne, les lectures essentielles (alertes, messages officiels, état des services, numéros d’urgence, contacts, page « Infos essentielles », version simple) servent la dernière copie bonne avec son heure, au lieu d’une erreur. Les autres actions répondent calmement « réessayez dans quelques minutes » et les envois des habitants attendent sur leur appareil.</p>
+      <div class="panneau" id="ct-etat" aria-live="polite"></div>
+      <form class="panneau" id="ct-form" novalidate data-brouillon="non" hidden>
+        <h3 data-i18n="ct.simuler">Simuler un incident (démonstration)</h3>
+        <p class="doux" data-i18n="ct.simulerAide">Pendant la simulation, chaque visite d’un habitant ou d’un visiteur voit la base « en panne » (comme une vraie panne, sa session ne peut plus être lue). Vos requêtes d’administrateur continuent normalement : ouvrez une fenêtre privée pour voir ce que voient les habitants. Retour automatique à la fin de la durée ; action inscrite au journal.</p>
+        <div class="filtres-sec">
+          <div class="champ"><label for="ct-minutes" data-i18n="pf.duree">Durée</label>
+            <select id="ct-minutes"><option value="2">2 min</option><option value="5" selected>5 min</option><option value="10">10 min</option><option value="30">30 min</option></select></div>
+          <div class="champ" style="flex:1"><label for="ct-motif" data-i18n="pf.motif">Motif (journal)</label><input id="ct-motif" type="text" maxlength="200" autocomplete="off"></div>
+        </div>
+        <p class="erreur" id="ct-erreur" role="alert" hidden></p>
+        <div class="ligne"><button type="submit" class="btn btn-primaire" id="ct-lancer"><i class="ph ph-plugs" aria-hidden="true"></i><span data-i18n="ct.lancer">Simuler une panne de la base</span></button>
+          <button type="button" class="btn" id="ct-arreter" hidden><i class="ph ph-plugs-connected" aria-hidden="true"></i><span data-i18n="ct.arreter">Arrêter la simulation</span></button></div>
+      </form>
     </section>
 
     <section class="bloc-sec" aria-labelledby="pf-test-h">

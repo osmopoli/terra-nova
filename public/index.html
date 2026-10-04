@@ -10,8 +10,7 @@
   <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
   <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
-  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/icones.css"><!-- vague 19 (F95) : icônes utilisées seulement (tools/icones.js) -->
   <link rel="stylesheet" href="assets/css/theme.css">
   <link rel="stylesheet" href="assets/css/accueil.css">
   <script src="assets/js/i18n.js"></script>
@@ -94,7 +93,7 @@
       </section>
 
       <!-- F28 / F32 : les services les plus utilisés en premier -->
-      <section class="section" aria-labelledby="titre-populaires" data-revele>
+      <section class="section" aria-labelledby="titre-populaires" data-revele data-secondaire>
         <div class="titre-section">
           <div><h2 id="titre-populaires" data-i18n="acc.populaires">Les services les plus demandés</h2>
             <p data-i18n="acc.populairesD">Ce que les habitants cherchent le plus en ce moment.</p></div>
@@ -105,13 +104,13 @@
 
       <!-- D06 + D12 -->
       <section class="section deux-colonnes" data-revele>
-        <div>
+        <div data-secondaire>
           <div class="titre-section"><div><h2 id="titre-journal" data-i18n="acc.journal">Dernières nouvelles de la ville</h2>
             <p data-i18n="acc.journalD">Annonces de la mairie, changements de service et informations pratiques.</p></div></div>
           <ol class="journal" id="journal" aria-labelledby="titre-journal"></ol>
           <a class="btn" href="annonces.html" data-i18n="acc.toutes">Toutes les annonces</a>
         </div>
-        <aside class="arrivee" aria-labelledby="titre-arrivee" id="bloc-arrivee">
+        <aside class="arrivee" aria-labelledby="titre-arrivee" id="bloc-arrivee" data-secondaire>
           <span class="arrivee-dome" aria-hidden="true"></span>
           <h2 id="titre-arrivee" data-i18n="acc.arrivee">Vous venez d’arriver ?</h2>
           <p class="doux" data-i18n="acc.arriveeD">Trois étapes pour vous installer.</p>

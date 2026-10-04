@@ -27,3 +27,14 @@
 .pf-modes input{ margin-top:.35rem; width:1.1rem; height:1.1rem; accent-color:var(--iono); flex:none; }
 .pf-code{ background:var(--verre); border:1px solid var(--trait); border-radius:var(--r); padding:.8rem 1rem; overflow-x:auto; }
 .pf-code code{ font-family:var(--mono); font-size:.88rem; }
+
+/* Vague 19 (F93) : continuité de service */
+.ct-liste{ display:grid; gap:.6rem; margin:0 0 .75rem; }
+.ct-liste > div{ display:grid; grid-template-columns:minmax(10rem, 14rem) 1fr; gap:.25rem 1rem; }
+.ct-liste dt{ color:var(--brume); font-weight:600; }
+.ct-liste dd{ margin:0; overflow-wrap:anywhere; }
+.ct-ok{ color:var(--iono); }
+.ct-alerte{ color:var(--soleil); }
+#ct-form{ margin-top:1rem; }
+#ct-form h3{ margin:0 0 .4rem; font-size:1.05rem; }
+@media (max-width:560px){ .ct-liste > div{ grid-template-columns:1fr; } }
