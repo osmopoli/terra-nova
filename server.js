@@ -27,6 +27,10 @@ app.get('/api/health', (req, res) => {
 });
 app.use('/api', require('./src/statique').jsonCompresse);   // F58 : réponses JSON compressées
 app.use(bouclier.apres);   // vague 13 (F69, F70) : validation des entrées, filtrage des champs réservés, journal des refus
+/* Vague 18 (D10, F89-F92) : recherche globale, assistant d'orientation, langage clair. Monté avant la mémoïsation de la vague 15 :
+   un message à l'assistant (POST) n'est pas une écriture et ne doit pas vider le cache des autres lectures. */
+const orientation = require('./src/modules/orientation');
+app.use(orientation);
 app.use(require('./src/modules/formulaires').garde);   // vague 16 : formulaires protégés contre les robots (F81), envois sans doublon (F82)
 app.use(charge.memo);   // vague 15 : lectures chaudes (GET /api/etat…) mémorisées par profil, invalidées à chaque écriture
 app.use(charge.router);   // vague 15 : GET /api/charge (public), /api/charge/details, POST /api/charge/forcer (admin)
@@ -75,6 +79,7 @@ seedVague15.semer();   // vague 15 : données de démonstration ajoutées une se
 comptesEquipe();
 startPolling();
 seedVague17.semer();   // vague 17 : modèles d'export, urgence médicale traitée (une seule fois)
+orientation.semer();   // vague 18 (F89) : versions en langage clair, ajoutées une seule fois, jamais écrasées
 integrite.planifier();   // vague 17 : contrôle d'intégrité 30 s après le démarrage puis toutes les 6 h
 sauvegardes.planifier();   // vague 17 : sauvegarde automatique quotidienne + rétention
 

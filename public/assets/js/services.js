@@ -262,7 +262,7 @@
     const recherche = !!(norm(champ.value) || categorie);
     racine.innerHTML = liste.length
       ? (recherche && !prio.length ? bloc(t('sv.resultatsTitre'), '', autres, 'sv-autres', 'sv-h-res') : bloc(t('sv.prioTitre'), t('sv.prioIntro'), prio, 'sv-prio', 'sv-h-prio') + bloc(t('sv.autresTitre'), '', autres, 'sv-autres', 'sv-h-autres'))
-      : `<p class="vide"><i class="ph-duotone ph-magnifying-glass" aria-hidden="true"></i><br>${echap(t('sv.nb0'))}</p>`;
+      : `<p class="vide"><i class="ph-duotone ph-magnifying-glass" aria-hidden="true"></i><br>${echap(t('sv.nb0'))}</p>${NT.orientation ? NT.orientation.repliVide(champ.value) : ''}`;   // vague 18 (D10) : jamais d'impasse
     effacer.hidden = !champ.value;
     const msg = liste.length === 0 ? t('sv.nb0') : liste.length === 1 ? t('sv.nb1') : t('sv.nbN', { n: liste.length });
     compteur.textContent = msg;
@@ -298,6 +298,7 @@
         ${degrade(s) ? actionsAlternatives(s) : demande + rdv + lienDedie}
         ${LIEU_CARTE[s.id] ? `<a class="btn" href="carte.html?lieu=${encodeURIComponent(LIEU_CARTE[s.id])}"><i class="ph ph-map-pin" aria-hidden="true"></i>${echap(t('sv.carte'))}</a>` : ''}
       </div>
+      <div data-clair="service:${echap(s.id)}"></div><!-- vague 18 (F89, F90) : texte officiel / langage clair -->
       ${NT.assos ? NT.assos.blocService(s.id) : ''}
       <div class="av-zone" data-av-service="${echap(s.id)}"></div>
       ${NT.auth.aRole('admin') ? `<p style="margin-top:1rem"><a href="agent-alertes.html?desactiver=${encodeURIComponent(s.id)}#t-services"><i class="ph ph-${etatCode(s) === 'desactive' ? 'play-circle' : 'prohibit'}" aria-hidden="true"></i> ${echap(t(etatCode(s) === 'desactive' ? 'sv.adminRea' : 'sv.adminDes'))}</a></p>` : ''}`;
@@ -312,6 +313,7 @@
     tiroir.setAttribute('label', choisir(s.nom));
     tiroir.innerHTML = detailHtml(s);
     if (NT.avisService) NT.avisService.blocService(tiroir.querySelector('.av-zone'), s.id);   // F76 : note moyenne, commentaires, « Donner mon avis »
+    if (NT.langageClair) NT.langageClair.monter(tiroir);   // vague 18 (F89, F90)
     tiroir.show();
   }
   function selonAncre() {
