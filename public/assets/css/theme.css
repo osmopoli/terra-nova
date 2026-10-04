@@ -274,7 +274,14 @@ input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea{
   transition:border-color 150ms ease, box-shadow 150ms ease; }
 input::placeholder,textarea::placeholder{ color:oklch(0.62 0.025 200); }
 textarea{ min-height:8rem; resize:vertical; }
-input:focus,select:focus,textarea:focus{ outline:2px solid var(--iono); outline-offset:2px; border-color:var(--iono); box-shadow:0 0 0 5px oklch(0.7040 0.1400 182.5 / .12); }
+input:not([type=checkbox]):not([type=radio]):not([type=range]):focus,select:focus,textarea:focus{ outline:2px solid var(--iono); outline-offset:2px; border-color:var(--iono); box-shadow:0 0 0 5px oklch(0.7040 0.1400 182.5 / .12); }
+/* Boutons radio : aucun anneau au clic souris (la règle :focus ci-dessus ne vise plus que les champs de saisie).
+   Chromium force border-radius:0 sur un radio natif : son outline ou son box-shadow est donc toujours carré.
+   Au clavier (:focus-visible seulement), le focus est porté par l'étiquette de l'option, comme pour les choix en cartes
+   (.choix-par, .choix, .av-note-choix, .dm-choix) : l'anneau suit l'arrondi de la carte. :where() = spécificité nulle,
+   les règles de composant gardent la main sur l'arrondi et l'écart. */
+label > input[type=radio]:focus-visible{ outline:none; }
+:where(label:has(> input[type=radio]:focus-visible)){ outline:3px solid var(--iono); outline-offset:2px; border-radius:var(--r-s); }
 [aria-invalid="true"]{ border-color:var(--corail)!important; }
 fieldset{ border:1px solid var(--trait); border-radius:var(--r); padding:1rem; margin:0 0 1rem; }
 legend{ font-weight:700; padding:0 .4rem; }
