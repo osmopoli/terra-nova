@@ -51,8 +51,9 @@ function creer(type, acteur) {
   const t0 = Date.now();
   db.exec(`VACUUM INTO '${cible.replace(/'/g, "''")}'`);
   try { fs.chmodSync(cible, 0o600); } catch { /* Windows */ }
-  const b = new DatabaseSync(cible, { readOnly: true });
-  let comptes; try { comptes = compter(b); } finally { b.close(); }
+  // les sessions ouvertes (jetons de connexion valables plusieurs jours) ne sortent jamais du serveur : la copie n'en garde aucune
+  const b = new DatabaseSync(cible);
+  let comptes; try { b.exec('DELETE FROM sessions'); comptes = compter(b); } finally { b.close(); }
   const f = { fichier: nom, cree: d.toISOString(), type, par: acteur ? `${acteur.prenom} ${acteur.nom}` : 'Sauvegarde automatique', sha256: sha256Sync(cible),
     taille: fs.statSync(cible).size, dureeMs: Date.now() - t0, ...comptes, dernierTest: null };
   ecrireFiche(nom, f);

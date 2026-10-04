@@ -113,7 +113,8 @@ function regleCreation(col, req, doc) {
     case 'demandes': {
       const n = docs.prochainNumero('demandes', 1040);
       // F52 : les soutiens ne s'ajoutent que par /api/demandes/:id/soutenir ; l'auteur est fixé par la session
-      return Object.assign(sans(doc, 'statut', 'agent', 'historique', 'anonymise', 'soutiens', 'userId'), {
+      // vague 17 (F86) : l'urgence médicale est repérée par le serveur (src/modules/urgences.js), jamais fournie par le navigateur
+      return Object.assign(sans(doc, 'statut', 'agent', 'historique', 'anonymise', 'soutiens', 'userId', 'urgenceMedicale', 'urgenceVitale'), {
         id: `NT-${n}`, cree: maintenant(), userId: u ? u.id : null, statut: 'recue', agent: '',
         historique: [{ date: maintenant(), statut: 'recue', note: 'Demande enregistrée et transmise au service concerné.', par: 'Système' }]
       });

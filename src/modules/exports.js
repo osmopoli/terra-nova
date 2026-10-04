@@ -176,7 +176,10 @@ router.get('/api/exports/definitions', personnel, (req, res) => {
 router.post('/api/exports/apercu', personnel, (req, res) => {
   const p = lire(req);
   if (p.erreur) return res.status(p.code || 400).json({ erreur: p.erreur });
+  // l'aperçu nominatif montre déjà noms, e-mails et téléphones : même règle que le fichier (mot de passe confirmé, audit)
+  if (p.nominatif && !require('./anomalies').exigerConfirmation(req, res)) return;
   const r = lignes(p);
+  if (p.nominatif) audit(req.user, { categorie: 'donnees', action: 'Aperçu nominatif de données', objetId: p.cleJeu, objetLibelle: p.jeu.l.fr, apres: `${Math.min(8, r.lignes.length)} ligne(s) sur ${r.lignes.length}`, motif: `colonnes : ${p.cles.join(', ')}` });
   res.json({ total: r.lignes.length, colonnes: r.colonnes, lignes: r.lignes.slice(0, 8), pseudonymise: !p.nominatif });
 });
 router.post('/api/exports/fichier', personnel, (req, res) => {
