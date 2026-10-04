@@ -495,3 +495,22 @@ sl-drawer::part(panel){ background:oklch(0.1650 0.0200 203); border-inline-start
 sl-drawer::part(header), sl-dialog::part(header){ border-bottom:1px solid var(--trait); }
 sl-drawer::part(title), sl-dialog::part(title){ font-weight:650; letter-spacing:-.015em; font-size:1.125rem; }
 sl-dialog::part(panel){ background:oklch(0.1750 0.0210 203); border:1px solid oklch(1 0 0 / .08); border-radius:var(--r-xl); box-shadow:var(--ombre-flottante), var(--liseré); }
+
+/* Tiroir des notifications : croix pour supprimer */
+.notifs{ list-style:none; margin:0; padding:0; }
+.notif{ padding:.85rem 0; border-bottom:1px solid var(--trait); overflow:hidden; transition:opacity 180ms ease, transform 220ms var(--ease-out), height 240ms var(--ease-out), padding 240ms var(--ease-out); }
+.notif-lue{ opacity:.72; }
+.notif-sort{ opacity:0; transform:translateX(1.25rem); padding-block:0; border-bottom-color:transparent; }
+.notif-tete{ display:flex; align-items:flex-start; gap:.6rem; }
+.notif-tete strong{ flex:1; min-width:0; }
+.notif-quand{ font-size:.8rem; white-space:nowrap; padding-top:.15rem; }
+.notif-point{ display:inline-block; width:.5rem; height:.5rem; margin-inline-end:.45rem; border-radius:50%; background:var(--iono); vertical-align:.12em; }
+.notif-texte{ margin:.3rem 0; padding-inline-end:2.25rem; }
+.notif-x{ all:unset; box-sizing:border-box; flex:none; display:grid; place-items:center; width:2.25rem; height:2.25rem; margin:-.45rem -.35rem 0 0; border-radius:50%; color:var(--brume); cursor:pointer; transition:color 150ms ease, background-color 150ms ease, transform 120ms var(--ease-out); }
+.notif-x i{ font-size:1rem; }
+@media (hover:hover) and (pointer:fine){ .notif-x:hover{ color:var(--givre); background:oklch(1 0 0 / .07); } }
+.notif-x:active{ transform:scale(.92); }
+.notif-x:focus-visible{ outline:2px solid var(--iono); outline-offset:1px; }
+[dir="rtl"] .notif-x{ margin:-.45rem 0 0 -.35rem; }
+[dir="rtl"] .notif-sort{ transform:translateX(-1.25rem); }
+@media (prefers-reduced-motion:reduce){ .notif,.notif-x{ transition:none; } }

@@ -384,6 +384,14 @@ router.get('/api/indicateurs', A.exigerRole('agent', 'admin'), (req, res) => {
   });
 });
 
+// Supprimer une de mes notifications (la croix du tiroir) : seulement les siennes
+router.delete('/api/notifications/:id', A.exigerRole(...A.ROLES), (req, res) => {
+  const n = docs.get('notifications', req.params.id);
+  if (!n || n.userId !== req.user.id) return erreur(res, 404, 'Notification introuvable.');
+  docs.suppr('notifications', n.id);
+  res.json({ ok: true });
+});
+
 // Marquer toutes mes notifications comme lues
 router.post('/api/notifications/tout-lire', A.exigerRole(...A.ROLES), (req, res) => {
   for (const n of docs.tous('notifications').filter((x) => x.userId === req.user.id && !x.lu)) docs.patch('notifications', n.id, { lu: true });

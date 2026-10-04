@@ -254,6 +254,11 @@
     pour: userId => copie(liste('notifications').filter(n => n.userId === userId)).sort((a, b) => b.cree.localeCompare(a.cree)),
     nonLues: userId => liste('notifications').filter(n => n.userId === userId && !n.lu).length,
     lire(id) { store.update('notifications', id, { lu: true }); },
+    supprimer(id) {
+      const r = api('DELETE', '/api/notifications/' + encodeURIComponent(id));
+      if (r.statut === 200 || r.statut === 404) { etat.notifications = liste('notifications').filter(n => n.id !== id); return true; }
+      refus(r); return false;
+    },
     toutLire() { api('POST', '/api/notifications/tout-lire'); liste('notifications').forEach(n => (n.lu = true)); }
   };
   NT.notif = notif;
