@@ -182,3 +182,11 @@ tr.ag-action > th{ border-inline-start:3px solid var(--soleil); }
 .ao-trad{ margin:1rem 0; }
 .ao-trad summary{ cursor:pointer; font-weight:700; min-height:2.4rem; display:flex; align-items:center; }
 .ao-trad fieldset{ margin-top:.8rem; }
+
+/* vague 21 (F101) : Centre de crise (agent-crise.js) */
+.cz-quartiers{ display:flex; flex-wrap:wrap; gap:.4rem .9rem; }
+.cz-quartiers label{ display:inline-flex; align-items:center; gap:.4rem; min-height:2.75rem; font-weight:400; }
+.cz-maj{ margin-top:.5rem; }
+.cz-maj > summary{ display:inline-flex; list-style:none; }
+.cz-maj > summary::-webkit-details-marker{ display:none; }
+.cz-maj[open] > summary{ margin-bottom:.6rem; }

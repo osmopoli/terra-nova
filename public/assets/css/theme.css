@@ -468,6 +468,29 @@ html.econome .liste-sou > li,html.econome .liste-activite > li,html.econome .lis
 @keyframes balise-signale{ 0%{ box-shadow:0 0 0 0 oklch(0.7040 0.1400 182.5 / .7); border-color:var(--iono); } 70%{ box-shadow:0 0 0 12px oklch(0.7040 0.1400 182.5 / 0); border-color:var(--iono); } 100%{ box-shadow:0 0 0 0 transparent; } }
 @media (prefers-reduced-motion:reduce){ .off-fenetre, .off-fenetre.sortie{ transform:none!important; } .off-fenetre-temps{ display:none; } }
 html.leger .off-fenetre-temps, html.econome .off-fenetre-temps{ display:none; }
+/* vague 21 (F101) : crise localisée (panne électrique…) — critique pour le quartier touché, information pour les autres.
+   Même carte et même fenêtre que le Haut Conseil : un liseré plus marqué, l'heure de rétablissement en évidence, aucune animation de plus. */
+.off-carte.off-critique{ border-color:var(--danger); border-inline-start-width:6px; }
+.off-carte.off-crise:not(.off-critique){ border-inline-start-color:var(--calme); }
+.cr-statut{ display:flex; align-items:center; gap:.45rem; margin:0 0 .5rem; font-size:var(--t-s); color:var(--brume); }
+.cr-statut i{ font-size:1.25rem; color:var(--calme); flex:none; }
+.cr-statut-critique{ color:var(--givre); }
+.cr-statut-critique i{ color:var(--danger); }
+.cr-temps{ display:flex; align-items:flex-start; gap:.55rem; margin:0 0 .7rem; padding:.6rem .75rem; border-radius:var(--r-s); background:var(--surface-2); box-shadow:var(--liseré); }
+.cr-temps i{ font-size:1.5rem; color:var(--iono); flex:none; margin-top:.1rem; }
+.cr-temps strong{ display:block; font-size:1.05rem; color:var(--givre); }
+.cr-temps small{ display:block; font-size:var(--t-xs); color:var(--brume); }
+.cr-avancement{ margin:0 0 .6rem; font-size:var(--t-s); }
+.cr-points{ margin:0 0 .4rem; padding-inline-start:1.3rem; font-size:var(--t-s); }
+.cr-points li{ margin:.2rem 0; }
+.cr-leger{ margin:.5rem 0 0; font-size:var(--t-xs); }
+.cr-leger a{ display:inline-flex; align-items:center; gap:.3rem; }
+.off-fenetre.off-critique{ border-color:var(--danger); max-height:calc(100vh - 7rem); overflow-y:auto; }
+.off-fenetre.off-critique::before{ background:linear-gradient(90deg, transparent, var(--danger), transparent); }
+.off-fenetre.off-critique .off-fenetre-sceau{ color:var(--danger); border-color:var(--danger); }
+.off-fenetre .off-actions{ margin:0 0 1rem; font-size:var(--t-s); }
+.off-fenetre .off-quoi{ font-size:var(--t-s); margin:.2rem 0 .3rem; }
+@media (max-width:720px){ .off-fenetre.off-critique{ max-height:calc(100vh - 9rem); } }
 
 /* ---------- F76 : avis sur un service (étoiles, reçu COM-xxxx) ---------- */
 .etoiles{ display:inline-flex; gap:.1rem; color:var(--iono); font-size:1rem; vertical-align:middle; }

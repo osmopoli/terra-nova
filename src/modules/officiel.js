@@ -19,12 +19,22 @@ function etatDe(m, t = Date.now()) {
   return 'actif';
 }
 // Un message concerne-t-il ce profil ? Visiteur : tous les messages (le quartier est indiqué) ; habitant : toute la ville + son quartier
-const concerne = (m, u) => m.audience === 'Toute la ville' || !u || u.role !== 'citoyen' || u.quartier === m.audience;
+// vague 21 (F101) : une crise localisée est montrée à tous (critique pour le quartier touché, information pour les autres)
+const concerne = (m, u) => !!m.crise || m.audience === 'Toute la ville' || !u || u.role !== 'citoyen' || u.quartier === m.audience;
 
 function vuePublique(m, u) {
   return { id: m.id, titre: m.titre, message: m.message, actions: m.actions, audience: m.audience, debut: m.debut, fin: m.fin,
     traductions: m.traductions || {}, signataire: m.signataire, compris: !!u && (m.accuses || []).some((a) => a.userId === u.id),
-    monQuartier: !!u && u.role === 'citoyen' && m.audience === u.quartier };
+    monQuartier: !!u && u.role === 'citoyen' && (m.audience === u.quartier || (!!m.crise && m.crise.quartiers.includes(u.quartier))),
+    ...vueCrise(m, u) };   // vague 21 (F101)
+}
+/* vague 21 (F101) : crise localisée (src/modules/crise.js) : rétablissement estimé, dernière mise à jour, points d'accueil ;
+   critique (fenêtre sans fermeture automatique) seulement pour les habitants du quartier touché */
+function vueCrise(m, u) {
+  if (!m.crise) return {};
+  const c = m.crise;
+  return { crise: { type: c.type, quartiers: c.quartiers, retablissement: c.retablissement, majLe: c.majLe, progression: c.progression, points: c.points || [], statut: c.statut },
+    critique: !!u && u.role === 'citoyen' && c.quartiers.includes(u.quartier) };
 }
 const actifsPour = (u) => docs.tous(COL).filter((m) => etatDe(m) === 'actif' && concerne(m, u)).sort((a, b) => b.debut.localeCompare(a.debut));
 
@@ -107,3 +117,4 @@ router.post('/api/officiels/:id/compris', (req, res) => {
 
 module.exports = router;
 module.exports.actifsPour = actifsPour;
+module.exports.vuePublique = vuePublique;   // vague 21 : même vue pour le « pouls » (src/continuite.js)

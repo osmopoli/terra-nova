@@ -181,8 +181,9 @@ router.get('/simple', (req, res) => {
   // F73 : message officiel du Haut Conseil en cours, en tête (traduit si l'agent l'a traduit)
   const OFF = { fr: ['Message officiel du Haut Conseil de la Ville', 'Ce que vous devez faire'], en: ['Official message from the City High Council', 'What you need to do'],
     es: ['Mensaje oficial del Alto Consejo de la Ciudad', 'Lo que debe hacer'], ar: ['رسالة رسمية من المجلس الأعلى للمدينة', 'ما يجب عليك فعله'] }[l] || [];
-  const officiels = require('./officiel').actifsPour(u).map((m) => { const tr = (m.traductions || {})[l]; return tr && tr.titre && tr.message ? { ...m, ...tr, actions: tr.actions && tr.actions.length ? tr.actions : m.actions } : m; });
-  const corps = `<h1>${e(t.titre)}</h1><p>${e(t.intro)}</p>
+  const enCrise = require('./officiel').actifsPour(u);   // vague 21 (F101) : crise localisée en tête, sans script
+  const officiels = enCrise.filter((m) => !m.crise).map((m) => { const tr = (m.traductions || {})[l]; return tr && tr.titre && tr.message ? { ...m, ...tr, actions: tr.actions && tr.actions.length ? tr.actions : m.actions } : m; });
+  const corps = `<h1>${e(t.titre)}</h1>${require('./crise').blocHtml(enCrise, l, u)}<p>${e(t.intro)}</p>
   ${officiels.length ? `<section aria-labelledby="h-officiel"><h2 id="h-officiel">${e(OFF[0])}</h2><ul class="simple-liste">${officiels.map((m) => `<li><strong>${e(m.titre)}</strong>
     ${m.audience !== 'Toute la ville' ? `<br>${e(t.zone)} : ${e(m.audience)}` : ''}<br>${e(m.message)}<br>${e(OFF[1])} : ${m.actions.map(e).join(' · ')}</li>`).join('')}</ul></section>` : ''}
   <section aria-labelledby="h-alertes"><h2 id="h-alertes">${e(t.alertes)}</h2>
