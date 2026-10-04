@@ -105,7 +105,7 @@
     if (!p.colonnes.length) { z.innerHTML = `<p class="doux">${E(t('ex.colonnesMin'))}</p>`; return; }
     const r = NT.api('POST', '/api/exports/apercu', p);
     if (r.statut === 428) { NT.reauth({ apres: apercu }); z.innerHTML = `<p class="doux">${E((r.donnees && r.donnees.erreur) || '')}</p>`; return; }
-    if (r.statut !== 200) { z.innerHTML = `<p class="doux">${E((r.donnees && r.donnees.erreur) || 'Erreur')}</p>`; return; }
+    if (r.statut !== 200) { z.innerHTML = `<p class="doux">${E((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'))}</p>`; return; }
     const d = r.donnees;
     z.innerHTML = d.total ? `<div class="table-defile"><table class="table-sec"><caption>${E(t('ex.apercuTitre', { n: d.lignes.length, t: d.total }))}</caption>
       <thead><tr>${d.colonnes.map((c) => `<th scope="col">${E(c.libelle)}</th>`).join('')}</tr></thead>
@@ -122,7 +122,7 @@
       .then((r) => {
         b.disabled = false; b.removeAttribute('aria-busy');
         if (r.status === 428) { NT.reauth({ apres: () => telecharger(modele) }); return null; }
-        if (!r.ok) return r.json().then((j) => { NT.ui.toast(j.erreur || 'Erreur', 'danger'); return null; });
+        if (!r.ok) return r.json().then((j) => { NT.ui.toast(j.erreur || NT.t('ui.erreur'), 'danger'); return null; });
         const nom = ((r.headers.get('Content-Disposition') || '').match(/filename="([^"]+)"/) || [])[1] || 'export.csv';
         const lignes = r.headers.get('X-Lignes') || '';
         return r.blob().then((blob) => {
@@ -190,7 +190,7 @@
       const p = Object.assign(parametres(), { nom });
       const x = NT.api('POST', '/api/exports/modeles', p);
       if (x.statut === 200) { NT.ui.toast(t('ex.modeleOk', { n: nom }), 'success'); el('ex-nom-modele').value = ''; modeleCourant = nom; modeles(); }
-      else NT.ui.toast((x.donnees && x.donnees.erreur) || 'Erreur', 'danger');
+      else NT.ui.toast((x.donnees && x.donnees.erreur) || NT.t('ui.erreur'), 'danger');
     });
     el('ex-modeles').addEventListener('click', (e) => {
       const b = e.target.closest('[data-ex]'); if (!b) return;

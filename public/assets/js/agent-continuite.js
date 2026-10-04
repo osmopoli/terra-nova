@@ -53,7 +53,7 @@
     function simuler(mode) {
       const err = document.getElementById('ct-erreur');
       const r = NT.api('POST', '/api/continuite/simuler', { mode, minutes: Number(document.getElementById('ct-minutes').value), motif: document.getElementById('ct-motif').value.trim() });
-      if (r.statut !== 200) { err.textContent = (r.donnees && r.donnees.erreur) || 'Erreur'; err.hidden = false; return; }
+      if (r.statut !== 200) { err.textContent = (r.donnees && r.donnees.erreur) || NT.t('ui.erreur'); err.hidden = false; return; }
       err.hidden = true; etat = r.donnees; rendre();
       NT.ui.toast(t(mode === 'aucun' ? 'ct.fini' : 'ct.lance'), mode === 'aucun' ? 'success' : 'warning', 8000);
     }
