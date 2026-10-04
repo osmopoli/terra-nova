@@ -66,8 +66,8 @@ Edge ou Chrome sans fenêtre, piloté par le protocole DevTools (aucune dépenda
 | Profil | E-mail | Mot de passe |
 |---|---|---|
 | Citoyen | `citoyen@nova.test` | `Citoyen2026` |
-| Agent municipal | `agent@nova.test` | défini par `AGENT_PASSWORD` (fourni par l'équipe) |
-| Administrateur | `admin@nova.test` | défini par `ADMIN_PASSWORD` (fourni par l'équipe) |
+| Agent municipal | `agent@nova.test` | `Agent2026!` |
+| Administrateur | `admin@nova.test` | `Admin2026!` |
 
 Autres habitants : `marc@`, `amina@`, `jean@nova.test` (mot de passe `Citoyen2026`). Vague 13 : agent habilité aux données réservées `social@nova.test` (mot de passe `AGENT_PASSWORD`) ; nouvel arrivant sans e-mail `TN-100001` (ou `06 39 48 21 77`) / code `482915`. Vague 20 : comptes partenaires `lumen@nova.test` et `velo@nova.test` (mot de passe `Partenaire2026`, ou `PARTENAIRE_PASSWORD` en production).
 Comptes d'équipe supplémentaires possibles via `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `AGENT_EMAIL` / `AGENT_PASSWORD` dans `.env`. En production, ces
