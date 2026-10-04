@@ -143,7 +143,7 @@
     if (dispo) {
       e.preventDefault();
       const r = NT.api('POST', '/api/partenaires/moi/offres/' + encodeURIComponent(dispo.dataset.epDispo) + '/disponibilite', { statut: dispo.statut.value, prochaineDate: dispo.prochaineDate.value, placesRestantes: dispo.placesRestantes.value, note: dispo.note.value });
-      if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger', 8000); return; }
+      if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger', 8000); return; }
       NT.ui.toast(t('ep.dispoOk'), 'success'); return;
     }
     const rep = f.closest('[data-ep-rep]');
@@ -151,7 +151,7 @@
       e.preventDefault();
       const statut = (e.submitter && e.submitter.value) || 'acceptee';
       const r = NT.api('POST', '/api/partenaires/moi/demandes/' + encodeURIComponent(rep.dataset.epRep), { statut, reponse: rep.querySelector('input').value });
-      if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger', 8000); rep.querySelector('input').focus(); return; }
+      if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger', 8000); rep.querySelector('input').focus(); return; }
       NT.ui.toast(t('ep.reponseOk'), 'success'); charger(); const s = $('ep-t-dem'); s.setAttribute('tabindex', '-1'); s.focus();
     }
   });

@@ -91,7 +91,7 @@
     // Vérifie d'abord si le serveur demande la confirmation du mot de passe (428), puis lance le téléchargement natif
     const r = NT.api('GET', url + '?verifier=1');
     if (r.statut === 428) { NT.reauth ? NT.reauth({ apres: () => telecharger(nom) }) : NT.ui.toast(r.donnees.erreur, 'warning'); return; }
-    if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger'); return; }
+    if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger'); return; }
     const a = document.createElement('a'); a.href = url; a.download = nom; document.body.append(a); a.click(); a.remove();
   }
 
@@ -105,7 +105,7 @@
         const r = NT.api('POST', '/api/sauvegardes', {});
         b.disabled = false; b.removeAttribute('aria-busy'); lib.textContent = avant;
         if (r.statut === 200) { NT.ui.toast(t('sv.creee', { n: r.donnees.documents, t: taille(r.donnees.taille) }), 'success'); charger(); }
-        else if (r.statut !== 428) NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger');
+        else if (r.statut !== 428) NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger');
       }, 30);
     });
     document.getElementById('sv-lignes').addEventListener('click', (e) => {
@@ -115,7 +115,7 @@
       b.disabled = true; const avant = b.textContent; b.textContent = t('sv.test');
       fetch('/api/sauvegardes/' + encodeURIComponent(nom) + '/tester', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: '{}' })
         .then((x) => x.json().then((j) => ({ ok: x.ok, j })))
-        .then(({ ok, j }) => { b.disabled = false; b.textContent = avant; if (ok) { resultat(j, nom); charger(); } else NT.ui.toast(j.erreur || 'Erreur', 'danger'); })
+        .then(({ ok, j }) => { b.disabled = false; b.textContent = avant; if (ok) { resultat(j, nom); charger(); } else NT.ui.toast(j.erreur || NT.t('ui.erreur'), 'danger'); })
         .catch(() => { b.disabled = false; b.textContent = avant; });
     });
   });

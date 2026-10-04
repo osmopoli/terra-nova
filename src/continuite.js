@@ -38,7 +38,8 @@ function baseOk() {
   if (Date.now() - testBase > 2000) { testBase = Date.now(); try { db.prepare('SELECT 1').get(); baseOkCache = true; } catch { baseOkCache = false; } }
   return baseOkCache;
 }
-const estErreurBase = (e) => !!e && (e.code === 'INCIDENT_BASE' || /sqlite|database|SQLITE_/i.test(String(e.code || '') + ' ' + String(e.message || '')));
+// Seul le code de l'erreur fait foi (node:sqlite : ERR_SQLITE_*, SQLITE_*) : un message qui cite « database » n'est pas une panne
+const estErreurBase = (e) => !!e && (e.code === 'INCIDENT_BASE' || /^(ERR_)?SQLITE_/.test(String(e.code || '')));
 
 /* ---------- Paquet essentiel ---------- */
 function referenceSeed() {
@@ -123,10 +124,20 @@ function contexte(chargerUtilisateur) {
 }
 
 const PAGES_SECOURS = /^\/simple(\/|$)/;
+// Routes personnelles (profil requis) : pendant un incident, la session n'est pas lisible → 503 « incident » et non 401,
+// sinon le navigateur croirait l'habitant déconnecté et effacerait son résumé hors connexion (public/sw.js)
+const PERSONNELLES = /^\/api\/(essentiel\/moi|notifications(\/|$)|mes-|mon-)/;
+const MSG_INCIDENT = 'Un incident technique empêche cette action pour le moment. Les informations essentielles restent consultables (page « Infos essentielles »). Réessayez dans quelques minutes : rien n’est perdu.';
+function repondreIncident(req, res) {
+  res.set('Retry-After', '30'); res.set('Cache-Control', 'no-store');
+  return res.status(503).json({ ok: false, incident: true, erreur: MSG_INCIDENT, essentiel: '/essentiel' });
+}
 function copieDe(res, d) { res.set('X-Copie-De-Secours', d.majLe); res.set('Cache-Control', 'no-store'); }
 // Lectures essentielles pendant un incident : dernière copie bonne, jamais d'erreur 500
 function secours(req, res, next) {
-  if (!req.incident || (req.method !== 'GET' && req.method !== 'HEAD')) return next();
+  if (!req.incident) return next();
+  if (PERSONNELLES.test(req.path)) return repondreIncident(req, res);
+  if (req.method !== 'GET' && req.method !== 'HEAD') return next();
   let e;
   try { e = essentiel(); } catch { return next(); }
   const d = e.donnees, stale = { stale: true, incident: true, majLe: d.majLe };
@@ -144,8 +155,8 @@ function secours(req, res, next) {
 function erreur(err, req, res, next) {
   if (!(req.incident || estErreurBase(err)) || res.headersSent) return next(err);
   if (!req.incident) { testBase = 0; if (baseOk() && err.code !== 'INCIDENT_BASE') return next(err); }
+  if (req.path.startsWith('/api/')) return repondreIncident(req, res);
   res.set('Retry-After', '30');
-  if (req.path.startsWith('/api/')) return res.status(503).json({ ok: false, incident: true, erreur: 'Un incident technique empêche cette action pour le moment. Les informations essentielles restent consultables (page « Infos essentielles »). Réessayez dans quelques minutes : rien n’est perdu.', essentiel: '/essentiel' });
   return require('./modules/essentiel').rendre(req, res, { stale: true, statut: 503 });
 }
 
@@ -216,4 +227,4 @@ router.post('/api/continuite/simuler', (req, res) => {
   res.json(etatContinuite());
 });
 
-module.exports = { router, contexte, secours, erreur, essentiel, semer, baseOk, simulee, IncidentBase };
+module.exports = { router, contexte, secours, erreur, repondreIncident, essentiel, semer, baseOk, simulee, IncidentBase };

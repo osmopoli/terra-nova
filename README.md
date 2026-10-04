@@ -69,7 +69,7 @@ Edge ou Chrome sans fenêtre, piloté par le protocole DevTools (aucune dépenda
 | Agent municipal | `agent@nova.test` | défini par `AGENT_PASSWORD` (fourni par l'équipe) |
 | Administrateur | `admin@nova.test` | défini par `ADMIN_PASSWORD` (fourni par l'équipe) |
 
-Autres habitants : `marc@`, `amina@`, `jean@nova.test` (mot de passe `Citoyen2026`). Vague 13 : agent habilité aux données réservées `social@nova.test` (mot de passe `AGENT_PASSWORD`) ; nouvel arrivant sans e-mail `TN-100001` (ou `06 39 48 21 77`) / code `482915`. Vague 20 : comptes partenaires `lumen@nova.test` et `velo@nova.test` (mot de passe `Partenaire2026`).
+Autres habitants : `marc@`, `amina@`, `jean@nova.test` (mot de passe `Citoyen2026`). Vague 13 : agent habilité aux données réservées `social@nova.test` (mot de passe `AGENT_PASSWORD`) ; nouvel arrivant sans e-mail `TN-100001` (ou `06 39 48 21 77`) / code `482915`. Vague 20 : comptes partenaires `lumen@nova.test` et `velo@nova.test` (mot de passe `Partenaire2026`, ou `PARTENAIRE_PASSWORD` en production).
 Comptes d'équipe supplémentaires possibles via `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `AGENT_EMAIL` / `AGENT_PASSWORD` dans `.env`. En production, ces
 mêmes `ADMIN_PASSWORD` / `AGENT_PASSWORD` remplacent les mots de passe des comptes de démo admin et agents (voir Déploiement HODI).
 Vague 19 : aucun compte nouveau ; l'incident simulé se lance avec `admin@nova.test` (page « Plateforme »), la vue habitant se vérifie avec `citoyen@nova.test` dans une fenêtre privée. Numéros d'urgence, contacts utiles et consignes : clé `vague19` de `data/demo-seed.json` (chargés une seule fois, collection `essentiel`).

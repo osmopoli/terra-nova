@@ -116,6 +116,7 @@ function corps(d, l, stale) {
     <details><summary>${e(t.servicesContacts)}</summary><ul class="simple-liste">${contactsSvc}</ul></details></section>`;
 }
 
+const MEMO = new Map(), MEMO_MAX = 16;   // pages rendues : 4 langues × (frais, secours), quelques minutes
 function rendre(req, res, opts) {
   const o = opts || {};
   const l = langueDe(req), t = T[l];
@@ -137,18 +138,26 @@ function rendre(req, res, opts) {
 <main id="contenu">${corps(d, l, stale)}</main>
 <footer class="simple-pied"><p>${e(t.langue)} : ${langues}</p><p class="ess-imprimer">${e(t.imprimer)}</p><p>${e(t.pied)}${poids ? ' · ' + e(poids) : ''}</p></footer>
 </body></html>`;
-  const brouillon = rendu('');
-  const ko = (n) => (Math.round(n / 102.4) / 10).toLocaleString(LOCALES[l]);
-  const html = rendu(t.poids.replace('{ko}', ko(Buffer.byteLength(brouillon))).replace('{kc}', ko(zlib.brotliCompressSync(brouillon).length)));
+  // Page et corps compressés mémorisés par (langue, date du paquet, copie de secours, minute) : la compression Brotli ne se refait
+  // pas à chaque visite. La minute entre dans la clé pour que « ouvert / fermé » des associations reste juste.
+  const cle = `${l}|${d.majLe}|${stale ? 1 : 0}|${Math.floor(Date.now() / 60000)}`;
+  let m = MEMO.get(cle);
+  if (!m) {
+    const brouillon = rendu('');
+    const ko = (n) => (Math.round(n / 102.4) / 10).toLocaleString(LOCALES[l]);
+    m = { html: rendu(t.poids.replace('{ko}', ko(Buffer.byteLength(brouillon))).replace('{kc}', ko(zlib.brotliCompressSync(brouillon).length))) };
+    MEMO.set(cle, m);
+    if (MEMO.size > MEMO_MAX) MEMO.delete(MEMO.keys().next().value);
+  }
   res.status(o.statut || 200);
   res.set('Cache-Control', stale ? 'no-store' : 'no-cache');   // public, sans donnée personnelle : copiée hors connexion (sauf copie de secours)
   res.set('Vary', 'Accept-Encoding, Accept-Language');
   if (stale) res.set('X-Copie-De-Secours', d.majLe);
   res.type('html');
   const accepte = String(req.headers['accept-encoding'] || '');
-  if (/\bbr\b/.test(accepte)) { res.set('Content-Encoding', 'br'); return res.send(zlib.brotliCompressSync(html)); }
-  if (/\bgzip\b/.test(accepte)) { res.set('Content-Encoding', 'gzip'); return res.send(zlib.gzipSync(html)); }
-  res.send(html);
+  if (/\bbr\b/.test(accepte)) { res.set('Content-Encoding', 'br'); return res.send(m.br || (m.br = zlib.brotliCompressSync(m.html))); }
+  if (/\bgzip\b/.test(accepte)) { res.set('Content-Encoding', 'gzip'); return res.send(m.gz || (m.gz = zlib.gzipSync(m.html))); }
+  res.send(m.html);
 }
 
 router.get(['/essentiel', '/essentiel.html', '/simple/essentiel'], (req, res) => rendre(req, res));

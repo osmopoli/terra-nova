@@ -107,7 +107,9 @@ const lireFiltres = (req) => ({ periode: PERIODES[req.query.periode] ? req.query
 router.get('/api/veille-securite', personnel, (req, res) => { res.set('Cache-Control', 'no-store'); res.json(liste(req.user, lireFiltres(req))); });
 router.get('/api/veille-securite/compte', personnel, (req, res) => { res.set('Cache-Control', 'no-store'); res.json(nonVus(req.user)); });
 router.post('/api/veille-securite/vu', personnel, (req, res) => {
-  const ids = Array.isArray((req.body || {}).ids) ? req.body.ids.map(String).filter((x) => /^[a-z]{3}:[\w-]{3,60}$/.test(x)).slice(0, 300) : [];
+  // seuls des événements qui existent sont marqués (pas d'identifiants inventés gardés dans le suivi)
+  const connus = new Set(collecter(0).map((e) => e.id));
+  const ids = Array.isArray((req.body || {}).ids) ? [...new Set(req.body.ids.map(String).filter((x) => /^[a-z]{3}:[\w-]{3,60}$/.test(x) && connus.has(x)))].slice(0, 300) : [];
   const t = maintenant();
   for (const id of ids) q.ecrire.run(id, req.user.id, 'vu', t, `${req.user.prenom} ${req.user.nom}`, '');
   res.json({ ok: true, marques: ids.length, nonVus: nonVus(req.user).nonVus });

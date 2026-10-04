@@ -375,6 +375,8 @@ html.grand .barre-pouce span{ font-size:.75rem; }
 .astuce p{ margin:0; }
 .astuce button{ margin-inline-start:auto; white-space:nowrap; flex:none; }
 [dir="rtl"] .ariane li+li::before{ content:"\\"; }
+/* flèches directionnelles (suivant / retour) en miroir dans le sens de lecture arabe */
+[dir="rtl"] .ph-arrow-right, [dir="rtl"] .ph-arrow-left{ transform:scaleX(-1); }
 .capsule.deux-niveaux .nav-principale.deborde{ -webkit-mask-image:linear-gradient(90deg, #000 calc(100% - 3rem), transparent); mask-image:linear-gradient(90deg, #000 calc(100% - 3rem), transparent); }
 [dir="rtl"] .capsule.deux-niveaux .nav-principale.deborde{ -webkit-mask-image:linear-gradient(270deg, #000 calc(100% - 3rem), transparent); mask-image:linear-gradient(270deg, #000 calc(100% - 3rem), transparent); }
 /* Avant le chargement de Shoelace : le menu du compte reste caché (évite un éclair de liens à plat dans l'en-tête) */
@@ -515,12 +517,10 @@ html.leger .off-fenetre-temps, html.econome .off-fenetre-temps{ display:none; }
 .cr-points li{ margin:.2rem 0; }
 .cr-leger{ margin:.5rem 0 0; font-size:var(--t-xs); }
 .cr-leger a{ display:inline-flex; align-items:center; gap:.3rem; }
-.off-fenetre.off-critique{ border-color:var(--danger); max-height:calc(100vh - 7rem); overflow-y:auto; }
+/* décision du 4 octobre : la fenêtre critique tient dans 45 % de l'écran (l'essentiel seulement, défilement interne au besoin) */
+.off-fenetre.off-critique{ border-color:var(--danger); max-height:45vh; overflow-y:auto; overscroll-behavior:contain; }
 .off-fenetre.off-critique::before{ background:linear-gradient(90deg, transparent, var(--danger), transparent); }
 .off-fenetre.off-critique .off-fenetre-sceau{ color:var(--danger); border-color:var(--danger); }
-.off-fenetre .off-actions{ margin:0 0 1rem; font-size:var(--t-s); }
-.off-fenetre .off-quoi{ font-size:var(--t-s); margin:.2rem 0 .3rem; }
-@media (max-width:720px){ .off-fenetre.off-critique{ max-height:calc(100vh - 9rem); } }
 
 /* ---------- F76 : avis sur un service (étoiles, reçu COM-xxxx) ---------- */
 .etoiles{ display:inline-flex; gap:.1rem; color:var(--iono); font-size:1rem; vertical-align:middle; }
@@ -601,7 +601,8 @@ html.essentiel-dabord .cm-colonne-carte:not(.v19-pret) .cm-cadre::after{ content
 @media (hover:hover){ .btn-compte:hover{ border-color:var(--iono); background:oklch(0.7040 0.1400 182.5 / .08); } }
 .menu-compte-liste{ position:absolute; inset-inline-end:0; top:calc(100% + .4rem); z-index:70; min-width:12rem; margin:0; padding:.35rem; list-style:none; background:oklch(0.1750 0.0210 203); border:1px solid var(--trait-2); border-radius:var(--r-l); box-shadow:var(--ombre-flottante); }
 .menu-compte-liste a, .menu-compte-liste button{ display:flex; align-items:center; width:100%; min-height:2.5rem; padding:.4rem .75rem; border:0; border-radius:var(--r-s); background:transparent; color:var(--givre); font:inherit; font-size:var(--t-s); text-decoration:none; text-align:start; cursor:pointer; }
-.menu-compte-liste a:hover, .menu-compte-liste button:hover, .menu-compte-liste a:focus-visible, .menu-compte-liste button:focus-visible{ background:oklch(0.7040 0.1400 182.5 / .1); }
+.menu-compte-liste a:focus-visible, .menu-compte-liste button:focus-visible{ background:oklch(0.7040 0.1400 182.5 / .1); }
+@media (hover:hover){ .menu-compte-liste a:hover, .menu-compte-liste button:hover{ background:oklch(0.7040 0.1400 182.5 / .1); } }
 .menu-compte-sep{ border-top:1px solid var(--trait); margin-top:.3rem; padding-top:.3rem; }
 /* Pas de décalage quand la police Inter arrive : police de repli locale aux mêmes proportions qu'Inter (Arial ajustée) */
 @font-face{ font-family:"Inter repli"; src:local("Arial"), local("Helvetica Neue"), local("Helvetica"); ascent-override:90.2%; descent-override:22.48%; line-gap-override:0%; size-adjust:107.4%; }

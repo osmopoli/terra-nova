@@ -67,6 +67,8 @@
   function charger() {
     const r = NT.api('GET', '/api/partenaires/offres');
     D = r.statut === 200 ? r.donnees : { offres: [], partenaires: [] };
+    // compte partenaire : son propre identifiant (pour « c'est vous » sur ses offres) vient de son espace, l'API publique ne l'expose pas
+    D.monPartenaire = D.estPartenaire ? (((NT.api('GET', '/api/partenaires/moi').donnees || {}).partenaire || {}).id || '') : '';
   }
   function filtres() {
     $('pa-dispo').innerHTML = `<option value="">${E(t('pa.toutes'))}</option>` + ['disponible', 'complet', 'suspendu'].map((d) => `<option value="${d}">${E(t('pa.d.' + d))}</option>`).join('');
@@ -90,7 +92,7 @@
     if (a === 'alternative') return `<a class="btn btn-primaire" href="#alt-${E(o.id)}" data-pa-alt="${E(o.id)}">${ic}${E(lib)}</a>`;
     if (!u) return `<a class="btn btn-primaire" href="connexion.html?retour=${encodeURIComponent('partenaires.html#' + o.id)}">${ic}${E(t('pa.connexion', { a: lib.toLowerCase() }))}</a>`;
     if (u.role !== 'citoyen') return `<p class="doux">${E(t('pa.personnel'))}</p>`;
-    if (D.estPartenaire && o.partenaire && document.body.dataset.monPartenaire === o.partenaire.id) return `<p class="doux">${E(t('pa.vous'))}</p>`;
+    if (D.monPartenaire && o.partenaire && D.monPartenaire === o.partenaire.id) return `<p class="doux">${E(t('pa.vous'))}</p>`;
     return `<button type="button" class="btn btn-primaire" data-pa-ouvrir="${E(o.id)}" aria-expanded="false" aria-controls="pa-f-${E(o.id)}">${ic}${E(lib)}</button>
       <form class="pa-form" id="pa-f-${E(o.id)}" data-pa-form="${E(o.id)}" hidden>
         <div class="champ"><label for="pa-m-${E(o.id)}">${E(t('pa.message'))}</label><textarea id="pa-m-${E(o.id)}" maxlength="500" rows="2"></textarea></div>
@@ -134,7 +136,7 @@
     const b = e.target.closest && e.target.closest('[data-pa-ouvrir],[data-pa-fermer],[data-pa-annuler],[data-pa-aller],[data-pa-alt]'); if (!b) return;
     if (b.dataset.paOuvrir) { const f = $('pa-f-' + b.dataset.paOuvrir); f.hidden = false; b.setAttribute('aria-expanded', 'true'); f.querySelector('textarea').focus(); }
     else if (b.dataset.paFermer) { const f = $('pa-f-' + b.dataset.paFermer); f.hidden = true; const o = document.querySelector(`[data-pa-ouvrir="${b.dataset.paFermer}"]`); o.setAttribute('aria-expanded', 'false'); o.focus(); }
-    else if (b.dataset.paAnnuler) { const r = NT.api('POST', '/api/partenaires/demandes/' + encodeURIComponent(b.dataset.paAnnuler) + '/annuler', {}); if (r.statut === 200) { NT.ui.toast(t('pa.annulee'), 'success'); const id = b.closest('.pa-carte').id; charger(); rendre(); aller(id); } else NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger'); }
+    else if (b.dataset.paAnnuler) { const r = NT.api('POST', '/api/partenaires/demandes/' + encodeURIComponent(b.dataset.paAnnuler) + '/annuler', {}); if (r.statut === 200) { NT.ui.toast(t('pa.annulee'), 'success'); const id = b.closest('.pa-carte').id; charger(); rendre(); aller(id); } else NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger'); }
     else if (b.dataset.paAller) { e.preventDefault(); aller(b.dataset.paAller); history.replaceState(null, '', '#' + b.dataset.paAller); }
     else if (b.dataset.paAlt) { e.preventDefault(); const z = $('alt-' + b.dataset.paAlt); if (z) { z.setAttribute('tabindex', '-1'); z.focus(); z.scrollIntoView({ block: 'center' }); } }
   });
@@ -143,7 +145,7 @@
     e.preventDefault();
     const id = f.dataset.paForm;
     const r = NT.api('POST', '/api/partenaires/offres/' + encodeURIComponent(id) + '/demande', { message: $('pa-m-' + id).value, partageEmail: $('pa-p-' + id).checked });
-    if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger', 8000); return; }
+    if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger', 8000); return; }
     const o = D.offres.find((x) => x.id === id);
     NT.ui.toast(t('pa.envoye', { p: o.partenaire.nom, id: r.donnees.demande.id }), 'success', 9000);
     charger(); rendre(); aller(id);
