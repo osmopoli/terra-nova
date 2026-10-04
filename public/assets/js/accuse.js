@@ -192,7 +192,8 @@
     if (hist && NT.auth.aRole('citoyen') && !document.getElementById('mes-accuses')) {
       const sec = document.createElement('section');
       sec.className = 'bloc'; sec.id = 'mes-accuses'; sec.setAttribute('aria-labelledby', 'tn-acc-esp');
-      hist.after(sec);
+      const onglet = document.getElementById('pn-accuses');   // espace allégé : onglet « Accusés de réception »
+      if (onglet) onglet.appendChild(sec); else hist.after(sec);
       A.espace(sec);
     }
   });
