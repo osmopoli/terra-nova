@@ -2562,5 +2562,99 @@
     ]
    }
   ]
+ },
+ "vague17": {
+  "_note": "Vague 17 (F86, F88) : chargés une seule fois, y compris sur une base déjà en service (repère seed: v17 sur la demande, identifiant fixe pour le modèle d’export). Aucun incident ni alerte de sécurité inventés : ils naissent de l’activité réelle.",
+  "modelesExport": [
+   {
+    "id": "mod-v17-qualite",
+    "nom": "Transmission hebdo au Service Qualité",
+    "jeu": "demandes",
+    "colonnes": [
+     "id",
+     "cree",
+     "type",
+     "service",
+     "quartier",
+     "statut",
+     "priorite",
+     "delai",
+     "urgence"
+    ],
+    "filtres": {
+     "periode": "7j",
+     "du": "",
+     "au": "",
+     "service": "",
+     "quartier": "",
+     "statut": "",
+     "priorite": ""
+    },
+    "format": "csv",
+    "pseudonymiser": true,
+    "auteur": "Karim Benali",
+    "auteurEmail": "agent@nova.test",
+    "partage": true
+   },
+   {
+    "id": "mod-v17-avis",
+    "nom": "Avis des habitants du mois (Service Qualité)",
+    "jeu": "avisServices",
+    "colonnes": [
+     "id",
+     "cree",
+     "service",
+     "note",
+     "commentaire",
+     "reponse"
+    ],
+    "filtres": {
+     "periode": "mois",
+     "du": "",
+     "au": "",
+     "service": "",
+     "quartier": "",
+     "statut": "",
+     "priorite": ""
+    },
+    "format": "csv",
+    "pseudonymiser": true,
+    "auteur": "Karim Benali",
+    "auteurEmail": "agent@nova.test",
+    "partage": true
+   }
+  ],
+  "urgences": [
+   {
+    "ref": "urg-marche",
+    "userId": "usr-musjmvnmt9x1",
+    "type": "contact",
+    "serviceId": "sante",
+    "objet": "Malaise d’une personne âgée au marché couvert",
+    "message": "Un monsieur âgé a fait un malaise devant l’entrée du marché couvert, il est assis mais très pâle. J’ai appelé le 15.",
+    "lieu": "Marché couvert, quartier Sud",
+    "quartier": "Sud",
+    "priorite": "urgente",
+    "statut": "traitee",
+    "agent": "Karim Benali",
+    "cree": "@86400000",
+    "urgence": {
+     "motifs": [
+      {
+       "type": "mot",
+       "mot": "malaise",
+       "langue": "fr"
+      }
+     ],
+     "explicite": true,
+     "signaleeLe": "@86400000",
+     "priseLe": "@86220000",
+     "transmiseLe": "@86100000",
+     "closeLe": "@84600000",
+     "par": "Karim Benali",
+     "noteClose": "Le SAMU est arrivé sur place à 10 h 12 ; la personne a été prise en charge. Merci pour votre appel."
+    }
+   }
+  ]
  }
 }

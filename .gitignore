@@ -3,3 +3,6 @@ node_modules
 data/*.db*
 server/build
 data/*.key
+
+# Vague 17 (F87) : sauvegardes de la base, jamais dans le dépôt
+data/sauvegardes/

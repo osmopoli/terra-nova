@@ -198,6 +198,8 @@
   if (u && u.role !== 'citoyen') liens.splice(5, 0, ['accueilAgent', 'agent-accueil.html']);   // vague 13 (F71) : inscription au guichet
   if (u && u.role === 'admin') liens.push(['securite', 'agent-securite.html']);   // vague 13 (F69, F70) : centre de sécurité
   if (u && u.role === 'admin') liens.push(['plateforme', 'agent-plateforme.html']);   // vague 15 (F77, F78) : état de la plateforme
+  if (u && u.role !== 'citoyen') liens.push(['exports', 'agent-exports.html']);   // vague 17 (F88) : exports des données de suivi
+  if (u && u.role === 'admin') liens.push(['sauvegardes', 'admin-sauvegardes.html']);   // vague 17 (F87) : sauvegardes vérifiées
   if (u) NT.rdv.verifierRappels();   // avant le compteur de la cloche, pour que les rappels dus soient comptés
   const nbNotif = u ? NT.notif.nonLues(u.id) : 0;
   const optionsLangue = Object.entries(NT.i18n.LANGUES).map(([c, n]) => `<option value="${c}" ${c === NT.i18n.langue ? 'selected' : ''} lang="${c}">${n}</option>`).join('');
@@ -281,14 +283,16 @@
     const liste = NT.annonces.actives();
     // F73 : messages officiels du Haut Conseil (assets/js/officiel.js) en tête du tiroir, la balise les met en évidence
     const off = NT.ui.officiels ? NT.ui.officiels() : { n: 0, nonLus: 0, html: '' };
-    const total = liste.length + off.n;
+    const veille = NT.ui.veille ? NT.ui.veille() : { n: 0, html: '', urgent: false };   // vague 17 (F85, F86) : urgences médicales, activité inhabituelle (assets/js/veille.js)
+    const total = liste.length + off.n + veille.n;
     const alerte = liste.some(a => a.importance === 'alerte');
     balise.classList.toggle('active', alerte);
     balise.classList.toggle('importante', !alerte && liste.length > 0);
     balise.classList.toggle('officiel', off.nonLus > 0);
+    balise.classList.toggle('urgence', !!veille.urgent);   // vague 17
     balise.querySelector('#nt-balise-nb').textContent = total ? total : '';
     balise.setAttribute('aria-label', total ? t('ui.alertesActives', { n: total }) + (off.nonLus ? ' · ' + t('off.baliseNonLu', null, 'message officiel à lire') : '') : t('ui.aucuneAlerte'));
-    panneauAlertes.innerHTML = off.html + (liste.length ? liste.map(a => `
+    panneauAlertes.innerHTML = veille.html + off.html + (liste.length ? liste.map(a => `
       <article class="alerte-fiche niveau-${a.importance}">
         <h3><i class="ph-duotone ${a.importance === 'alerte' ? 'ph-warning-octagon' : 'ph-megaphone'}" aria-hidden="true"></i>${echap(a.titre)}</h3>
         <div class="zone"><i class="ph ph-map-pin" aria-hidden="true"></i> ${echap(a.zone)} · ${echap(ui.depuis(a.cree))}</div>
@@ -296,7 +300,7 @@
         ${a.consignes && a.consignes.length ? `<strong style="display:block;margin-top:.7rem">${echap(t('ui.consignes'))}</strong><ul>${a.consignes.map(c => `<li>${echap(c)}</li>`).join('')}</ul>` : ''}
         ${a.publics && a.publics.length ? `<p class="doux" style="margin:.6rem 0 0">${echap(t('ui.publics'))} : ${a.publics.map(echap).join(', ')}</p>` : ''}
         <a class="btn" style="margin-top:.8rem" href="annonces.html#${echap(a.id)}">${echap(t('ui.detail'))}</a>
-      </article>`).join('') : (off.n ? '' : `<p class="vide">${echap(t('ui.aucuneAlerte'))}</p>`));
+      </article>`).join('') : (off.n || veille.n ? '' : `<p class="vide">${echap(t('ui.aucuneAlerte'))}</p>`));
   }
   balise.addEventListener('click', () => customElements.whenDefined('sl-drawer').then(() => panneauAlertes.show()));
   rendreAlertes();
@@ -563,4 +567,6 @@
   const scriptOfficiel = document.createElement('script');
   scriptOfficiel.src = 'assets/js/officiel.js';
   document.head.append(scriptOfficiel);
+  // Vague 17 (F85, F86) : veille en direct (urgences médicales pour le personnel, activité inhabituelle, confirmation du mot de passe)
+  if (u) { const scriptVeille = document.createElement('script'); scriptVeille.src = 'assets/js/veille.js'; document.head.append(scriptVeille); }
 })();

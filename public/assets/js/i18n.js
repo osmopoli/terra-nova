@@ -142,4 +142,12 @@
       'v13.ins.sansEmail': 'ليس لديك بريد إلكتروني؟', 'v13.ins.sansEmailLien': 'أنشئ حساباً بمعرّف ورمز سري' }
   });
 
+  /* ---------- Vague 17 : menu (F87 sauvegardes, F88 exports) ---------- */
+  i18n.ajouter({
+    fr: { 'nav.exports': 'Exports', 'nav.sauvegardes': 'Sauvegardes' },
+    en: { 'nav.exports': 'Exports', 'nav.sauvegardes': 'Backups' },
+    es: { 'nav.exports': 'Exportaciones', 'nav.sauvegardes': 'Copias de seguridad' },
+    ar: { 'nav.exports': 'التصدير', 'nav.sauvegardes': 'النسخ الاحتياطية' }
+  });
+
 })();

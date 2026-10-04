@@ -15,6 +15,9 @@ app.use(bouclier.avant(path.join(__dirname, 'public')));
 app.use(charge.proteger);   // vague 15 : l'essentiel passe toujours, le non essentiel attend quand le serveur est surchargé
 app.use(express.json({ limit: '1mb' }));   // photos de signalement (miniatures ~60 Ko)
 app.use(chargerUtilisateur);
+/* Vague 17 (F85) : registre d'audit scellé (chargé avant toute écriture d'audit) et surveillance de l'activité inhabituelle */
+const integrite = require('./src/modules/integrite');
+app.use(require('./src/modules/anomalies').surveiller);
 
 // Surveillance de la prod (ne pas supprimer ni modifier) : même forme que l'ancienne API.
 app.get('/api/health', (req, res) => {
@@ -30,6 +33,10 @@ app.use(charge.router);   // vague 15 : GET /api/charge (public), /api/charge/de
 app.use(require('./src/modules/priorites'));   // vague 15 : priorité des dossiers pour les agents (F80)
 const seedVague15 = require('./src/seed-vague15');
 app.post('/api/demo/reinitialiser', (req, res, next) => { res.on('finish', () => { if (res.statusCode === 200) seedVague15.semer(); }); next(); });
+/* Vague 17 : urgence médicale repérée au dépôt (F86) ; après une réinitialisation de la démo, registre rescellé et contenus rechargés */
+app.use(require('./src/modules/urgences').avantCreation);
+const seedVague17 = require('./src/seed-vague17');
+app.post('/api/demo/reinitialiser', (req, res, next) => { res.on('finish', () => { if (res.statusCode === 200) { seedVague17.semer(); integrite.rescellerApresDemo(req.user); } }); next(); });
 app.use(require('./src/modules/api'));
 app.use(require('./src/renfort').router);   // vague 9 : clés d'accès, deux étapes, appareils
 app.use(require('./src/modules/sobriete'));   // vague 10 : diagnostic de sobriété (F57)
@@ -44,6 +51,13 @@ app.use(require('./src/modules/avis-services'));   // vague 14 : avis après un 
 app.use(require('./src/modules/formulaires'));   // vague 16 : jetons de formulaire, centre anti-robots (F81, F82)
 app.use(require('./src/modules/accuses'));   // vague 16 : accusés de réception vérifiables (F83)
 app.use(require('./src/modules/echanges'));   // vague 16 : réponses des agents, fil d'échanges (F84)
+/* Vague 17 : intégrité et incidents (F85), urgences médicales (F86), sauvegardes vérifiées (F87), exports (F88) */
+app.use(integrite);
+app.use(require('./src/modules/anomalies'));
+app.use(require('./src/modules/urgences'));
+const sauvegardes = require('./src/modules/sauvegardes');
+app.use(sauvegardes);
+app.use(require('./src/modules/exports'));
 app.use(require('./src/statique').statique(path.join(__dirname, 'public')));   // F58 : fichiers compressés + cache navigateur
 app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
 
@@ -55,10 +69,14 @@ app.use((err, req, res, _next) => {
   res.status(500).json({ erreur: 'Une erreur est survenue. Merci de réessayer.' });
 });
 
+integrite.initialiser();   // vague 17 : premier scellement du registre d'audit (base déjà en service comprise), avant toute nouvelle écriture
 semer();
 seedVague15.semer();   // vague 15 : données de démonstration ajoutées une seule fois, y compris sur une base déjà en service
 comptesEquipe();
 startPolling();
+seedVague17.semer();   // vague 17 : modèles d'export, urgence médicale traitée (une seule fois)
+integrite.planifier();   // vague 17 : contrôle d'intégrité 30 s après le démarrage puis toutes les 6 h
+sauvegardes.planifier();   // vague 17 : sauvegarde automatique quotidienne + rétention
 
 const port = Number(process.env.PORT) || 3000;
 charge.regler(app.listen(port, () => console.log(`Terra Nova sur http://localhost:${port}`)));

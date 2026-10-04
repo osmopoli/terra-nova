@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exports — Terra Nova</title>
+  <meta name="description" content="Exports des données de suivi : choisir les informations utiles, aperçu, fichier CSV pour Excel, JSON ou tableau, données personnelles réduites, modèles enregistrés.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/securite.css">
+  <link rel="stylesheet" href="assets/css/vague17.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/agent-exports.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="exports" data-ariane="nav.agent|agent.html;ex.titre" data-roles="agent,admin">
+  <main id="contenu" class="conteneur">
+    <header class="titre-page">
+      <span class="surtitre" data-i18n="ex.surtitre">Service Qualité · transmissions entre services</span>
+      <h1 data-i18n="ex.titre">Exports des données de suivi</h1>
+      <p data-i18n="ex.sous">Choisissez les informations utiles et récupérez-les dans un format simple et réutilisable. Les données personnelles sont réduites par défaut.</p>
+    </header>
+
+    <div class="ex-grille">
+      <form class="panneau" id="ex-form" novalidate>
+        <fieldset class="ex-etape">
+          <legend data-i18n="ex.e1">1. Données à exporter</legend>
+          <div class="ex-jeux" id="ex-jeux"></div>
+        </fieldset>
+        <fieldset class="ex-etape">
+          <legend data-i18n="ex.e2">2. Colonnes</legend>
+          <div class="v17-boutons" style="margin-top:0">
+            <button class="btn petit" type="button" data-cols="conseillees" data-i18n="ex.conseillees">Colonnes conseillées</button>
+            <button class="btn petit" type="button" data-cols="toutes" data-i18n="ex.toutes">Tout cocher</button>
+            <button class="btn petit" type="button" data-cols="aucune" data-i18n="ex.aucune">Tout décocher</button>
+          </div>
+          <div class="ex-colonnes" id="ex-colonnes"></div>
+        </fieldset>
+        <fieldset class="ex-etape">
+          <legend data-i18n="ex.e3">3. Filtres</legend>
+          <div class="ex-filtres">
+            <div class="champ"><label for="ex-periode" data-i18n="ex.periode">Période</label><select id="ex-periode"></select></div>
+            <div class="champ" id="ex-du-champ"><label for="ex-du" data-i18n="ex.du">Du</label><input type="date" id="ex-du"></div>
+            <div class="champ" id="ex-au-champ"><label for="ex-au" data-i18n="ex.au">Au</label><input type="date" id="ex-au"></div>
+            <div class="champ"><label for="ex-service" data-i18n="ex.service">Service</label><select id="ex-service"></select></div>
+            <div class="champ"><label for="ex-quartier" data-i18n="ex.quartier">Quartier</label><select id="ex-quartier"></select></div>
+            <div class="champ" id="ex-statut-champ"><label for="ex-statut" data-i18n="ex.statut">Statut</label><select id="ex-statut"></select></div>
+            <div class="champ" id="ex-priorite-champ"><label for="ex-priorite" data-i18n="ex.priorite">Priorité</label><select id="ex-priorite"></select></div>
+          </div>
+        </fieldset>
+        <fieldset class="ex-etape">
+          <legend data-i18n="ex.e4">4. Données personnelles</legend>
+          <label class="ex-choix"><input type="checkbox" id="ex-pseudo" checked aria-describedby="ex-pseudo-aide"><span data-i18n="ex.pseudo">Pseudonymiser les habitants (recommandé)</span></label>
+          <p class="ex-note"><i class="ph-duotone ph-shield-check" aria-hidden="true"></i><span id="ex-pseudo-aide"></span></p>
+          <p class="ex-note" id="ex-nominatif" hidden><i class="ph-duotone ph-key" aria-hidden="true"></i><span data-i18n="ex.nominatif">Export nominatif : votre mot de passe sera redemandé et l’export inscrit au journal.</span></p>
+        </fieldset>
+        <fieldset class="ex-etape">
+          <legend data-i18n="ex.e5">5. Format du fichier</legend>
+          <div class="ex-jeux">
+            <label class="ex-choix"><input type="radio" name="ex-format" value="csv" checked><span><strong data-i18n="ex.f.csv">CSV pour Excel (français)</strong><br><small class="doux" data-i18n="ex.f.csvAide">Séparateur « ; », accents conservés (UTF-8 avec BOM).</small></span></label>
+            <label class="ex-choix"><input type="radio" name="ex-format" value="json"><span><strong data-i18n="ex.f.json">JSON</strong><br><small class="doux" data-i18n="ex.f.jsonAide">Pour un autre logiciel.</small></span></label>
+            <label class="ex-choix"><input type="radio" name="ex-format" value="tableau"><span><strong data-i18n="ex.f.tableau">Tableau imprimable</strong><br><small class="doux" data-i18n="ex.f.tableauAide">Page HTML à ouvrir, imprimer ou coller dans un tableur.</small></span></label>
+          </div>
+        </fieldset>
+        <div class="ex-actions">
+          <button class="btn btn-primaire" type="submit" id="ex-telecharger"><i class="ph-duotone ph-download-simple" aria-hidden="true"></i><span data-i18n="ex.telecharger">Télécharger le fichier</span></button>
+          <button class="btn" type="button" id="ex-voir"><i class="ph ph-eye" aria-hidden="true"></i><span data-i18n="ex.apercu">Aperçu</span></button>
+        </div>
+        <div class="ex-apercu" id="ex-apercu"></div>
+        <p class="sr-only" id="ex-annonce" aria-live="polite"></p>
+      </form>
+
+      <aside>
+        <section class="panneau" aria-labelledby="ex-modeles-t">
+          <h2 id="ex-modeles-t" style="font-size:1.15rem" data-i18n="ex.modeles">Modèles enregistrés</h2>
+          <ul class="ex-modeles" id="ex-modeles"></ul>
+          <form id="ex-form-modele" style="margin-top:1rem">
+            <div class="champ"><label for="ex-nom-modele" data-i18n="ex.nomModele">Nom du modèle</label>
+              <input id="ex-nom-modele" required minlength="3" maxlength="80" data-i18n-attr="placeholder:ex.nomModeleEx" placeholder="Exemple : Transmission hebdo au Service Qualité"></div>
+            <button class="btn" type="submit" style="margin-top:.6rem"><i class="ph ph-floppy-disk" aria-hidden="true"></i><span data-i18n="ex.enregistrer">Enregistrer comme modèle</span></button>
+          </form>
+        </section>
+      </aside>
+    </div>
+
+    <section class="bloc-sec" aria-labelledby="ex-hist-t">
+      <h2 id="ex-hist-t" data-i18n="ex.historique">Historique des exports</h2>
+      <div class="table-defile">
+        <table class="table-sec empilee">
+          <caption class="sr-only" data-i18n="ex.historique">Historique des exports</caption>
+          <thead><tr><th scope="col" data-i18n="ex.hDate">Date</th><th scope="col" data-i18n="ex.hPar">Par</th><th scope="col" data-i18n="ex.hJeu">Données</th><th scope="col" data-i18n="ex.hLignes">Lignes</th><th scope="col" data-i18n="ex.hFormat">Format</th><th scope="col" data-i18n="ex.hPseudo">Pseudonymisé</th></tr></thead>
+          <tbody id="ex-historique"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
