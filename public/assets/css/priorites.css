@@ -19,6 +19,7 @@
 .pr-ouvrir{ font:inherit; background:none; border:0; color:var(--givre); text-align:start; cursor:pointer; padding:.2rem 0; text-decoration:underline; text-underline-offset:3px; min-height:2rem; }
 .pr-liste .pr-ouvrir{ grid-column:2; grid-row:1; min-width:0; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-clamp:2; overflow:hidden; font-size:.92rem; min-height:1.75rem; }
 .pr-raison{ font-size:.78rem; color:var(--brume); grid-column:2; grid-row:2; margin-top:-.2rem; }
+.pr-plus{ margin-top:.4rem; }
 .pr-tiroir{ margin-top:1rem; padding-top:.5rem; border-top:1px solid var(--trait); }
 .pr-lbl{ font-weight:700; margin:.6rem 0 .3rem; }
 .pr-raisons{ list-style:none; margin:0; padding:0; display:grid; gap:.25rem; }

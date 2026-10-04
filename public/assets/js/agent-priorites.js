@@ -10,7 +10,7 @@
   NT.i18n.ajouter({
     fr: { 'pr.n.critique': 'Critique', 'pr.n.haute': 'Haute', 'pr.n.normale': 'Normale', 'pr.n.basse': 'Basse', 'pr.auto': 'Automatique (calcul du serveur)',
       'pr.titre': 'Mes dossiers prioritaires', 'pr.intro': 'Niveau calculé par le serveur : mots d’urgence, service concerné, ancienneté, demandes semblables, personne vulnérable, soutiens. Chaque agent peut le corriger avec une justification.',
-      'pr.mes': 'Pris en charge par moi', 'pr.aPrendre': 'À prendre (non assignés)', 'pr.aucunMes': 'Aucun dossier critique ou haute priorité à votre nom.', 'pr.aucunAPrendre': 'Aucun dossier urgent en attente d’un agent.',
+      'pr.mes': 'Pris en charge par moi', 'pr.aPrendre': 'À prendre (non assignés)', 'pr.aucunMes': 'Aucun dossier critique ou haute priorité à votre nom.', 'pr.aucunAPrendre': 'Aucun dossier urgent en attente d’un agent.', 'pr.voirPlus': 'Voir les {n} autres', 'pr.voirMoins': 'Réduire la liste',
       'pr.compte': 'Dossiers ouverts par priorité', 'pr.filtrer': 'Afficher les dossiers {n}', 'pr.fMes': 'Mes dossiers prioritaires', 'pr.tPriorite': 'Priorité (critique d’abord)',
       'pr.tiroir': 'Priorité du dossier', 'pr.manuel': 'Corrigée par {par} le {d}', 'pr.calcul': 'Calcul automatique : {n} (score {s})', 'pr.raisons': 'Pourquoi ce niveau',
       'pr.r.mot': 'Mot d’urgence : « {mot} »', 'pr.r.service': 'Service sensible : {service}', 'pr.r.declaree': 'Signalée urgente par l’habitant', 'pr.r.vulnerable': 'Personne vulnérable',
@@ -20,7 +20,7 @@
       'pr.k.critiques': 'Dossiers critiques', 'pr.k.hautes': 'Dossiers de priorité haute', 'pr.k.mes': 'Mes dossiers prioritaires', 'pr.colonne': 'Priorité', 'pr.modifiee': 'priorité corrigée par un agent' },
     en: { 'pr.n.critique': 'Critical', 'pr.n.haute': 'High', 'pr.n.normale': 'Normal', 'pr.n.basse': 'Low', 'pr.auto': 'Automatic (server calculation)',
       'pr.titre': 'My priority files', 'pr.intro': 'Level calculated by the server: urgency words, service concerned, age, similar requests, vulnerable person, supports. Any agent can correct it with a justification.',
-      'pr.mes': 'Handled by me', 'pr.aPrendre': 'To take (unassigned)', 'pr.aucunMes': 'No critical or high priority file in your name.', 'pr.aucunAPrendre': 'No urgent file waiting for an agent.',
+      'pr.mes': 'Handled by me', 'pr.aPrendre': 'To take (unassigned)', 'pr.aucunMes': 'No critical or high priority file in your name.', 'pr.aucunAPrendre': 'No urgent file waiting for an agent.', 'pr.voirPlus': 'Show {n} more', 'pr.voirMoins': 'Show less',
       'pr.compte': 'Open files by priority', 'pr.filtrer': 'Show {n} files', 'pr.fMes': 'My priority files', 'pr.tPriorite': 'Priority (critical first)',
       'pr.tiroir': 'File priority', 'pr.manuel': 'Corrected by {par} on {d}', 'pr.calcul': 'Automatic calculation: {n} (score {s})', 'pr.raisons': 'Why this level',
       'pr.r.mot': 'Urgency word: “{mot}”', 'pr.r.service': 'Sensitive service: {service}', 'pr.r.declaree': 'Reported as urgent by the resident', 'pr.r.vulnerable': 'Vulnerable person',
@@ -30,7 +30,7 @@
       'pr.k.critiques': 'Critical files', 'pr.k.hautes': 'High priority files', 'pr.k.mes': 'My priority files', 'pr.colonne': 'Priority', 'pr.modifiee': 'priority corrected by an agent' },
     es: { 'pr.n.critique': 'Crítica', 'pr.n.haute': 'Alta', 'pr.n.normale': 'Normal', 'pr.n.basse': 'Baja', 'pr.auto': 'Automática (cálculo del servidor)',
       'pr.titre': 'Mis expedientes prioritarios', 'pr.intro': 'Nivel calculado por el servidor: palabras de urgencia, servicio afectado, antigüedad, solicitudes parecidas, persona vulnerable, apoyos. Cada agente puede corregirlo con una justificación.',
-      'pr.mes': 'A mi cargo', 'pr.aPrendre': 'Por asignar', 'pr.aucunMes': 'Ningún expediente crítico o de prioridad alta a su nombre.', 'pr.aucunAPrendre': 'Ningún expediente urgente esperando a un agente.',
+      'pr.mes': 'A mi cargo', 'pr.aPrendre': 'Por asignar', 'pr.aucunMes': 'Ningún expediente crítico o de prioridad alta a su nombre.', 'pr.aucunAPrendre': 'Ningún expediente urgente esperando a un agente.', 'pr.voirPlus': 'Ver los otros {n}', 'pr.voirMoins': 'Reducir la lista',
       'pr.compte': 'Expedientes abiertos por prioridad', 'pr.filtrer': 'Mostrar los expedientes {n}', 'pr.fMes': 'Mis expedientes prioritarios', 'pr.tPriorite': 'Prioridad (crítica primero)',
       'pr.tiroir': 'Prioridad del expediente', 'pr.manuel': 'Corregida por {par} el {d}', 'pr.calcul': 'Cálculo automático: {n} (puntuación {s})', 'pr.raisons': 'Por qué este nivel',
       'pr.r.mot': 'Palabra de urgencia: «{mot}»', 'pr.r.service': 'Servicio sensible: {service}', 'pr.r.declaree': 'Señalada urgente por el habitante', 'pr.r.vulnerable': 'Persona vulnerable',
@@ -40,7 +40,7 @@
       'pr.k.critiques': 'Expedientes críticos', 'pr.k.hautes': 'Expedientes de prioridad alta', 'pr.k.mes': 'Mis expedientes prioritarios', 'pr.colonne': 'Prioridad', 'pr.modifiee': 'prioridad corregida por un agente' },
     ar: { 'pr.n.critique': 'حرجة', 'pr.n.haute': 'عالية', 'pr.n.normale': 'عادية', 'pr.n.basse': 'منخفضة', 'pr.auto': 'تلقائي (حساب الخادم)',
       'pr.titre': 'ملفاتي ذات الأولوية', 'pr.intro': 'مستوى يحسبه الخادم: كلمات الاستعجال، الخدمة المعنية، الأقدمية، الطلبات المتشابهة، شخص هش، الدعم. يمكن لكل عون تصحيحه مع تبرير.',
-      'pr.mes': 'أتولاها أنا', 'pr.aPrendre': 'للتكفل (غير مسندة)', 'pr.aucunMes': 'لا يوجد ملف حرج أو عالي الأولوية باسمك.', 'pr.aucunAPrendre': 'لا يوجد ملف عاجل ينتظر عوناً.',
+      'pr.mes': 'أتولاها أنا', 'pr.aPrendre': 'للتكفل (غير مسندة)', 'pr.aucunMes': 'لا يوجد ملف حرج أو عالي الأولوية باسمك.', 'pr.aucunAPrendre': 'لا يوجد ملف عاجل ينتظر عوناً.', 'pr.voirPlus': 'عرض {n} أخرى', 'pr.voirMoins': 'تقليص القائمة',
       'pr.compte': 'الملفات المفتوحة حسب الأولوية', 'pr.filtrer': 'عرض الملفات {n}', 'pr.fMes': 'ملفاتي ذات الأولوية', 'pr.tPriorite': 'الأولوية (الحرجة أولاً)',
       'pr.tiroir': 'أولوية الملف', 'pr.manuel': 'صححها {par} بتاريخ {d}', 'pr.calcul': 'الحساب التلقائي: {n} (النقاط {s})', 'pr.raisons': 'لماذا هذا المستوى',
       'pr.r.mot': 'كلمة استعجال: «{mot}»', 'pr.r.service': 'خدمة حساسة: {service}', 'pr.r.declaree': 'أبلغ عنها الساكن كعاجلة', 'pr.r.vulnerable': 'شخص هش',
@@ -56,7 +56,8 @@
   const t = (k, v) => NT.t(k, v);
   const e = s => NT.ui.echap(s);
   let donnees = { niveaux: {}, compte: { critique: 0, haute: 0, normale: 0, basse: 0 }, mes: [], aPrendre: [] };
-  const etat = { mes: false };
+  const etat = { mes: false, tout: false };
+  const VISIBLES = 3; // « À prendre » : 3 dossiers, le reste sur demande
   P.etat = etat;
   P.onChange = () => {};
   P.ouvrir = () => {};
@@ -93,13 +94,15 @@
     const item = id => { const d = NT.store.find('demandes', id); if (!d) return ''; const i = P.info(id);
       return `<li><button type="button" class="pr-ouvrir" data-pr-ouvrir="${e(id)}" dir="auto" title="${e(id + ' ' + d.objet)}"><span class="ag-code">${e(id)}</span> ${e(d.objet)}</button> ${P.badge(d)}
         ${i && i.raisons[0] ? `<span class="pr-raison">${e(raison(i.raisons.slice().sort((a, b) => b.points - a.points)[0]))}</span>` : ''}</li>`; };
+    const reste = donnees.aPrendre.length - VISIBLES;
+    const plus = reste > 0 ? `<button type="button" class="btn petit pr-plus" data-pr-tout aria-expanded="${etat.tout}" aria-controls="pr-a-prendre"><i class="ph ph-caret-${etat.tout ? 'up' : 'down'}" aria-hidden="true"></i>${e(etat.tout ? t('pr.voirMoins') : t('pr.voirPlus', { n: reste }))}</button>` : '';
     z.innerHTML = `<h2 id="pr-h"><i class="ph-duotone ph-list-numbers" aria-hidden="true"></i> ${e(t('pr.titre'))} <span class="pastille-n">${donnees.mes.length}</span></h2>
       <p class="doux pr-intro">${e(t('pr.intro'))}</p>
       <div class="pr-comptes" role="group" aria-label="${e(t('pr.compte'))}">${NIVEAUX.map(n => `<button type="button" class="pr-compte pr-${n}" data-pr-niveau="${n}" aria-label="${e(t('pr.filtrer', { n: P.libelle(n) }))} (${c[n]})"><i class="ph ${ICONES[n]}" aria-hidden="true"></i><span class="valeur">${c[n]}</span><span>${e(P.libelle(n))}</span></button>`).join('')}</div>
       <p><button type="button" class="chip-sujet" data-pr-mes aria-pressed="${etat.mes}"><i class="ph ph-user-focus" aria-hidden="true"></i>${e(t('pr.fMes'))} <span class="n">${donnees.mes.length}</span></button></p>
       <div class="pr-files">
         <div><h3>${e(t('pr.mes'))}</h3>${donnees.mes.length ? `<ul class="pr-liste">${donnees.mes.map(item).join('')}</ul>` : `<p class="doux">${e(t('pr.aucunMes'))}</p>`}</div>
-        <div><h3>${e(t('pr.aPrendre'))}</h3>${donnees.aPrendre.length ? `<ul class="pr-liste">${donnees.aPrendre.slice(0, 6).map(item).join('')}</ul>` : `<p class="doux">${e(t('pr.aucunAPrendre'))}</p>`}</div>
+        <div><h3>${e(t('pr.aPrendre'))}</h3>${donnees.aPrendre.length ? `<ul class="pr-liste" id="pr-a-prendre">${(etat.tout ? donnees.aPrendre : donnees.aPrendre.slice(0, VISIBLES)).map(item).join('')}</ul>${plus}` : `<p class="doux">${e(t('pr.aucunAPrendre'))}</p>`}</div>
       </div>`;
   };
 
@@ -138,6 +141,8 @@
   document.addEventListener('click', ev => {
     const m = ev.target.closest('[data-pr-mes]');
     if (m) { etat.mes = !etat.mes; P.rendrePanneau(document.getElementById('pr-panneau')); P.onChange(); const b = document.querySelector('[data-pr-mes]'); if (b) b.focus(); return; }
+    const tout = ev.target.closest('[data-pr-tout]');
+    if (tout) { etat.tout = !etat.tout; P.rendrePanneau(document.getElementById('pr-panneau')); const b = document.querySelector('[data-pr-tout]'); if (b) b.focus(); return; }
     const o = ev.target.closest('[data-pr-ouvrir]');
     if (o) { P.ouvrir(o.dataset.prOuvrir); return; }
     const n = ev.target.closest('[data-pr-niveau]');
