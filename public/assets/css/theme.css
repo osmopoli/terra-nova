@@ -633,3 +633,21 @@ body:not(.affiche):not(.simple) #contenu{ visibility:hidden; animation:v19-montr
 
 /* Cellules de tableau : coupure seulement si un mot ne tient vraiment pas (le body coupe « n'importe où ») */
 td, th{ overflow-wrap:break-word; }
+
+/* ---------- Vague 22 (F104) : tempête solaire (compte à rebours, « Se préparer », infos enregistrées sur l'appareil) ---------- */
+.tp-temps strong{ font-variant-numeric:tabular-nums; }
+.tp-paquet{ display:flex; gap:.45rem; align-items:flex-start; margin:0 0 .7rem; font-size:var(--t-s); color:var(--brume); }
+.tp-paquet:empty{ display:none; }
+.tp-paquet i{ font-size:1.2rem; flex:none; color:var(--iono); }
+.tp-paquet.ok{ color:var(--givre); font-weight:600; }
+.tp-paquet.ok i{ color:var(--calme); }
+.tp-preparer{ margin:.4rem 0 .8rem; padding:.6rem .75rem; border-radius:var(--r-s); background:var(--surface-2); box-shadow:var(--liseré); }
+.tp-preparer summary{ display:flex; flex-wrap:wrap; gap:.45rem; align-items:center; font-weight:700; cursor:pointer; min-height:2.5rem; }
+.tp-preparer summary i{ color:var(--iono); font-size:1.2rem; }
+.tp-fait{ font-weight:600; font-size:var(--t-xs); color:var(--brume); }
+.tp-liste{ list-style:none; margin:.4rem 0 .6rem; padding:0; display:grid; gap:.2rem; }
+.tp-liste label{ display:flex; gap:.55rem; align-items:flex-start; min-height:2.5rem; padding:.35rem .2rem; cursor:pointer; line-height:1.4; }
+.tp-liste input{ inline-size:1.15rem; block-size:1.15rem; margin-top:.1rem; accent-color:var(--iono); flex:none; }
+.tp-hors-ligne{ display:inline-flex; gap:.35rem; align-items:center; font-weight:600; color:var(--givre); }
+.tp-hors-ligne i{ color:var(--soleil); }
+.crise-tempete{ border-inline-start:4px solid var(--danger); }

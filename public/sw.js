@@ -14,7 +14,7 @@
    - Fichiers de Shoelace (adresse versionnée sur jsDelivr) : copiés à la première utilisation (cache d'abord), pour que
      l'interface complète reste utilisable hors connexion. */
 'use strict';
-const VERSION = 'v19-1';
+const VERSION = 'v22-1';   // vague 22 : tempete.js dans l'enveloppe
 const CACHE = 'terra-nova-' + VERSION;
 const PERSO = 'terra-nova-perso';
 const CDN = 'terra-nova-cdn-1';
@@ -23,7 +23,7 @@ const COQUILLE = ['/', '/index.html', '/services.html', '/annonces.html', '/cart
   '/assets/css/theme.css', '/assets/css/vague15.css', '/assets/css/icones.css', '/assets/css/accueil.css', '/assets/css/services.css', '/assets/css/annonces.css', '/assets/css/simple.css', '/assets/css/essentiel.css',
   '/assets/css/demandes.css', '/assets/css/carte.css', '/assets/css/arrivee.css',
   '/assets/js/i18n.js', '/assets/js/store.js', '/assets/js/ui.js', '/assets/js/officiel.js', '/assets/js/resilience.js', '/assets/js/continuite.js', '/assets/js/services.js',
-  '/assets/js/essentiel.js', '/assets/js/demande.js', '/assets/js/formulaires.js', '/assets/js/carte.js', '/assets/js/associations.js', '/assets/js/nouveaux.js',
+  '/assets/js/essentiel.js', '/assets/js/tempete.js', '/assets/js/demande.js', '/assets/js/formulaires.js', '/assets/js/carte.js', '/assets/js/associations.js', '/assets/js/nouveaux.js',
   '/assets/img/logo-embleme-96.webp'];
 const MINIMAL = ['/essentiel', '/simple', '/assets/css/theme.css', '/assets/css/simple.css', '/assets/css/essentiel.css', '/assets/js/essentiel.js'];   // économiseur de données
 const API_GARDEES = ['/api/officiels', '/api/charge', '/api/essentiel'];
@@ -55,6 +55,13 @@ self.addEventListener('activate', (ev) => {
 });
 self.addEventListener('message', (ev) => {
   const d = ev.data || {};
+  /* vague 22 (F104) : tempête solaire → paquet rafraîchi tout de suite et réponse « paquet-ok » à la page (heure affichée) */
+  if (d.type === 'paquet' && d.urgent) {
+    ev.waitUntil(paquet(d.langue, !!d.personnel).then((l) => copier(CACHE, '/essentiel').then(() => l))
+      .then((l) => ({ ok: Array.isArray(l) && l.slice(0, 2).some(Boolean) })).catch(() => ({ ok: false }))
+      .then((r) => { if (ev.source && ev.source.postMessage) ev.source.postMessage({ type: 'paquet-ok', id: d.id, ok: r.ok, t: Date.now() }); }));
+    return;
+  }
   if (d.type === 'paquet') ev.waitUntil(paquet(d.langue, !!d.personnel));
   if (d.type === 'deconnexion') ev.waitUntil(caches.delete(PERSO));
 });

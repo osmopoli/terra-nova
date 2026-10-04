@@ -33,8 +33,10 @@ function vuePublique(m, u) {
 function vueCrise(m, u) {
   if (!m.crise) return {};
   const c = m.crise;
-  return { crise: { type: c.type, quartiers: c.quartiers, retablissement: c.retablissement, majLe: c.majLe, progression: c.progression, points: c.points || [], statut: c.statut },
-    critique: !!u && u.role === 'citoyen' && c.quartiers.includes(u.quartier) };
+  const tempete = c.type === 'tempete-solaire';   // vague 22 (F104) : tempête solaire → critique pour tout le monde (visiteurs et personnel compris)
+  return { crise: { type: c.type, quartiers: c.quartiers, retablissement: c.retablissement, majLe: c.majLe, progression: c.progression, points: c.points || [], statut: c.statut,
+    ...(tempete ? { perturbations: c.perturbations, duree: c.duree } : {}) },
+    critique: tempete || (!!u && u.role === 'citoyen' && c.quartiers.includes(u.quartier)) };
 }
 const actifsPour = (u) => docs.tous(COL).filter((m) => etatDe(m) === 'actif' && concerne(m, u)).sort((a, b) => b.debut.localeCompare(a.debut));
 

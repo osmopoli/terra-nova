@@ -237,7 +237,9 @@
     const hl = horsLigne(), inc = NT.horsLigne && NT.horsLigne.incident;
     const depuis = NT.horsLigne && NT.horsLigne.depuis;
     indic.dataset.etat = hl ? 'hors-ligne' : 'en-ligne';
+    const tp = hl && !inc && NT.tempete && NT.tempete.active();   // vague 22 (F104) : coupure expliquée par la tempête solaire
     indic.innerHTML = `<span class="v19-point" aria-hidden="true"></span><span>${E(hl ? (inc ? t('v19.incident') : t('v19.horsLigne')) : t('v19.enLigne'))}${hl && depuis ? ' · ' + E(t('v19.donneesDe', { d: quand(depuis) })) : ''}</span>`
+      + (tp ? ` <span class="tp-hors-ligne"><i class="ph-duotone ph-sun-horizon" aria-hidden="true"></i>${E(t('tp.horsLigne'))}</span>` : '')
       + (hl ? ` <a href="/essentiel?lang=${E(NT.i18n.langue)}">${E(t('v19.essentiel'))}</a>` : '')
       + (n ? ` <button type="button" class="lien-bouton v19-attente" data-v19-boite><i class="ph ph-tray-arrow-up" aria-hidden="true"></i>${E(t('v19.attente', { n }))}</button>` : '');
     const balise = document.getElementById('nt-balise');

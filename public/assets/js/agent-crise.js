@@ -45,6 +45,17 @@
       'cz.eQuartier': 'اختر حياً واحداً على الأقل.', 'cz.eRet': 'يجب أن تكون الساعة المتوقعة في المستقبل.' }
   });
 
+  /* vague 22 (F104) : modèle « Tempête solaire » (toute la ville, perturbations maintenant ou dans N minutes, durée prévue, « Fin de l'alerte ») */
+  NT.i18n.ajouter({
+    fr: { 'cz.m.tempete': 'Tempête solaire', 'cz.dans': 'Perturbations attendues dans (minutes, 0 = maintenant)', 'cz.duree': 'Durée prévue (minutes)', 'cz.tpAide': 'Toute la ville est concernée : habitants, visiteurs et agents reçoivent la fenêtre critique avec le compte à rebours, et leurs navigateurs enregistrent tout de suite les infos essentielles (disponibles sans réseau).',
+      'cz.fin': 'Fin de l’alerte', 'cz.confirmerFin': 'Confirmer : fin de l’alerte pour toute la ville', 'cz.perturb': 'Perturbations à partir de {h} · durée prévue {d} min', 'cz.eDuree': 'Indiquez une durée entre 15 et 2 880 minutes.' },
+    en: { 'cz.m.tempete': 'Solar storm', 'cz.dans': 'Disruption expected in (minutes, 0 = now)', 'cz.duree': 'Expected duration (minutes)', 'cz.tpAide': 'The whole city is concerned: residents, visitors and staff get the critical window with the countdown, and their browsers save the essential information right away (available offline).',
+      'cz.fin': 'End of alert', 'cz.confirmerFin': 'Confirm: end of alert for the whole city', 'cz.perturb': 'Disruption from {h} · expected duration {d} min', 'cz.eDuree': 'Enter a duration between 15 and 2,880 minutes.' },
+    es: { 'cz.m.tempete': 'Tormenta solar', 'cz.dans': 'Perturbaciones previstas dentro de (minutos, 0 = ahora)', 'cz.duree': 'Duración prevista (minutos)', 'cz.tpAide': 'Toda la ciudad está afectada: habitantes, visitantes y agentes reciben la ventana crítica con la cuenta atrás, y sus navegadores guardan enseguida la información esencial (disponible sin red).',
+      'cz.fin': 'Fin de la alerta', 'cz.confirmerFin': 'Confirmar: fin de la alerta para toda la ciudad', 'cz.perturb': 'Perturbaciones a partir de las {h} · duración prevista {d} min', 'cz.eDuree': 'Indique una duración entre 15 y 2880 minutos.' },
+    ar: { 'cz.m.tempete': 'عاصفة شمسية', 'cz.dans': 'اضطرابات متوقعة خلال (دقائق، 0 = الآن)', 'cz.duree': 'المدة المتوقعة (دقائق)', 'cz.tpAide': 'المدينة كلها معنية: السكان والزوار والأعوان يتلقون النافذة الحرجة مع العد التنازلي، وتحفظ متصفحاتهم المعلومات الأساسية فوراً (متاحة دون شبكة).',
+      'cz.fin': 'نهاية التنبيه', 'cz.confirmerFin': 'تأكيد: نهاية التنبيه لكل المدينة', 'cz.perturb': 'اضطرابات ابتداءً من {h} · المدة المتوقعة {d} د', 'cz.eDuree': 'أدخل مدة بين 15 و2880 دقيقة.' }
+  });
   // Modèles (texte en français ; les traductions EN / ES / AR, générées à partir du modèle avec le nom du quartier,
   // ne sont envoyées que si l'agent n'a pas modifié le texte du modèle)
   const QUARTIER = { fr: { Centre: 'Centre', Nord: 'Nord', Sud: 'Sud', Est: 'Est', Ouest: 'Ouest' }, en: { Centre: 'Centre', Nord: 'North', Sud: 'South', Est: 'East', Ouest: 'West' },
@@ -67,6 +78,24 @@
           actions: ['Desenchufe los aparatos sensibles (ordenador, televisión)', 'Mantenga cerrados el frigorífico y el congelador', 'Personas con asistencia respiratoria: llamen al 15', 'Use una linterna, no velas', 'Cargue su teléfono en el punto de acogida más cercano'] },
         ar: { titre: `انقطاع الكهرباء — ${SECTEUR.ar(q)}`, message: `انقطاع في الكهرباء يمس ${SECTEUR.ar(q)}. فرق المحطة تصلح الشبكة. المصاعد والإنارة العامة في المنطقة متوقفة.`,
           actions: ['افصل الأجهزة الحساسة (الحاسوب، التلفاز)', 'أبقِ الثلاجة والمجمد مغلقين', 'الأشخاص تحت التنفس الاصطناعي: اتصلوا بالرقم 15', 'استعمل مصباحاً يدوياً لا شمعة', 'اشحن هاتفك في أقرب نقطة استقبال'] }
+      })
+    },
+    // vague 22 (F104) : textes partagés avec la démonstration (src/modules/crise.js, TEMPETE)
+    'tempete-solaire': {
+      titre: () => 'Tempête solaire — communications perturbées',
+      message: () => 'Une tempête solaire arrive sur Terra Nova. Le téléphone, Internet et la radio des dômes peuvent être coupés pendant quelques heures. Vous n’êtes pas en danger : préparez-vous dès maintenant.',
+      actions: ['Enregistrez les infos essentielles maintenant : elles restent lisibles sans réseau', 'Notez sur papier les numéros d’urgence : 15, 17, 18, 112', 'Chargez votre téléphone et votre batterie de secours',
+        'N’appelez qu’en cas d’urgence : ne multipliez pas les appels', 'Suivez les consignes de la radio locale (Radio Dôme 98.4 FM)', 'Plus de réseau ? Restez calme, allez au point de rassemblement le plus proche si vous avez besoin d’aide'],
+      points: () => ['Centre — Dôme des Pionniers, salle polyvalente (ouvert 24 h/24)', 'Nord — Maison de quartier, arrêt Orion', 'Sud — Gymnase des Comètes', 'Est — Médiathèque de l’Est', 'Ouest — Halle des Serres'],
+      services: [],
+      alternative: 'Suivez la radio locale (Radio Dôme 98.4 FM) ; accueil aux points de rassemblement.',
+      traductions: () => ({
+        en: { titre: 'Solar storm — communications disrupted', message: 'A solar storm is reaching Terra Nova. Phone, Internet and dome radio may be cut for a few hours. You are not in danger: get ready now.',
+          actions: ['Save the essential information now: it stays readable without a network', 'Write the emergency numbers on paper: 15, 17, 18, 112', 'Charge your phone and power bank', 'Only call in an emergency: do not make repeated calls', 'Follow local radio instructions (Radio Dôme 98.4 FM)', 'No network? Stay calm, go to the nearest gathering point if you need help'] },
+        es: { titre: 'Tormenta solar — comunicaciones perturbadas', message: 'Una tormenta solar llega a Terra Nova. El teléfono, Internet y la radio de los domos pueden cortarse durante unas horas. No está en peligro: prepárese ahora.',
+          actions: ['Guarde ahora la información esencial: sigue legible sin red', 'Anote en papel los números de emergencia: 15, 17, 18, 112', 'Cargue su teléfono y su batería externa', 'Llame solo en caso de urgencia: no repita las llamadas', 'Siga las consignas de la radio local (Radio Dôme 98.4 FM)', '¿Sin red? Mantenga la calma, vaya al punto de encuentro más cercano si necesita ayuda'] },
+        ar: { titre: 'عاصفة شمسية — اضطراب الاتصالات', message: 'عاصفة شمسية تقترب من تيرا نوفا. قد ينقطع الهاتف والإنترنت وإذاعة القباب لبضع ساعات. أنت لست في خطر: استعد من الآن.',
+          actions: ['احفظ المعلومات الأساسية الآن: تبقى مقروءة دون شبكة', 'اكتب أرقام الطوارئ على ورق: 15، 17، 18، 112', 'اشحن هاتفك وبطاريتك الاحتياطية', 'لا تتصل إلا عند الطوارئ: لا تكرر المكالمات', 'اتبع تعليمات الإذاعة المحلية (راديو القبة 98.4 FM)', 'لا توجد شبكة؟ حافظ على هدوئك وتوجه إلى أقرب نقطة تجمع إذا احتجت إلى مساعدة'] }
       })
     },
     'crise-localisee': {
@@ -106,10 +135,14 @@
           <div class="cz-grille"><div class="cz-col">
           <fieldset><legend>${echap(t('cz.modele'))}</legend><div class="ag-niveaux">
             <label><input type="radio" name="cz-type" value="panne-electrique" checked><span><strong>${echap(t('cz.m.panne'))}</strong></span></label>
-            <label><input type="radio" name="cz-type" value="crise-localisee"><span><strong>${echap(t('cz.m.crise'))}</strong></span></label></div></fieldset>
-          <fieldset><legend>${echap(t('cz.quartiers'))}</legend><div class="cz-quartiers">${NT.QUARTIERS.map(q => `<label><input type="checkbox" name="cz-q" value="${q}"${q === 'Nord' ? ' checked' : ''}> ${echap(t('ao.quartier', { q }))}</label>`).join('')}</div>
+            <label><input type="radio" name="cz-type" value="crise-localisee"><span><strong>${echap(t('cz.m.crise'))}</strong></span></label>
+            <label><input type="radio" name="cz-type" value="tempete-solaire"><span><strong>${echap(t('cz.m.tempete'))}</strong></span></label></div></fieldset>
+          <div id="cz-tp" class="cz-tp" hidden><p class="doux">${echap(t('cz.tpAide'))}</p>
+            <div class="champ"><label for="cz-dans">${echap(t('cz.dans'))}</label><input id="cz-dans" type="number" min="0" max="1440" step="1" value="12" inputmode="numeric"></div>
+            <div class="champ"><label for="cz-duree">${echap(t('cz.duree'))}</label><input id="cz-duree" type="number" min="15" max="2880" step="15" value="120" inputmode="numeric" aria-describedby="cz-duree-err"><p class="erreur" id="cz-duree-err" hidden></p></div></div>
+          <fieldset id="cz-q-bloc"><legend>${echap(t('cz.quartiers'))}</legend><div class="cz-quartiers">${NT.QUARTIERS.map(q => `<label><input type="checkbox" name="cz-q" value="${q}"${q === 'Nord' ? ' checked' : ''}> ${echap(t('ao.quartier', { q }))}</label>`).join('')}</div>
             <p class="erreur" id="cz-q-err" hidden></p></fieldset>
-          <div class="champ"><label for="cz-ret">${echap(t('cz.ret'))}</label><input id="cz-ret" type="datetime-local" aria-describedby="cz-ret-aide cz-ret-err"><span class="aide" id="cz-ret-aide">${echap(t('cz.retAide'))}</span><p class="erreur" id="cz-ret-err" hidden></p></div>
+          <div class="champ" id="cz-ret-bloc"><label for="cz-ret">${echap(t('cz.ret'))}</label><input id="cz-ret" type="datetime-local" aria-describedby="cz-ret-aide cz-ret-err"><span class="aide" id="cz-ret-aide">${echap(t('cz.retAide'))}</span><p class="erreur" id="cz-ret-err" hidden></p></div>
           <div class="champ"><label for="cz-titre">${echap(t('cz.fTitre'))}</label><input id="cz-titre" maxlength="120" autocomplete="off"></div>
           <div class="champ"><label for="cz-message">${echap(t('cz.fMessage'))}</label><textarea id="cz-message" maxlength="1200"></textarea></div>
           </div><div class="cz-col">
@@ -134,6 +167,9 @@
       $('cz-titre').value = modele.titre; $('cz-message').value = modele.message; $('cz-actions').value = modele.actions;
       $('cz-points').value = m.points(q).join('\n'); $('cz-alt').value = m.alternative;
       racine.querySelectorAll('[name="cz-s"]').forEach(i => { i.checked = m.services.includes(i.value); });
+      const tp = type() === 'tempete-solaire';   // vague 22 : toute la ville, heure de fin calculée (début + durée)
+      $('cz-tp').hidden = !tp; $('cz-ret-bloc').hidden = tp; $('cz-q-bloc').disabled = tp;
+      if (tp) racine.querySelectorAll('[name="cz-q"]').forEach(i => { i.checked = true; });
     }
     $('cz-ret').value = local(dansDeuxHeures());
     appliquer();
@@ -146,12 +182,12 @@
       $('cz-liste').innerHTML = actives.length ? actives.map(m => `<li data-cz="${echap(m.id)}"><div class="ligne entre"><strong>${echap(m.id)} · ${echap(m.titre)}</strong>
           <span class="statut statut-en_cours"><i class="ph ph-lightning-slash" aria-hidden="true"></i>${echap(m.crise.quartiers.join(', '))}</span></div>
         <p class="doux cz-meta">${echap(t('cz.depuis', { d: NT.ui.dateHeure(m.debut) }))} · <strong>${echap(m.crise.retablissement ? t('cz.retEst', { h: heure(m.crise.retablissement) }) : '—')}</strong><br>
-          ${echap(t('cz.majLe', { d: NT.ui.dateHeure(m.crise.majLe) }))}${m.crise.progression ? ' · ' + echap(m.crise.progression) : ''}<br>${echap(t('cz.compris', { n: m.nbCompris, h: m.nbHabitants }))}</p>
+          ${echap(t('cz.majLe', { d: NT.ui.dateHeure(m.crise.majLe) }))}${m.crise.progression ? ' · ' + echap(m.crise.progression) : ''}${m.crise.type === 'tempete-solaire' ? '<br>' + echap(t('cz.perturb', { h: heure(m.crise.perturbations), d: m.crise.duree })) : ''}<br>${echap(t('cz.compris', { n: m.nbCompris, h: m.nbHabitants }))}</p>
         <details class="cz-maj"><summary class="btn">${echap(t('cz.maj'))}</summary>
           <div class="champ"><label for="cz-h-${echap(m.id)}">${echap(t('cz.nouvelleHeure'))}</label><input id="cz-h-${echap(m.id)}" type="datetime-local" value="${m.crise.retablissement ? local(new Date(m.crise.retablissement)) : ''}"></div>
           <div class="champ"><label for="cz-p-${echap(m.id)}">${echap(t('cz.avancement'))}</label><input id="cz-p-${echap(m.id)}" maxlength="300"></div>
           <button type="button" class="btn btn-primaire" data-cz-maj="${echap(m.id)}"><i class="ph ph-paper-plane-tilt" aria-hidden="true"></i>${echap(t('cz.envoyerMaj'))}</button></details>
-        <button type="button" class="btn cz-retablir" data-cz-retablir="${echap(m.id)}"><i class="ph ph-check-circle" aria-hidden="true"></i>${echap(t('cz.retablir'))}</button></li>`).join('')
+        <button type="button" class="btn cz-retablir" data-cz-retablir="${echap(m.id)}"${m.crise.type === 'tempete-solaire' ? ' data-cz-fin' : ''}><i class="ph ph-check-circle" aria-hidden="true"></i>${echap(t(m.crise.type === 'tempete-solaire' ? 'cz.fin' : 'cz.retablir'))}</button></li>`).join('')
         : `<li class="doux">${echap(t('cz.aucune'))}</li>`;
       $('cz-fini').innerHTML = finies.map(m => `<li><strong>${echap(m.id)} · ${echap(m.titre)}</strong><p class="doux cz-meta">${echap(t('cz.retablieLe', { d: NT.ui.dateHeure(m.crise.retablieLe || m.crise.majLe) }))}</p></li>`).join('') || `<li class="doux">—</li>`;
     }
@@ -159,14 +195,17 @@
 
     $('form-crise').addEventListener('submit', ev => {
       ev.preventDefault();
-      const q = quartiers(), ret = new Date($('cz-ret').value).getTime();
+      const tp = type() === 'tempete-solaire', duree = Number($('cz-duree').value);   // vague 22
+      if (tp && !(duree >= 15 && duree <= 2880)) { $('cz-duree-err').hidden = false; $('cz-duree-err').textContent = t('cz.eDuree'); $('cz-duree').focus(); return; }
+      $('cz-duree-err').hidden = true;
+      const q = tp ? NT.QUARTIERS.slice() : quartiers(), ret = tp ? NaN : new Date($('cz-ret').value).getTime();
       $('cz-q-err').hidden = q.length > 0; $('cz-q-err').textContent = q.length ? '' : t('cz.eQuartier');
-      const retOk = !$('cz-ret').value || ret > Date.now();
+      const retOk = tp || !$('cz-ret').value || ret > Date.now();
       $('cz-ret-err').hidden = retOk; $('cz-ret-err').textContent = retOk ? '' : t('cz.eRet');
       if (!q.length) { racine.querySelector('[name="cz-q"]').focus(); return; }
       if (!retOk) { $('cz-ret').focus(); return; }
       const inchange = modele && $('cz-titre').value === modele.titre && $('cz-message').value === modele.message && $('cz-actions').value === modele.actions;
-      const r = NT.api('POST', '/api/crises', { type: type(), quartiers: q, retablissement: $('cz-ret').value ? new Date(ret).toISOString() : '',
+      const r = NT.api('POST', '/api/crises', { type: type(), quartiers: q, retablissement: !tp && $('cz-ret').value ? new Date(ret).toISOString() : '', dansMinutes: tp ? Number($('cz-dans').value) || 0 : 0, duree: tp ? duree : 0,
         titre: $('cz-titre').value, message: $('cz-message').value, actions: lignes($('cz-actions').value), points: lignes($('cz-points').value),
         services: [...racine.querySelectorAll('[name="cz-s"]:checked')].map(i => i.value), alternative: $('cz-alt').value, traductions: inchange ? modele.traductions : {} });
       if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger'); return; }
@@ -189,7 +228,7 @@
       const br = ev.target.closest('[data-cz-retablir]');
       if (!br) return;
       // confirmation en deux temps, sans fenêtre bloquante
-      if (!br.dataset.confirme) { br.dataset.confirme = '1'; br.classList.add('btn-primaire'); br.lastChild.textContent = t('cz.confirmer'); return; }
+      if (!br.dataset.confirme) { br.dataset.confirme = '1'; br.classList.add('btn-primaire'); br.lastChild.textContent = t(br.hasAttribute('data-cz-fin') ? 'cz.confirmerFin' : 'cz.confirmer'); return; }
       const r = NT.api('POST', '/api/crises/' + encodeURIComponent(br.dataset.czRetablir) + '/retablir', {});
       if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger'); return; }
       NT.ui.toast(t('cz.retabliOk', { id: br.dataset.czRetablir }), 'success'); liste();
