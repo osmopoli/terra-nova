@@ -12,6 +12,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const zlib = require('node:zlib');
 const crypto = require('node:crypto');
+const { correspond } = require('./etag-api');   // If-None-Match : liste d'empreintes, préfixe W/ toléré
 
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.json': 'application/json; charset=utf-8', '.txt': 'text/plain; charset=utf-8' };
 const IMAGES = { '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.ico': 'image/x-icon', '.woff2': 'font/woff2' };
@@ -100,7 +101,7 @@ function statique(racine) {
       const version = empreinte(brut).slice(0, 10);
       let deps;
       if (ext === '.html' || ext === '.js' || ext === '.css') { const r = versionner(brut.toString('utf8'), path.dirname(fichier)); brut = Buffer.from(r.sortie, 'utf8'); deps = r.deps; }
-      e = { mtime: st.mtimeMs, brut, version, deps, etag: '"' + empreinte(brut) + '"' };
+      e = { mtime: st.mtimeMs, brut, version, deps, empreinte: empreinte(brut) };
       if (TYPES[ext] && brut.length > 1024) {
         e.br = zlib.brotliCompressSync(brut, { params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 10 } });
         e.gz = zlib.gzipSync(brut, { level: 9 });
@@ -108,7 +109,6 @@ function statique(racine) {
       memoire.set(fichier, e);
     }
     res.setHeader('Content-Type', type);
-    res.setHeader('ETag', e.etag);
     res.setHeader('Vary', 'Accept-Encoding');
     // fichier demandé avec sa version exacte : son contenu ne changera jamais à cette adresse
     const versionne = VERSIONNABLES.has(ext) && req.query && req.query.v === versionDe(fichier);
@@ -116,11 +116,16 @@ function statique(racine) {
     // Brotli étiquetée gzip : le navigateur recevait des octets illisibles (page sans styles ni scripts).
     res.setHeader('Cache-Control', versionne ? 'private, max-age=31536000, immutable'
       : TYPES[ext] ? 'no-cache' : 'public, max-age=3600, stale-while-revalidate=604800');
-    if (req.headers['if-none-match'] === e.etag) { res.statusCode = 304; return res.end(); }
+    // Encodage choisi AVANT l'empreinte : un corps Brotli, gzip ou brut n'a pas la même empreinte (-br, -gz, -id). Un cache partagé
+    // (proxy de l'hébergeur) qui revalide avec l'empreinte d'un autre encodage reçoit 200 et le bon corps, jamais 304 pour des
+    // octets qu'il ne sait pas lire (page sans styles sur HODI).
     const accepte = String(req.headers['accept-encoding'] || '');
-    let corps = e.brut;
-    if (e.br && /\bbr\b/.test(accepte)) { corps = e.br; res.setHeader('Content-Encoding', 'br'); }
-    else if (e.gz && /\bgzip\b/.test(accepte)) { corps = e.gz; res.setHeader('Content-Encoding', 'gzip'); }
+    let corps = e.brut, enc = 'id';
+    if (e.br && /\bbr\b/.test(accepte)) { corps = e.br; enc = 'br'; res.setHeader('Content-Encoding', 'br'); }
+    else if (e.gz && /\bgzip\b/.test(accepte)) { corps = e.gz; enc = 'gz'; res.setHeader('Content-Encoding', 'gzip'); }
+    const etag = `"${e.empreinte}-${enc}"`;
+    res.setHeader('ETag', etag);
+    if (correspond(req.headers['if-none-match'], etag)) { res.statusCode = 304; return res.end(); }
     res.setHeader('Content-Length', corps.length);
     res.end(req.method === 'HEAD' ? undefined : corps);
   };
