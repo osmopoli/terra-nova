@@ -3,7 +3,7 @@
   'use strict';
   const NT = window.NT;
   NT.i18n.ajouter({
-    fr: {},
+    fr: { 'sob.titre': 'Sobriété numérique' },
     en: {
       'sob.titre': 'Digital sobriety', 'sob.sous': 'A website uses energy every time it is visited. Here is what Terra Nova weighs, what that means in CO2, and what we did to make it lighter without removing the essentials.',
       'sob.chiffres': 'The home page in 4 numbers', 'sob.chiffresD': 'For a first visit, with nothing stored in your browser.',
