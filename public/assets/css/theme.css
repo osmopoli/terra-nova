@@ -1,6 +1,10 @@
 /* Terra Nova — thème « Future Teal » (tweakcn / shadcn, mode sombre) adapté :
    fond sarcelle profond, primaire sarcelle, police Inter, rayon 0.5rem, ombres douces. Icônes : Phosphor duotone.
    Toutes les tailles en rem : le panneau d'accessibilité agrandit tout via html{font-size}. */
+/* Repli calé sur les métriques d'Inter : le texte ne bouge pas quand Inter arrive (CLS).
+   Latin seulement (comme Inter) : l'arabe garde la police du système. */
+@font-face{ font-family:"Inter repli"; src:local("Arial"),local("Arimo"),local("Liberation Sans"); ascent-override:90.44%; descent-override:22.52%; line-gap-override:0%; size-adjust:107.12%;
+  unicode-range:U+0000-024F, U+1E00-1EFF, U+2000-206F, U+20AC, U+2122, U+2190-2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 :root{
   color-scheme:dark;
   --nuit:oklch(0.1396 0.0155 195.5244);        /* background */
@@ -23,8 +27,8 @@
   --corail:oklch(0.6593 0.2097 25.0107);       /* destructive */
   --soleil:oklch(0.8614 0.1165 74.2273);       /* chart-4 */
   --calme:oklch(0.6700 0.1336 230.0356);       /* chart-2 : « traité » en bleu, distinct du primaire */
-  --titre:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --police:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --titre:"Inter","Inter repli",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --police:"Inter","Inter repli",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"JetBrains Mono",ui-monospace,monospace;
   /* Rayons par rôle : contrôles 8 px, cartes 14 px, grandes surfaces 24 px, puces en pilule */
   --r-s:0.5rem; --r:0.625rem; --r-l:0.875rem; --r-xl:1.5rem;
@@ -118,6 +122,8 @@ p{ margin:0 0 1em; }
 .evitement{ position:absolute; left:1rem; top:-5rem; z-index:1000; background:var(--iono); color:var(--sur-iono); padding:.7rem 1.1rem; border-radius:12px; font-weight:700; text-decoration:none; }
 .evitement:focus{ top:1rem; }
 i.ph-duotone, i.ph{ line-height:1; }
+/* Phosphor se charge sans bloquer le rendu : la place de chaque icône (1em) est réservée d'avance, sans décalage (CLS) */
+:where(i.ph, i.ph-duotone)::before{ content:""; display:inline-block; width:1em; }
 
 /* ---------- Mise en page ---------- */
 .conteneur{ width:min(100% - 2rem, var(--largeur)); margin-inline:auto; }
@@ -343,6 +349,8 @@ html.grand .barre-pouce span{ font-size:.75rem; }
 [dir="rtl"] .capsule.deux-niveaux .nav-principale.deborde{ -webkit-mask-image:linear-gradient(270deg, #000 calc(100% - 3rem), transparent); mask-image:linear-gradient(270deg, #000 calc(100% - 3rem), transparent); }
 /* Avant le chargement de Shoelace : le menu du compte reste caché (évite un éclair de liens à plat dans l'en-tête) */
 sl-dropdown:not(:defined) > sl-menu{ display:none; }
+/* Tiroir et fenêtres sont fermés au départ : leur contenu ne s'affiche pas à plat avant Shoelace (CLS) */
+sl-drawer:not(:defined), sl-dialog:not(:defined){ display:none; }
 sl-button:not(:defined){ display:inline-flex; align-items:center; gap:.35rem; height:var(--h-outil, 2.5rem); padding:0 .9rem; border:1px solid var(--trait-2); border-radius:var(--r); font-size:.88rem; font-weight:600; }
 /* ---------- F59 : mode connexion lente ----------
    Polices du système (aucun téléchargement), pas d'animation ni de flou coûteux, images décoratives remplacées par un aplat. */
