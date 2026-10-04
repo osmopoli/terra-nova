@@ -23,7 +23,8 @@
       'sou.invit': 'To support a report, you must be logged in with a resident account.', 'sou.seConnecter': 'Log in', 'sou.creer': 'Create an account',
       'sou.personnel': 'Municipal staff cannot support reports: this feature is for residents.', 'sou.propre': 'You filed this report: it already counts. Follow it in your space.',
       'sou.suivre': 'Follow my report', 'sou.erreur': 'Your support could not be saved. Please try again.', 'sou.depuis': 'Reported {d}',
-      'sou.service': 'Service'
+      'sou.service': 'Service',
+      'sou.q.Centre': 'Centre', 'sou.q.Nord': 'North', 'sou.q.Sud': 'South', 'sou.q.Est': 'East', 'sou.q.Ouest': 'West'
     },
     es: {
       'sou.ariane': 'Apoyar un aviso',
@@ -43,7 +44,8 @@
       'sou.invit': 'Para apoyar un aviso, debe iniciar sesión con una cuenta de vecino.', 'sou.seConnecter': 'Iniciar sesión', 'sou.creer': 'Crear una cuenta',
       'sou.personnel': 'El personal municipal no puede apoyar avisos: esta función es para los vecinos.', 'sou.propre': 'Usted presentó este aviso: ya cuenta. Sígalo en su espacio.',
       'sou.suivre': 'Seguir mi aviso', 'sou.erreur': 'No se ha podido guardar su apoyo. Vuelva a intentarlo.', 'sou.depuis': 'Señalado {d}',
-      'sou.service': 'Servicio'
+      'sou.service': 'Servicio',
+      'sou.q.Centre': 'Centro', 'sou.q.Nord': 'Norte', 'sou.q.Sud': 'Sur', 'sou.q.Est': 'Este', 'sou.q.Ouest': 'Oeste'
     },
     ar: {
       'sou.ariane': 'دعم بلاغ',
@@ -63,12 +65,14 @@
       'sou.invit': 'لدعم بلاغ، يجب تسجيل الدخول بحساب ساكن.', 'sou.seConnecter': 'تسجيل الدخول', 'sou.creer': 'إنشاء حساب',
       'sou.personnel': 'لا يمكن للموظفين البلديين دعم البلاغات: هذه الميزة مخصصة للسكان.', 'sou.propre': 'أنت من قدّم هذا البلاغ: فهو محسوب بالفعل. تابعه في فضائك.',
       'sou.suivre': 'متابعة بلاغي', 'sou.erreur': 'تعذر حفظ دعمك. حاول مجدداً.', 'sou.depuis': 'أُبلغ عنه {d}',
-      'sou.service': 'المصلحة'
+      'sou.service': 'المصلحة',
+      'sou.q.Centre': 'الوسط', 'sou.q.Nord': 'الشمال', 'sou.q.Sud': 'الجنوب', 'sou.q.Est': 'الشرق', 'sou.q.Ouest': 'الغرب'
     }
   });
   const L = (cle, fr, vars) => NT.t(cle, vars, fr);
   const E = s => NT.ui.echap(s);
   const $ = (sel, r) => (r || document).querySelector(sel);
+  const quartierLbl = q => L('sou.q.' + q, q);   // nom du quartier traduit, valeur brute en repli
 
   NT.pret(() => {
     const u = NT.auth.utilisateur();
@@ -117,7 +121,7 @@
           ${NT.ui.statut(d.statut)}</span></div>
         <p class="sig-meta">
           ${d.lieu ? `<span><i class="ph ph-map-pin" aria-hidden="true"></i>${E(d.lieu)}</span>` : ''}
-          ${d.quartier ? `<span><i class="ph ph-buildings" aria-hidden="true"></i>${E(d.quartier)}</span>` : ''}
+          ${d.quartier ? `<span><i class="ph ph-buildings" aria-hidden="true"></i>${E(quartierLbl(d.quartier))}</span>` : ''}
           ${service ? `<span><i class="ph ph-briefcase" aria-hidden="true"></i>${E(service)}</span>` : ''}
           <span><i class="ph ph-clock" aria-hidden="true"></i>${E(L('sou.depuis', 'Signalé {d}', { d: NT.ui.depuis(d.cree) }))}</span></p>
         ${d.message ? `<p class="sig-msg">${E(d.message)}</p>` : ''}
@@ -145,7 +149,7 @@
     // Filtres
     charger();
     const qs = Array.from(new Set(NT.QUARTIERS.concat(donnees.map(d => d.quartier)))).filter(Boolean);
-    $('#f-quartier').innerHTML = `<option value="">${E(L('sou.tous', 'Tous les quartiers'))}</option>` + qs.map(q => `<option>${E(q)}</option>`).join('');
+    $('#f-quartier').innerHTML = `<option value="">${E(L('sou.tous', 'Tous les quartiers'))}</option>` + qs.map(q => `<option value="${E(q)}">${E(quartierLbl(q))}</option>`).join('');
     $('#f-quartier').addEventListener('change', () => { cible = ''; rendre(); });
     $('#f-q').addEventListener('input', () => { cible = ''; });
     tri = NT.sujets.monter({ conteneur: $('#filtres'), champRecherche: $('#f-q'), compte: $('#resultat'), triDefaut: 'soutenus', elements: () => donnees,
