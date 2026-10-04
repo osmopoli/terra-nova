@@ -164,6 +164,7 @@
       if (n !== jetonRecherche) return null;
       zone.hidden = false;
       zone.innerHTML = rendreRecherche(d, opts);
+      // seule annonce pour le lecteur d'écran : la zone n'est pas aria-live (sinon tout serait lu deux fois)
       NT.ui.annoncer(d.total ? t('or.nbRes', { n: d.total }) : t('or.aucun', { q: d.q }));
       return d;
     }).catch(() => { if (n === jetonRecherche) { zone.hidden = false; zone.innerHTML = `<p class="or-repli">${E(t('or.erreur'))}</p>` + repliHtml(q, []); } return null; });
@@ -187,7 +188,7 @@
           <div class="or-champ"><i class="ph ph-magnifying-glass" aria-hidden="true"></i><input id="or-q" name="q" type="search" autocomplete="off" enterkeyhint="search" maxlength="200" placeholder="${E(t('or.recherchePh'))}">
             <button class="btn btn-primaire" type="submit">${E(t('or.chercher'))}</button></div>
         </form>
-        <div id="or-resultats" aria-live="polite"></div>
+        <div id="or-resultats"></div>
       </section>
       <section class="or-panneau" role="tabpanel" id="or-p-assistant" aria-labelledby="or-t-assistant" hidden>
         <p class="or-honnete"><i class="ph-duotone ph-info" aria-hidden="true"></i><span>${E(t('or.honnete'))}</span></p>
@@ -223,7 +224,7 @@
     const ta = dlg.querySelector('#or-message');
     dlg.querySelector('#or-form-message').addEventListener('submit', (e) => { e.preventDefault(); const v = ta.value.trim(); if (v) { ta.value = ''; envoyer(v); } });
     ta.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); dlg.querySelector('#or-form-message').requestSubmit(); } });
-    dlg.querySelector('[data-or-effacer]').addEventListener('click', () => { conv = { msgs: [], precedent: '' }; sauver(); rendreFil(); ta.focus(); });
+    dlg.querySelector('[data-or-effacer]').addEventListener('click', () => { conv = { msgs: [], precedent: '' }; sauver(); rendreFil(true); ta.focus(); });
     // délégation : liens, puces, suggestions orthographiques, avis
     dlg.addEventListener('click', clicDelegue);
   }
@@ -275,8 +276,10 @@
   const sauver = () => { try { conv.msgs = conv.msgs.slice(-30); sessionStorage.setItem(CLE, JSON.stringify(conv)); } catch { /* stockage indisponible : la conversation reste à l'écran */ } };
   const bulleMoi = (txt) => `<li class="or-msg or-moi"><span class="sr-only">${E(t('or.vous'))} : </span>${E(txt)}</li>`;
   const qui = () => `<span class="or-qui"><i class="ph-duotone ph-compass" aria-hidden="true"></i>${E(t('or.assistant'))}</span>`;
-  function rendreFil() {
+  // Le fil est un journal (role="log") : on ne le reconstruit qu'une fois (ou après « Effacer »), sinon tout serait relu à chaque ouverture
+  function rendreFil(forcer) {
     const fil = dlg.querySelector('#or-fil');
+    if (!forcer && fil.children.length) { fil.lastElementChild.scrollIntoView({ block: 'nearest' }); return; }
     fil.innerHTML = `<li class="or-msg or-assistant">${qui()}<p>${E(t('or.bienvenue'))}</p></li>` + conv.msgs.map((m) => (m.de === 'moi' ? bulleMoi(m.texte) : `<li class="or-msg or-assistant">${qui()}${reponseHtml(m.r, m.texte)}</li>`)).join('');
     fil.lastElementChild.scrollIntoView({ block: 'nearest' });
   }
@@ -364,9 +367,9 @@
     NT.ui.annoncer(t(b.dataset.orAvis === 'non' ? 'or.nonUtile' : 'or.merci'));
   }
 
-  /* ---------- En-tête : bouton « Rechercher » (ouvre la fenêtre ; « / » ou Ctrl + K au clavier) ---------- */
+  /* ---------- En-tête : bouton « Rechercher » (ouvre la fenêtre ; « / » au clavier — Ctrl/⌘ + K est laissé au navigateur) ---------- */
   const outils = document.querySelector('.entete .outils-entete');
-  if (outils && !outils.querySelector('.or-entete')) {
+  if (outils && !document.querySelector('.entete .or-entete')) {   // vague 19 : d'habitude déjà posé par ui.js (orientation.js chargé à la demande)
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'or-entete'; b.id = 'nt-btn-recherche'; b.title = t('or.boutonTitre');
     b.setAttribute('aria-haspopup', 'dialog');
@@ -381,7 +384,7 @@
   }
   document.addEventListener('keydown', (e) => {
     const saisie = e.target.closest && e.target.closest('input, textarea, select, [contenteditable="true"]');
-    if ((e.key === '/' && !saisie && !e.ctrlKey && !e.altKey && !e.metaKey) || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k')) { e.preventDefault(); ouvrir('recherche'); }
+    if (e.key === '/' && !saisie && !e.ctrlKey && !e.altKey && !e.metaKey) { e.preventDefault(); ouvrir('recherche'); }
   });
 
   /* ---------- Accueil : la recherche devient tolérante, résultats groupés sous le champ ---------- */
@@ -390,7 +393,7 @@
     const champ = formAccueil.querySelector('input[type="search"]');
     formAccueil.setAttribute('action', 'recherche.html');
     const zone = document.createElement('div');
-    zone.className = 'or-suggestions'; zone.id = 'or-accueil-res'; zone.hidden = true; zone.dataset.orChamp = champ.id; zone.setAttribute('aria-live', 'polite');
+    zone.className = 'or-suggestions'; zone.id = 'or-accueil-res'; zone.hidden = true; zone.dataset.orChamp = champ.id;
     formAccueil.after(zone);
     champ.setAttribute('aria-controls', zone.id);
     let m = null;

@@ -27,7 +27,7 @@
   --corail:oklch(0.6593 0.2097 25.0107);       /* destructive */
   --soleil:oklch(0.8614 0.1165 74.2273);       /* chart-4 */
   --calme:oklch(0.6700 0.1336 230.0356);       /* chart-2 : « traité » en bleu, distinct du primaire */
-  --titre:"Inter","Inter repli",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --titre:"Inter","Inter repli",system-ui,-apple-system,"Segoe UI",sans-serif;   /* « Inter repli » : vague 19 (F96), pas de saut quand Inter arrive */
   --police:"Inter","Inter repli",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"JetBrains Mono",ui-monospace,monospace;
   /* Rayons par rôle : contrôles 8 px, cartes 14 px, grandes surfaces 24 px, puces en pilule */
@@ -397,6 +397,15 @@ html.econome .liste-sou > li,html.econome .liste-activite > li,html.econome .lis
 .balise.officiel{ border-color:var(--iono); background:oklch(0.7040 0.1400 182.5 / .12); }
 .balise.officiel .feu{ background:var(--iono); box-shadow:0 0 10px var(--iono), 0 0 22px var(--lueur); }
 .balise.officiel .feu::after{ content:""; position:absolute; inset:-4px; border-radius:50%; border:2px solid var(--iono); animation:onde 2.4s var(--ease-out) infinite; }
+/* Croix de la carte épinglée (accueil, annonces) : masque le message, qui reste dans le tiroir « Alertes » */
+.off-epingle{ position:relative; padding-inline-end:3.25rem; transition:opacity 160ms var(--ease-out), transform 160ms var(--ease-out); }
+.off-masquer{ position:absolute; top:.45rem; inset-inline-end:.45rem; display:grid; place-items:center; width:2.75rem; height:2.75rem; border:0; border-radius:var(--r);
+  background:transparent; color:var(--brume); cursor:pointer; transition:background-color 160ms ease, color 160ms ease, transform 160ms var(--ease-out); }
+.off-masquer i{ font-size:1.15rem; }
+.off-masquer:active{ transform:scale(.94); }
+@media (hover:hover) and (pointer:fine){ .off-masquer:hover{ background:var(--surface-2); color:var(--givre); } }
+.off-masquer:focus-visible{ outline:2px solid var(--iono); outline-offset:1px; color:var(--givre); }
+.off-epingle.off-sortie{ opacity:0; transform:translateY(-.5rem); }
 .off-carte{ border:1px solid var(--iono); border-inline-start-width:5px; border-radius:var(--r); padding:1rem 1.1rem; margin-bottom:1rem; background:oklch(0.7040 0.1400 182.5 / .06); }
 .off-carte.off-lu{ border-color:var(--trait-2); border-inline-start-color:var(--iono); background:var(--verre); }
 .off-sceau{ display:flex; align-items:center; gap:.65rem; margin-bottom:.7rem; }
@@ -504,6 +513,51 @@ sl-drawer::part(header), sl-dialog::part(header){ border-bottom:1px solid var(--
 sl-drawer::part(title), sl-dialog::part(title){ font-weight:650; letter-spacing:-.015em; font-size:1.125rem; }
 sl-dialog::part(panel){ background:oklch(0.1750 0.0210 203); border:1px solid oklch(1 0 0 / .08); border-radius:var(--r-xl); box-shadow:var(--ombre-flottante), var(--liseré); }
 
+/* ---------- Vague 19 (F95, F96) : règles appliquées dès le premier affichage (aucun décalage de mise en page) ---------- */
+/* Bouton « Rechercher » de l'en-tête, posé par ui.js avant le chargement (à la demande) d'orientation.js : mêmes règles qu'orientation.css */
+.or-entete{ display:inline-flex; align-items:center; gap:.45rem; height:var(--h-outil); padding:0 .9rem; border-radius:99px; border:1px solid var(--trait-2);
+  background:transparent; color:var(--givre); font:inherit; font-size:var(--t-s); font-weight:600; cursor:pointer; transition:border-color .2s var(--ease-out), background .2s var(--ease-out); }
+.or-entete i{ font-size:1.15rem; }
+.or-entete:active{ transform:scale(.97); }
+@media (hover:hover){ .or-entete:hover{ border-color:var(--iono); background:oklch(0.7040 0.1400 182.5 / .08); } }
+.nav-principale .or-entete{ border:0; border-radius:var(--r); color:var(--givre); padding:0 .85rem; flex:none; background:oklch(0.7040 0.1400 182.5 / .1); }
+@media (max-width:900px){ .outils-entete .or-entete .or-entete-txt{ position:absolute!important; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; } .outils-entete .or-entete{ width:var(--h-outil); padding:0; justify-content:center; } }
+/* L'essentiel d'abord (html.essentiel-dabord, posé par store.js : petit écran, réseau modeste, économiseur de données, mode connexion lente).
+   Sections secondaires : titre visible, contenu replié derrière « Afficher plus » ; la place du bouton est réservée avant son arrivée. */
+html.essentiel-dabord [data-secondaire]:not(.deplie) > :not(:first-child):not(h2):not(h3):not(.titre-section):not(.v19-plus){ display:none!important; }
+html.essentiel-dabord [data-secondaire]:not(.deplie) .titre-section > :not(:first-child){ display:none; }
+html.essentiel-dabord [data-secondaire]:not(.v19-pret)::after{ content:""; display:block; height:2.75rem; margin-top:.5rem; }
+html.essentiel-dabord [data-liste-longue="3"]:not(.deplie) > :nth-child(n+4),
+html.essentiel-dabord [data-liste-longue="4"]:not(.deplie) > :nth-child(n+5),
+html.essentiel-dabord [data-liste-longue="5"]:not(.deplie) > :nth-child(n+6){ display:none!important; }
+.v19-plus{ display:none; }
+html.essentiel-dabord .v19-plus{ display:inline-flex; align-items:center; gap:.4rem; min-height:2.75rem; margin-top:.5rem; padding:.4rem .9rem; border:1px solid var(--trait-2); border-radius:99px;
+  background:transparent; color:var(--givre); font:inherit; font-size:var(--t-s); font-weight:600; cursor:pointer; }
+html.essentiel-dabord .v19-plus i{ color:var(--iono); }
+/* Image décorative du hublot : pas téléchargée (même règle que le mode connexion lente) ; plan de la carte affiché au toucher */
+html.essentiel-dabord .hublot-vitre img{ display:none; }
+html.essentiel-dabord .hublot-vitre{ background:radial-gradient(120% 90% at 30% 20%, oklch(0.45 0.08 190 / .55), transparent 60%), radial-gradient(80% 70% at 80% 90%, oklch(0.5 0.12 297 / .35), transparent 70%), var(--nuit-2); }
+html.essentiel-dabord .cm-colonne-carte:not(.carte-ouverte) :is(.cm-defile, .cm-info, .cm-saut),
+html.essentiel-dabord .cm-colonne-carte:not(.carte-ouverte) > .cm-legende{ display:none!important; }
+html.essentiel-dabord .cm-colonne-carte:not(.v19-pret) .cm-cadre::after{ content:""; display:block; height:3.5rem; }
+.v19-carte{ margin-top:.75rem; }
+/* Menu du compte natif (remplace sl-dropdown) : même allure que l'ancien bouton */
+.menu-compte{ position:relative; }
+.btn-compte{ display:inline-flex; align-items:center; gap:.3rem; height:var(--h-outil); padding:0 .75rem; border-radius:var(--r); border:1px solid var(--trait-2); background:transparent; color:var(--givre); font:inherit; font-size:.88rem; font-weight:600; cursor:pointer; white-space:nowrap; }
+.btn-compte i{ font-size:.85rem; color:var(--brume); }
+@media (hover:hover){ .btn-compte:hover{ border-color:var(--iono); background:oklch(0.7040 0.1400 182.5 / .08); } }
+.menu-compte-liste{ position:absolute; inset-inline-end:0; top:calc(100% + .4rem); z-index:70; min-width:12rem; margin:0; padding:.35rem; list-style:none; background:oklch(0.1750 0.0210 203); border:1px solid var(--trait-2); border-radius:var(--r-l); box-shadow:var(--ombre-flottante); }
+.menu-compte-liste a, .menu-compte-liste button{ display:flex; align-items:center; width:100%; min-height:2.5rem; padding:.4rem .75rem; border:0; border-radius:var(--r-s); background:transparent; color:var(--givre); font:inherit; font-size:var(--t-s); text-decoration:none; text-align:start; cursor:pointer; }
+.menu-compte-liste a:hover, .menu-compte-liste button:hover, .menu-compte-liste a:focus-visible, .menu-compte-liste button:focus-visible{ background:oklch(0.7040 0.1400 182.5 / .1); }
+.menu-compte-sep{ border-top:1px solid var(--trait); margin-top:.3rem; padding-top:.3rem; }
+/* Pas de décalage quand la police Inter arrive : police de repli locale aux mêmes proportions qu'Inter (Arial ajustée) */
+@font-face{ font-family:"Inter repli"; src:local("Arial"), local("Helvetica Neue"), local("Helvetica"); ascent-override:90.2%; descent-override:22.48%; line-gap-override:0%; size-adjust:107.4%; }
+/* Le pied de page commence sous la ligne de flottaison : il ne « saute » plus quand une liste se remplit après le chargement */
+body:not(.simple) main{ min-height:100svh; }
+/* Contenu affiché d'un bloc, en-tête compris (posé par ui.js) : rien ne glisse sous l'en-tête au premier affichage.
+   Filet de sécurité : visible au bout de 2,5 s même si un script ne se charge pas. */
+body:not(.affiche):not(.simple) #contenu{ visibility:hidden; animation:v19-montrer 0s 2.5s forwards; }
+@keyframes v19-montrer{ to{ visibility:visible; } }
 /* Tiroir des notifications : croix pour supprimer */
 .notifs{ list-style:none; margin:0; padding:0; }
 .notif{ padding:.85rem 0; border-bottom:1px solid var(--trait); overflow:hidden; transition:opacity 180ms ease, transform 220ms var(--ease-out), height 240ms var(--ease-out), padding 240ms var(--ease-out); }

@@ -35,3 +35,34 @@ html.affluence .non-essentiel{ opacity:.6; }
 @media (hover:hover) and (pointer:fine){ .chip-sujet:hover{ border-color:var(--iono); } }
 .sujets-compte{ margin:.6rem 0 0; }
 .filtres-sou .sujets-outils{ grid-column:1 / -1; }   /* F79 (soutenir) : tri et puces de sujet sur toute la largeur */
+
+/* ---------- Vague 19 (F93) : en ligne / hors connexion, boîte d'envoi, note de copie (jamais de bandeau) ---------- */
+.pied .pied-reseau{ grid-column:1 / -1; display:flex; flex-wrap:wrap; align-items:center; gap:.3rem .6rem; margin:0; font-size:var(--t-xs); color:var(--brume); }
+.pied-reseau .v19-point{ width:.55rem; height:.55rem; border-radius:50%; background:var(--iono); flex:none; }
+.pied-reseau[data-etat="hors-ligne"]{ color:var(--givre); }
+.pied-reseau[data-etat="hors-ligne"] .v19-point{ background:transparent; border:2px solid var(--soleil); }
+.pied-reseau a{ color:var(--iono); }
+.pied-reseau .v19-attente{ display:inline-flex; align-items:center; gap:.3rem; font-size:inherit; color:var(--givre); font-weight:600; }
+.balise.hors-ligne .feu{ background:var(--soleil); box-shadow:none; animation:none; }
+.v19-note{ margin:0 0 1rem; padding:.65rem .9rem; border:1px solid var(--trait-2); border-inline-start:4px solid var(--soleil); border-radius:var(--r); background:var(--verre); font-size:var(--t-s); }
+.v19-note p{ margin:0; }
+.v19-note i{ color:var(--soleil); }
+.v19-note details, .v19-quoi{ margin-top:.4rem; }
+.v19-note summary, .v19-quoi summary{ cursor:pointer; font-weight:600; min-height:2.25rem; display:flex; align-items:center; color:var(--iono); }
+.v19-ok{ list-style:none; margin:.4rem 0; padding:0; display:grid; gap:.3rem; }
+.v19-ok li{ display:flex; gap:.4rem; align-items:flex-start; }
+.v19-ok i{ color:var(--iono); margin-top:.2rem; }
+.v19-note-boite{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .75rem; margin:1rem 0 0; padding:.7rem .9rem; border:1px solid var(--calme); border-radius:var(--r); background:color-mix(in oklch, var(--calme) 7%, transparent); font-size:.92rem; }
+.v19-note-boite p{ margin:0; flex:1 1 16rem; }
+.v19-note-boite i{ color:var(--calme); font-size:1.2rem; flex:none; }
+.v19-note-boite .lien-bouton, .v19-boite .lien-bouton, .v19-note .lien-bouton{ font:inherit; background:none; border:0; color:var(--iono); text-decoration:underline; text-underline-offset:3px; cursor:pointer; padding:.35rem .25rem; min-height:2.25rem; }
+/* fenêtres natives (boîte d'envoi, tiroir des alertes sans le CDN) : même matière que les fenêtres de la vague 16 */
+dialog.tn-dialogue{ width:min(32rem, calc(100vw - 2rem)); max-height:calc(100dvh - 2rem); overflow:auto; padding:1.25rem 1.3rem; color:var(--givre); background:var(--verre); border:1px solid var(--trait-2); border-radius:var(--r-l); box-shadow:var(--ombre); }
+dialog.tn-dialogue::backdrop{ background:color-mix(in oklch, var(--nuit) 72%, transparent); }
+dialog.tn-dialogue h2{ font-size:1.2rem; display:flex; gap:.5rem; align-items:center; margin:0 0 .6rem; }
+dialog.tn-dialogue .ligne{ display:flex; flex-wrap:wrap; gap:.6rem; margin-top:1rem; align-items:center; }
+.v19-liste{ list-style:none; margin:.5rem 0; padding:0; display:grid; gap:.6rem; }
+.v19-liste li{ padding:.6rem .75rem; border:1px solid var(--trait-2); border-radius:var(--r); }
+.v19-liste .ligne{ margin-top:.4rem!important; }
+.v19-tiroir-natif .alerte-fiche{ margin:0 0 .8rem; }
+@media print{ .pied-reseau, .v19-note details{ display:none!important; } }

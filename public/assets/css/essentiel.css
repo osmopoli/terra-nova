@@ -1,0 +1,30 @@
+/* Terra Nova — vague 19 (F94) : page « Infos essentielles » (/essentiel). Complète simple.css ; jetons de theme.css.
+   Numéros d'urgence en grandes cibles, version imprimable en noir sur blanc. */
+.essentiel .ess-maj{ margin:.75rem 0 0; padding:.55rem .8rem; border:1px solid var(--trait-2); border-inline-start:4px solid var(--iono); border-radius:var(--r-s); color:var(--brume); font-size:.95rem; }
+.essentiel .ess-maj[role="status"]{ border-inline-start-color:var(--soleil); color:var(--givre); }
+.ess-numeros{ list-style:none; padding:0; margin:.5rem 0; display:grid; gap:.5rem; }
+.ess-numeros li{ display:flex; flex-wrap:wrap; align-items:center; gap:.25rem .5rem; }
+.ess-tel{ display:inline-flex; align-items:center; gap:.6rem; min-height:2.75rem; padding:.35rem .8rem .35rem .35rem; border:1px solid var(--trait-2); border-radius:var(--r-s); text-decoration:none; color:var(--givre); }
+.ess-tel strong{ display:inline-grid; place-items:center; min-width:3.2rem; padding:.2rem .5rem; border-radius:.35rem; background:var(--iono); color:var(--sur-iono); font-size:1.1rem; }
+.ess-numeros small{ color:var(--brume); }
+.ess-liste{ list-style:none; padding:0; }
+.ess-liste > li{ margin:0 0 .9rem; padding:.7rem .9rem; border:1px solid var(--trait-2); border-radius:var(--r-s); }
+.ess-liste h3{ margin:0 0 .3rem; font-size:1.05rem; }
+.ess-liste p{ margin:.25rem 0; }
+.ess-alerte.ess-alerte{ border-inline-start:5px solid var(--corail); }
+.ess-alerte.ess-importante{ border-inline-start:5px solid var(--soleil); }
+.ess-officiel{ border-inline-start:5px solid var(--iono)!important; }
+.ess-source{ font-size:.85rem; color:var(--brume); }
+.ess-ouverte{ color:var(--iono); font-weight:600; }
+.ess-fermee{ color:var(--brume); }
+.essentiel details{ margin-top:1rem; }
+.essentiel summary{ cursor:pointer; font-weight:600; min-height:2.75rem; display:flex; align-items:center; }
+.ess-bouton{ font:inherit; font-weight:600; min-height:2.75rem; padding:.45rem 1rem; border-radius:var(--r-s); border:1px solid var(--iono); background:transparent; color:var(--givre); cursor:pointer; }
+@media print{
+  body.simple{ background:var(--blanc)!important; color:var(--noir)!important; padding:0; }
+  .simple a, .ess-tel{ color:var(--noir)!important; }
+  .ess-tel strong{ background:var(--blanc); color:var(--noir); border:2px solid var(--noir); }
+  .evitement, .simple-tete nav, .simple-pied, .ess-bouton{ display:none!important; }
+  .ess-liste > li, .ess-tel, .essentiel .ess-maj{ border-color:var(--noir); break-inside:avoid; }
+  .essentiel details > *{ display:block; }
+}

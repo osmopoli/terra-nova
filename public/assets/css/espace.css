@@ -18,6 +18,10 @@
 .onglets-espace{ display:flex; gap:.25rem; padding:.3rem; margin:0 0 1.5rem; overflow-x:auto; scrollbar-width:none;
   background:var(--surface-1); border:1px solid var(--trait); border-radius:var(--r-l); box-shadow:var(--liseré); }
 .onglets-espace::-webkit-scrollbar{ display:none; }
+/* Fondu au bord de fin tant qu'il reste des onglets hors écran (classe posée par espace-onglets.js, comme .nav-principale.deborde) :
+   masque alpha, pas une couleur */
+.onglets-espace.deborde{ -webkit-mask-image:linear-gradient(90deg, black calc(100% - 3rem), transparent); mask-image:linear-gradient(90deg, black calc(100% - 3rem), transparent); }
+[dir="rtl"] .onglets-espace.deborde{ -webkit-mask-image:linear-gradient(270deg, black calc(100% - 3rem), transparent); mask-image:linear-gradient(270deg, black calc(100% - 3rem), transparent); }
 .onglets-espace [role="tab"]{ flex:1 0 auto; display:inline-flex; align-items:center; justify-content:center; gap:.5rem; min-height:2.75rem;
   padding:.5rem 1rem; border:0; border-radius:var(--r); background:transparent; color:var(--doux); font:inherit; font-size:var(--t-s); font-weight:600;
   white-space:nowrap; cursor:pointer; transition:background-color 160ms ease, color 160ms ease, transform 160ms var(--ease-out); }
@@ -50,3 +54,29 @@
   .onglets-espace{ margin-inline:-.25rem; }
   .onglets-espace [role="tab"]{ padding-inline:.8rem; }
 }
+
+/* Notifications : croix de suppression (cible tactile 44 px), sortie rapide de la ligne */
+#liste-notifs .liste-simple li{ position:relative; align-items:flex-start; transition:opacity 160ms var(--ease-out), transform 160ms var(--ease-out); }
+#liste-notifs .liste-simple li > div{ flex:1; }
+.btn-croix{ flex:none; display:inline-grid; place-items:center; width:2.75rem; height:2.75rem; margin:-.5rem -.5rem 0 0; border:0; border-radius:var(--r);
+  background:transparent; color:var(--doux); cursor:pointer; transition:background-color 160ms ease, color 160ms ease, transform 160ms var(--ease-out); }
+[dir="rtl"] .btn-croix{ margin:-.5rem 0 0 -.5rem; }
+.btn-croix i{ font-size:1.1rem; }
+.btn-croix:active{ transform:scale(.94); }
+@media (hover:hover) and (pointer:fine){ .btn-croix:hover{ background:var(--surface-2); color:var(--texte); } }
+.btn-croix:focus-visible{ outline:2px solid var(--accent); outline-offset:1px; color:var(--texte); }
+#liste-notifs .liste-simple li.sortie{ opacity:0; transform:translateX(.75rem); }
+[dir="rtl"] #liste-notifs .liste-simple li.sortie{ transform:translateX(-.75rem); }
+
+/* Page Services : liste « autres services » repliée à 4, encarts d'interruption compacts dans la liste */
+.replie[data-visibles="4"] > li:nth-child(n+5){ display:none; }
+#pn-sv-services > .sv-outils{ margin-top:0; }
+.sv-encart.compact > dl > div:nth-child(n+2){ display:none; }
+.sv-encart-plus{ display:inline-flex; align-items:center; gap:.35rem; min-height:2.75rem; margin-top:.15rem; padding:0 .25rem; border:0; border-radius:var(--r-s);
+  background:transparent; color:var(--accent); font:inherit; font-size:var(--t-s); font-weight:600; cursor:pointer; }
+.sv-encart-plus i{ transition:transform 200ms var(--ease-out); }
+.sv-encart:not(.compact) .sv-encart-plus i{ transform:rotate(180deg); }
+.sv-encart-plus:active{ transform:scale(.97); }
+@media (hover:hover) and (pointer:fine){ .sv-encart-plus:hover span{ text-decoration:underline; text-underline-offset:.2em; } }
+.sv-encart-plus:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+@media (prefers-reduced-motion:reduce){ .sv-encart-plus i{ transition:none; } }

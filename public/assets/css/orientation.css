@@ -8,8 +8,8 @@
   background:transparent; color:var(--givre); font:inherit; font-size:var(--t-s); font-weight:600; cursor:pointer; transition:border-color .2s var(--ease-out), background .2s var(--ease-out); }
 .or-entete i{ font-size:1.15rem; }
 .or-entete:active{ transform:scale(.97); }
-@media (hover:hover){ .or-entete:hover{ border-color:var(--iono); background:oklch(0.7040 0.1400 182.5 / .08); } }
-.nav-principale .or-entete{ border:0; border-radius:var(--r); color:var(--givre); padding:0 .85rem; flex:none; background:oklch(0.7040 0.1400 182.5 / .1); }
+@media (hover:hover){ .or-entete:hover{ border-color:var(--iono); background:color-mix(in oklch, var(--iono) 8%, transparent); } }
+.nav-principale .or-entete{ border:0; border-radius:var(--r); color:var(--givre); padding:0 .85rem; flex:none; background:color-mix(in oklch, var(--iono) 10%, transparent); }
 @media (max-width:900px){ .outils-entete .or-entete .or-entete-txt{ position:absolute!important; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; } .outils-entete .or-entete{ width:var(--h-outil); padding:0; justify-content:center; } }
 
 /* ---------- Fenêtre « Trouver le bon service » ---------- */
@@ -88,7 +88,7 @@
 .or-msg ol, .or-msg ul{ margin:0; padding-inline-start:1.25rem; display:grid; gap:.25rem; font-size:var(--t-s); }
 .or-msg dl{ margin:0; display:grid; gap:.25rem; font-size:var(--t-s); }
 .or-msg dl div{ display:flex; gap:.4rem; flex-wrap:wrap; } .or-msg dt{ color:var(--brume); } .or-msg dd{ margin:0; }
-.or-enbref{ border-inline-start:3px solid var(--iono); padding:.4rem .7rem; margin:.6rem 0; background:var(--surface-1); border-radius:0 var(--r-s) var(--r-s) 0; font-size:var(--t-s); }
+.or-enbref{ border-inline-start:3px solid var(--iono); padding:.4rem .7rem; margin:.6rem 0; background:var(--surface-1); border-start-end-radius:var(--r-s); border-end-end-radius:var(--r-s); font-size:var(--t-s); }
 .or-puces{ display:flex; flex-wrap:wrap; gap:.45rem; margin-top:.6rem; }
 .or-puce{ font:inherit; font-size:var(--t-s); color:var(--givre); background:var(--surface-1); border:1px solid var(--trait-2); border-radius:99px; padding:.45rem .85rem; cursor:pointer; min-height:2.5rem; }
 .or-puce:active{ transform:scale(.97); }

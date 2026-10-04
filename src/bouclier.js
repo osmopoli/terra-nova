@@ -114,6 +114,7 @@ const REGLES = [
   { nom: 'inscription', max: 8, fenetre: 10 * 60e3, test: (r) => r.method === 'POST' && /^\/api\/(auth\/inscrire|accueil\/inscrire)$/.test(r.path) },
   { nom: 'sensible', max: 20, fenetre: 60e3, test: (r) => ECRITURE.has(r.method) && /^\/api\/(auth\/(verifier|mot-de-passe|supprimer|debloquer)|securite\/|sensible\/|habilitations|accueil\/code)/.test(r.path) },
   { nom: 'guichet', max: 400, fenetre: 10 * 60e3, test: (r) => r.method === 'POST' && r.path === '/api/accueil/agent/inscrire' },
+  { nom: 'recherche', max: 120, fenetre: 60e3, test: (r) => (r.method === 'GET' && r.path === '/api/recherche') || (r.method === 'POST' && /^\/api\/(orientation(\/suggestions|\/avis)?|explications)$/.test(r.path)) },   // vague 18 : recherche, assistant, avis, explications (tables anonymes)
   { nom: 'ecriture', max: 300, fenetre: 60e3, test: (r) => ECRITURE.has(r.method) && r.path.startsWith('/api/') }
 ];
 const compteurs = new Map();   // "règle|ip" → horodatages

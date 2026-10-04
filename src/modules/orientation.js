@@ -10,7 +10,8 @@
                                                             obligatoire du texte officiel (date, délai, montant, référence, document) a disparu.
    F90 (Citoyen)       POST /api/explications              compteur anonyme des passages expliqués ; GET /api/explications/stats (agents).
    Rien de personnel n'est conservé : la conversation reste dans le navigateur ; les questions gardées pour les agents sont
-   normalisées et anonymisées (chiffres, e-mails, liens retirés), sans compte, sans adresse IP. */
+   normalisées et anonymisées (seuls les mots connus du moteur restent, le reste devient « … »), sans compte, sans adresse IP.
+   Les tables anonymes sont plafonnées (PLAFOND lignes) et ces routes publiques ont une règle de débit (« recherche », src/bouclier.js). */
 const router = require('express').Router();
 const db = require('../db');
 const A = require('../auth');
@@ -25,20 +26,25 @@ CREATE TABLE IF NOT EXISTS orientation_questions (cle TEXT PRIMARY KEY, texte TE
   premier TEXT, dernier TEXT, statut TEXT NOT NULL DEFAULT 'ouverte', cible TEXT, par TEXT, traite TEXT);
 CREATE TABLE IF NOT EXISTS explications_stats (cle TEXT PRIMARY KEY, page TEXT, type TEXT, extrait TEXT, n INTEGER NOT NULL, dernier TEXT);
 `);
+const PLAFOND = 5000;   // lignes au plus par table anonyme : au-delà, on n'incrémente plus que les lignes existantes
 const q = {
   noter: db.prepare(`INSERT INTO orientation_questions (cle, texte, langue, source, n, premier, dernier) VALUES (?, ?, ?, ?, 1, ?, ?)
     ON CONFLICT(cle) DO UPDATE SET n = n + 1, dernier = excluded.dernier, statut = CASE WHEN statut = 'ignoree' THEN 'ignoree' ELSE statut END`),
+  revoir: db.prepare('UPDATE orientation_questions SET n = n + 1, dernier = ? WHERE cle = ?'),
+  ouvertes: db.prepare("SELECT COUNT(*) n FROM orientation_questions WHERE statut = 'ouverte'"),
   liste: db.prepare('SELECT * FROM orientation_questions WHERE statut = ? ORDER BY n DESC, dernier DESC LIMIT 200'),
   une: db.prepare('SELECT * FROM orientation_questions WHERE cle = ?'),
   traiter: db.prepare('UPDATE orientation_questions SET statut = ?, cible = ?, par = ?, traite = ? WHERE cle = ?'),
   compter: db.prepare('SELECT statut, COUNT(*) n, SUM(n) total FROM orientation_questions GROUP BY statut'),
   expl: db.prepare(`INSERT INTO explications_stats (cle, page, type, extrait, n, dernier) VALUES (?, ?, ?, ?, 1, ?)
     ON CONFLICT(cle) DO UPDATE SET n = n + 1, dernier = excluded.dernier`),
+  explRevoir: db.prepare('UPDATE explications_stats SET n = n + 1, dernier = ? WHERE cle = ?'),
+  explCompte: db.prepare('SELECT COUNT(*) n FROM explications_stats'),
   explListe: db.prepare('SELECT * FROM explications_stats ORDER BY n DESC, dernier DESC LIMIT 100')
 };
 
 const erreur = (res, code, msg, extra) => res.status(code).json(Object.assign({ erreur: msg }, extra || {}));
-const texte = (v, max) => String(v == null ? '' : v).replace(/[\u0000-\u001F]/g, ' ').trim().slice(0, max);
+const texte = (v, max) => (typeof v === 'string' ? v : '').replace(/[\u0000-\u001F]/g, ' ').trim().slice(0, max);
 const langueDe = (req) => M.langueOk(String((req.query && (req.query.langue || req.query.lang)) || (req.body && req.body.langue) || 'fr'));
 const personnel = A.exigerRole('agent', 'admin');
 
@@ -48,7 +54,7 @@ function indexCourant() {
   const v = docs.version();
   if (!index || forcer || (v !== versionDocs && Date.now() - construitA > 30000)) {
     index = M.construire({ services: docs.tous('services'), annonces: docs.tous('annonces').filter((a) => a.active !== false), associations: docs.tous('associations'), synonymes: docs.tous('orientationSynonymes') });
-    versionDocs = v; construitA = Date.now(); generation++; forcer = false; cache.clear();
+    versionDocs = v; construitA = Date.now(); generation++; forcer = false; cache.clear(); pistes.clear();
   }
   return index;
 }
@@ -65,11 +71,26 @@ function memoriser(cle, calcul) {
   return { v, hit: false };
 }
 
-// Question restée sans réponse : agrégée et anonymisée (aucun compte, aucune adresse IP)
+// Question restée sans réponse : agrégée et anonymisée (seuls les mots connus du moteur restent ; aucun compte, aucune adresse IP) ;
+// une question déjà vue est comptée une fois de plus, une nouvelle n'est gardée que sous le plafond
 function noterSansReponse(phrase, langue, source) {
-  const t = T.anonymiser(phrase);
-  if (t.length < 3) return;
-  try { q.noter.run(t, t, langue, source, maintenant(), maintenant()); } catch (e) { console.error('[orientation] statistiques', e.message); }
+  const t = M.anonymiser(indexCourant(), phrase);
+  if (t.length < 3 || T.motsUtiles(t).length < 1) return;
+  try {
+    if (q.revoir.run(maintenant(), t).changes) return;
+    if (q.ouvertes.get().n >= PLAFOND) return;
+    q.noter.run(t, t, langue, source, maintenant(), maintenant());
+  } catch (e) { console.error('[orientation] statistiques', e.message); }
+}
+// Piste proposée à l'agent pour une question (calculée une fois par question et par génération de l'index)
+const pistes = new Map();
+function pisteDe(idx, texteQuestion) {
+  if (pistes.has(texteQuestion)) return pistes.get(texteQuestion);
+  const r = M.suggerer(idx, { message: texteQuestion, langue: 'fr' });
+  const p = r.suggestions[0] ? { id: r.suggestions[0].id, titre: r.suggestions[0].titre } : null;
+  if (pistes.size >= 1000) pistes.delete(pistes.keys().next().value);
+  pistes.set(texteQuestion, p);
+  return p;
 }
 const urgent = (phrase) => { try { return detecter({ objet: '', message: String(phrase || '') }).urgent; } catch { return false; } };
 
@@ -133,10 +154,7 @@ const cibleValide = (c) => M.cibles().some((x) => x.id === c) || (String(c).star
 router.get('/api/orientation/questions', personnel, (req, res) => {
   const statut = ['ouverte', 'associee', 'ignoree'].includes(req.query.statut) ? req.query.statut : 'ouverte';
   const idx = indexCourant();
-  const lignes = q.liste.all(statut).map((x) => {
-    const r = M.suggerer(idx, { message: x.texte, langue: 'fr' });
-    return Object.assign({}, x, { piste: r.suggestions[0] ? { id: r.suggestions[0].id, titre: r.suggestions[0].titre } : null });
-  });
+  const lignes = q.liste.all(statut).map((x) => Object.assign({}, x, { piste: pisteDe(idx, x.texte) }));
   const compte = Object.fromEntries(q.compter.all().map((x) => [x.statut, { questions: x.n, fois: x.total }]));
   res.json({ statut, questions: lignes, compte,
     cibles: M.cibles().concat(docs.tous('services').map((s) => ({ id: 'service:' + s.id, titre: 'Service : ' + (s.nom && s.nom.fr), service: s.id }))),
@@ -175,19 +193,25 @@ router.delete('/api/orientation/synonymes/:id', personnel, (req, res) => {
 /* ---------- F89 : versions en langage clair ---------- */
 const COL = 'langageClair';
 const CHAMPS = ['resume', 'qui', 'quoi', 'quand', 'combien', 'documents', 'ou'];
+// Qui a modifié (nom de l'agent, historique) : réservé au personnel ; la lecture publique n'en a pas besoin
+const estPersonnel = (req) => !!req.user && ['agent', 'admin'].includes(req.user.role);
 router.get('/api/langage-clair', (req, res) => {
-  res.json(docs.tous(COL).map((c) => ({ id: c.id, titre: c.titre, langues: Object.keys(c.clair || {}), maj: c.maj, majPar: c.majPar, version: c.version || 1 })));
+  const staff = estPersonnel(req);
+  res.json(docs.tous(COL).map((c) => Object.assign({ id: c.id, titre: c.titre, langues: Object.keys(c.clair || {}), maj: c.maj, version: c.version || 1 }, staff ? { majPar: c.majPar } : {})));
 });
 router.get('/api/langage-clair/:id', (req, res) => {
   const c = docs.get(COL, req.params.id);
   if (!c) return erreur(res, 404, 'Contenu introuvable.');
-  res.json(c);
+  if (estPersonnel(req)) return res.json(c);
+  const publique = Object.assign({}, c);
+  delete publique.majPar; delete publique.historique;
+  res.json(publique);
 });
 function lireClair(b) {
   const c = {};
   for (const k of CHAMPS) { const v = texte(b && b[k], 600); if (v) c[k] = v; }
-  const p = Array.isArray(b && b.paragraphes) ? b.paragraphes.slice(0, 12).map((x) => texte(x, 900)) : [];
-  if (p.some(Boolean)) c.paragraphes = p;
+  const p = Array.isArray(b && b.paragraphes) ? b.paragraphes.slice(0, 12).map((x) => texte(x, 900)).filter(Boolean) : [];   // seuls les paragraphes textuels non vides
+  if (p.length) c.paragraphes = p;
   return c;
 }
 router.post('/api/langage-clair/:id/verifier', personnel, (req, res) => {
@@ -222,7 +246,9 @@ router.post('/api/explications', (req, res) => {
   if (!CLE_OK.test(cle)) return erreur(res, 400, 'Passage inconnu.');
   // l'extrait n'est gardé que pour un passage administratif publié (pas pour une sélection libre, qui pourrait contenir des données personnelles)
   const extrait = type === 'selection' ? texte(b.termes, 120) : texte(b.extrait, 140);
-  try { q.expl.run(`${page}|${cle}`, page, type, extrait, maintenant()); } catch (e) { console.error('[orientation] explications', e.message); }
+  try {
+    if (!q.explRevoir.run(maintenant(), `${page}|${cle}`).changes && q.explCompte.get().n < PLAFOND) q.expl.run(`${page}|${cle}`, page, type, extrait, maintenant());
+  } catch (e) { console.error('[orientation] explications', e.message); }
   res.json({ ok: true });
 });
 router.get('/api/explications/stats', personnel, (req, res) => res.json(q.explListe.all()));

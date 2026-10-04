@@ -2656,5 +2656,150 @@
     }
    }
   ]
+ },
+ "vague19": {
+  "_note": "Vague 19 (F93, F94) : informations essentielles (numéros d’urgence, contacts utiles, consignes générales) chargées une seule fois dans la collection « essentiel » (document « reference »), y compris sur une base déjà en service ; jamais écrasées si un agent les a modifiées. Servent aussi de copie de secours si la base est indisponible.",
+  "reference": {
+   "id": "reference",
+   "numeros": [
+    {
+     "id": "samu",
+     "numero": "15",
+     "gratuit": true,
+     "libelle": {
+      "fr": "SAMU — urgence médicale",
+      "en": "SAMU — medical emergency",
+      "es": "SAMU — urgencia médica",
+      "ar": "الإسعاف — طوارئ طبية"
+     }
+    },
+    {
+     "id": "police",
+     "numero": "17",
+     "gratuit": true,
+     "libelle": {
+      "fr": "Police secours",
+      "en": "Police emergency",
+      "es": "Policía",
+      "ar": "شرطة النجدة"
+     }
+    },
+    {
+     "id": "pompiers",
+     "numero": "18",
+     "gratuit": true,
+     "libelle": {
+      "fr": "Pompiers — incendie, accident, fuite de gaz",
+      "en": "Fire brigade — fire, accident, gas leak",
+      "es": "Bomberos — incendio, accidente, fuga de gas",
+      "ar": "الإطفاء — حريق، حادث، تسرب غاز"
+     }
+    },
+    {
+     "id": "europeen",
+     "numero": "112",
+     "gratuit": true,
+     "libelle": {
+      "fr": "Numéro d’urgence européen (depuis tout téléphone)",
+      "en": "European emergency number (from any phone)",
+      "es": "Número de emergencia europeo (desde cualquier teléfono)",
+      "ar": "رقم الطوارئ الأوروبي (من أي هاتف)"
+     }
+    },
+    {
+     "id": "sms",
+     "numero": "114",
+     "gratuit": true,
+     "libelle": {
+      "fr": "Urgence par SMS (personnes sourdes, malentendantes ou qui ne peuvent pas parler)",
+      "en": "Emergency by text message (deaf, hard of hearing or unable to speak)",
+      "es": "Urgencia por SMS (personas sordas o que no pueden hablar)",
+      "ar": "طوارئ عبر الرسائل القصيرة (للصم أو من لا يستطيع الكلام)"
+     }
+    }
+   ],
+   "locaux": [
+    {
+     "id": "dispensaire",
+     "numero": "01 55 00 15 15",
+     "h24": true,
+     "libelle": {
+      "fr": "Dispensaire central de Terra Nova (urgences, 24 h/24)",
+      "en": "Terra Nova central dispensary (emergencies, 24/7)",
+      "es": "Dispensario central de Terra Nova (urgencias, 24 h)",
+      "ar": "المستوصف المركزي في Terra Nova (طوارئ، 24/24)"
+     }
+    },
+    {
+     "id": "police-municipale",
+     "numero": "01 55 00 17 00",
+     "h24": true,
+     "libelle": {
+      "fr": "Police municipale de Terra Nova",
+      "en": "Terra Nova municipal police",
+      "es": "Policía municipal de Terra Nova",
+      "ar": "الشرطة البلدية في Terra Nova"
+     }
+    },
+    {
+     "id": "astreinte",
+     "numero": "01 55 00 19 19",
+     "h24": true,
+     "libelle": {
+      "fr": "Astreinte technique du dôme (eau, énergie, air, coupure)",
+      "en": "Dome technical on-call (water, power, air, outage)",
+      "es": "Guardia técnica de la cúpula (agua, energía, aire, corte)",
+      "ar": "المناوبة التقنية للقبة (ماء، طاقة، هواء، انقطاع)"
+     }
+    },
+    {
+     "id": "mairie",
+     "numero": "01 55 00 10 00",
+     "h24": false,
+     "horaires": "Lun–Ven 8h–17h · Sam 9h–12h",
+     "libelle": {
+      "fr": "Accueil de la mairie de Terra Nova",
+      "en": "Terra Nova town hall reception",
+      "es": "Recepción del ayuntamiento de Terra Nova",
+      "ar": "استقبال بلدية Terra Nova"
+     }
+    }
+   ],
+   "mairie": {
+    "adresse": "Hôtel de ville, niveau 1, place du Dôme",
+    "courriel": "contact@nova.test",
+    "horaires": "Lun–Ven 8h–17h · Sam 9h–12h"
+   },
+   "consignes": {
+    "fr": [
+     "Si une vie est en danger, appelez d’abord le 15 ou le 112 : Terra Nova ne remplace pas les secours.",
+     "Suivez les consignes des alertes et des messages officiels ci-dessous ; elles restent valables même si le site ne répond plus.",
+     "Gardez votre téléphone chargé et cette page enregistrée : elle s’affiche aussi sans connexion.",
+     "Ce que vous envoyez sans connexion reste sur votre appareil et part tout seul dès le retour du réseau.",
+     "Pour une question urgente à la mairie, appelez l’accueil ou l’astreinte technique."
+    ],
+    "en": [
+     "If a life is in danger, call 15 or 112 first: Terra Nova does not replace emergency services.",
+     "Follow the instructions in the alerts and official messages below; they remain valid even if the site stops responding.",
+     "Keep your phone charged and this page saved: it also works without a connection.",
+     "Anything you send while offline stays on your device and is sent automatically when the network is back.",
+     "For an urgent question to the town hall, call the reception or the technical on-call service."
+    ],
+    "es": [
+     "Si una vida está en peligro, llame primero al 15 o al 112: Terra Nova no sustituye a los servicios de emergencia.",
+     "Siga las indicaciones de las alertas y los mensajes oficiales de abajo; siguen siendo válidas aunque el sitio no responda.",
+     "Mantenga el teléfono cargado y esta página guardada: también funciona sin conexión.",
+     "Lo que envíe sin conexión se queda en su dispositivo y sale solo en cuanto vuelve la red.",
+     "Para una pregunta urgente al ayuntamiento, llame a la recepción o a la guardia técnica."
+    ],
+    "ar": [
+     "إذا كانت حياة في خطر، اتصل أولاً بالرقم 15 أو 112: لا تحل Terra Nova محل خدمات الإسعاف.",
+     "اتبع تعليمات التنبيهات والرسائل الرسمية أدناه؛ تبقى صالحة حتى لو توقف الموقع عن الاستجابة.",
+     "أبقِ هاتفك مشحوناً واحفظ هذه الصفحة: تعمل أيضاً بدون اتصال.",
+     "ما ترسله دون اتصال يبقى على جهازك ويُرسل تلقائياً فور عودة الشبكة.",
+     "لسؤال عاجل إلى البلدية، اتصل بالاستقبال أو بالمناوبة التقنية."
+    ]
+   }
+  }
  }
 }

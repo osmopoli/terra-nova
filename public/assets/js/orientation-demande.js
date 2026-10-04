@@ -39,7 +39,8 @@
   const NATURE_CLAIR = { naissance: 'demarche:naissance', mariage: 'demarche:mariage', adresse: 'demarche:adresse', identite: 'demarche:identite', logement: 'demarche:logement', travaux: 'demarche:travaux', ecole: 'demarche:ecole', aide: 'demarche:aide' };
 
   function choisirType(type) {
-    const r = document.querySelector(`input[name="type"][value="${type}"]`);
+    // CSS.escape : la valeur peut venir de l’adresse (?type=, ?categorie=), un guillemet ne doit pas casser le sélecteur
+    const r = document.querySelector(`input[name="type"][value="${CSS.escape(String(type))}"]`);
     if (r && !r.checked) { r.checked = true; declencher(r); }
   }
   function remplir(champ, valeur, forcer) { const el = $(champ); if (el && valeur && (forcer || !el.value.trim())) { el.value = valeur; declencher(el); } }
@@ -48,7 +49,7 @@
     if (!p) return;
     choisirType(p.type);
     if (p.type === 'signalement') {
-      const c = p.categorie && document.querySelector(`input[name="categorie"][value="${p.categorie}"]`);
+      const c = p.categorie && document.querySelector(`input[name="categorie"][value="${CSS.escape(String(p.categorie))}"]`);
       if (c && !c.checked) { c.checked = true; declencher(c); }
       remplir('#s-description', texte);
     } else if (p.type === 'demarche') {
@@ -73,7 +74,7 @@
       <i class="ph-duotone ph-compass" aria-hidden="true"></i><span>${E(t('og.bouton'))}</span><i class="ph ph-caret-down or-chevron" aria-hidden="true"></i></button>
     <div class="or-guide-corps" id="or-guide-corps" hidden>
       <div class="champ"><label for="or-guide-texte">${E(t('og.label'))}</label>
-        <textarea id="or-guide-texte" maxlength="600" rows="3" placeholder="${E(t('og.ph'))}" aria-describedby="or-guide-aide" data-brouillon-non></textarea>
+        <textarea id="or-guide-texte" maxlength="600" rows="3" placeholder="${E(t('og.ph'))}" aria-describedby="or-guide-aide"></textarea>
         <p class="aide" id="or-guide-aide">${E(t('og.aide'))}</p></div>
       <button type="button" class="btn btn-primaire" id="or-guide-go"><i class="ph ph-magnifying-glass" aria-hidden="true"></i><span>${E(t('og.trouver'))}</span></button>
       <div id="or-guide-res" aria-live="polite"></div>

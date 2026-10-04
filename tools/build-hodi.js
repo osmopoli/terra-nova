@@ -12,6 +12,8 @@ fs.mkdirSync(path.join(sortie, 'data'), { recursive: true });
 for (const f of ['server.js', 'package.json', 'package-lock.json']) fs.copyFileSync(path.join(racine, f), path.join(sortie, f));
 for (const d of ['src', 'public']) fs.cpSync(path.join(racine, d), path.join(sortie, d), { recursive: true });
 for (const f of ['demo-seed.json', 'initial-requests.json']) fs.copyFileSync(path.join(racine, 'data', f), path.join(sortie, 'data', f));
+// vague 19 (F95) : mesures avant / après affichées par la page Sobriété numérique (facultatif)
+if (fs.existsSync(path.join(racine, 'data', 'mesures-vague19.json'))) fs.copyFileSync(path.join(racine, 'data', 'mesures-vague19.json'), path.join(sortie, 'data', 'mesures-vague19.json'));
 fs.copyFileSync(path.join(racine, 'tools', 'loader.cjs'), path.join(sortie, 'loader.cjs'));
 
 // Feuilles de style allégées pour la prod : commentaires et blancs retirés (aucune chaîne CSS du projet ne contient « /* »

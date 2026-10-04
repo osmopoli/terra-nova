@@ -224,15 +224,14 @@
         <button type="button" class="bouton-rond" id="nt-btn-notif" title="${echap(t('ui.notifications'))}"><i class="ph-duotone ph-bell-simple" aria-hidden="true"></i>
           <span class="sr-only">${echap(t('ui.notifications'))}${nbNotif ? ' (' + nbNotif + ')' : ''}</span>
           ${nbNotif ? `<span class="pastille-compte" aria-hidden="true">${nbNotif}</span>` : ''}</button>
-        <sl-dropdown placement="bottom-end">
-          <sl-button slot="trigger" caret size="small">${echap(u.prenom)} <span class="badge-role">${echap(t('role.' + u.role))}</span></sl-button>
-          <sl-menu>
-            <sl-menu-item value="compte">${echap(t('nav.compte'))}</sl-menu-item>
-            ${u.role === 'citoyen' ? `<sl-menu-item value="espace">${echap(t('nav.espace'))}</sl-menu-item>` : ''}
-            <sl-divider></sl-divider>
-            <sl-menu-item value="deconnexion">${echap(t('nav.deconnexion'))}</sl-menu-item>
-          </sl-menu>
-        </sl-dropdown>` : `
+        <div class="menu-compte"><!-- vague 19 (F95) : menu natif (plus de sl-dropdown + sl-menu + une cinquantaine de fichiers du CDN sur chaque page) -->
+          <button type="button" class="btn-compte" id="nt-btn-compte" aria-expanded="false" aria-controls="nt-menu-compte">${echap(u.prenom)} <span class="badge-role">${echap(t('role.' + u.role))}</span><i class="ph ph-caret-down" aria-hidden="true"></i></button>
+          <ul class="menu-compte-liste" id="nt-menu-compte" hidden>
+            <li><a href="compte.html">${echap(t('nav.compte'))}</a></li>
+            ${u.role === 'citoyen' ? `<li><a href="espace.html">${echap(t('nav.espace'))}</a></li>` : ''}
+            <li class="menu-compte-sep"><button type="button" data-compte="deconnexion">${echap(t('nav.deconnexion'))}</button></li>
+          </ul>
+        </div>` : `
         <a class="btn" href="connexion.html">${echap(t('nav.connexion'))}</a>
         <a class="btn btn-primaire" href="inscription.html">${echap(t('nav.inscription'))}</a>`}
       </div>
@@ -244,6 +243,43 @@
   const annonce = Object.assign(document.createElement('div'), { id: 'nt-annonce', className: 'sr-only' });
   annonce.setAttribute('aria-live', 'polite');
   corps.prepend(evitement, entete, ariane, annonce);
+
+  /* Vague 19 (F95, F96) : bouton « Rechercher » posé dès la construction de l'en-tête (plus de décalage de mise en page quand
+     orientation.js arrive). orientation.js (+ ses styles et langage-clair.js, ≈ 32 Ko) n'est chargé qu'à la demande : clic, « / »,
+     Ctrl + K, sélection d'un passage à expliquer, ou d'office sur les pages qui s'en servent dès l'affichage. */
+  NT.i18n.ajouter({ fr: { 'or.bouton': 'Rechercher', 'or.boutonTitre': 'Rechercher ou demander à l’assistant d’orientation' }, en: { 'or.bouton': 'Search', 'or.boutonTitre': 'Search or ask the guidance assistant' },
+    es: { 'or.bouton': 'Buscar', 'or.boutonTitre': 'Buscar o preguntar al asistente de orientación' }, ar: { 'or.bouton': 'بحث', 'or.boutonTitre': 'ابحث أو اسأل مساعد التوجيه' } });
+  const PAGES_ORIENTATION = ['accueil', 'aide', 'demande', 'recherche', 'services', 'donnees'];
+  let promesseOrientation = null;
+  const chargerOrientation = () => promesseOrientation || (promesseOrientation = new Promise(res => {
+    const s = document.createElement('script'); s.src = 'assets/js/orientation.js';
+    s.onload = () => res(NT.orientation || null); s.onerror = () => { promesseOrientation = null; res(null); };
+    document.head.append(s);
+  }));
+  NT.ui.chargerOrientation = chargerOrientation;
+  const btnRecherche = document.createElement('button');
+  btnRecherche.type = 'button'; btnRecherche.className = 'or-entete'; btnRecherche.id = 'nt-btn-recherche'; btnRecherche.title = t('or.boutonTitre');
+  btnRecherche.setAttribute('aria-haspopup', 'dialog');
+  btnRecherche.innerHTML = `<i class="ph ph-magnifying-glass" aria-hidden="true"></i><span class="or-entete-txt">${echap(t('or.bouton'))}</span><span class="sr-only"> — ${echap(t('or.boutonTitre'))}</span>`;
+  btnRecherche.addEventListener('click', () => chargerOrientation().then(o => { if (o) o.ouvrir('recherche'); else location.href = 'recherche.html'; }));
+  {
+    const nav = entete.querySelector('.nav-principale'), outils = entete.querySelector('.outils-entete');
+    const mq = window.matchMedia('(max-width: 720px)'), avecBarre = !u || u.role === 'citoyen';
+    const placer = () => { if (mq.matches && avecBarre) nav.prepend(btnRecherche); else outils.prepend(btnRecherche); if (NT.ui.ajusterEntete) NT.ui.ajusterEntete(); };
+    placer();
+    if (mq.addEventListener) mq.addEventListener('change', placer);
+  }
+  document.addEventListener('keydown', e => {
+    if (NT.orientation) return;   // une fois chargé, orientation.js gère lui-même ses raccourcis
+    const saisie = e.target.closest && e.target.closest('input, textarea, select, [contenteditable="true"]');
+    if ((e.key === '/' && !saisie && !e.ctrlKey && !e.altKey && !e.metaKey) || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k')) { e.preventDefault(); btnRecherche.click(); }
+  });
+  const surSelection = () => {
+    if (NT.orientation || String(window.getSelection ? getSelection() : '').trim().length < 3) return;
+    chargerOrientation().then(() => setTimeout(() => document.dispatchEvent(new MouseEvent('mouseup', { bubbles: true })), 450));
+  };
+  document.addEventListener('mouseup', () => setTimeout(surSelection, 20));
+  document.addEventListener('touchend', () => setTimeout(surSelection, 260), { passive: true });
 
   /* En-tête sur une ligne tant que tout tient ; sinon deux niveaux nets (marque + outils, puis navigation).
      On mesure le contenu plutôt que de deviner un point de rupture : la longueur varie selon la langue et le profil. */
@@ -281,7 +317,28 @@
   const balise = entete.querySelector('#nt-balise');
   const panneauAlertes = document.createElement('sl-drawer');
   panneauAlertes.label = t('ui.alertesTitre');
-  corps.append(panneauAlertes);
+  /* Vague 19 (F95) : les fenêtres et tiroirs (Shoelace) ne sont ajoutés à la page qu'à leur première ouverture. Avant, chaque page
+     téléchargeait drawer, dialog, switch, button et une cinquantaine de fichiers du CDN pour des éléments jamais ouverts.
+     Sans CDN (hors connexion) : repli sur une fenêtre native qui montre le même contenu (F93). */
+  const attacher = el => { if (!el.isConnected) corps.append(el); return el; };
+  const montrer = (el, nom, repli) => {
+    attacher(el);
+    if (customElements.get(nom) && typeof el.show === 'function') { el.show(); return; }
+    Promise.race([customElements.whenDefined(nom).then(() => true), new Promise(res => setTimeout(() => res(false), navigator.onLine === false ? 300 : 6000))])
+      .then(ok => { if (ok && typeof el.show === 'function') el.show(); else if (repli) repli(); });
+  };
+  let secoursNatif = null;
+  const tiroirNatif = () => {   // même contenu que le tiroir, dans un <dialog> natif
+    if (!secoursNatif) {
+      secoursNatif = document.createElement('dialog');
+      secoursNatif.className = 'tn-dialogue v19-tiroir-natif'; secoursNatif.setAttribute('aria-label', t('ui.alertesTitre'));
+      secoursNatif.addEventListener('click', e => { if (e.target === secoursNatif || e.target.closest('[data-fermer-natif]')) secoursNatif.close(); });
+      corps.append(secoursNatif);
+    }
+    secoursNatif.innerHTML = `<div class="tn-dlg-form"><h2>${echap(t('ui.alertesTitre'))}</h2>${panneauAlertes.innerHTML}<p><button type="button" class="btn" data-fermer-natif>${echap(t('ui.fermer'))}</button></p></div>`;
+    if (!secoursNatif.open) secoursNatif.showModal();
+  };
+  NT.ui.montrer = montrer;
   function rendreAlertes() {
     const liste = NT.annonces.actives();
     // F73 : messages officiels du Haut Conseil (assets/js/officiel.js) en tête du tiroir, la balise les met en évidence
@@ -305,15 +362,12 @@
         <a class="btn" style="margin-top:.8rem" href="annonces.html#${echap(a.id)}">${echap(t('ui.detail'))}</a>
       </article>`).join('') : (off.n || veille.n ? '' : `<p class="vide">${echap(t('ui.aucuneAlerte'))}</p>`));
   }
-  balise.addEventListener('click', () => customElements.whenDefined('sl-drawer').then(() => panneauAlertes.show()));
+  balise.addEventListener('click', () => NT.ui.ouvrirAlertes());
   rendreAlertes();
   NT.ui.rafraichirAlertes = rendreAlertes;
   NT.ui.tiroirAlertes = panneauAlertes;
-  /* Ouvre le tiroir quand Shoelace est prêt ; sans CDN (sl-drawer jamais défini après 1,5 s), exécute le repli fourni. */
-  NT.ui.ouvrirAlertes = repli => Promise.race([
-    customElements.whenDefined('sl-drawer').then(() => true),
-    new Promise(res => setTimeout(() => res(false), 1500))
-  ]).then(ok => { if (ok && typeof panneauAlertes.show === 'function') panneauAlertes.show(); else if (repli) repli(); });
+  /* Ouvre le tiroir quand Shoelace est prêt ; sans CDN (sl-drawer jamais défini), exécute le repli fourni, sinon la fenêtre native (vague 19). */
+  NT.ui.ouvrirAlertes = repli => montrer(panneauAlertes, 'sl-drawer', repli || tiroirNatif);
 
   /* Halo lumineux qui suit le pointeur sur les éléments .halo (inspiré SeraUI Spotlight) */
   document.addEventListener('pointermove', e => {
@@ -332,10 +386,17 @@
     es: { 'pied.g1': 'Sus trámites', 'pied.g2': 'Ayuda y accesibilidad', 'pied.g3': 'Sus datos', 'barre.signaler': 'Señalar', 'barre.nav': 'Acciones rápidas' },
     ar: { 'pied.g1': 'معاملاتك', 'pied.g2': 'المساعدة وسهولة الوصول', 'pied.g3': 'بياناتك', 'barre.signaler': 'إبلاغ', 'barre.nav': 'إجراءات سريعة' }
   });
+  /* Vague 19 (F94) : « Infos essentielles » toujours accessible depuis le pied de page */
+  NT.i18n.ajouter({
+    fr: { 'pied.essentiel': 'Infos essentielles' },
+    en: { 'pied.essentiel': 'Essential information' },
+    es: { 'pied.essentiel': 'Información esencial' },
+    ar: { 'pied.essentiel': 'معلومات أساسية' }
+  });
   pied.innerHTML = `<div class="conteneur">
     <div class="pied-marque"><span class="logo"><span class="logo-embleme" aria-hidden="true"></span><span class="logo-mot">Terra&nbsp;Nova</span></span><p>${echap(t('pied.texte'))}</p></div>
     <nav class="pied-colonnes" aria-label="${echap(t('pied.g1'))}, ${echap(t('pied.g2'))}, ${echap(t('pied.g3'))}">
-      <div><h2>${echap(t('pied.g1'))}</h2><ul><li><a href="demande.html">${echap(t('pied.contact'))}</a></li><li><a href="bienvenue.html">${echap(t('pied.bienvenue'))}</a></li><li><a href="transports.html">${echap(t('nav.transports'))}</a></li></ul></div>
+      <div><h2>${echap(t('pied.g1'))}</h2><ul><li><a href="/essentiel?lang=${echap(NT.i18n.langue)}" class="pied-essentiel"><i class="ph ph-first-aid-kit" aria-hidden="true"></i>${echap(t('pied.essentiel'))}</a></li><li><a href="demande.html">${echap(t('pied.contact'))}</a></li><li><a href="bienvenue.html">${echap(t('pied.bienvenue'))}</a></li><li><a href="transports.html">${echap(t('nav.transports'))}</a></li></ul></div>
       <div><h2>${echap(t('pied.g2'))}</h2><ul><li><a href="aide.html">${echap(t('pied.aide'))}</a></li><li><a href="#" id="nt-lien-a11y">${echap(t('pied.accessibilite'))}</a></li><li><a href="#" id="nt-lien-clavier">${echap(t('clavier.titre'))}</a></li><li><a href="${echap(ui.lienSimple())}" class="pied-simple" id="nt-lien-simple"><i class="ph ph-article" aria-hidden="true"></i>${echap(t('pied.simple'))}</a></li></ul></div>
       <div><h2>${echap(t('pied.g3'))}</h2><ul><li><a href="donnees.html">${echap(t('pied.donnees'))}</a></li><li><a href="securite.html">${echap(t('pied.securite'))}</a></li><li><a href="sobriete.html">${echap(t('pied.sobriete'))}</a></li></ul></div>
     </nav></div>`;
@@ -354,7 +415,7 @@
       <button type="button" data-barre-alertes><i class="ph-duotone ph-broadcast" aria-hidden="true"></i><span>${echap(t('ui.alertes'))}</span><span class="barre-nb" id="nt-barre-nb" aria-hidden="true"></span></button>`;
     corps.append(barre);
     corps.classList.add('avec-barre');
-    barre.querySelector('[data-barre-alertes]').addEventListener('click', () => customElements.whenDefined('sl-drawer').then(() => panneauAlertes.show()));
+    barre.querySelector('[data-barre-alertes]').addEventListener('click', () => NT.ui.ouvrirAlertes());
     const majBarre = () => { const n = balise.querySelector('#nt-balise-nb').textContent; const el = barre.querySelector('#nt-barre-nb'); el.textContent = n; el.hidden = !n; };
     majBarre();
     new MutationObserver(majBarre).observe(balise.querySelector('#nt-balise-nb'), { childList: true, characterData: true, subtree: true });
@@ -414,10 +475,12 @@
     <p style="margin:.5rem 0 0"><a href="#" id="nt-ouvrir-raccourcis">${echap(t('clavier.titre'))}</a></p>
     <sl-button slot="footer" id="nt-a11y-reinit">${echap(t('a11y.reinit'))}</sl-button>
     <sl-button slot="footer" variant="primary" id="nt-a11y-ok">${echap(t('ui.fermer'))}</sl-button>`;
-  corps.append(dialogue);
+  // vague 19 (F95) : ajouté à la page à la première ouverture (montrer)
   const PALIERS = [90, 100, 115, 130, 150, 175, 200];
   function majPrefs(patch) {
-    const p = Object.assign(prefs(), patch); NT.store.ecrire('prefs', p);
+    if ('leger' in patch) patch.essentielDabord = !!patch.leger;   // vague 19 (F96) : « l'essentiel d'abord » suit le mode connexion lente (même mécanisme)
+    const p = Object.assign(prefs(), patch);
+    if ('leger' in patch) document.documentElement.classList.toggle('essentiel-dabord', !!p.leger); NT.store.ecrire('prefs', p);
     const h = document.documentElement;
     h.style.fontSize = (p.taille || 100) + '%';
     h.classList.toggle('grand', (p.taille || 100) >= 150);
@@ -450,7 +513,7 @@
     z.textContent = t('econome.mesure', { coeurs: NT.econome.coeurs || '?', mem: NT.econome.memoire ? t('econome.go', { n: NT.econome.memoire }) : t('econome.inconnu'),
       ms: Math.round(pretEnMs || performance.now()), n: tc ? tc.n : '?', total: tc ? Math.round(tc.ms) : '?' });
   }
-  const ouvrirA11y = e => { e && e.preventDefault(); afficherMesure(); const a = dialogue.querySelector('#nt-a11y-simple'); if (a) a.href = ui.lienSimple(); dialogue.show(); };
+  const ouvrirA11y = e => { e && e.preventDefault(); afficherMesure(); const a = dialogue.querySelector('#nt-a11y-simple'); if (a) a.href = ui.lienSimple(); montrer(dialogue, 'sl-dialog'); };
   entete.querySelector('#nt-btn-a11y').addEventListener('click', ouvrirA11y);
   pied.querySelector('#nt-lien-a11y').addEventListener('click', ouvrirA11y);
   NT.ui.ouvrirAccessibilite = ouvrirA11y;
@@ -463,22 +526,21 @@
     ['Alt + M', 'clavier.menu', () => entete.querySelector('.nav-principale a')?.focus()],
     ['Alt + C', 'clavier.contenu', () => { const m = document.getElementById('contenu'); m.setAttribute('tabindex', '-1'); m.focus(); }],
     ['Alt + V', 'clavier.affichage', () => ouvrirA11y()],
-    ['?', 'clavier.aide', () => dialogueClavier.show()]
+    ['?', 'clavier.aide', () => montrer(dialogueClavier, 'sl-dialog')]
   ];
   const dialogueClavier = document.createElement('sl-dialog');
   dialogueClavier.label = t('clavier.titre');
   dialogueClavier.innerHTML = `<p class="doux">${echap(t('clavier.intro'))}</p>
     <table><caption class="sr-only">${echap(t('clavier.titre'))}</caption><thead><tr><th scope="col">${echap(t('clavier.touches'))}</th><th scope="col">${echap(t('clavier.action'))}</th></tr></thead>
     <tbody>${RACCOURCIS.map(([k, cle]) => `<tr><td><kbd style="font-family:var(--titre);font-size:.85rem;padding:.15rem .45rem;border:1px solid var(--trait-2);border-radius:6px">${k}</kbd></td><td>${echap(t(cle))}</td></tr>`).join('')}</tbody></table>`;
-  corps.append(dialogueClavier);
   document.addEventListener('keydown', e => {
     const saisie = e.target.closest && e.target.closest('input, textarea, select, [contenteditable="true"]');
-    if (e.key === '?' && !saisie && !e.ctrlKey && !e.altKey) { e.preventDefault(); dialogueClavier.show(); return; }
+    if (e.key === '?' && !saisie && !e.ctrlKey && !e.altKey) { e.preventDefault(); montrer(dialogueClavier, 'sl-dialog'); return; }
     if (!e.altKey || e.ctrlKey || e.metaKey) return;
     const r = RACCOURCIS.find(([k]) => k === 'Alt + ' + e.key.toUpperCase());
     if (r) { e.preventDefault(); r[2](); }
   });
-  const ouvrirClavier = e => { e && e.preventDefault(); dialogue.hide(); dialogueClavier.show(); };
+  const ouvrirClavier = e => { e && e.preventDefault(); if (typeof dialogue.hide === 'function') dialogue.hide(); montrer(dialogueClavier, 'sl-dialog'); };
   pied.querySelector('#nt-lien-clavier').addEventListener('click', ouvrirClavier);
   dialogue.querySelector('#nt-ouvrir-raccourcis').addEventListener('click', ouvrirClavier);
 
@@ -501,21 +563,26 @@
 
   /* ---------- Compte : menu + notifications (F30, F40) ---------- */
   if (u) {
-    entete.querySelector('sl-menu').addEventListener('sl-select', e => {
-      const v = e.detail.item.value;
-      if (v === 'deconnexion') { NT.auth.deconnecter(); location.href = 'index.html'; }
-      else location.href = v + '.html';
+    /* vague 19 (F95) : menu du compte natif — Échap ou clic ailleurs le ferme, le focus revient au bouton */
+    const btnCompte = entete.querySelector('#nt-btn-compte'), menuCompte = entete.querySelector('#nt-menu-compte');
+    const basculerCompte = ouvrir => { menuCompte.hidden = !ouvrir; btnCompte.setAttribute('aria-expanded', String(ouvrir)); if (ouvrir) { const p = menuCompte.querySelector('a, button'); if (p) p.focus(); } };
+    btnCompte.addEventListener('click', () => basculerCompte(menuCompte.hidden));
+    menuCompte.addEventListener('keydown', e => { if (e.key === 'Escape') { basculerCompte(false); btnCompte.focus(); } });
+    document.addEventListener('click', e => { if (!menuCompte.hidden && !e.target.closest('.menu-compte')) basculerCompte(false); });
+    menuCompte.addEventListener('click', e => {
+      const v = e.target.closest('[data-compte]') && e.target.closest('[data-compte]').dataset.compte;
+      if (v === 'deconnexion') { if (NT.boite && !NT.boite.avantDeconnexion()) return; NT.auth.deconnecter();   // vague 19 : envois en attente signalés avant
+        location.href = 'index.html'; }
     });
     const tiroir = document.createElement('sl-drawer');
     tiroir.label = t('ui.notifications');
-    corps.append(tiroir);
     // Seuls les liens relatifs internes sont suivis (pas de schéma « xxx: », pas de « // ») : un lien externe ou javascript: n'est pas affiché
     const lienInterne = l => (typeof l === 'string' && l.trim() && !/^\s*[a-z][a-z0-9+.\-]*:/i.test(l) && !/^\s*[\\/]{2}/.test(l) ? l.trim() : '');
     function rendreNotifs() {
       const l = NT.notif.pour(u.id).map(n => Object.assign({}, n, { lien: lienInterne(n.lien) }));
       tiroir.innerHTML = (l.length ? `<ul class="notifs">${l.map(n => `
         <li class="notif${n.lu ? ' notif-lue' : ''}" data-notif="${echap(n.id)}">
-          <div class="notif-tete"><strong>${n.lu ? '' : '<span class="sr-only">Non lu : </span><span class="notif-point" aria-hidden="true"></span>'}${echap(n.titre)}</strong><span class="doux notif-quand">${echap(ui.depuis(n.cree))}</span>
+          <div class="notif-tete"><strong>${n.lu ? '' : '<span class="sr-only">' + echap(t('ui.nonLu')) + ' : </span><span class="notif-point" aria-hidden="true"></span>'}${echap(n.titre)}</strong><span class="doux notif-quand">${echap(ui.depuis(n.cree))}</span>
             <button type="button" class="notif-x" data-notif-x="${echap(n.id)}" aria-label="${echap(t('ui.supprNotif', { t: n.titre }))}" title="${echap(t('ui.suppr'))}"><i class="ph ph-x" aria-hidden="true"></i></button></div>
           <p class="notif-texte">${echap(n.texte)}</p>
           ${n.lien ? `<a href="${echap(n.lien)}" data-lu="${n.id}">${echap(t('ui.voir'))} →</a>` : ''}
@@ -550,7 +617,7 @@
       const id = e.target.closest('[data-lu]')?.dataset.lu; if (id) NT.notif.lire(id);
     });
     // Shoelace peut ne pas être encore chargé au clic : on attend la définition de sl-drawer avant d'ouvrir
-    entete.querySelector('#nt-btn-notif').addEventListener('click', () => { rendreNotifs(); customElements.whenDefined('sl-drawer').then(() => tiroir.show()); });
+    entete.querySelector('#nt-btn-notif').addEventListener('click', () => { rendreNotifs(); montrer(tiroir, 'sl-drawer'); });
     // Notifications importantes non encore présentées : toast immédiat
     const presentees = NT.store.lire('notifPresentees', []);
     const nouvelles = NT.notif.pour(u.id).filter(n => !n.lu && n.niveau !== 'info' && !presentees.includes(n.id));
@@ -563,8 +630,12 @@
     // toutes les 30 s, toutes les 2 min en mode connexion lente ; rien tant que l'onglet est caché
     let minuterie = null;
     const planifier = () => { clearTimeout(minuterie); minuterie = setTimeout(() => { verifier(); planifier(); }, NT.leger.actif() ? 120000 : NT.econome.delai(30000)); };
+    // vague 19 (F95) : le « pouls » groupé signale un changement de notifications ; alors seulement l'état complet est relu
+    if (NT.pouls && !NT.horsLigne) { let sig = null; NT.pouls.ecouter('notif', n => { const s2 = n.total + '|' + n.dernier; if (sig !== null && s2 !== sig) verifier(); sig = s2; }); }
+    else {
     document.addEventListener('visibilitychange', () => { if (!document.hidden) { verifier(); planifier(); } });
     planifier();
+    }
     function verifier() {
       if (document.hidden) return;
       fetch('/api/etat', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(e => {
@@ -603,7 +674,8 @@
   // Vague 17 (F85, F86) : veille en direct (urgences médicales pour le personnel, activité inhabituelle, confirmation du mot de passe)
   if (u) { const scriptVeille = document.createElement('script'); scriptVeille.src = 'assets/js/veille.js'; document.head.append(scriptVeille); }
   // Vague 18 (D10, F89-F92) : recherche globale, assistant d'orientation, langage clair et « Expliquer plus simplement »
-  const scriptOrientation = document.createElement('script'); scriptOrientation.src = 'assets/js/orientation.js'; document.head.append(scriptOrientation);
+  // vague 19 (F95) : d'office seulement sur les pages qui s'en servent dès l'affichage, sinon à la demande (voir chargerOrientation)
+  if (PAGES_ORIENTATION.includes(page) || ui.param('assistant') === '1') chargerOrientation();
   // Vague 20 (F97-F100) : lignes interrompues dans « Alertes », usage anonyme, offres des partenaires, menus des agents
   const scriptVague20 = document.createElement('script'); scriptVague20.src = 'assets/js/vague20.js'; document.head.append(scriptVague20);
 })();

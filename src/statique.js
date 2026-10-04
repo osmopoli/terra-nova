@@ -19,6 +19,8 @@ const IMAGES = { '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg
 const REFERENCE = /(["'])(\/?assets\/(?:css|js)\/[\w.-]+\.(?:css|js))\1/g;
 // images : « assets/img/x.webp » (src, srcset, chaîne JS) ou « ../img/x.webp » (url() d'une feuille de style), sans version
 const REFERENCE_IMG = /((?:\/?assets\/|\.\.\/)img\/[\w.-]+\.(?:webp|png|jpg|svg|ico))(?=[\s"'),])/g;
+// v2 : les adresses versionnées de la v1 ont été gardées par le cache partagé de l'hébergeur avec un mauvais encodage
+const SEL = 'v2|';
 const VERSIONNABLES = new Set(['.css', '.js', '.webp', '.png', '.jpg', '.svg', '.ico']);
 
 const empreinte = (buf) => crypto.createHash('sha1').update(buf).digest('base64url').slice(0, 20);
@@ -27,12 +29,33 @@ function statique(racine) {
   const memoire = new Map();   // chemin → { mtime, etag, version, brut, br, gz, deps }
   const versions = new Map();  // chemin → { mtime, version } (empreinte du contenu d'origine)
 
-  function versionDe(fichier) {
+  // Version d'un fichier = empreinte de son contenu ET des versions des fichiers qu'il référence (un script qui charge
+  // assets/js/officiel.js change de version quand officiel.js change) : sinon le navigateur garderait un an l'ancien
+  // ui.js, qui pointe vers l'ancien officiel.js. Une référence circulaire est coupée (pile).
+  function referencesDe(texte, dossier) {
+    const refs = [];
+    texte.replace(REFERENCE, (tout, q, ref) => { refs.push(path.join(racine, ref)); return tout; });
+    texte.replace(REFERENCE_IMG, (ref) => { refs.push(ref.startsWith('../') ? path.join(dossier, ref) : path.join(racine, ref)); return ref; });
+    return refs;
+  }
+  function versionDe(fichier, pile = new Set()) {
     let st; try { st = fs.statSync(fichier); } catch { return null; }
+    if (pile.has(fichier)) { const v = versions.get(fichier); return v ? v.brute : null; }
+    pile.add(fichier);
     const v = versions.get(fichier);
-    if (v && v.mtime === st.mtimeMs) return v.version;
-    const version = empreinte(fs.readFileSync(fichier)).slice(0, 10);
-    versions.set(fichier, { mtime: st.mtimeMs, version });
+    if (v && v.mtime === st.mtimeMs && v.deps.every(d => versionDe(d.f, pile) === d.v)) { pile.delete(fichier); return v.version; }
+    const brut = fs.readFileSync(fichier);
+    const brute = empreinte(brut).slice(0, 10);
+    const ext = path.extname(fichier).toLowerCase();
+    let deps = [];
+    if (ext === '.js' || ext === '.css') {
+      versions.set(fichier, { mtime: st.mtimeMs, version: brute, brute, deps: [] });   // valeur provisoire si une dépendance revient ici
+      deps = [...new Set(referencesDe(brut.toString('utf8'), path.dirname(fichier)))].map(f => ({ f, v: versionDe(f, pile) })).filter(d => d.v);
+    }
+    // SEL : changé quand des copies déjà mises en cache doivent être abandonnées (adresses toutes nouvelles)
+    const version = empreinte(SEL + brute + deps.map(d => d.v).join('')).slice(0, 10);
+    versions.set(fichier, { mtime: st.mtimeMs, version, brute, deps });
+    pile.delete(fichier);
     return version;
   }
   // Pose ?v=… sur les références ; retient les fichiers référencés pour reconstruire si l'un d'eux change
@@ -42,18 +65,19 @@ function statique(racine) {
       const cible = ref.startsWith('/') ? path.join(racine, ref) : path.join(racine, ref);
       const v = versionDe(cible);
       if (!v) return tout;
-      deps.push(cible);
+      deps.push({ f: cible, v });
       return q + ref + '?v=' + v + q;
     }).replace(REFERENCE_IMG, (ref) => {
       const cible = ref.startsWith('../') ? path.join(dossier, ref) : path.join(racine, ref);
       const v = versionDe(cible);
       if (!v) return ref;
-      deps.push(cible);
+      deps.push({ f: cible, v });
       return ref + '?v=' + v;
     });
     return { sortie, deps };
   }
-  const depsAJour = (e) => !e.deps || e.deps.every(d => { const v = versions.get(d); try { return v && fs.statSync(d).mtimeMs === v.mtime; } catch { return false; } });
+  // contenu réécrit à jour tant que chaque fichier référencé garde la version posée (et non seulement sa date)
+  const depsAJour = (e) => !e.deps || e.deps.every(d => versionDe(d.f) === d.v);
 
   return (req, res, next) => {
     if (req.method !== 'GET' && req.method !== 'HEAD') return next();
@@ -88,7 +112,9 @@ function statique(racine) {
     res.setHeader('Vary', 'Accept-Encoding');
     // fichier demandé avec sa version exacte : son contenu ne changera jamais à cette adresse
     const versionne = VERSIONNABLES.has(ext) && req.query && req.query.v === versionDe(fichier);
-    res.setHeader('Cache-Control', versionne ? 'public, max-age=31536000, immutable'
+    // « private » : seul le navigateur garde le fichier. Un cache partagé (proxy de l'hébergeur) servait la version
+    // Brotli étiquetée gzip : le navigateur recevait des octets illisibles (page sans styles ni scripts).
+    res.setHeader('Cache-Control', versionne ? 'private, max-age=31536000, immutable'
       : TYPES[ext] ? 'no-cache' : 'public, max-age=3600, stale-while-revalidate=604800');
     if (req.headers['if-none-match'] === e.etag) { res.statusCode = 304; return res.end(); }
     const accepte = String(req.headers['accept-encoding'] || '');

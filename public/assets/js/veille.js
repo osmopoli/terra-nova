@@ -20,7 +20,7 @@
       'vl.monUrg': 'Votre urgence médicale {id}', 'vl.suivre': 'Voir le statut en direct', 'vl.appel15': 'Appeler le 15', 'vl.appel112': 'Appeler le 112',
       'vl.rappel': 'Terra Nova ne remplace pas les secours : en danger, appelez le 15 ou le 112.',
       'vl.s.signalee': 'Signalée', 'vl.s.prise_en_charge': 'Prise en charge', 'vl.s.transmise': 'Transmise aux secours', 'vl.s.close': 'Close',
-      'vl.actTitre': 'Activité inhabituelle sur votre compte', 'vl.actQuestion': 'Était-ce vous ?', 'vl.moi': 'C’était moi', 'vl.pasMoi': 'Ce n’était pas moi',
+      'vl.actTitre': 'Activité inhabituelle sur votre compte', 'vl.actQuestion': 'Était-ce vous ?', 'vl.moi': 'C’était moi', 'vl.pasMoi': 'Ce n’était pas moi', 'vl.erreur': 'Action impossible pour le moment.',
       'vl.moiOk': 'Merci. Les protections temporaires sont levées.', 'vl.pasMoiOk': 'Vos autres sessions sont fermées ({n}). Changez votre mot de passe dès maintenant.', 'vl.changerMdp': 'Changer mon mot de passe',
       'vl.reauthTitre': 'Confirmez votre mot de passe', 'vl.reauthTexte': 'Par sécurité, cette action demande de confirmer votre mot de passe (une activité inhabituelle a été remarquée ou l’action est sensible).',
       'vl.mdp': 'Mot de passe', 'vl.confirmer': 'Confirmer', 'vl.annuler': 'Annuler', 'vl.reauthOk': 'Mot de passe confirmé : vous pouvez refaire l’action pendant 10 minutes.', 'vl.reauthKo': 'Mot de passe incorrect.',
@@ -30,7 +30,7 @@
       'vl.monUrg': 'Your medical emergency {id}', 'vl.suivre': 'See the live status', 'vl.appel15': 'Call 15', 'vl.appel112': 'Call 112',
       'vl.rappel': 'Terra Nova does not replace emergency services: if in danger, call 15 or 112.',
       'vl.s.signalee': 'Reported', 'vl.s.prise_en_charge': 'Being handled', 'vl.s.transmise': 'Passed to emergency services', 'vl.s.close': 'Closed',
-      'vl.actTitre': 'Unusual activity on your account', 'vl.actQuestion': 'Was it you?', 'vl.moi': 'It was me', 'vl.pasMoi': 'It was not me',
+      'vl.actTitre': 'Unusual activity on your account', 'vl.actQuestion': 'Was it you?', 'vl.moi': 'It was me', 'vl.pasMoi': 'It was not me', 'vl.erreur': 'Action not possible right now.',
       'vl.moiOk': 'Thank you. Temporary protections have been lifted.', 'vl.pasMoiOk': 'Your other sessions have been closed ({n}). Change your password now.', 'vl.changerMdp': 'Change my password',
       'vl.reauthTitre': 'Confirm your password', 'vl.reauthTexte': 'For security, this action requires you to confirm your password (unusual activity was noticed or the action is sensitive).',
       'vl.mdp': 'Password', 'vl.confirmer': 'Confirm', 'vl.annuler': 'Cancel', 'vl.reauthOk': 'Password confirmed: you can redo the action for 10 minutes.', 'vl.reauthKo': 'Incorrect password.',
@@ -40,7 +40,7 @@
       'vl.monUrg': 'Su urgencia médica {id}', 'vl.suivre': 'Ver el estado en directo', 'vl.appel15': 'Llamar al 15', 'vl.appel112': 'Llamar al 112',
       'vl.rappel': 'Terra Nova no sustituye a los servicios de emergencia: en peligro, llame al 15 o al 112.',
       'vl.s.signalee': 'Señalada', 'vl.s.prise_en_charge': 'En atención', 'vl.s.transmise': 'Transmitida a emergencias', 'vl.s.close': 'Cerrada',
-      'vl.actTitre': 'Actividad inusual en su cuenta', 'vl.actQuestion': '¿Era usted?', 'vl.moi': 'Era yo', 'vl.pasMoi': 'No era yo',
+      'vl.actTitre': 'Actividad inusual en su cuenta', 'vl.actQuestion': '¿Era usted?', 'vl.moi': 'Era yo', 'vl.pasMoi': 'No era yo', 'vl.erreur': 'Acción imposible por el momento.',
       'vl.moiOk': 'Gracias. Se han levantado las protecciones temporales.', 'vl.pasMoiOk': 'Sus otras sesiones se han cerrado ({n}). Cambie su contraseña ahora.', 'vl.changerMdp': 'Cambiar mi contraseña',
       'vl.reauthTitre': 'Confirme su contraseña', 'vl.reauthTexte': 'Por seguridad, esta acción requiere confirmar su contraseña (se ha notado una actividad inusual o la acción es sensible).',
       'vl.mdp': 'Contraseña', 'vl.confirmer': 'Confirmar', 'vl.annuler': 'Cancelar', 'vl.reauthOk': 'Contraseña confirmada: puede repetir la acción durante 10 minutos.', 'vl.reauthKo': 'Contraseña incorrecta.',
@@ -50,7 +50,7 @@
       'vl.monUrg': 'حالتك الطبية الطارئة {id}', 'vl.suivre': 'عرض الحالة مباشرة', 'vl.appel15': 'اتصل بالرقم 15', 'vl.appel112': 'اتصل بالرقم 112',
       'vl.rappel': 'تيرا نوفا لا تحل محل خدمات الإسعاف: عند الخطر اتصل بالرقم 15 أو 112.',
       'vl.s.signalee': 'تم الإبلاغ', 'vl.s.prise_en_charge': 'قيد التكفل', 'vl.s.transmise': 'أُحيلت إلى الإسعاف', 'vl.s.close': 'مغلقة',
-      'vl.actTitre': 'نشاط غير معتاد على حسابك', 'vl.actQuestion': 'هل كنت أنت؟', 'vl.moi': 'نعم، كنت أنا', 'vl.pasMoi': 'لم أكن أنا',
+      'vl.actTitre': 'نشاط غير معتاد على حسابك', 'vl.actQuestion': 'هل كنت أنت؟', 'vl.moi': 'نعم، كنت أنا', 'vl.pasMoi': 'لم أكن أنا', 'vl.erreur': 'تعذّر الإجراء حالياً.',
       'vl.moiOk': 'شكراً. تم رفع إجراءات الحماية المؤقتة.', 'vl.pasMoiOk': 'تم إغلاق جلساتك الأخرى ({n}). غيّر كلمة المرور الآن.', 'vl.changerMdp': 'تغيير كلمة المرور',
       'vl.reauthTitre': 'أكّد كلمة المرور', 'vl.reauthTexte': 'لدواعٍ أمنية، يتطلب هذا الإجراء تأكيد كلمة المرور (لوحظ نشاط غير معتاد أو أن الإجراء حساس).',
       'vl.mdp': 'كلمة المرور', 'vl.confirmer': 'تأكيد', 'vl.annuler': 'إلغاء', 'vl.reauthOk': 'تم تأكيد كلمة المرور: يمكنك إعادة الإجراء خلال 10 دقائق.', 'vl.reauthKo': 'كلمة المرور غير صحيحة.',
@@ -124,7 +124,7 @@
 
   function repondre(id, reponse) {
     const r = NT.api('POST', '/api/activite/' + encodeURIComponent(id) + '/reponse', { reponse });
-    if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger'); return; }
+    if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || t('vl.erreur'), 'danger'); return; }
     if (reponse === 'moi') NT.ui.toast(t('vl.moiOk'), 'success', 7000);
     else NT.ui.toast(t('vl.pasMoiOk', { n: r.donnees.sessionsFermees || 0 }), 'warning', 12000);
     lire(); historique();
@@ -137,7 +137,10 @@
   /* ---------- Lecture périodique (15 s pour le personnel, 30 s pour l'habitant ; rien quand l'onglet est caché) ---------- */
   function lire() {
     if (document.hidden) return;
-    fetch('/api/veille', { cache: 'no-store', credentials: 'same-origin' }).then((r) => (r.ok ? r.json() : null)).then((d) => {
+    fetch('/api/veille', { cache: 'no-store', credentials: 'same-origin' }).then((r) => (r.ok ? r.json() : null)).then(traiter).catch(() => {});
+  }
+  function traiter(d) {   // vague 19 (F95) : pour l'habitant, alimenté par le « pouls » groupé (assets/js/continuite.js)
+    {
       if (!d) return;
       const ids = new Set((d.urgences || []).filter((x) => x.statut === 'signalee').map((x) => x.id));
       if (staff && connues) for (const id of ids) if (!connues.has(id)) NT.ui.toast(t('vl.nouvelle', { id }), 'danger', 15000);
@@ -145,13 +148,17 @@
       donnees = d;
       if (NT.ui.rafraichirAlertes) NT.ui.rafraichirAlertes();
       document.dispatchEvent(new CustomEvent('nt:veille', { detail: d }));
-    }).catch(() => {});
+    }
   }
   const rythme = () => (NT.leger && NT.leger.actif() ? 120000 : staff ? 15000 : 30000);
   let minuterie = null;
   const planifier = () => { clearTimeout(minuterie); minuterie = setTimeout(() => { lire(); planifier(); }, NT.econome ? NT.econome.delai(rythme()) : rythme()); };
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) { lire(); planifier(); } });
-  lire(); planifier();
+  // vague 19 (F95) : habitant → même lecture groupée que les messages officiels ; personnel → 15 s (urgences médicales en direct)
+  if (!staff && NT.pouls && !NT.horsLigne) NT.pouls.ecouter('veille', traiter);
+  else {
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) { lire(); planifier(); } });
+    lire(); planifier();
+  }
 
   /* ---------- Page « Sécurité de vos données » : historique des alertes (#activite) ---------- */
   function historique() {

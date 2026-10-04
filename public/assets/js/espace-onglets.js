@@ -5,19 +5,27 @@
 (function () {
   'use strict';
   NT.i18n.ajouter({
-    fr: { 'esp.og.label': 'Sections de mon espace', 'esp.og.suivi': 'En cours', 'esp.og.historique': 'Historique', 'esp.og.contrib': 'Mes avis et idées',
+    fr: { 'esp.og.plus1': 'Afficher l’autre demande en cours', 'esp.og.plusNotifs1': 'Afficher l’autre notification',
+      'c.esp.supprNotif': 'Supprimer la notification « {t} »', 'c.esp.suppr': 'Supprimer', 'c.esp.supprOk': 'Notification supprimée.',
+      'esp.og.label': 'Sections de mon espace', 'esp.og.suivi': 'En cours', 'esp.og.historique': 'Historique', 'esp.og.contrib': 'Mes avis et idées',
       'esp.og.accuses': 'Accusés de réception', 'esp.og.videContrib': 'Vos avis sur les services, vos réponses aux consultations et vos idées apparaîtront ici, avec leur reçu.',
       'esp.og.plus': 'Afficher les {n} autres demandes en cours', 'esp.og.moins': 'Afficher moins',
       'esp.og.plusNotifs': 'Afficher les {n} autres notifications' },
-    en: { 'esp.og.label': 'Sections of my space', 'esp.og.suivi': 'In progress', 'esp.og.historique': 'History', 'esp.og.contrib': 'My feedback and ideas',
+    en: { 'esp.og.plus1': 'Show the other request in progress', 'esp.og.plusNotifs1': 'Show the other notification',
+      'c.esp.supprNotif': 'Delete the notification “{t}”', 'c.esp.suppr': 'Delete', 'c.esp.supprOk': 'Notification deleted.',
+      'esp.og.label': 'Sections of my space', 'esp.og.suivi': 'In progress', 'esp.og.historique': 'History', 'esp.og.contrib': 'My feedback and ideas',
       'esp.og.accuses': 'Receipts', 'esp.og.videContrib': 'Your feedback on services, your answers to consultations and your ideas will appear here, with their receipt.',
       'esp.og.plus': 'Show the {n} other requests in progress', 'esp.og.moins': 'Show less',
       'esp.og.plusNotifs': 'Show the {n} other notifications' },
-    es: { 'esp.og.label': 'Secciones de mi espacio', 'esp.og.suivi': 'En curso', 'esp.og.historique': 'Historial', 'esp.og.contrib': 'Mis opiniones e ideas',
+    es: { 'esp.og.plus1': 'Mostrar la otra solicitud en curso', 'esp.og.plusNotifs1': 'Mostrar la otra notificación',
+      'c.esp.supprNotif': 'Eliminar la notificación «{t}»', 'c.esp.suppr': 'Eliminar', 'c.esp.supprOk': 'Notificación eliminada.',
+      'esp.og.label': 'Secciones de mi espacio', 'esp.og.suivi': 'En curso', 'esp.og.historique': 'Historial', 'esp.og.contrib': 'Mis opiniones e ideas',
       'esp.og.accuses': 'Acuses de recibo', 'esp.og.videContrib': 'Sus opiniones sobre los servicios, sus respuestas a las consultas y sus ideas aparecerán aquí, con su recibo.',
       'esp.og.plus': 'Mostrar las otras {n} solicitudes en curso', 'esp.og.moins': 'Mostrar menos',
       'esp.og.plusNotifs': 'Mostrar las otras {n} notificaciones' },
-    ar: { 'esp.og.label': 'أقسام مساحتي', 'esp.og.suivi': 'قيد المتابعة', 'esp.og.historique': 'السجل', 'esp.og.contrib': 'آرائي وأفكاري',
+    ar: { 'esp.og.plus1': 'عرض الطلب الآخر قيد المتابعة', 'esp.og.plusNotifs1': 'عرض الإشعار الآخر',
+      'c.esp.supprNotif': 'حذف الإشعار «{t}»', 'c.esp.suppr': 'حذف', 'c.esp.supprOk': 'تم حذف الإشعار.',
+      'esp.og.label': 'أقسام مساحتي', 'esp.og.suivi': 'قيد المتابعة', 'esp.og.historique': 'السجل', 'esp.og.contrib': 'آرائي وأفكاري',
       'esp.og.accuses': 'إشعارات الاستلام', 'esp.og.videContrib': 'ستظهر هنا آراؤك حول الخدمات وردودك على الاستشارات وأفكارك، مع إيصالاتها.',
       'esp.og.plus': 'عرض {n} طلبات أخرى قيد المتابعة', 'esp.og.moins': 'عرض أقل',
       'esp.og.plusNotifs': 'عرض {n} إشعارات أخرى' }
@@ -27,11 +35,20 @@
   // Ancres historiques → onglet qui les contient
   const ANCRES = { 'historique': 'historique', 'mes-avis-services': 'contrib', 'ma-participation': 'contrib', 'mes-accuses': 'accuses' };
   const VISIBLES_EN_COURS = 3;
+  // N'écrit que si le texte change : sinon chaque écriture relancerait l'observateur de la page (boucle)
+  const ecrire = (el, t) => { if (el && el.textContent !== t) el.textContent = t; };
+  const cacher = (el, oui) => { if (el && el.hidden !== oui) el.hidden = oui; };
 
   function init() {
     const liste = document.getElementById('onglets-espace');
     if (!liste) return;
     const onglets = [...liste.querySelectorAll('[role="tab"]')];
+    // Petit écran : fondu au bord tant qu'il reste des onglets à faire défiler (sinon le 4e onglet est hors écran sans indice)
+    const marquerDebord = () => liste.classList.toggle('deborde', Math.abs(liste.scrollLeft) + liste.clientWidth < liste.scrollWidth - 1);
+    liste.addEventListener('scroll', marquerDebord, { passive: true });
+    if (window.ResizeObserver) { const ro = new ResizeObserver(marquerDebord); ro.observe(liste); onglets.forEach((o) => ro.observe(o)); }
+    else window.addEventListener('resize', marquerDebord);
+    marquerDebord();
     const panneau = (o) => document.getElementById(o.getAttribute('aria-controls'));
 
     function choisir(o, { focus = false, memoriser = true } = {}) {
@@ -84,10 +101,10 @@
       Object.entries(compter).forEach(([nom, f]) => {
         const el = liste.querySelector('[data-compte="' + nom + '"]');
         const n = f();
-        if (el) el.textContent = n ? String(n) : '';
+        ecrire(el, n ? String(n) : '');
       });
       const vide = document.getElementById('vide-contrib');
-      if (vide) vide.hidden = [...document.querySelectorAll('#pn-contrib > section')].some((s) => !s.hidden);
+      if (vide) cacher(vide, [...document.querySelectorAll('#pn-contrib > section')].some((s) => !s.hidden));
       replier();
     }
 
@@ -108,7 +125,7 @@
         ul.classList.toggle('replie', !deplie[r.id] && n > r.visibles);
         if (!ul.id) ul.id = 'liste-repliable-' + r.id;
       }
-      if (n <= r.visibles) { if (b) b.hidden = true; return; }
+      if (n <= r.visibles) { cacher(b, true); return; }
       if (!b) {
         b = document.createElement('button');
         b.type = 'button'; b.id = 'btn-plus-' + r.id; b.className = 'btn petit plus-liste';
@@ -119,13 +136,14 @@
         ancre.after(b);
       }
       b.setAttribute('aria-controls', ul.id);
-      b.hidden = false;
+      cacher(b, false);
       b.setAttribute('aria-expanded', String(!!deplie[r.id]));
-      b.textContent = deplie[r.id] ? L('esp.og.moins', 'Afficher moins') : L(r.cle, r.repli, { n: n - r.visibles }).replace('{n}', n - r.visibles);
+      ecrire(b, deplie[r.id] ? L('esp.og.moins', 'Afficher moins') : (n - r.visibles === 1 ? L(r.cle + '1', r.repli) : L(r.cle, r.repli, { n: n - r.visibles }).replace('{n}', n - r.visibles)));
     }
 
     let attente = 0;
-    const obs = new MutationObserver(() => { cancelAnimationFrame(attente); attente = requestAnimationFrame(maj); });
+    // minuterie plutôt que requestAnimationFrame : celle-ci est suspendue quand l'onglet est en arrière-plan
+    const obs = new MutationObserver(() => { clearTimeout(attente); attente = setTimeout(maj, 40); });
     obs.observe(document.getElementById('contenu'), { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden'] });
     maj();
   }
