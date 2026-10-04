@@ -32,7 +32,8 @@
       'cm.u.titre': 'Urgences et hôpitaux', 'cm.u.note': 'En danger vital, n’attendez pas : appelez d’abord.', 'cm.u.n15': 'Urgence médicale (SAMU)', 'cm.u.n112': 'Toutes urgences',
       'cm.u.h24': 'Ouverts 24h/24', 'cm.u.proche': 'Le plus proche de chez vous (quartier {q})', 'cm.u.proche24': 'Le plus proche ouvert 24h/24', 'cm.u.choisirQ': 'Choisissez votre quartier dans « Près de chez moi » pour voir le lieu le plus proche.',
       'cm.appeler': 'Appeler le {n}',
-      'cm.annonce.sel': '{nom}, {st}. Fiche affichée.', 'cm.annonce.ferme': 'Fiche fermée.'
+      'cm.annonce.sel': '{nom}, {st}. Fiche affichée.', 'cm.annonce.ferme': 'Fiche fermée.',
+      'cm.nbArrets': '{n} arrêts', 'cm.filtres': 'Filtres et lieux', 'cm.monQ': 'Utiliser mon quartier', 'cm.toutVoir': 'Tout afficher', 'cm.surTitre': 'Carte orbitale', 'cm.lignesTitre': 'Lignes de navettes'
     },
     en: {
       'cm.ariane': 'Services map', 'cm.titre': 'Services map',
@@ -59,7 +60,8 @@
       'cm.u.titre': 'Emergencies and hospitals', 'cm.u.note': 'If life is in danger, do not wait: call first.', 'cm.u.n15': 'Medical emergency (ambulance)', 'cm.u.n112': 'All emergencies',
       'cm.u.h24': 'Open 24/7', 'cm.u.proche': 'Nearest to you ({q} district)', 'cm.u.proche24': 'Nearest open 24/7', 'cm.u.choisirQ': 'Choose your district under “Near me” to see the nearest place.',
       'cm.appeler': 'Call {n}',
-      'cm.annonce.sel': '{nom}, {st}. Details shown.', 'cm.annonce.ferme': 'Details closed.'
+      'cm.annonce.sel': '{nom}, {st}. Details shown.', 'cm.annonce.ferme': 'Details closed.',
+      'cm.nbArrets': '{n} stops', 'cm.filtres': 'Filters and places', 'cm.monQ': 'Use my district', 'cm.toutVoir': 'Show everything', 'cm.surTitre': 'Orbital map', 'cm.lignesTitre': 'Shuttle lines'
     },
     es: {
       'cm.ariane': 'Mapa de servicios', 'cm.titre': 'Mapa de servicios',
@@ -86,7 +88,8 @@
       'cm.u.titre': 'Urgencias y hospitales', 'cm.u.note': 'En peligro vital, no espere: llame primero.', 'cm.u.n15': 'Urgencia médica (SAMU)', 'cm.u.n112': 'Todas las urgencias',
       'cm.u.h24': 'Abiertos 24 h', 'cm.u.proche': 'El más cercano a su casa (barrio {q})', 'cm.u.proche24': 'El más cercano abierto 24 h', 'cm.u.choisirQ': 'Elija su barrio en «Cerca de mí» para ver el lugar más cercano.',
       'cm.appeler': 'Llamar al {n}',
-      'cm.annonce.sel': '{nom}, {st}. Ficha mostrada.', 'cm.annonce.ferme': 'Ficha cerrada.'
+      'cm.annonce.sel': '{nom}, {st}. Ficha mostrada.', 'cm.annonce.ferme': 'Ficha cerrada.',
+      'cm.nbArrets': '{n} paradas', 'cm.filtres': 'Filtros y lugares', 'cm.monQ': 'Usar mi barrio', 'cm.toutVoir': 'Mostrar todo', 'cm.surTitre': 'Mapa orbital', 'cm.lignesTitre': 'Líneas de lanzadera'
     },
     ar: {
       'cm.ariane': 'خريطة الخدمات', 'cm.titre': 'خريطة الخدمات',
@@ -113,7 +116,8 @@
       'cm.u.titre': 'الطوارئ والمستشفيات', 'cm.u.note': 'في حال خطر على الحياة لا تنتظر: اتصل أولاً.', 'cm.u.n15': 'طوارئ طبية (SAMU)', 'cm.u.n112': 'كل حالات الطوارئ',
       'cm.u.h24': 'مفتوحة على مدار الساعة', 'cm.u.proche': 'الأقرب إلى منزلك (حي {q})', 'cm.u.proche24': 'الأقرب المفتوح على مدار الساعة', 'cm.u.choisirQ': 'اختر حيّك في «بالقرب مني» لرؤية أقرب مكان.',
       'cm.appeler': 'الاتصال بالرقم {n}',
-      'cm.annonce.sel': '{nom}، {st}. البطاقة معروضة.', 'cm.annonce.ferme': 'تم إغلاق البطاقة.'
+      'cm.annonce.sel': '{nom}، {st}. البطاقة معروضة.', 'cm.annonce.ferme': 'تم إغلاق البطاقة.',
+      'cm.nbArrets': '{n} محطات', 'cm.filtres': 'المرشحات والأماكن', 'cm.monQ': 'استخدام حيّي', 'cm.toutVoir': 'عرض الكل', 'cm.surTitre': 'الخريطة المدارية', 'cm.lignesTitre': 'خطوط الحافلات'
     }
   });
   /* Noms et horaires des lieux : FR et EN dans LIEUX ([fr, en]), ES et AR ici (clé = texte FR), repli sur EN */
@@ -155,13 +159,13 @@
   const FERMES = { canal: 'pionniers' };
   const ETIQUETTES = [['N1', 'observatoire', 10, -8], ['N2', 'canal', -28, -10], ['N3', 'tri', 10, -10], ['N3', 'habitat', 12, -10], ['N4', 'ateliers', -26, -10]];
 
-  /* ---------- Zones du plan ---------- */
-  const ZONES = {
-    Nord: { pts: '22,20 778,20 778,150 570,176 400,160 230,176 22,150', lab: [680, 60], c: 'calme' },
-    Ouest: { pts: '22,166 218,190 234,300 218,398 22,426', lab: [95, 205], c: 'iono-fonce' },
-    Centre: { pts: '262,192 538,192 552,300 538,386 262,386 248,300', lab: [400, 372], c: 'iono' },
-    Est: { pts: '778,166 582,190 566,300 582,398 778,426', lab: [690, 395], c: 'soleil' },
-    Sud: { pts: '22,442 218,412 400,396 582,412 778,442 778,540 22,540', lab: [590, 525], c: 'aurore' }
+  /* ---------- Composition orbitale du plan ----------
+     Centre = hub elliptique ; les quatre quartiers = secteurs d'un anneau elliptique, à leur place géographique
+     (angles en degrés, 0° = est, sens horaire comme l'écran). Tous les arrêts et lieux tombent dans leur quartier. */
+  const ORB = {
+    c: [400, 290], rx: 412, ry: 290, crx: 138, cry: 106, ecart: 1.4,
+    zones: { Est: { a: [-42, 40], c: 'soleil' }, Sud: { a: [40, 148], c: 'calme' }, Ouest: { a: [148, 222], c: 'aurore' }, Nord: { a: [222, 318], c: 'iono' } },
+    labels: { Nord: [300, 66], Est: [640, 380], Sud: [470, 432], Ouest: [215, 200], Centre: [395, 350] }
   };
   const CENTRES = { Centre: [400, 290], Nord: [400, 95], Sud: [400, 480], Est: [680, 290], Ouest: [110, 300] };
 
@@ -170,7 +174,7 @@
   const H24 = [[J7, '00:00', '24:00']];
   // plages : [jours (0 = dimanche), début, fin] ; fin < début = passe minuit
   const LIEUX = [
-    { id: 'hotel-ville', nom: ['Hôtel de ville', 'City hall'], type: 'administration', serviceId: 'etat-civil', quartier: 'Centre', adresse: '1 place de la Mairie, niveau 1', hr: ['Lun–Ven 8h–17h, jeudi jusqu’à 19h', 'Mon–Fri 8am–5pm, Thursday until 7pm'], plages: [[[1, 2, 3, 5], '08:00', '17:00'], [[4], '08:00', '19:00']], tel: '01 55 00 10 00', pmr: true, arret: 'mairie', x: 355, y: 300, icone: 'ph-buildings' },
+    { id: 'hotel-ville', nom: ['Hôtel de ville', 'City hall'], type: 'administration', serviceId: 'etat-civil', quartier: 'Centre', adresse: '1 place de la Mairie, niveau 1', hr: ['Lun–Ven 8h–17h, jeudi jusqu’à 19h', 'Mon–Fri 8am–5pm, Thursday until 7pm'], plages: [[[1, 2, 3, 5], '08:00', '17:00'], [[4], '08:00', '19:00']], tel: '01 55 00 10 00', pmr: true, arret: 'mairie', x: 395, y: 285, icone: 'ph-bank', hub: true },
     { id: 'dispensaire-central', nom: ['Dispensaire central (urgences)', 'Central clinic (emergency)'], type: 'urgence', serviceId: 'sante', quartier: 'Centre', adresse: 'Dôme B, avenue du Dispensaire', hr: ['24h/24, 7j/7', 'Open 24/7'], plages: H24, ouvert24h: true, tel: '01 55 00 15 15', pmr: true, arret: 'dispensaire', x: 345, y: 205 },
     { id: 'hopital-nova', nom: ['Hôpital de Nova (urgences)', 'Nova Hospital (emergency)'], type: 'urgence', serviceId: 'sante', quartier: 'Est', adresse: 'Boulevard Kepler, quartier Est', hr: ['Urgences 24h/24, 7j/7', 'Emergency department open 24/7'], plages: H24, ouvert24h: true, tel: '01 55 00 11 12', pmr: true, arret: 'kepler', x: 620, y: 215 },
     { id: 'poste-secours-sud', nom: ['Poste de secours du dôme Sud', 'South dome first-aid post'], type: 'urgence', serviceId: 'sante', quartier: 'Sud', adresse: 'Niveau 0, dôme Sud, près du canal', hr: ['Tous les jours 8h–22h', 'Every day 8am–10pm'], plages: [[J7, '08:00', '22:00']], tel: '01 55 00 11 18', pmr: true, arret: 'canal', x: 235, y: 435 },
@@ -221,7 +225,7 @@
 
     const u = NT.auth.utilisateur();
     const qUser = u && NT.QUARTIERS.includes(u.quartier) ? u.quartier : '';
-    const etat = { type: '', ouverts: false, pmr: false, q: qUser, sel: null, decl: 'liste' };
+    const etat = { type: '', ouverts: false, pmr: false, q: qUser, sel: null, decl: 'liste', ligne: '', zone: '', survolLigne: '', survolZone: '' };
 
     /* ----- Horaires : ouvert ou fermé maintenant ----- */
     function ouverture(l, d) {
@@ -261,18 +265,123 @@
     const labelMarqueur = l => [nomLieu(l), typeLabel(l.type), phrase(l), qLabel(l.quartier)].concat(codeService(l) ? [t('cm.svc.' + codeService(l))] : []).join(', ');
     const iconeLieu = l => (l.type === 'urgence' ? '<span class="cm-croix" aria-hidden="true"></span>' : `<i class="ph-duotone ${echap(l.icone || ICONE_TYPE[l.type])}" aria-hidden="true"></i>`);
 
-    /* ----- Plan SVG ----- */
+    /* ----- Plan orbital ----------------------------------------------------------------------------------
+       Le Centre est le hub (ellipse lumineuse) ; Nord, Est, Sud et Ouest sont des secteurs d'anneau disposés
+       autour, à leur place géographique. Les lignes sont tracées comme un plan de métro : segments à 0/45/90°,
+       virages arrondis, lignes parallèles sur les tronçons communs, correspondances en pastille blanche. */
+    const fmt = n => Math.round(n * 10) / 10;
+    const ell = (rx, ry, deg) => { const a = deg * Math.PI / 180, c = Math.cos(a), s = Math.sin(a), r = 1 / Math.sqrt(c * c / (rx * rx) + s * s / (ry * ry)); return [ORB.c[0] + r * c, ORB.c[1] + r * s]; };
+    // Quartier : secteur d'anneau au bord extérieur irrégulier (îlots, avenues) mais toujours autour du hub
+    const ondule = a => .9 + .1 * ((Math.sin(a * .19) + Math.sin(a * .113 + 2.1) + 2) / 4);
+    function secteur(a1, a2) {
+      const ext = [], int = [], fin = a2 - ORB.ecart;
+      for (let a = a1 + ORB.ecart; a < fin + 8.99; a += 9) {
+        const b = Math.min(a, fin), p = ell(ORB.rx, ORB.ry, b), f = ondule(b);
+        ext.push([ORB.c[0] + (p[0] - ORB.c[0]) * f, ORB.c[1] + (p[1] - ORB.c[1]) * f]);
+        if (b === fin) break;
+      }
+      const g = ORB.ecart * 2.6;
+      for (let a = a2 - g; a > a1 + g - 11.99; a -= 12) { const b = Math.max(a, a1 + g); int.push(ell(ORB.crx * 1.2, ORB.cry * 1.24, b)); if (b === a1 + g) break; }
+      return arrondi(ext.concat(int), 10, true);
+    }
+    // Chemin à coins arrondis à partir d'une suite de points (fermé ou non)
+    function arrondi(p, r, ferme) {
+      const n = p.length, pt = i => p[(i + n) % n];
+      const coin = i => {
+        const a = pt(i - 1), b = pt(i), c = pt(i + 1);
+        const l1 = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1, l2 = Math.hypot(c[0] - b[0], c[1] - b[1]) || 1, rr = Math.min(r, l1 / 2, l2 / 2);
+        return [[b[0] - (b[0] - a[0]) / l1 * rr, b[1] - (b[1] - a[1]) / l1 * rr], b, [b[0] + (c[0] - b[0]) / l2 * rr, b[1] + (c[1] - b[1]) / l2 * rr]];
+      };
+      if (ferme) {
+        let d = ''; for (let i = 0; i < n; i++) { const [s, b, e] = coin(i); d += (i ? 'L' : 'M') + fmt(s[0]) + ',' + fmt(s[1]) + 'Q' + fmt(b[0]) + ',' + fmt(b[1]) + ' ' + fmt(e[0]) + ',' + fmt(e[1]); }
+        return d + 'Z';
+      }
+      let d = 'M' + fmt(p[0][0]) + ',' + fmt(p[0][1]);
+      for (let i = 1; i < n - 1; i++) { const [s, b, e] = coin(i); d += 'L' + fmt(s[0]) + ',' + fmt(s[1]) + 'Q' + fmt(b[0]) + ',' + fmt(b[1]) + ' ' + fmt(e[0]) + ',' + fmt(e[1]); }
+      return d + 'L' + fmt(p[n - 1][0]) + ',' + fmt(p[n - 1][1]);
+    }
+    // Tronçon entre deux arrêts (toujours calculé dans le même sens, pour que les lignes parallèles restent alignées)
+    function troncon(a, b) { return [[ARRETS[a][2], ARRETS[a][3]], [ARRETS[b][2], ARRETS[b][3]]]; }
+    // Courbe lisse passant par tous les points (Catmull-Rom → Bézier) : le tracé « coule » d'arrêt en arrêt
+    function lisse(p, tension) {
+      const k = tension || .5;
+      if (p.length < 3) return 'M' + p.map(q => fmt(q[0]) + ',' + fmt(q[1])).join('L');
+      let d = 'M' + fmt(p[0][0]) + ',' + fmt(p[0][1]);
+      for (let i = 0; i < p.length - 1; i++) {
+        const p0 = p[i - 1] || p[i], p1 = p[i], p2 = p[i + 1], p3 = p[i + 2] || p2;
+        const c1 = [p1[0] + (p2[0] - p0[0]) * k / 3, p1[1] + (p2[1] - p0[1]) * k / 3], c2 = [p2[0] - (p3[0] - p1[0]) * k / 3, p2[1] - (p3[1] - p1[1]) * k / 3];
+        d += 'C' + fmt(c1[0]) + ',' + fmt(c1[1]) + ' ' + fmt(c2[0]) + ',' + fmt(c2[1]) + ' ' + fmt(p2[0]) + ',' + fmt(p2[1]);
+      }
+      return d;
+    }
+    // Couloirs partagés : chaque ligne reçoit un décalage parallèle sur les tronçons qu'elle partage
+    const ECART_LIGNES = 4.6;
+    function couloirs() {
+      const c = {};
+      Object.keys(LIGNES).forEach(id => LIGNES[id].forEach((s, i, l) => { if (!i) return; const k = [l[i - 1], s].sort().join('|'); (c[k] = c[k] || []).push(id); }));
+      return c;
+    }
+    function traceLigne(id, cl) {
+      const arr = LIGNES[id], out = [];
+      for (let i = 1; i < arr.length; i++) {
+        const [a, b] = [arr[i - 1], arr[i]], can = [a, b].sort(), sens = can[0] === a ? 1 : -1;
+        const lignes = cl[can.join('|')], d = (lignes.indexOf(id) - (lignes.length - 1) / 2) * ECART_LIGNES;
+        let pts = troncon(can[0], can[1]);
+        // décalage dans le repère du tronçon (identique quel que soit le sens de parcours)
+        const nrm = (p, q) => { const L = Math.hypot(q[0] - p[0], q[1] - p[1]) || 1; return [-(q[1] - p[1]) / L, (q[0] - p[0]) / L]; };
+        const dec = pts.map((p, j) => {
+          if (j === 0) { const n = nrm(pts[0], pts[1]); return [p[0] + n[0] * d, p[1] + n[1] * d]; }
+          if (j === pts.length - 1) { const n = nrm(pts[j - 1], pts[j]); return [p[0] + n[0] * d, p[1] + n[1] * d]; }
+          const n1 = nrm(pts[j - 1], pts[j]), n2 = nrm(pts[j], pts[j + 1]), k = 1 + n1[0] * n2[0] + n1[1] * n2[1];
+          return [p[0] + (n1[0] + n2[0]) / k * d, p[1] + (n1[1] + n2[1]) / k * d];
+        });
+        if (sens < 0) dec.reverse();
+        dec.forEach((p, j) => { const prev = out[out.length - 1]; if (j === 0 && prev && Math.hypot(prev[0] - p[0], prev[1] - p[1]) < .6) return; out.push(p); });
+      }
+      return out;
+    }
     function dessinerPlan() {
-      let h = '';
-      h += Object.keys(ZONES).map(q => { const z = ZONES[q]; return `<g class="cm-zone" data-q="${q}" style="--c:var(--${z.c})"><polygon points="${z.pts}"/><text x="${z.lab[0]}" y="${z.lab[1]}" text-anchor="middle">${echap(qLabel(q))}</text></g>`; }).join('');
-      const canal = 'M22,478 C150,455 260,500 400,478 S650,455 778,482';
-      h += `<path class="cm-canal" d="${canal}"/><path class="cm-canal-lisere" d="${canal}"/><text class="cm-canal-t" x="640" y="446">${echap(t('cm.canal'))}</text>`;
-      h += Object.keys(LIGNES).map((id, i) => {
-        const pts = LIGNES[id].map(s => ARRETS[s][2] + ',' + ARRETS[s][3]).join(' '), o = (i - 1.5) * 3;
-        return `<g class="cm-ligne cm-${id}" transform="translate(${o} ${o})"><polyline points="${pts}"/></g>`;
-      }).join('');
-      h += Object.keys(ARRETS).map(id => `<circle class="cm-arret" cx="${ARRETS[id][2]}" cy="${ARRETS[id][3]}" r="4.5"/>`).join('');
-      h += ETIQUETTES.map(([l, s, dx, dy]) => `<text class="cm-etq cm-${l}" x="${ARRETS[s][2] + dx}" y="${ARRETS[s][3] + dy}">${l}</text>`).join('');
+      const cl = couloirs();
+      const z = ORB.zones, M = [ARRETS.mairie[2], ARRETS.mairie[3]];
+      let h = `<defs>
+        <radialGradient id="cm-hub-g" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="oklch(0.7040 0.1400 182.5)" stop-opacity=".34"/><stop offset=".7" stop-color="oklch(0.7040 0.1400 182.5)" stop-opacity=".06"/><stop offset="1" stop-color="oklch(0.7040 0.1400 182.5)" stop-opacity="0"/></radialGradient>
+        <pattern id="cm-rues" width="34" height="34" patternUnits="userSpaceOnUse" patternTransform="rotate(18)"><path d="M0 0H34M0 17H34M0 0V34M17 0V34" fill="none" stroke="#fff" stroke-opacity=".05" stroke-width="1"/><rect x="5" y="5" width="7" height="7" rx="1.5" fill="#fff" fill-opacity=".025"/><rect x="22" y="22" width="7" height="7" rx="1.5" fill="#fff" fill-opacity=".025"/></pattern>
+      </defs>`;
+      // quartiers : secteurs organiques teintés autour du hub, texture de rues très discrète
+      h += Object.keys(z).map(q => { const d = secteur(z[q].a[0], z[q].a[1]); return `<g class="cm-zone" data-q="${q}" style="--c:var(--${z[q].c})"><path class="cm-zone-fond" d="${d}"/><path class="cm-zone-rues" d="${d}"/></g>`; }).join('');
+      h += `<g class="cm-zone cm-zone-centre" data-q="Centre" style="--c:var(--iono)"><ellipse class="cm-zone-fond" cx="${ORB.c[0]}" cy="${ORB.c[1]}" rx="${ORB.crx}" ry="${ORB.cry}"/></g>`;
+      // le canal Sud : une rivière qui traverse le sud de la ville
+      const canal = 'M-10,470 C120,440 250,505 400,478 S640,448 810,486';
+      h += `<g class="cm-canal-g"><path class="cm-canal" d="${canal}"/><path class="cm-canal-coeur" d="${canal}"/><path class="cm-canal-lisere" id="cm-canal-p" d="${canal}"/>
+        <text class="cm-canal-t"><textPath href="#cm-canal-p" startOffset="71%">${echap(t('cm.canal'))}</textPath></text></g>`;
+      // le hub : anneaux orbitaux autour de l'hôtel de ville, là où toutes les lignes se rejoignent
+      h += `<g class="cm-hub" aria-hidden="true"><circle cx="${M[0]}" cy="${M[1]}" r="62" fill="url(#cm-hub-g)" stroke="none"/><circle class="cm-hub-r1" cx="${M[0]}" cy="${M[1]}" r="46"/><circle class="cm-hub-r2" cx="${M[0]}" cy="${M[1]}" r="60"/></g>`;
+      h += Object.keys(z).concat('Centre').map(q => { const p = ORB.labels[q]; return `<text class="cm-zone-t${q === 'Centre' ? ' cm-zone-t-centre' : ''}" data-qt="${q}" x="${p[0]}" y="${p[1]}" text-anchor="middle">${echap(qLabel(q))}</text>`; }).join('');
+      // lignes : halo, tracé, zone de survol plus large
+      h += '<g class="cm-reseau">' + Object.keys(LIGNES).map((id, i) => {
+        const d = lisse(traceLigne(id, cl), .55);
+        return `<g class="cm-ligne cm-${id}" data-ligne="${id}" style="--i:${i}"><path class="cm-trace-halo" d="${d}"/><path class="cm-trace" d="${d}" pathLength="1"/><path class="cm-trace-zone" d="${d}"/></g>`;
+      }).join('') + '</g>';
+      // arrêts : pastille claire cerclée de la couleur de la ligne ; correspondances plus grandes ; arrêt fermé barré
+      h += '<g class="cm-arrets">' + Object.keys(ARRETS).map(id => {
+        const a = ARRETS[id], l = lignesDe(id), lignesAttr = l.join(' ');
+        if (FERMES[id]) return `<g class="cm-arret cm-arret-ferme" data-lignes="${lignesAttr}"><circle cx="${a[2]}" cy="${a[3]}" r="6"/><path d="M${a[2] - 3},${a[3] - 3}l6,6m0,-6l-6,6"/></g>`;
+        if (id === 'mairie') return '';   // l'hôtel de ville est le hub (marqueur central)
+        if (l.length > 1) return `<g class="cm-arret cm-arret-corresp${id === 'gare' ? ' cm-arret-gare' : ''}" data-lignes="${lignesAttr}"><circle cx="${a[2]}" cy="${a[3]}" r="${id === 'gare' ? 7.5 : 6.2}"/></g>`;
+        return `<g class="cm-arret cm-${l[0]}" data-lignes="${lignesAttr}"><circle cx="${a[2]}" cy="${a[3]}" r="4.6"/></g>`;
+      }).join('') + '</g>';
+      // noms des arrêts : visibles quand leur ligne est mise en avant (la Gare orbitale reste un repère permanent)
+      h += '<g class="cm-noms">' + Object.keys(ARRETS).map(id => {
+        const a = ARRETS[id], gauche = a[2] > 610, haut = a[3] > 470, ecart = id === 'mairie' ? 34 : 12;   // le hub est plus large
+        return `<text class="cm-nom-arret" data-lignes="${lignesDe(id).join(' ')}" x="${a[2] + (gauche ? -ecart : ecart)}" y="${a[3] + (haut ? -12 : 4)}" text-anchor="${gauche ? 'end' : 'start'}">${echap(a[0])}</text>`;
+      }).join('') + '</g>';
+      // pastilles de ligne aux terminus
+      h += '<g class="cm-badges">' + ETIQUETTES.map(([l, s, dx, dy]) => {
+        const x = ARRETS[s][2] + dx * 1.3, y = ARRETS[s][3] + dy * 1.8;
+        return `<g class="cm-badge cm-${l}" data-ligne="${l}"><rect x="${fmt(x - 16)}" y="${fmt(y - 10)}" width="32" height="20" rx="7"/><text x="${fmt(x)}" y="${fmt(y + 4.5)}" text-anchor="middle">${l}</text></g>`;
+      }).join('') + '</g>';
+      // boussole : l'orientation reste lisible même si la composition est orbitale
+      h += '<g class="cm-boussole" transform="translate(760 40)"><circle r="19"/><path d="M0,-12 L5,-1 L-5,-1Z"/><text y="12" text-anchor="middle">N</text></g>';
       h += '<g id="cm-sel"></g>';
       $('cm-plan').innerHTML = h;
     }
@@ -289,24 +398,60 @@
     function dessinerMarqueurs() {
       $('cm-marqueurs').innerHTML = LIEUX.map(l => {
         const px = l.x / 8, py = l.y / 5.6;
-        const cote = px < 20 ? ' cm-g' : px > 80 ? ' cm-d' : '';
-        return `<li class="cm-pt${cote}" data-pt="${echap(l.id)}" style="left:${px.toFixed(2)}%;top:${py.toFixed(2)}%">
-          <button type="button" class="cm-marqueur cm-t-${echap(l.type)}" data-lieu="${echap(l.id)}" data-nom="${echap(nomLieu(l))}" aria-label="${echap(labelMarqueur(l))}">${iconeLieu(l)}</button></li>`;
+        let cote = px < 20 ? ' cm-g' : px > 80 ? ' cm-d' : '';
+        // au repos : un point discret ; au survol, au focus ou une fois choisi : la pastille s'ouvre sur l'icône et le nom
+        if (l.hub) cote += ' cm-pt-hub';
+        return `<li class="cm-pt${cote}" data-pt="${echap(l.id)}" data-q="${echap(l.quartier)}" style="left:${px.toFixed(2)}%;top:${py.toFixed(2)}%">
+          <button type="button" class="cm-marqueur cm-t-${echap(l.type)}" data-lieu="${echap(l.id)}" data-nom="${echap(nomLieu(l))}" aria-label="${echap(labelMarqueur(l))}"><span class="cm-pastille" aria-hidden="true">${iconeLieu(l)}</span></button></li>`;
       }).join('');
     }
 
-    /* ----- Légende ----- */
+    /* ----- Légende : les lignes sont des boutons (mise en avant au clavier comme à la souris) ----- */
     function dessinerLegende() {
-      const types = TYPES.map(ty => `<li><span class="cm-leg-pt cm-t-${ty}">${ty === 'urgence' ? '<span class="cm-croix" aria-hidden="true"></span>' : `<i class="ph-duotone ${ICONE_TYPE[ty]}" aria-hidden="true"></i>`}</span>${echap(typeLabel(ty))}</li>`).join('');
-      const dash = { N1: '', N2: '11 6', N3: '2 6', N4: '16 4 3 4' };
-      const lignes = Object.keys(LIGNES).map(id => `<li class="cm-leg-ligne cm-${id}"><svg viewBox="0 0 42 10" aria-hidden="true" focusable="false"><line x1="2" y1="5" x2="40" y2="5" ${dash[id] ? `stroke-dasharray="${dash[id]}"` : ''}/></svg><span><b>${id}</b> ${echap(t('cm.ligne.' + id))}</span></li>`).join('');
-      $('cm-legende').innerHTML = `<div><h2>${echap(t('cm.legTypes'))}</h2><ul>${types}</ul></div><div><h2>${echap(t('cm.legLignes'))}</h2><ul>${lignes}</ul></div>`;
+      const types = TYPES.map(ty => `<li><span class="cm-leg-pt cm-t-${ty}" aria-hidden="true">${ty === 'urgence' ? '<span class="cm-croix"></span>' : `<i class="ph-duotone ${ICONE_TYPE[ty]}"></i>`}</span><span>${echap(typeLabel(ty))}</span></li>`).join('');
+      const lignes = Object.keys(LIGNES).map(id => `<li><button type="button" class="cm-leg-ligne cm-${id}" data-ligne-btn="${id}" aria-pressed="false"><span class="cm-leg-badge">${id}</span><span>${echap(t('cm.ligne.' + id))}</span></button></li>`).join('');
+      $('cm-legende').innerHTML = `<div class="cm-leg-lignes"><h2>${echap(t('cm.legLignes'))}</h2><ul>${lignes}</ul></div><div class="cm-leg-types"><h2>${echap(t('cm.legTypes'))}</h2><ul>${types}</ul></div>`;
     }
 
-    /* ----- Filtres ----- */
-    const CHIPS = [['', 'cm.tous'], ['sante', 'cm.t.sante'], ['administration', 'cm.t.administration'], ['social', 'cm.t.social'], ['association', 'cm.t.association'], ['transport', 'cm.t.transport'], ['autre', 'cm.t.autre']];
+    /* ----- Mise en avant d'une ligne ou d'un quartier ----- */
+    const carteEl = $('cm-carte');
+    function mettreEnAvant() {
+      const ligne = etat.survolLigne || etat.ligne, zone = etat.survolZone || etat.zone;
+      if (ligne) carteEl.dataset.ligne = ligne; else delete carteEl.dataset.ligne;
+      if (zone) carteEl.dataset.zone = zone; else delete carteEl.dataset.zone;
+      qa('#cm-plan .cm-ligne, #cm-plan .cm-badge').forEach(g => g.classList.toggle('on', g.dataset.ligne === ligne));
+      qa('#cm-plan .cm-arret, #cm-plan .cm-nom-arret').forEach(g => g.classList.toggle('on', !!ligne && g.dataset.lignes.split(' ').includes(ligne)));
+      qa('#cm-plan .cm-zone, #cm-plan .cm-zone-t').forEach(g => g.classList.toggle('on', (g.dataset.q || g.dataset.qt) === zone));
+      qa('.cm-pt').forEach(li => li.classList.toggle('cm-hors', !!zone && li.dataset.q !== zone));
+      qa('[data-ligne-btn]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.ligneBtn === etat.ligne)));
+      // petite indication de trajet pour la ligne mise en avant
+      const info = $('cm-info');
+      if (ligne) {
+        const arr = LIGNES[ligne];
+        info.innerHTML = `<span class="cm-leg-badge cm-${ligne}">${ligne}</span><span><strong>${echap(t('cm.ligne.' + ligne))}</strong>
+          <small>${echap(arretNom(arr[0]))} → ${echap(arretNom(arr[arr.length - 1]))} · ${echap(t('cm.nbArrets', { n: arr.length }))}</small></span>`;
+        info.hidden = false;
+      } else if (zone) {
+        const n = visibles().filter(l => l.quartier === zone).length;
+        info.innerHTML = `<span class="cm-info-q" aria-hidden="true"></span><span><strong>${echap(qLabel(zone))}</strong><small>${echap(n === 1 ? t('cm.nb1') : t('cm.nbN', { n }))}</small></span>`;
+        info.hidden = false;
+      } else info.hidden = true;
+      $('cm-info-zone').hidden = info.hidden;
+      $('cm-info-fermer').hidden = !(etat.ligne || etat.zone);
+    }
+    // le quartier de l'habitant : une impulsion discrète qui attire l'œil une seule fois
+    function pulserQuartier(q) {
+      if (!q) return;
+      const z = $('cm-plan').querySelector(`.cm-zone[data-q="${q}"]`); if (!z) return;
+      z.classList.remove('cm-pulse'); void z.getBoundingClientRect(); z.classList.add('cm-pulse');
+      setTimeout(() => z.classList.remove('cm-pulse'), 1600);
+    }
+
+    /* ----- Filtres : catégories principales visibles, les autres derrière « + Filtres » ----- */
+    const CHIPS = [['', 'cm.tous', ''], ['sante', 'cm.t.sante', 'ph-stethoscope'], ['administration', 'cm.t.administration', 'ph-bank'], ['social', 'cm.t.social', 'ph-users-three'],
+      ['association', 'cm.t.association', 'ph-handshake'], ['transport', 'cm.t.transport', 'ph-bus'], ['autre', 'cm.t.autre', 'ph-map-pin']];
     function dessinerControles() {
-      $('cm-chips').innerHTML = CHIPS.map(([v, k]) => `<button type="button" class="cm-chip" data-type="${v}" aria-pressed="false">${echap(t(k))}</button>`).join('');
+      $('cm-chips').innerHTML = CHIPS.map(([v, k, ic]) => `<button type="button" class="cm-chip${v ? ' cm-t-' + v : ''}" data-type="${v}" aria-pressed="false">${ic ? `<i class="ph-duotone ${ic}" aria-hidden="true"></i>` : ''}${echap(t(k))}</button>`).join('');
       $('cm-opts').innerHTML = `<button type="button" class="cm-chip" data-opt="ouverts" aria-pressed="false"><i class="ph ph-clock" aria-hidden="true"></i>${echap(t('cm.ouverts'))}</button>
         <button type="button" class="cm-chip" data-opt="pmr" aria-pressed="false"><i class="ph ph-wheelchair" aria-hidden="true"></i>${echap(t('cm.pmrFiltre'))}</button>`;
       $('cm-quartier').innerHTML = `<option value="">${echap(t('cm.prochePh'))}</option>` + NT.QUARTIERS.map(q => `<option value="${q}">${echap(qLabel(q))}</option>`).join('');
@@ -385,6 +530,9 @@
       qa('.cm-pt').forEach(li => { li.hidden = !ids.has(li.dataset.pt); });
       qa('.cm-marqueur').forEach(b => b.classList.toggle('cm-proche', !!etat.q && parId(b.dataset.lieu).quartier === etat.q));
       qa('.cm-zone').forEach(z => z.classList.toggle('cm-zone-proche', !!etat.q && z.dataset.q === etat.q));
+      qa('.cm-zone-t').forEach(z => z.classList.toggle('cm-zone-proche', !!etat.q && z.dataset.qt === etat.q));
+      $('cm-filtres-nb').textContent = [etat.type ? 1 : 0, etat.ouverts ? 1 : 0, etat.pmr ? 1 : 0].reduce((a, b) => a + b, 0) || '';
+      mettreEnAvant();
       // compteur (aria-live)
       const n = liste.length;
       $('cm-compteur').textContent = (n === 0 ? t('cm.nb0') : n === 1 ? t('cm.nb1') : t('cm.nbN', { n })) + (etat.q && n > 1 ? t('cm.nbTri', { q: qLabel(etat.q) }) : '');
@@ -464,7 +612,7 @@
       // un lieu masqué par les filtres doit rester sélectionnable depuis l'URL : on lève les filtres gênants
       if (!visibles().some(x => x.id === id)) { etat.type = ''; etat.ouverts = false; etat.pmr = false; $('cm-q').value = ''; rendre(); }
       etat.sel = id; etat.decl = opts.decl || 'liste';
-      rendreFiche(); grille.classList.add('cm-avec-fiche');
+      rendreFiche(); grille.classList.add('cm-avec-fiche'); if (NT.carteVolet) NT.carteVolet(true);
       dessinerSelection(l); majSelection(); majUrl();
       NT.ui.annoncer(t('cm.annonce.sel', { nom: nomLieu(l), st: phrase(l) }));
       if (opts.focus) fiche.focus();
@@ -521,14 +669,53 @@
       rendre(); majUrl();
     });
     $('cm-chips').addEventListener('click', e => { const b = e.target.closest('[data-type]'); if (!b) return; etat.type = b.dataset.type; rendre(); majUrl(); });
+    // lignes : survol sur le plan, choix par la légende (bouton) ou un clic sur le tracé
+    const plan = $('cm-plan');
+    plan.addEventListener('pointerover', e => {
+      const l = e.target.closest('.cm-ligne, .cm-badge'), z = !l && e.target.closest('.cm-zone');
+      etat.survolLigne = l ? l.dataset.ligne : ''; etat.survolZone = z ? z.dataset.q : ''; mettreEnAvant();
+    });
+    plan.addEventListener('pointerleave', () => { etat.survolLigne = ''; etat.survolZone = ''; mettreEnAvant(); });
+    plan.addEventListener('click', e => {
+      const l = e.target.closest('.cm-ligne, .cm-badge'), z = !l && e.target.closest('.cm-zone');
+      if (l) { etat.ligne = etat.ligne === l.dataset.ligne ? '' : l.dataset.ligne; etat.zone = ''; }
+      else if (z) { etat.zone = etat.zone === z.dataset.q ? '' : z.dataset.q; etat.ligne = ''; }
+      else { etat.ligne = ''; etat.zone = ''; }
+      mettreEnAvant();
+    });
+    $('cm-legende').addEventListener('click', e => { const b = e.target.closest('[data-ligne-btn]'); if (!b) return; etat.ligne = etat.ligne === b.dataset.ligneBtn ? '' : b.dataset.ligneBtn; etat.zone = ''; mettreEnAvant(); });
+    $('cm-legende').addEventListener('pointerover', e => { const b = e.target.closest('[data-ligne-btn]'); etat.survolLigne = b ? b.dataset.ligneBtn : ''; mettreEnAvant(); });
+    $('cm-legende').addEventListener('pointerleave', () => { etat.survolLigne = ''; mettreEnAvant(); });
+    $('cm-legende').addEventListener('focusin', e => { const b = e.target.closest('[data-ligne-btn]'); if (b) { etat.survolLigne = b.dataset.ligneBtn; mettreEnAvant(); } });
+    $('cm-legende').addEventListener('focusout', () => { etat.survolLigne = ''; mettreEnAvant(); });
+    $('cm-info-fermer').addEventListener('click', () => { etat.ligne = ''; etat.zone = ''; mettreEnAvant(); });
+    // mon quartier : celui du profil d'un clic
+    $('cm-mon-q').hidden = !qUser;
+    $('cm-mon-q').addEventListener('click', () => { if (!qUser) return; etat.q = qUser; $('cm-quartier').value = qUser; rendre(); if (etat.sel) rendreFiche(); pulserQuartier(qUser); });
+    // volet mobile : replié (recherche visible), déplié (filtres, liste, fiche)
+    const volet = $('cm-aside'), poignee = $('cm-poignee');
+    const deplier = ouvert => { volet.classList.toggle('cm-ouvert', ouvert); poignee.setAttribute('aria-expanded', String(ouvert)); };
+    poignee.addEventListener('click', () => deplier(!volet.classList.contains('cm-ouvert')));
+    $('cm-q').addEventListener('focus', () => deplier(true));
+    NT.carteVolet = deplier;
     $('cm-opts').addEventListener('click', e => { const b = e.target.closest('[data-opt]'); if (!b) return; etat[b.dataset.opt] = !etat[b.dataset.opt]; rendre(); });
     $('cm-q').addEventListener('input', rendre);
     $('cm-form').addEventListener('submit', e => { e.preventDefault(); rendre(); });
     $('cm-effacer').addEventListener('click', () => { $('cm-q').value = ''; rendre(); $('cm-q').focus(); });
-    $('cm-quartier').addEventListener('change', e => { etat.q = e.target.value; rendre(); if (etat.sel) rendreFiche(); });
+    $('cm-quartier').addEventListener('change', e => { etat.q = e.target.value; rendre(); if (etat.sel) rendreFiche(); pulserQuartier(etat.q); });
 
     /* ----- Démarrage ----- */
     dessinerPlan(); dessinerMarqueurs(); dessinerLegende(); dessinerControles();
+    try {
+      const calme = matchMedia('(prefers-reduced-motion: reduce)').matches || NT.leger.actif() || NT.econome.actif() || document.documentElement.classList.contains('calme');
+      if (!calme && !sessionStorage.getItem('nt:carteDessinee')) {
+        carteEl.classList.add('cm-dessin'); sessionStorage.setItem('nt:carteDessinee', '1');
+        setTimeout(() => carteEl.classList.remove('cm-dessin'), 2200);
+      }
+    } catch (e) { /* stockage bloqué : pas d'animation */ }
+    if (qUser) setTimeout(() => pulserQuartier(qUser), 1300);
+    const defile = document.querySelector('.cm-defile');
+    if (defile && defile.scrollWidth > defile.clientWidth) defile.scrollLeft = (defile.scrollWidth - defile.clientWidth) / 2;
     const filtreUrl = NT.ui.param('filtre'), lieuUrl = NT.ui.param('lieu');
     if (filtreUrl === 'urgence') etat.type = 'urgence';
     rendre();
