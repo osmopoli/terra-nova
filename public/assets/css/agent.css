@@ -190,3 +190,8 @@ tr.ag-action > th{ border-inline-start:3px solid var(--soleil); }
 .cz-maj > summary{ display:inline-flex; list-style:none; }
 .cz-maj > summary::-webkit-details-marker{ display:none; }
 .cz-maj[open] > summary{ margin-bottom:.6rem; }
+.cz-long{ min-height:7rem; }
+.cz-court{ min-height:4rem; }
+.cz-ok{ margin:.8rem 0 0; }
+.cz-meta{ margin:.3rem 0 0; font-size:var(--t-xs); }
+.cz-retablir{ margin-top:.5rem; }
