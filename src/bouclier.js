@@ -20,7 +20,7 @@ const ECRITURE = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
 
 /* ---------- Journal des tentatives bloquées ---------- */
 // IP tronquée (donnée personnelle minimisée) : 203.0.113.x / 2001:db8:85a3:…
-const ipMasquee = (ip = '') => { const v = String(ip).replace(/^::ffff:/, ''); return v.includes(':') ? v.split(':').slice(0, 3).join(':') + ':…' : v.split('.').slice(0, 3).join('.') + '.x'; };
+const ipMasquee = (ip = '') => { const v = String(ip || '').replace(/^::ffff:/, ''); if (!v) return 'inconnue'; return v.includes(':') ? v.split(':').slice(0, 3).join(':') + ':…' : v.split('.').slice(0, 3).join('.') + '.x'; };
 const derniers = new Map();   // anti-inondation du journal : une entrée par (type, IP, chemin) et par minute
 function bloquer(req, res, statut, type, message, detail, extra) {
   res.locals.bloque = true;

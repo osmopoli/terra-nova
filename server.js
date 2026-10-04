@@ -7,7 +7,11 @@ const { startPolling } = require('./src/webcup');
 
 const app = express();
 app.disable('x-powered-by');
-app.set('trust proxy', 'loopback, linklocal, uniquelocal');   // derrière un proxy HTTPS : origine correcte pour les clés d'accès
+// Derrière un proxy HTTPS local (HODI : Passenger sert l'application par une socket Unix, sans adresse distante) :
+// l'adresse du visiteur vient de X-Forwarded-For. Sans cette tolérance, req.ip serait vide pour tout le monde et les
+// limites par adresse (verrou F37, débit, formulaires) se partageraient entre tous les habitants.
+const RESEAU_LOCAL = /^(::1$|(::ffff:)?(127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|169\.254\.)|f[cd][0-9a-f]{2}:|fe[89ab][0-9a-f]:)/i;
+app.set('trust proxy', (adresse) => !adresse || RESEAU_LOCAL.test(String(adresse)));
 const charge = require('./src/charge');   // vague 15 (F77, F78) : mesure de la charge, délestage, file équitable, mémoïsation
 app.use(charge.mesurer);
 const bouclier = require('./src/bouclier');   // vague 13 (F69) : en-têtes stricts, anti-CSRF, limitation de débit
