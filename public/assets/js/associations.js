@@ -12,7 +12,7 @@
       'as.th.alimentation': 'Alimentation', 'as.th.logement': 'Logement', 'as.th.sante': 'Santé, écoute', 'as.th.ecoute': 'Écoute', 'as.th.emploi': 'Emploi', 'as.th.numerique': 'Numérique', 'as.th.famille': 'Famille, enfants', 'as.th.papiers': 'Papiers, courriers',
       'as.ouvert': 'Ouverte maintenant', 'as.ferme': 'Fermée maintenant', 'as.fermeA': 'ferme à {h}', 'as.ouvreAuj': 'ouvre aujourd’hui à {h}', 'as.ouvreDem': 'ouvre demain à {h}', 'as.ouvreJour': 'ouvre {j} à {h}', 'as.bientot': 'ferme bientôt',
       'as.aide': 'Ce qu’elle fait pour vous', 'as.adresse': 'Adresse', 'as.horaires': 'Horaires', 'as.tel': 'Téléphone', 'as.conditions': 'Conditions', 'as.pmrNon': 'Accès limité pour les personnes à mobilité réduite : appelez avant de venir.',
-      'as.appeler': 'Appeler', 'as.carte': 'Voir sur la carte', 'as.trajet': 'Y aller en navette', 'as.ecrire': 'Écrire', 'as.ferm': 'fermée', 'as.fiche': 'Voir la fiche',
+      'as.appeler': 'Appeler', 'as.carte': 'Voir sur la carte', 'as.trajet': 'Y aller en navette', 'as.ecrire': 'Écrire', 'as.ferm': 'fermée', 'as.fiche': 'Voir la fiche', 'as.plus': 'Horaires et détails', 'as.aujourdhui': 'Aujourd’hui : {h}',
       'as.pourService': 'Associations partenaires qui peuvent aussi vous aider', 'as.info': 'Information', 'as.majLe': 'Horaires mis à jour {d}',
       'as.modifier': 'Modifier les horaires', 'as.dlgTitre': 'Horaires : {nom}', 'as.jour': 'Jour', 'as.ouvre': 'Ouverture', 'as.fermeture': 'Fermeture', 'as.ouverteCeJour': 'Ouverte',
       'as.infoLabel': 'Information ponctuelle (facultative)', 'as.infoAide': 'Par exemple « Fermée exceptionnellement lundi 11 novembre ». Affichée sur la fiche.',
@@ -22,7 +22,7 @@
       'as.th.alimentation': 'Food', 'as.th.logement': 'Housing', 'as.th.sante': 'Health, listening', 'as.th.ecoute': 'Listening', 'as.th.emploi': 'Jobs', 'as.th.numerique': 'Digital', 'as.th.famille': 'Family, children', 'as.th.papiers': 'Paperwork, letters',
       'as.ouvert': 'Open now', 'as.ferme': 'Closed now', 'as.fermeA': 'closes at {h}', 'as.ouvreAuj': 'opens today at {h}', 'as.ouvreDem': 'opens tomorrow at {h}', 'as.ouvreJour': 'opens {j} at {h}', 'as.bientot': 'closing soon',
       'as.aide': 'What it does for you', 'as.adresse': 'Address', 'as.horaires': 'Opening hours', 'as.tel': 'Phone', 'as.conditions': 'Conditions', 'as.pmrNon': 'Limited access for people with reduced mobility: please call before coming.',
-      'as.appeler': 'Call', 'as.carte': 'See on the map', 'as.trajet': 'Go there by shuttle', 'as.ecrire': 'Write', 'as.ferm': 'closed', 'as.fiche': 'See the card',
+      'as.appeler': 'Call', 'as.carte': 'See on the map', 'as.trajet': 'Go there by shuttle', 'as.ecrire': 'Write', 'as.ferm': 'closed', 'as.fiche': 'See the card', 'as.plus': 'Hours and details', 'as.aujourdhui': 'Today: {h}',
       'as.pourService': 'Partner associations that can also help you', 'as.info': 'Information', 'as.majLe': 'Hours updated {d}',
       'as.modifier': 'Edit opening hours', 'as.dlgTitre': 'Opening hours: {nom}', 'as.jour': 'Day', 'as.ouvre': 'Opens', 'as.fermeture': 'Closes', 'as.ouverteCeJour': 'Open',
       'as.infoLabel': 'One-off information (optional)', 'as.infoAide': 'For example “Exceptionally closed on Monday 11 November”. Shown on the card.',
@@ -32,7 +32,7 @@
       'as.th.alimentation': 'Alimentación', 'as.th.logement': 'Vivienda', 'as.th.sante': 'Salud, escucha', 'as.th.ecoute': 'Escucha', 'as.th.emploi': 'Empleo', 'as.th.numerique': 'Digital', 'as.th.famille': 'Familia, niños', 'as.th.papiers': 'Papeles, cartas',
       'as.ouvert': 'Abierta ahora', 'as.ferme': 'Cerrada ahora', 'as.fermeA': 'cierra a las {h}', 'as.ouvreAuj': 'abre hoy a las {h}', 'as.ouvreDem': 'abre mañana a las {h}', 'as.ouvreJour': 'abre el {j} a las {h}', 'as.bientot': 'cierra pronto',
       'as.aide': 'Lo que hace por usted', 'as.adresse': 'Dirección', 'as.horaires': 'Horarios', 'as.tel': 'Teléfono', 'as.conditions': 'Condiciones', 'as.pmrNon': 'Acceso limitado para personas con movilidad reducida: llame antes de venir.',
-      'as.appeler': 'Llamar', 'as.carte': 'Ver en el mapa', 'as.trajet': 'Ir en lanzadera', 'as.ecrire': 'Escribir', 'as.ferm': 'cerrada', 'as.fiche': 'Ver la ficha',
+      'as.appeler': 'Llamar', 'as.carte': 'Ver en el mapa', 'as.trajet': 'Ir en lanzadera', 'as.ecrire': 'Escribir', 'as.ferm': 'cerrada', 'as.fiche': 'Ver la ficha', 'as.plus': 'Horarios y detalles', 'as.aujourdhui': 'Hoy: {h}',
       'as.pourService': 'Asociaciones colaboradoras que también pueden ayudarle', 'as.info': 'Información', 'as.majLe': 'Horarios actualizados {d}',
       'as.modifier': 'Modificar los horarios', 'as.dlgTitre': 'Horarios: {nom}', 'as.jour': 'Día', 'as.ouvre': 'Apertura', 'as.fermeture': 'Cierre', 'as.ouverteCeJour': 'Abierta',
       'as.infoLabel': 'Información puntual (opcional)', 'as.infoAide': 'Por ejemplo «Cerrada excepcionalmente el lunes 11 de noviembre». Se muestra en la ficha.',
@@ -42,7 +42,7 @@
       'as.th.alimentation': 'الغذاء', 'as.th.logement': 'السكن', 'as.th.sante': 'الصحة والإصغاء', 'as.th.ecoute': 'الإصغاء', 'as.th.emploi': 'العمل', 'as.th.numerique': 'الرقمي', 'as.th.famille': 'الأسرة والأطفال', 'as.th.papiers': 'الوثائق والمراسلات',
       'as.ouvert': 'مفتوحة الآن', 'as.ferme': 'مغلقة الآن', 'as.fermeA': 'تغلق على {h}', 'as.ouvreAuj': 'تفتح اليوم على {h}', 'as.ouvreDem': 'تفتح غداً على {h}', 'as.ouvreJour': 'تفتح {j} على {h}', 'as.bientot': 'تغلق قريباً',
       'as.aide': 'ما تقدمه لك', 'as.adresse': 'العنوان', 'as.horaires': 'المواعيد', 'as.tel': 'الهاتف', 'as.conditions': 'الشروط', 'as.pmrNon': 'وصول محدود لذوي الحركة المحدودة: اتصل قبل المجيء.',
-      'as.appeler': 'اتصال', 'as.carte': 'عرض على الخريطة', 'as.trajet': 'الذهاب بالحافلة', 'as.ecrire': 'مراسلة', 'as.ferm': 'مغلقة', 'as.fiche': 'عرض البطاقة',
+      'as.appeler': 'اتصال', 'as.carte': 'عرض على الخريطة', 'as.trajet': 'الذهاب بالحافلة', 'as.ecrire': 'مراسلة', 'as.ferm': 'مغلقة', 'as.fiche': 'عرض البطاقة', 'as.plus': 'المواعيد والتفاصيل', 'as.aujourdhui': 'اليوم: {h}',
       'as.pourService': 'جمعيات شريكة يمكنها مساعدتك أيضاً', 'as.info': 'معلومة', 'as.majLe': 'حُدّثت المواعيد {d}',
       'as.modifier': 'تعديل المواعيد', 'as.dlgTitre': 'المواعيد: {nom}', 'as.jour': 'اليوم', 'as.ouvre': 'الفتح', 'as.fermeture': 'الإغلاق', 'as.ouverteCeJour': 'مفتوحة',
       'as.infoLabel': 'معلومة ظرفية (اختيارية)', 'as.infoAide': 'مثلاً «مغلقة استثنائياً يوم الاثنين 11 نوفمبر». تُعرض في البطاقة.',
@@ -100,30 +100,54 @@
 
   A.carte = (a, opts) => {
     const o = opts || {}, compact = !!o.compact, tel = 'tel:' + String(a.tel || '').replace(/[^\d+]/g, '');
-    const auj = new Date().getDay();
-    return `<article class="as-carte${compact ? ' as-compact' : ''}" ${compact ? '' : 'id="asso-' + e(a.id.replace(/^asso-/, '')) + '"'} aria-labelledby="as-h-${e(a.id)}${compact ? '-c' : ''}">
-      <div class="as-tete"><span class="icone-ronde" aria-hidden="true"><i class="ph-duotone ${e(a.icone || 'ph-hand-heart')}"></i></span>
-        <div><h3 id="as-h-${e(a.id)}${compact ? '-c' : ''}">${e(a.nom)}</h3><p class="as-etat">${badge(a)}</p></div></div>
-      ${a.info ? `<p class="as-info"><i class="ph-duotone ph-info" aria-hidden="true"></i><span><strong>${e(t('as.info'))} :</strong> ${e(a.info)}</span></p>` : ''}
-      <h4 class="as-h4">${e(t('as.aide'))}</h4>
-      <ul class="as-aide">${A.aide(a).map(x => `<li>${e(x)}</li>`).join('')}</ul>
+    const auj = new Date().getDay(), hId = 'as-h-' + e(a.id) + (compact ? '-c' : '');
+    const tete = `<div class="as-tete"><span class="icone-ronde" aria-hidden="true"><i class="ph-duotone ${e(a.icone || 'ph-hand-heart')}"></i></span>
+        <div><h3 id="${hId}">${e(a.nom)}</h3><p class="as-etat">${badge(a)}</p></div></div>
+      ${a.info ? `<p class="as-info"><i class="ph-duotone ph-info" aria-hidden="true"></i><span><strong>${e(t('as.info'))} :</strong> ${e(a.info)}</span></p>` : ''}`;
+    const appeler = `<a class="btn btn-primaire" href="${e(tel)}"><i class="ph ph-phone-call" aria-hidden="true"></i>${e(t('as.appeler'))}<span class="sr-only"> ${e(a.nom)}</span></a>`;
+    const voirCarte = `<a class="btn" href="carte.html?lieu=${encodeURIComponent(a.id)}"><i class="ph ph-map-pin" aria-hidden="true"></i>${e(t('as.carte'))}</a>`;
+    const aide = `<h4 class="as-h4">${e(t('as.aide'))}</h4><ul class="as-aide">${A.aide(a).map(x => `<li>${e(x)}</li>`).join('')}</ul>`;
+    if (compact) return `<article class="as-carte as-compact" aria-labelledby="${hId}">${tete}
+      ${aide}
       <dl class="as-infos">
         <div><dt><i class="ph ph-map-pin" aria-hidden="true"></i>${e(t('as.adresse'))}</dt><dd>${e(a.adresse)}${a.pmr ? '' : `<br><small>${e(t('as.pmrNon'))}</small>`}</dd></div>
         <div><dt><i class="ph ph-phone" aria-hidden="true"></i>${e(t('as.tel'))}</dt><dd><a href="${e(tel)}">${e(a.tel)}</a></dd></div>
-        ${compact ? `<div><dt><i class="ph ph-clock" aria-hidden="true"></i>${e(t('as.horaires'))}</dt><dd>${e(A.horairesCourts(a))}</dd></div>` : `
-        <div><dt><i class="ph ph-clock" aria-hidden="true"></i>${e(t('as.horaires'))}</dt><dd><ul class="as-semaine">${A.horaires(a).map(h => `<li${h.jour === auj ? ' class="aujourdhui" aria-current="date"' : ''}><span>${e(h.nom)}</span><span>${e(h.texte)}</span></li>`).join('')}</ul></dd></div>
-        ${choisir(a.conditions) ? `<div><dt><i class="ph ph-info" aria-hidden="true"></i>${e(t('as.conditions'))}</dt><dd>${e(choisir(a.conditions))}</dd></div>` : ''}`}
+        <div><dt><i class="ph ph-clock" aria-hidden="true"></i>${e(t('as.horaires'))}</dt><dd>${e(A.horairesCourts(a))}</dd></div>
       </dl>
-      <div class="ligne as-actions">
-        <a class="btn btn-primaire" href="${e(tel)}"><i class="ph ph-phone-call" aria-hidden="true"></i>${e(t('as.appeler'))}<span class="sr-only"> ${e(a.nom)}</span></a>
-        <a class="btn" href="carte.html?lieu=${encodeURIComponent(a.id)}"><i class="ph ph-map-pin" aria-hidden="true"></i>${e(t('as.carte'))}</a>
-        ${compact ? `<a class="btn" href="services.html#asso-${encodeURIComponent(a.id.replace(/^asso-/, ''))}" data-as-fiche><i class="ph ph-hand-heart" aria-hidden="true"></i>${e(t('as.fiche'))}</a>`
-          : `${a.arret ? `<a class="btn" href="transports.html?de=gare&amp;vers=${encodeURIComponent(a.arret)}"><i class="ph ph-tram" aria-hidden="true"></i>${e(t('as.trajet'))}</a>` : ''}
-        ${a.email ? `<a class="btn" href="mailto:${e(a.email)}"><i class="ph ph-envelope-simple" aria-hidden="true"></i>${e(t('as.ecrire'))}</a>` : ''}`}
-      </div>
-      ${!compact && NT.auth.aRole('agent', 'admin') ? `<p class="as-agent"><button type="button" class="btn" data-as-modifier="${e(a.id)}"><i class="ph ph-pencil-simple" aria-hidden="true"></i>${e(t('as.modifier'))}</button>
-        ${a.majHoraires ? `<span class="doux">${e(t('as.majLe', { d: NT.ui.dateHeure(a.majHoraires) }))}${a.majPar ? ' · ' + e(a.majPar) : ''}</span>` : ''}</p>` : ''}
+      <div class="ligne as-actions">${appeler}${voirCarte}
+        <a class="btn" href="services.html#asso-${encodeURIComponent(a.id.replace(/^asso-/, ''))}" data-as-fiche><i class="ph ph-hand-heart" aria-hidden="true"></i>${e(t('as.fiche'))}</a></div>
     </article>`;
+    // Fiche de la liste : l'essentiel d'abord (ce qu'elle fait, où, aujourd'hui, appeler), le détail se déplie
+    const hAuj = A.horaires(a).find(h => h.jour === auj), pId = 'as-p-' + e(a.id);
+    return `<article class="as-carte" id="asso-${e(a.id.replace(/^asso-/, ''))}" aria-labelledby="${hId}">${tete}
+      <p class="as-resume">${A.aide(a).map(e).join(' · ')}</p>
+      <ul class="as-cles">
+        <li><i class="ph ph-map-pin" aria-hidden="true"></i><span><span class="sr-only">${e(t('as.adresse'))} : </span>${e(a.adresse)}</span></li>
+        <li><i class="ph ph-clock" aria-hidden="true"></i><span>${e(t('as.aujourdhui', { h: hAuj ? hAuj.texte : t('as.ferm') }))}</span></li>
+      </ul>
+      <div class="ligne as-actions">${appeler}${voirCarte}</div>
+      <button type="button" class="as-plus" aria-expanded="false" aria-controls="${pId}" data-as-plis>
+        <span>${e(t('as.plus'))}<span class="sr-only"> : ${e(a.nom)}</span></span><i class="ph ph-caret-down" aria-hidden="true"></i></button>
+      <div class="as-plis" id="${pId}" inert><div class="as-plis-in">
+        <dl class="as-infos">
+          <div><dt><i class="ph ph-phone" aria-hidden="true"></i>${e(t('as.tel'))}</dt><dd><a href="${e(tel)}">${e(a.tel)}</a></dd></div>
+          <div><dt><i class="ph ph-clock" aria-hidden="true"></i>${e(t('as.horaires'))}</dt><dd><ul class="as-semaine">${A.horaires(a).map(h => `<li${h.jour === auj ? ' class="aujourdhui" aria-current="date"' : ''}><span>${e(h.nom)}</span><span>${e(h.texte)}</span></li>`).join('')}</ul></dd></div>
+          ${choisir(a.conditions) ? `<div><dt><i class="ph ph-info" aria-hidden="true"></i>${e(t('as.conditions'))}</dt><dd>${e(choisir(a.conditions))}</dd></div>` : ''}
+        </dl>
+        ${a.pmr ? '' : `<p class="as-pmr"><i class="ph ph-wheelchair" aria-hidden="true"></i>${e(t('as.pmrNon'))}</p>`}
+        ${a.arret || a.email ? `<div class="ligne as-actions as-actions-2">
+          ${a.arret ? `<a class="btn" href="transports.html?de=gare&amp;vers=${encodeURIComponent(a.arret)}"><i class="ph ph-tram" aria-hidden="true"></i>${e(t('as.trajet'))}</a>` : ''}
+          ${a.email ? `<a class="btn" href="mailto:${e(a.email)}"><i class="ph ph-envelope-simple" aria-hidden="true"></i>${e(t('as.ecrire'))}</a>` : ''}</div>` : ''}
+        ${NT.auth.aRole('agent', 'admin') ? `<p class="as-agent"><button type="button" class="btn" data-as-modifier="${e(a.id)}"><i class="ph ph-pencil-simple" aria-hidden="true"></i>${e(t('as.modifier'))}</button>
+          ${a.majHoraires ? `<span class="doux">${e(t('as.majLe', { d: NT.ui.dateHeure(a.majHoraires) }))}${a.majPar ? ' · ' + e(a.majPar) : ''}</span>` : ''}</p>` : ''}
+      </div></div>
+    </article>`;
+  };
+  // Déplier / replier une fiche (le panneau replié est inerte : ni clavier ni lecteur d'écran)
+  A.deplier = (carte, ouvert) => {
+    const b = carte && carte.querySelector('[data-as-plis]'); if (!b) return;
+    b.setAttribute('aria-expanded', String(ouvert)); carte.classList.toggle('as-ouverte', ouvert);
+    carte.querySelector('.as-plis').toggleAttribute('inert', !ouvert);
   };
   // Bloc « Associations partenaires qui peuvent aussi vous aider » dans la fiche d'un service
   A.blocService = serviceId => {
@@ -149,12 +173,16 @@
       <div class="as-liste" id="as-liste"></div>`;
     const rendre = () => {
       const l = A.liste().filter(a => (!etat.theme || (a.themes || []).includes(etat.theme)) && (!etat.ouvertes || A.statut(a).ouvert));
+      const ouvertes = [...zone.querySelectorAll('.as-ouverte')].map(c => c.id);   // les fiches dépliées le restent
       zone.querySelector('#as-liste').innerHTML = l.map(a => A.carte(a)).join('') || `<p class="vide">${e(t('as.nb0'))}</p>`;
+      ouvertes.forEach(id => A.deplier(document.getElementById(id), true));
       zone.querySelector('#as-compteur').textContent = l.length === 0 ? t('as.nb0') : l.length === 1 ? t('as.nb1') : t('as.nbN', { n: l.length });
       zone.querySelectorAll('[data-as-theme]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.asTheme === etat.theme)));
       zone.querySelector('[data-as-ouvertes]').setAttribute('aria-pressed', String(etat.ouvertes));
     };
     zone.addEventListener('click', ev => {
+      const p = ev.target.closest('[data-as-plis]');
+      if (p) { const c = p.closest('.as-carte'), ouvert = p.getAttribute('aria-expanded') !== 'true'; A.deplier(c, ouvert); return; }
       const b = ev.target.closest('[data-as-theme]'); if (b) { etat.theme = b.dataset.asTheme; rendre(); return; }
       if (ev.target.closest('[data-as-ouvertes]')) { etat.ouvertes = !etat.ouvertes; rendre(); }
     });
@@ -218,13 +246,13 @@
     if (zone) {
       liste(zone);
       const h = decodeURIComponent(location.hash.replace(/^#/, ''));
-      if (h === 'associations' || h.startsWith('asso-')) requestAnimationFrame(() => { const c = document.getElementById(h === 'associations' ? 'as-h' : h); if (c) { c.scrollIntoView({ block: 'start' }); c.setAttribute('tabindex', '-1'); c.focus({ preventScroll: true }); } });
+      if (h === 'associations' || h.startsWith('asso-')) requestAnimationFrame(() => { const c = document.getElementById(h === 'associations' ? 'as-h' : h); if (c) { if (c.classList.contains('as-carte')) A.deplier(c, true); c.scrollIntoView({ block: 'start' }); c.setAttribute('tabindex', '-1'); c.focus({ preventScroll: true }); } });
     }
     // lien « Voir la fiche » depuis le tiroir d'un service : la fiche est montrée une fois le tiroir refermé
     window.addEventListener('hashchange', () => {
       const h = decodeURIComponent(location.hash.replace(/^#/, ''));
       if (!h.startsWith('asso-')) return;
-      setTimeout(() => { const c = document.getElementById(h); if (c) { c.scrollIntoView({ block: 'start' }); c.setAttribute('tabindex', '-1'); c.focus({ preventScroll: true }); } }, 400);
+      setTimeout(() => { const c = document.getElementById(h); if (c) { if (c.classList.contains('as-carte')) A.deplier(c, true); c.scrollIntoView({ block: 'start' }); c.setAttribute('tabindex', '-1'); c.focus({ preventScroll: true }); } }, 400);
     });
     setInterval(A.majStatuts, NT.econome.delai(60000));
   });

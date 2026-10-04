@@ -200,6 +200,9 @@
   if (u && u.role === 'admin') liens.push(['plateforme', 'agent-plateforme.html']);   // vague 15 (F77, F78) : état de la plateforme
   if (u && u.role !== 'citoyen') liens.push(['exports', 'agent-exports.html']);   // vague 17 (F88) : exports des données de suivi
   if (u && u.role === 'admin') liens.push(['sauvegardes', 'admin-sauvegardes.html']);   // vague 17 (F87) : sauvegardes vérifiées
+  /* Vague 18 (F89, F91) : questions sans réponse de l'assistant d'orientation, langage clair */
+  NT.i18n.ajouter({ fr: { 'nav.orientation': 'Orientation' }, en: { 'nav.orientation': 'Guidance' }, es: { 'nav.orientation': 'Orientación' }, ar: { 'nav.orientation': 'التوجيه' } });
+  if (u && u.role !== 'citoyen') liens.push(['orientation', 'agent-orientation.html']);
   if (u) NT.rdv.verifierRappels();   // avant le compteur de la cloche, pour que les rappels dus soient comptés
   const nbNotif = u ? NT.notif.nonLues(u.id) : 0;
   const optionsLangue = Object.entries(NT.i18n.LANGUES).map(([c, n]) => `<option value="${c}" ${c === NT.i18n.langue ? 'selected' : ''} lang="${c}">${n}</option>`).join('');
@@ -510,17 +513,42 @@
     const lienInterne = l => (typeof l === 'string' && l.trim() && !/^\s*[a-z][a-z0-9+.\-]*:/i.test(l) && !/^\s*[\\/]{2}/.test(l) ? l.trim() : '');
     function rendreNotifs() {
       const l = NT.notif.pour(u.id).map(n => Object.assign({}, n, { lien: lienInterne(n.lien) }));
-      tiroir.innerHTML = (l.length ? `<ul style="list-style:none;margin:0;padding:0">${l.map(n => `
-        <li style="padding:.85rem 0;border-bottom:1px solid var(--trait)${n.lu ? ';opacity:.7' : ''}">
-          <div class="ligne entre"><strong>${n.lu ? '' : '<span class="sr-only">Non lu : </span>●&nbsp;'}${echap(n.titre)}</strong><span class="doux" style="font-size:.8rem">${echap(ui.depuis(n.cree))}</span></div>
-          <p style="margin:.3rem 0">${echap(n.texte)}</p>
+      tiroir.innerHTML = (l.length ? `<ul class="notifs">${l.map(n => `
+        <li class="notif${n.lu ? ' notif-lue' : ''}" data-notif="${echap(n.id)}">
+          <div class="notif-tete"><strong>${n.lu ? '' : '<span class="sr-only">Non lu : </span><span class="notif-point" aria-hidden="true"></span>'}${echap(n.titre)}</strong><span class="doux notif-quand">${echap(ui.depuis(n.cree))}</span>
+            <button type="button" class="notif-x" data-notif-x="${echap(n.id)}" aria-label="${echap(t('ui.supprNotif', { t: n.titre }))}" title="${echap(t('ui.suppr'))}"><i class="ph ph-x" aria-hidden="true"></i></button></div>
+          <p class="notif-texte">${echap(n.texte)}</p>
           ${n.lien ? `<a href="${echap(n.lien)}" data-lu="${n.id}">${echap(t('ui.voir'))} →</a>` : ''}
         </li>`).join('')}</ul>` : `<p class="vide">${echap(t('ui.aucuneNotif'))}</p>`) +
         `<sl-button slot="footer" id="nt-tout-lu">${echap(t('ui.toutLu'))}</sl-button>`;
       tiroir.querySelector('#nt-tout-lu').addEventListener('click', () => { NT.notif.toutLire(u.id); rendreNotifs(); majCloche(); });
     }
-    function majCloche() { const b = entete.querySelector('.pastille-compte'); if (b && !NT.notif.nonLues(u.id)) b.remove(); }
-    tiroir.addEventListener('click', e => { const id = e.target.closest('[data-lu]')?.dataset.lu; if (id) NT.notif.lire(id); });
+    function majCloche() {
+      const b = entete.querySelector('.pastille-compte'), nb = NT.notif.nonLues(u.id);
+      if (b && !nb) b.remove(); else if (b) b.textContent = nb;
+    }
+    // Croix : la notification glisse et s'efface, la liste se resserre, le focus passe à la suivante
+    function supprimerNotif(id, bouton) {
+      const li = bouton.closest('.notif'); if (!li || li.classList.contains('notif-sort')) return;
+      if (!NT.notif.supprimer(id)) return;
+      const suivante = (li.nextElementSibling || li.previousElementSibling)?.querySelector('.notif-x');
+      const fin = () => {
+        li.remove();
+        if (!tiroir.querySelector('.notif')) rendreNotifs();
+        (suivante || tiroir.querySelector('#nt-tout-lu'))?.focus();
+      };
+      majCloche(); ui.annoncer(t('ui.notifSupprimee'));
+      const calme = matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.contains('leger');
+      if (calme) return fin();
+      li.style.height = li.offsetHeight + 'px';
+      li.classList.add('notif-sort');
+      requestAnimationFrame(() => requestAnimationFrame(() => { li.style.height = '0px'; }));
+      setTimeout(fin, 260);
+    }
+    tiroir.addEventListener('click', e => {
+      const x = e.target.closest('[data-notif-x]'); if (x) { supprimerNotif(x.dataset.notifX, x); return; }
+      const id = e.target.closest('[data-lu]')?.dataset.lu; if (id) NT.notif.lire(id);
+    });
     // Shoelace peut ne pas être encore chargé au clic : on attend la définition de sl-drawer avant d'ouvrir
     entete.querySelector('#nt-btn-notif').addEventListener('click', () => { rendreNotifs(); customElements.whenDefined('sl-drawer').then(() => tiroir.show()); });
     // Notifications importantes non encore présentées : toast immédiat
@@ -574,4 +602,6 @@
   document.head.append(scriptOfficiel);
   // Vague 17 (F85, F86) : veille en direct (urgences médicales pour le personnel, activité inhabituelle, confirmation du mot de passe)
   if (u) { const scriptVeille = document.createElement('script'); scriptVeille.src = 'assets/js/veille.js'; document.head.append(scriptVeille); }
+  // Vague 18 (D10, F89-F92) : recherche globale, assistant d'orientation, langage clair et « Expliquer plus simplement »
+  const scriptOrientation = document.createElement('script'); scriptOrientation.src = 'assets/js/orientation.js'; document.head.append(scriptOrientation);
 })();
