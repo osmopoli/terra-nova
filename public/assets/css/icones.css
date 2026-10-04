@@ -1,4 +1,4 @@
-/* Terra Nova — icônes Phosphor 2.1.1 (licence MIT) réduites aux 233 icônes utilisées. Fichier produit par tools/icones.js : ne pas modifier à la main. */
+/* Terra Nova — icônes Phosphor 2.1.1 (licence MIT) réduites aux 236 icônes utilisées. Fichier produit par tools/icones.js : ne pas modifier à la main. */
 @font-face{font-family:"Phosphor";src:url("https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/Phosphor.woff2") format("woff2"),url("https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/Phosphor.woff") format("woff");font-weight:normal;font-style:normal;font-display:block}
 @font-face{font-family:"Phosphor-Duotone";src:url("https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/Phosphor-Duotone.woff2") format("woff2"),url("https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/Phosphor-Duotone.woff") format("woff");font-weight:normal;font-style:normal;font-display:block}
 .ph,.ph-duotone{display:inline-block;width:1em;text-align:center;speak:never;font-style:normal;font-weight:normal;font-variant:normal;text-transform:none;line-height:1;letter-spacing:0;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
@@ -37,6 +37,10 @@ html.leger .ph-duotone:after,html.essentiel-dabord .ph-duotone:after{content:non
 .ph-duotone.ph-bank:before{content:"\e0b4";opacity:.2}.ph-duotone.ph-bank:after{content:"\e0b5";margin-inline-start:-1em}
 .ph.ph-basket:before{content:"\e964"}
 .ph-duotone.ph-basket:before{content:"\e964";opacity:.2}.ph-duotone.ph-basket:after{content:"\e965";margin-inline-start:-1em}
+.ph.ph-battery-charging:before{content:"\e0ba"}
+.ph-duotone.ph-battery-charging:before{content:"\e0ba";opacity:.2}.ph-duotone.ph-battery-charging:after{content:"\e0bb";margin-inline-start:-1em}
+.ph.ph-battery-low:before{content:"\e0c4"}
+.ph-duotone.ph-battery-low:before{content:"\e0c4";opacity:.2}.ph-duotone.ph-battery-low:after{content:"\e0c5";margin-inline-start:-1em}
 .ph.ph-bell:before{content:"\e0ce"}
 .ph-duotone.ph-bell:before{content:"\e0ce";opacity:.2}.ph-duotone.ph-bell:after{content:"\e0cf";margin-inline-start:-1em}
 .ph.ph-bell-ringing:before{content:"\e5e8"}
@@ -261,6 +265,8 @@ html.leger .ph-duotone:after,html.essentiel-dabord .ph-duotone:after{content:non
 .ph-duotone.ph-lightbulb-filament:before{content:"\e63c";opacity:.2}.ph-duotone.ph-lightbulb-filament:after{content:"\e63d";margin-inline-start:-1em}
 .ph.ph-lightning:before{content:"\e2de"}
 .ph-duotone.ph-lightning:before{content:"\e2de";opacity:.2}.ph-duotone.ph-lightning:after{content:"\e2df";margin-inline-start:-1em}
+.ph.ph-lightning-slash:before{content:"\e2e0"}
+.ph-duotone.ph-lightning-slash:before{content:"\e2e0";opacity:.2}.ph-duotone.ph-lightning-slash:after{content:"\e2e1";margin-inline-start:-1em}
 .ph.ph-link:before{content:"\e2e2"}
 .ph-duotone.ph-link:before{content:"\e2e2";opacity:.2}.ph-duotone.ph-link:after{content:"\e2e3";margin-inline-start:-1em}
 .ph.ph-link-break:before{content:"\e2e4"}

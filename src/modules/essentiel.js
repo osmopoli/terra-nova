@@ -82,7 +82,7 @@ function corps(d, l, stale) {
   const m = maintenantVille();
   const numeros = (d.numeros || []).map((n) => `<li><a class="ess-tel" href="tel:${e(tel(n.numero))}"><strong>${e(n.numero)}</strong> <span>${e(choisir(n.libelle, l))}</span></a>${n.gratuit ? ` <small>· ${e(t.gratuit)}</small>` : ''}</li>`).join('');
   const locaux = (d.locaux || []).map((n) => `<li><a class="ess-tel" href="tel:${e(tel(n.numero))}"><strong>${e(n.numero)}</strong> <span>${e(choisir(n.libelle, l))}</span></a> <small>· ${e(n.h24 ? t.h24 : n.horaires || '')}</small></li>`).join('');
-  const officiels = (d.officiels || []).map((o) => {
+  const officiels = (d.officiels || []).filter((o) => !o.crise).map((o) => {   // vague 21 : les crises localisées ont leur bloc en tête
     const tr = (o.traductions || {})[l]; const c = tr && tr.titre && tr.message ? { titre: tr.titre, message: tr.message, actions: tr.actions && tr.actions.length ? tr.actions : o.actions } : o;
     return `<li class="ess-officiel"><p class="ess-source">${e(t.officiel)}</p><h3>${e(c.titre)}</h3>${o.audience && o.audience !== 'Toute la ville' ? `<p>${e(t.zone)} : ${e(o.audience)}</p>` : ''}<p>${e(c.message)}</p>
       ${(c.actions || []).length ? `<p><strong>${e(t.faire)} :</strong></p><ul>${c.actions.map((x) => `<li>${e(x)}</li>`).join('')}</ul>` : ''}</li>`;
@@ -101,7 +101,7 @@ function corps(d, l, stale) {
     <br>${e(t.horaires)} : ${e(plagesTexte(a, t))}${a.info ? ` · ${e(a.info)}` : ''}<br>${a.tel ? `<a href="tel:${e(tel(a.tel))}">${e(a.tel)}</a> · ` : ''}${e(a.adresse || '')}
     ${(choisir(a.aide, l) || []).length ? `<br><small>${e(t.aide)} : ${(choisir(a.aide, l) || []).slice(0, 3).map(e).join(' · ')}</small>` : ''}</li>`).join('');
   const contactsSvc = (d.services || []).map((s) => `<li><strong>${e(choisir(s.nom, l))}</strong> — ${e(s.horaires || '')}${s.lieu ? ` · ${e(s.lieu)}` : ''}${s.contact ? ` · ${s.contact.includes('@') ? `<a href="mailto:${e(s.contact)}">${e(s.contact)}</a>` : e(s.contact)}` : ''}</li>`).join('');
-  return `<h1>${e(t.titre)}</h1><p>${e(t.intro)}</p>
+  return `<h1>${e(t.titre)}</h1>${require('./crise').blocHtml(d.officiels, l)}<p>${e(t.intro)}</p>
   <p class="ess-maj"${stale ? ' role="status"' : ''}>${e(stale ? t.copie.replace('{d}', dateHeure(d.majLe, l)) : t.maj.replace('{d}', dateHeure(d.majLe, l)))}</p>
   <section aria-labelledby="ess-urg"><h2 id="ess-urg">${e(t.urgences)}</h2><ul class="ess-numeros">${numeros}</ul>
     <h3>${e(t.locaux)}</h3><ul class="ess-numeros">${locaux}</ul></section>

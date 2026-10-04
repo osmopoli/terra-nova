@@ -61,7 +61,8 @@ function construire() {
     .sort((a, b) => String(b.cree).localeCompare(String(a.cree)))
     .map((a) => ({ id: a.id, titre: a.titre, zone: a.zone, resume: a.resume || '', consignes: a.consignes || [], publics: a.publics || [], importance: a.importance, categorie: a.categorie, cree: a.cree, expire: a.expire || '', active: true }));
   const officiels = require('./modules/officiel').actifsPour(null).map((m) => ({ id: m.id, titre: m.titre, message: m.message, actions: m.actions || [], audience: m.audience,
-    debut: m.debut, fin: m.fin, traductions: m.traductions || {}, signataire: m.signataire || '' }));
+    debut: m.debut, fin: m.fin, traductions: m.traductions || {}, signataire: m.signataire || '',
+    crise: require('./modules/officiel').vuePublique(m, null).crise }));   // vague 21 (F101) : crise localisée (vue publique)
   const services = docs.tous('services').map((s) => ({ id: s.id, nom: s.nom, description: s.description, icone: s.icone, categorie: s.categorie, prioritaire: !!s.prioritaire,
     etat: s.etat || { code: 'ok' }, horaires: s.horaires || '', lieu: s.lieu || '', contact: s.contact || '', rdv: !!s.rdv, lien: s.lien || '' }));
   const associations = docs.tous('associations').sort((a, b) => (a.ordre || 0) - (b.ordre || 0))
@@ -173,8 +174,9 @@ router.get('/api/essentiel/moi', (req, res) => {
 router.get('/api/pouls', (req, res) => {
   res.set('Cache-Control', 'no-store');
   const u = req.user;
-  const officiels = require('./modules/officiel').actifsPour(u).map((m) => ({ id: m.id, titre: m.titre, message: m.message, actions: m.actions, audience: m.audience, debut: m.debut, fin: m.fin,
-    traductions: m.traductions || {}, signataire: m.signataire, compris: !!u && (m.accuses || []).some((a) => a.userId === u.id), monQuartier: !!u && u.role === 'citoyen' && m.audience === u.quartier }));
+  // vague 21 (F101) : même vue que GET /api/officiels (crise localisée : critique pour le quartier touché, rétablissement estimé)
+  const off = require('./modules/officiel');
+  const officiels = off.actifsPour(u).map((m) => off.vuePublique(m, u));
   let notif = null, veille = null;
   if (u) {
     const l = docs.tous('notifications').filter((n) => n.userId === u.id);

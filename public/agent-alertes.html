@@ -19,6 +19,7 @@
   <script src="assets/js/agent.js"></script>
   <script src="assets/js/ui.js" defer></script>
   <script src="assets/js/agent-officiel.js" defer></script>
+  <script src="assets/js/agent-crise.js" defer></script><!-- vague 21 (F101) : Centre de crise, crise localisée -->
 </head>
 <body data-page="alertes" data-ariane="nav.agent|agent.html;nav.alertes" data-roles="agent,admin">
   <main id="contenu" class="conteneur ag">
@@ -29,6 +30,9 @@
     </header>
 
     <div id="confirmation" role="status"></div>
+
+    <!-- vague 21 (F101) : Centre de crise, crise localisée (formulaire et liste dessinés par assets/js/agent-crise.js) en tête : publication rapide -->
+    <section class="section" id="crise-agent" aria-labelledby="t-crise" style="margin:0 0 3rem"></section>
 
     <div class="ag-alertes">
       <!-- Formulaire (D18, F29, F30, F31) -->

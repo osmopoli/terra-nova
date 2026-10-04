@@ -54,6 +54,8 @@ app.post('/api/demo/reinitialiser', (req, res, next) => { res.on('finish', () =>
 const seedVague20 = require('./src/seed-vague20');
 app.post('/api/demo/reinitialiser', (req, res, next) => { res.on('finish', () => { if (res.statusCode === 200) seedVague20.semer(); }); next(); });
 app.use(vague20.apresEcriture);   // vague 20 (F98) : demandes et rendez-vous comptés (compteurs anonymes) à leur enregistrement
+const crise = require('./src/modules/crise');   // vague 21 (F101) : crise de démonstration rechargée après réinitialisation
+app.post('/api/demo/reinitialiser', (req, res, next) => { res.on('finish', () => { if (res.statusCode === 200) crise.semer(); }); next(); });
 app.use(require('./src/modules/api'));
 app.use(require('./src/renfort').router);   // vague 9 : clés d'accès, deux étapes, appareils
 app.use(require('./src/modules/sobriete'));   // vague 10 : diagnostic de sobriété (F57)
@@ -61,6 +63,8 @@ app.use(require('./src/modules/simple'));   // vague 11 : version simple et rapi
 app.use(require('./src/modules/participation'));   // vague 12 : consultations, avis, projets, idées (F65-F68)
 app.use(require('./src/modules/securite'));   // vague 13 : centre de sécurité, habilitations (F69, F70)
 app.use(require('./src/modules/accueil'));   // vague 13 : comptes sans e-mail, guide d'arrivée (F71, F72)
+/* Vague 21 (F101) : crise localisée (panne électrique…) construite sur le message officiel, monté avant lui ; démo rechargée après réinitialisation */
+app.use(crise.router);
 app.use(require('./src/modules/officiel'));   // vague 14 : message officiel du Haut Conseil (F73)
 app.use(require('./src/modules/associations'));   // vague 14 : associations partenaires (F74)
 app.use(require('./src/modules/doublons'));   // vague 14 : demandes semblables, rattachement, attention (F75)
@@ -101,6 +105,7 @@ seedVague20.semer();   // vague 20 : interruptions, partenaires et offres, histo
 require('./src/modules/mobilite').planifier();   // vague 20 (F97) : abonnés prévenus au début et à la fin d'une interruption
 integrite.planifier();   // vague 17 : contrôle d'intégrité 30 s après le démarrage puis toutes les 6 h
 sauvegardes.planifier();   // vague 17 : sauvegarde automatique quotidienne + rétention
+crise.semer();   // vague 21 (F101) : panne électrique en cours dans le secteur Nord (une seule fois)
 
 const port = Number(process.env.PORT) || 3000;
 charge.regler(app.listen(port, () => console.log(`Terra Nova sur http://localhost:${port}`)));

@@ -36,7 +36,43 @@
       'off.voirAlerte': 'عرض التنبيه', 'off.fermer': 'إغلاق', 'off.dansAlertes': 'متاح دائماً في التنبيهات' }
   });
 
+  /* vague 21 (F101) : crise localisée (panne électrique…) portée par un message officiel (src/modules/crise.js).
+     Habitant du quartier touché : message critique (fenêtre sans fermeture automatique, actions visibles, revient à chaque mise à jour) ;
+     autres habitants : information ; visiteur : quartier nommé. « Rétablissement estimé » et « Dernière mise à jour il y a N min » vivants. */
+  NT.i18n.ajouter({
+    fr: { 'cr.ret': 'Rétablissement estimé : {h}', 'cr.retInconnu': 'Rétablissement : en cours d’estimation', 'cr.maj': 'Dernière mise à jour il y a {n} min', 'cr.majMaint': 'Dernière mise à jour à l’instant',
+      'cr.points': 'Points d’accueil et de recharge', 'cr.avancement': 'Point de situation', 'cr.critique': 'Votre quartier est touché', 'cr.info': 'Pour information : votre quartier n’est pas touché',
+      'cr.zone': 'Zone touchée : {q}', 'cr.leger': 'Version légère (économise la batterie)', 'cr.t.panne-electrique': 'Panne électrique', 'cr.t.crise-localisee': 'Crise localisée' },
+    en: { 'cr.ret': 'Estimated restoration: {h}', 'cr.retInconnu': 'Restoration: being estimated', 'cr.maj': 'Last update {n} min ago', 'cr.majMaint': 'Last update just now',
+      'cr.points': 'Reception and charging points', 'cr.avancement': 'Situation update', 'cr.critique': 'Your district is affected', 'cr.info': 'For information: your district is not affected',
+      'cr.zone': 'Affected area: {q}', 'cr.leger': 'Light version (saves battery)', 'cr.t.panne-electrique': 'Power cut', 'cr.t.crise-localisee': 'Local crisis' },
+    es: { 'cr.ret': 'Restablecimiento estimado: {h}', 'cr.retInconnu': 'Restablecimiento: en estimación', 'cr.maj': 'Última actualización hace {n} min', 'cr.majMaint': 'Última actualización ahora mismo',
+      'cr.points': 'Puntos de acogida y de carga', 'cr.avancement': 'Situación', 'cr.critique': 'Su barrio está afectado', 'cr.info': 'Para información: su barrio no está afectado',
+      'cr.zone': 'Zona afectada: {q}', 'cr.leger': 'Versión ligera (ahorra batería)', 'cr.t.panne-electrique': 'Corte eléctrico', 'cr.t.crise-localisee': 'Crisis local' },
+    ar: { 'cr.ret': 'الإصلاح المتوقع: {h}', 'cr.retInconnu': 'الإصلاح: قيد التقدير', 'cr.maj': 'آخر تحديث منذ {n} د', 'cr.majMaint': 'آخر تحديث الآن',
+      'cr.points': 'نقاط الاستقبال والشحن', 'cr.avancement': 'آخر المستجدات', 'cr.critique': 'حيّك متضرر', 'cr.info': 'للعلم: حيّك غير متضرر',
+      'cr.zone': 'المنطقة المتضررة: {q}', 'cr.leger': 'نسخة خفيفة (توفر البطارية)', 'cr.t.panne-electrique': 'انقطاع الكهرباء', 'cr.t.crise-localisee': 'أزمة محلية' }
+  });
   const t = NT.t, { echap } = NT.ui;
+  const heureCrise = iso => { const l = NT.i18n.langue, h = new Date(iso).toLocaleTimeString(l === 'ar' ? 'ar' : l, { hour: '2-digit', minute: '2-digit' }); return l === 'fr' ? h.replace(':', ' h ') : h; };
+  const majCrise = iso => { const n = Math.max(0, Math.round((Date.now() - Date.parse(iso)) / 60000)); return n < 1 ? t('cr.majMaint') : t('cr.maj', { n }); };
+  const zoneCrise = m => m.crise.quartiers.map(q => t('off.quartier', { q: t('cm.q.' + q, null, q) })).join(', ');
+  function blocCrise(m, mode) {   // mode : 'carte' (complet), 'compact', 'fenetre'
+    if (!m.crise) return '';
+    const c = m.crise, u = NT.auth && NT.auth.utilisateur && NT.auth.utilisateur();
+    const qui = m.critique ? `<strong>${echap(t('cr.critique'))}</strong>` : u && u.role === 'citoyen' ? echap(t('cr.info')) : echap(t('cr.zone', { q: zoneCrise(m) }));
+    const temps = `<p class="cr-temps"><i class="ph-duotone ph-clock-countdown" aria-hidden="true"></i><span><strong>${echap(c.retablissement ? t('cr.ret', { h: heureCrise(c.retablissement) }) : t('cr.retInconnu'))}</strong>
+      <small data-crise-maj="${echap(c.majLe)}">${echap(majCrise(c.majLe))}</small></span></p>`;
+    const tete = `<p class="cr-statut${m.critique ? ' cr-statut-critique' : ''}"><i class="ph-duotone ph-lightning-slash" aria-hidden="true"></i><span>${echap(t('cr.t.' + c.type, null, ''))} · ${qui}</span></p>`;
+    if (mode === 'compact') return tete + temps;
+    const c2 = contenu(m);
+    const actions = mode === 'fenetre' && m.critique ? `<h3 class="off-quoi">${echap(t('off.quoi'))}</h3><ol class="off-actions" lang="${c2.langue}">${c2.actions.map(a => `<li>${echap(a)}</li>`).join('')}</ol>` : '';
+    const points = (c.points || []).length && mode !== 'fenetre' ? `<h4 class="off-quoi"><i class="ph-duotone ph-battery-charging" aria-hidden="true"></i>${echap(t('cr.points'))}</h4><ul class="cr-points">${c.points.map(p => `<li>${echap(p)}</li>`).join('')}</ul>` : '';
+    return tete + temps + (c.progression && mode !== 'fenetre' ? `<p class="cr-avancement"><strong>${echap(t('cr.avancement'))} :</strong> ${echap(c.progression)}</p>` : '') + actions + points
+      + (mode !== 'fenetre' ? `<p class="cr-leger"><a href="/essentiel?lang=${echap(NT.i18n.langue)}"><i class="ph ph-battery-low" aria-hidden="true"></i>${echap(t('cr.leger'))}</a></p>` : '');
+  }
+  // « il y a N min » avance tout seul (aucune requête : l'heure de mise à jour vient du dernier « pouls »)
+  setInterval(() => { if (document.hidden) return; document.querySelectorAll('[data-crise-maj]').forEach(el => { el.textContent = majCrise(el.dataset.criseMaj); }); }, 30000);
   const lireL = (cle) => { try { return JSON.parse(localStorage.getItem('nt:' + cle)) || []; } catch (e) { return []; } };
   const ecrireL = (cle, v) => { try { localStorage.setItem('nt:' + cle, JSON.stringify(v.slice(-100))); } catch (e) { /* stockage bloqué */ } };
   let messages = [];
@@ -59,19 +95,19 @@
   function carte(m, mode, compact) {
     const c = contenu(m), compris = estCompris(m), id = 'off-' + mode + '-' + m.id;
     // version compacte (accueil) : l'essentiel sur deux lignes, « Ce que vous devez faire » ouvre le tiroir des alertes
-    if (compact) return `<article class="off-carte off-${mode} off-compact${compris ? ' off-lu' : ''}" aria-labelledby="${id}" data-off="${echap(m.id)}">${mode === 'epingle' ? croix(m) : ''}
+    if (compact) return `<article class="off-carte off-${mode}${m.crise ? ' off-crise' : ''}${m.critique ? ' off-critique' : ''} off-compact${compris ? ' off-lu' : ''}" aria-labelledby="${id}" data-off="${echap(m.id)}">${mode === 'epingle' ? croix(m) : ''}
       <div class="off-sceau"><span class="off-sceau-ic" aria-hidden="true"><i class="ph-duotone ph-seal-check"></i></span>
         <span><strong>${echap(t('off.sceau'))}</strong><small>${echap(t('off.type'))} · ${echap(zone(m))}</small></span></div>
-      <h3 id="${id}" lang="${c.langue}" dir="${c.langue === 'ar' ? 'rtl' : 'ltr'}">${echap(c.titre)}</h3>
+      <h3 id="${id}" lang="${c.langue}" dir="${c.langue === 'ar' ? 'rtl' : 'ltr'}">${echap(c.titre)}</h3>${blocCrise(m, compact ? 'compact' : 'carte')}
       <p class="off-texte off-court" lang="${c.langue}" dir="${c.langue === 'ar' ? 'rtl' : 'ltr'}">${echap(c.message)}</p>
       <div class="off-pied"><button type="button" class="btn${compris ? ' btn-primaire' : ''}" data-off-voir><i class="ph-duotone ph-list-checks" aria-hidden="true"></i>${echap(t('off.quoi'))} (${c.actions.length})</button>
         ${compris ? `<p class="off-ok" role="status"><i class="ph-duotone ph-check-circle" aria-hidden="true"></i>${echap(t('off.merci'))}</p>`
           : `<button type="button" class="btn btn-primaire" data-off-compris="${echap(m.id)}"><i class="ph ph-check" aria-hidden="true"></i>${echap(t('off.compris'))}</button>`}</div>
     </article>`;
-    return `<article class="off-carte off-${mode}${compris ? ' off-lu' : ''}" aria-labelledby="${id}" data-off="${echap(m.id)}">${mode === 'epingle' ? croix(m) : ''}
+    return `<article class="off-carte off-${mode}${m.crise ? ' off-crise' : ''}${m.critique ? ' off-critique' : ''}${compris ? ' off-lu' : ''}" aria-labelledby="${id}" data-off="${echap(m.id)}">${mode === 'epingle' ? croix(m) : ''}
       <div class="off-sceau"><span class="off-sceau-ic" aria-hidden="true"><i class="ph-duotone ph-seal-check"></i></span>
         <span><strong>${echap(t('off.sceau'))}</strong><small>${echap(t('off.type'))} · ${echap(m.id)}</small></span></div>
-      <h3 id="${id}" lang="${c.langue}" dir="${c.langue === 'ar' ? 'rtl' : 'ltr'}">${echap(c.titre)}</h3>
+      <h3 id="${id}" lang="${c.langue}" dir="${c.langue === 'ar' ? 'rtl' : 'ltr'}">${echap(c.titre)}</h3>${blocCrise(m, compact ? 'compact' : 'carte')}
       <p class="off-meta"><span><i class="ph ph-map-pin" aria-hidden="true"></i>${echap(zone(m))}${m.monQuartier ? ' · <strong>' + echap(t('off.votreQuartier')) + '</strong>' : ''}</span>
         <span><i class="ph ph-clock" aria-hidden="true"></i>${echap(t('off.jusqua', { d: NT.ui.dateHeure(m.fin) }))}</span></p>
       ${c.nonTraduit ? `<p class="off-note">${echap(t('off.versionFr'))}</p>` : ''}
@@ -120,12 +156,13 @@
   function montrerFenetre() {
     if (fenetre || document.querySelector('sl-dialog[open], sl-drawer[open]')) return;
     const vus = lireS('officielsVus');
-    const m = messages.find(x => !estCompris(x) && !vus.includes(x.id));
+    const cle = x => (x.critique && x.crise ? x.id + '@' + x.crise.majLe : x.id);   // vague 21 : crise critique → revient à chaque mise à jour
+    const m = messages.find(x => (x.critique && x.crise ? true : !estCompris(x)) && !vus.includes(cle(x)));
     if (!m) return;
-    ecrireS('officielsVus', vus.concat(m.id));
+    ecrireS('officielsVus', vus.concat(cle(m)));
     const c = contenu(m), dir = c.langue === 'ar' ? 'rtl' : 'ltr';
     const el = document.createElement('section');
-    el.className = 'off-fenetre';
+    el.className = 'off-fenetre' + (m.critique ? ' off-critique' : '');   // vague 21
     el.dataset.off = m.id;
     el.setAttribute('role', m.critique ? 'alert' : 'status');
     el.setAttribute('aria-labelledby', 'off-fenetre-titre');
@@ -135,10 +172,10 @@
         <button type="button" class="off-fenetre-x" data-off-fermer><i class="ph ph-x" aria-hidden="true"></i><span class="sr-only">${echap(t('off.fermer'))}</span></button>
       </div>
       <h2 id="off-fenetre-titre" lang="${c.langue}" dir="${dir}">${echap(c.titre)}</h2>
-      <p class="off-fenetre-texte" lang="${c.langue}" dir="${dir}">${echap(c.message)}</p>
+      <p class="off-fenetre-texte" lang="${c.langue}" dir="${dir}">${echap(c.message)}</p>${blocCrise(m, 'fenetre')}
       <div class="off-fenetre-pied">
         <button type="button" class="btn btn-primaire" data-off-voir-fenetre><i class="ph-duotone ph-broadcast" aria-hidden="true"></i>${echap(t('off.voirAlerte'))}</button>
-        <span class="off-fenetre-note"><i class="ph ph-bell-simple" aria-hidden="true"></i>${echap(t('off.dansAlertes'))}</span>
+        ${m.critique && !estCompris(m) ? `<button type="button" class="btn" data-off-compris="${echap(m.id)}"><i class="ph ph-check" aria-hidden="true"></i>${echap(t('off.compris'))}</button>` : ''}<span class="off-fenetre-note"><i class="ph ph-bell-simple" aria-hidden="true"></i>${echap(t('off.dansAlertes'))}</span>
       </div>
       ${m.critique ? '' : '<span class="off-fenetre-temps" aria-hidden="true"></span>'}`;
     document.body.append(el);
@@ -164,7 +201,7 @@
     {
       if (!j) return;
       const avant = JSON.stringify(messages);
-      messages = j.messages || [];
+      messages = (j.messages || []).slice().sort((a, b) => (b.critique ? 2 : b.crise ? 1 : 0) - (a.critique ? 2 : a.crise ? 1 : 0));   // vague 21 : crise critique d'abord
       const nouveaux = connus ? messages.filter(m => !connus.has(m.id)) : [];
       connus = new Set(messages.map(m => m.id));
       if (JSON.stringify(messages) !== avant) rendre();
@@ -191,12 +228,13 @@
     const b = e.target.closest('[data-off-compris]');
     if (b) {
       const id = b.dataset.offCompris, local = comprisLocal(), dansTiroir = !!(NT.ui.tiroirAlertes && NT.ui.tiroirAlertes.contains(b));
+      const dansFenetre = !!(fenetre && fenetre.contains(b));   // vague 21 : « J'ai compris » dans la fenêtre d'une crise critique
       b.disabled = true;
       fetch('/api/officiels/' + encodeURIComponent(id) + '/compris', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ dejaCompte: local.includes(id) }) })
         .catch(() => {}).finally(() => {
           ecrireL('officielsCompris', local.concat(local.includes(id) ? [] : [id]));
           messages = messages.map(m => (m.id === id ? Object.assign({}, m, { compris: true }) : m));
-          rendre(); NT.ui.toast(t('off.merci'), 'success', 3000);
+          rendre(); NT.ui.toast(t('off.merci'), 'success', 3000); if (dansFenetre) fermerFenetre(true);
           const el = (dansTiroir ? NT.ui.tiroirAlertes : document.getElementById('nt-officiel-epingle') || document).querySelector(`[data-off="${CSS.escape(id)}"] .off-ok`); if (el) { el.setAttribute('tabindex', '-1'); el.focus(); }
         });
       return;
