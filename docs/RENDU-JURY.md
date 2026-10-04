@@ -24,7 +24,7 @@ Comptes : citoyen `citoyen@nova.test` / `Citoyen2026` · agent `agent@nova.test`
 | D03 | `connexion.html` → `espace.html` | Connexion puis « Bonjour Léa » | ✅ |
 | D08 | `admin-comptes.html` | Tableau « Qui peut faire quoi » citoyen / agent / admin ; menus différents selon le rôle | ✅ |
 | D09 | — | Connecté en citoyen, ouvrir `agent.html` → redirigé vers son espace + message ; accès refusé journalisé | ✅ |
-| F37 | `connexion.html` | 3 mauvais mots de passe → vérification ; 5 → blocage avec compte à rebours ; l'utilisateur est prévenu à la connexion suivante ; journal de sécurité | ✅ |
+| F37 | `connexion.html` | 3 mauvais mots de passe → vérification ; 5 → blocage avec compte à rebours **sur l'appareil qui a échoué seulement** (cookie `tn_appareil` : ni un tiers à distance, ni les autres habitants du même Wi-Fi ne sont bloqués ; les rafales sans cookie restent limitées à 20 connexions/min par adresse) ; l'utilisateur est prévenu à la connexion suivante ; journal de sécurité | ✅ |
 | F33 | `compte.html` → « Supprimer mon compte » | Ce qui est supprimé / conservé, mot de passe + mot SUPPRIMER + confirmation | ✅ |
 | F34 | `admin-comptes.html` (agent ou admin) | Désactiver / réactiver / débloquer ; seul l'admin change les rôles | ✅ |
 | D12 | `inscription.html` → `espace.html` | Nouveau compte → parcours d'accueil en 3 étapes avec progression | ✅ |
@@ -121,7 +121,7 @@ Comptes : citoyen `citoyen@nova.test` / `Citoyen2026` · agent `agent@nova.test`
 | F68 | `participer.html#idees` ; `espace.html` › Ma participation | Formulaire titre, description, quartier, catégorie (erreurs accessibles) → numéro **IDE-xxxx**, date et prochaine étape ; « Mes idées » avec frise reçue → à l’étude → retenue / non retenue et la réponse de la ville. Agent : « Idées reçues à traiter », motif obligatoire si non retenue ; l’habitant est notifié, action au journal (catégorie Idée). Liste publique « Idées déjà étudiées » sans nom ni description ; un citoyen ne voit le détail que de ses idées | ✅ |
 
 ## Vague 13
-Comptes ajoutés : agent **habilité** `social@nova.test` (mot de passe de l'équipe) (l’agent `agent@nova.test` ne l’est pas) · nouvel arrivant **sans e-mail** `TN-100001` (ou son numéro `06 39 48 21 77`) / code `482915`. Les deux sont proposés dans l’encadré « Comptes de démonstration » de la connexion.
+Comptes ajoutés : agent **habilité** `social@nova.test` (mot de passe de l'équipe) (l’agent `agent@nova.test` ne l’est pas) · nouvel arrivant **sans e-mail** `TN-100001` (ou son numéro `06 39 48 21 77`) / code `482915`.
 
 | Code | Page | Comment le montrer | État |
 |---|---|---|---|

@@ -60,7 +60,7 @@ Résultats mesurés (avant / après) dans [`docs/RENDU-JURY.md`](docs/RENDU-JURY
 | Agent municipal | `agent@nova.test` | défini par `AGENT_PASSWORD` (fourni par l'équipe) |
 | Administrateur | `admin@nova.test` | défini par `ADMIN_PASSWORD` (fourni par l'équipe) |
 
-Autres habitants : `marc@`, `amina@`, `jean@nova.test` (mot de passe `Citoyen2026`). Vague 13 : agent habilité aux données réservées `social@nova.test` (mot de passe `AGENT_PASSWORD`) ; nouvel arrivant sans e-mail `TN-100001` (ou `06 39 48 21 77`) / code `482915`. La page de connexion propose de pré-remplir ces comptes.
+Autres habitants : `marc@`, `amina@`, `jean@nova.test` (mot de passe `Citoyen2026`). Vague 13 : agent habilité aux données réservées `social@nova.test` (mot de passe `AGENT_PASSWORD`) ; nouvel arrivant sans e-mail `TN-100001` (ou `06 39 48 21 77`) / code `482915`.
 Comptes d'équipe supplémentaires possibles via `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `AGENT_EMAIL` / `AGENT_PASSWORD` dans `.env`. En production, ces
 mêmes `ADMIN_PASSWORD` / `AGENT_PASSWORD` remplacent les mots de passe des comptes de démo admin et agents (voir Déploiement HODI).
 Réinitialiser les données de démonstration : connecté en admin, `POST /api/demo/reinitialiser` (ou console : `NT.store.reset()`).

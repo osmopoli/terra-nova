@@ -222,11 +222,6 @@
      D03 + F37 — connexion
      ===================================================================== */
   C.connexion = function () {
-    // Seuls les comptes citoyens sont pré-remplis : les identifiants agent / admin sont fournis par l'équipe (mot de passe défini en production)
-    const DEMOS = [
-      { role: 'citoyen', nom: 'Léa Martin', email: 'citoyen@nova.test', mdp: 'Citoyen2026', icone: 'ph-user' },
-      { role: 'citoyen', nom: 'Youssef Haddad · ' + L('c.con.sansEmail', 'sans e-mail'), email: 'TN-100001', mdp: '482915', icone: 'ph-identification-card' }   // vague 13 (F71)
-    ];
     const form = $('#form-connexion');
     const champs = $('#champs-connexion');
     const verrou = $('#etat-verrou');
@@ -239,7 +234,7 @@
     /* Déjà connecté */
     const deja = NT.auth.utilisateur();
     if (deja) {
-      form.hidden = true; $('#demo-comptes').hidden = true;
+      form.hidden = true;
       $('#deja-connecte').hidden = false;
       $('#deja-texte').textContent = L('c.con.dejaTexte', 'Vous êtes connecté en tant que {nom} ({role}).', { nom: nomComplet(deja), role: rolePlein(deja.role) });
       $('#deja-lien').href = destination(deja);
@@ -248,19 +243,6 @@
     }
 
     brancherMdp($('#motdepasse'), false);
-
-    /* Comptes de démonstration */
-    $('#liste-demo').innerHTML = DEMOS.map((d, i) => '<li><div><strong><i class="ph-duotone ' + d.icone + '" aria-hidden="true"></i> ' + E(rolePlein(d.role)) + '</strong>' +
-      '<span class="doux">' + E(d.nom) + '</span><code>' + E(d.email) + ' / ' + E(d.mdp) + '</code></div>' +
-      '<button class="btn petit" type="button" data-demo="' + i + '" aria-label="' + E(L('c.con.utiliserAria', 'Utiliser le compte {role}', { role: rolePlein(d.role) })) + '">' + E(L('c.con.utiliser', 'Utiliser')) + '</button></li>').join('');
-    $('#liste-demo').addEventListener('click', e => {
-      const b = e.target.closest('[data-demo]'); if (!b) return;
-      const d = DEMOS[+b.dataset.demo];
-      $('#email').value = d.email; $('#motdepasse').value = d.mdp;
-      poserErreurs(form, []);
-      NT.ui.annoncer(L('c.con.rempli', 'Formulaire rempli avec le compte {role}. Validez pour vous connecter.', { role: rolePlein(d.role) }));
-      $('#btn-connexion').focus();
-    });
 
     /* Mot de passe oublié */
     const oubli = $('#btn-oublie'), aide = $('#aide-oubli');
@@ -313,7 +295,7 @@
       const dest = destination(r.utilisateur);
       if (r.alerteSecurite > 0) {
         const msg = L('c.con.alerteSecu', '{n} tentative(s) de connexion échouée(s) depuis votre dernière connexion.', { n: r.alerteSecurite });
-        form.hidden = true; $('#demo-comptes').hidden = true;
+        form.hidden = true;
         const etapeCode = $('#form-code'); if (etapeCode) etapeCode.hidden = true;
         $('#alerte-secu-texte').textContent = msg;
         $('#alerte-secu-lien').href = dest;

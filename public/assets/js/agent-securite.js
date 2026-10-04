@@ -58,7 +58,8 @@
     'cs.p.debit': 'حد «{n}»: {m} كل {d} دقيقة', 'cs.p.chiffre': 'الهاتف والملف الإداري مشفّران في قاعدة البيانات ({a})', 'cs.p.cle': 'مفتاح التشفير مقدَّم من بيئة الخادم', 'cs.p.cleFichier': 'مفتاح التشفير محفوظ خارج الشيفرة (ملف بجانب قاعدة البيانات)',
     'cs.p.hsts': 'HTTPS إلزامي (HSTS) على الإنترنت', 'cs.p.filtre': 'الحقول المحمية لا تُرسل أبداً إلى الصفحة (تصفية في الخادم)', 'cs.p.hash': 'كلمات المرور والرموز مجزّأة (scrypt) مع قفل تدريجي'
   };
-  NT.i18n.ajouter({ fr: {}, en: EN, es: ES, ar: AR });
+  EN['cs.resume24'] = 'Summary of the last 24 hours'; ES['cs.resume24'] = 'Resumen de las últimas 24 horas'; AR['cs.resume24'] = 'ملخص آخر 24 ساعة';
+  NT.i18n.ajouter({ fr: { 'cs.resume24': 'Résumé des dernières 24 heures' }, en: EN, es: ES, ar: AR });
   const L = (cle, fr, vars) => NT.t(cle, vars, fr);
   const E = s => NT.ui.echap(s);
   const $ = s => document.querySelector(s);

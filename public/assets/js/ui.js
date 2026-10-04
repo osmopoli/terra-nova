@@ -295,7 +295,7 @@
     panneauAlertes.innerHTML = veille.html + off.html + (liste.length ? liste.map(a => `
       <article class="alerte-fiche niveau-${a.importance}">
         <h3><i class="ph-duotone ${a.importance === 'alerte' ? 'ph-warning-octagon' : 'ph-megaphone'}" aria-hidden="true"></i>${echap(a.titre)}</h3>
-        <div class="zone"><i class="ph ph-map-pin" aria-hidden="true"></i> ${echap(a.zone)} · ${echap(ui.depuis(a.cree))}</div>
+        <div class="zone"><i class="ph ph-map-pin" aria-hidden="true"></i> ${echap(a.zone === 'Toute la ville' ? t('off.toute', null, a.zone) : a.zone)} · ${echap(ui.depuis(a.cree))}</div>
         <p style="margin:.6rem 0 0">${echap(a.resume || '')}</p>
         ${a.consignes && a.consignes.length ? `<strong style="display:block;margin-top:.7rem">${echap(t('ui.consignes'))}</strong><ul>${a.consignes.map(c => `<li>${echap(c)}</li>`).join('')}</ul>` : ''}
         ${a.publics && a.publics.length ? `<p class="doux" style="margin:.6rem 0 0">${echap(t('ui.publics'))} : ${a.publics.map(echap).join(', ')}</p>` : ''}
@@ -306,6 +306,11 @@
   rendreAlertes();
   NT.ui.rafraichirAlertes = rendreAlertes;
   NT.ui.tiroirAlertes = panneauAlertes;
+  /* Ouvre le tiroir quand Shoelace est prêt ; sans CDN (sl-drawer jamais défini après 1,5 s), exécute le repli fourni. */
+  NT.ui.ouvrirAlertes = repli => Promise.race([
+    customElements.whenDefined('sl-drawer').then(() => true),
+    new Promise(res => setTimeout(() => res(false), 1500))
+  ]).then(ok => { if (ok && typeof panneauAlertes.show === 'function') panneauAlertes.show(); else if (repli) repli(); });
 
   /* Halo lumineux qui suit le pointeur sur les éléments .halo (inspiré SeraUI Spotlight) */
   document.addEventListener('pointermove', e => {
