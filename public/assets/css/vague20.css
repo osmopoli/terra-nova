@@ -209,6 +209,8 @@ ol.us-phrases li{ display:list-item; }
 .ap-comptes{ margin:.2rem 0 .4rem; padding-inline-start:1.2rem; }
 .ap-creer{ margin-top:1rem; }
 .ap-creer h3{ margin-top:0; }
+/* Créer un partenaire : 5 champs sur deux lignes (structure, domaine, description / téléphone, e-mail) au lieu de 5 colonnes serrées */
+@media (min-width:720px){ .ap-creer .ep-grille{ grid-template-columns:repeat(3,minmax(0,1fr)); } }
 
 /* ---------- F100 : événements de sécurité ---------- */
 .ev-filtres{ display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr)); gap:.5rem 1rem; align-items:end; margin:0 0 .75rem; }
