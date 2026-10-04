@@ -121,7 +121,7 @@ Comptes : citoyen `citoyen@nova.test` / `Citoyen2026` · agent `agent@nova.test`
 | F68 | `participer.html#idees` ; `espace.html` › Ma participation | Formulaire titre, description, quartier, catégorie (erreurs accessibles) → numéro **IDE-xxxx**, date et prochaine étape ; « Mes idées » avec frise reçue → à l’étude → retenue / non retenue et la réponse de la ville. Agent : « Idées reçues à traiter », motif obligatoire si non retenue ; l’habitant est notifié, action au journal (catégorie Idée). Liste publique « Idées déjà étudiées » sans nom ni description ; un citoyen ne voit le détail que de ses idées | ✅ |
 
 ## Vague 13
-Comptes ajoutés : agent **habilité** `social@nova.test` (mot de passe de l'équipe) (l’agent `agent@nova.test` ne l’est pas) · nouvel arrivant **sans e-mail** `TN-100001` (ou son numéro `06 39 48 21 77`) / code `482915`. Les deux sont proposés dans l’encadré « Comptes de démonstration » de la connexion.
+Comptes ajoutés : agent **habilité** `social@nova.test` (mot de passe de l'équipe) (l’agent `agent@nova.test` ne l’est pas) · nouvel arrivant **sans e-mail** `TN-100001` (ou son numéro `06 39 48 21 77`) / code `482915`.
 
 | Code | Page | Comment le montrer | État |
 |---|---|---|---|
