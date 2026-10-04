@@ -114,7 +114,7 @@
       const c = f.querySelector('input:checked');
       if (!c) { const er = f.querySelector('#' + id + '-err'); er.textContent = t('av.eNote'); er.hidden = false; f.querySelector('input[type=radio]').focus(); return; }
       const r = NT.api('POST', '/api/avis-services', { procedure: o.procedure, note: +c.value, commentaire: f.querySelector('textarea').value });
-      if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger'); return; }
+      if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger'); return; }
       resume = null;
       AV.recu(zone, r.donnees);
       if (o.apres) o.apres(r.donnees);
@@ -255,9 +255,9 @@
     zone.addEventListener('click', ev => {
       const f = ev.target.closest('[data-av-filtre]'); if (f) { filtre = f.dataset.avFiltre; rendre(); zone.querySelector(`[data-av-filtre="${filtre}"]`).focus(); return; }
       const b = ev.target.closest('[data-av-rep]');
-      if (b) { const r = NT.api('POST', '/api/avis-services/' + encodeURIComponent(b.dataset.avRep) + '/repondre', { reponse: zone.querySelector('#rep-' + CSS.escape(b.dataset.avRep)).value }); if (r.statut !== 200) return NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger'); NT.ui.toast(t('av.agOk'), 'success'); resume = null; rendre(); return; }
+      if (b) { const r = NT.api('POST', '/api/avis-services/' + encodeURIComponent(b.dataset.avRep) + '/repondre', { reponse: zone.querySelector('#rep-' + CSS.escape(b.dataset.avRep)).value }); if (r.statut !== 200) return NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger'); NT.ui.toast(t('av.agOk'), 'success'); resume = null; rendre(); return; }
       const m = ev.target.closest('[data-av-mod]');
-      if (m) { const mot = zone.querySelector('#mot-' + CSS.escape(m.dataset.avMod)); const r = NT.api('POST', '/api/avis-services/' + encodeURIComponent(m.dataset.avMod) + '/moderer', { statut: m.dataset.statut, motif: mot ? mot.value : '' }); if (r.statut !== 200) return NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger'); NT.ui.toast(t('av.agModOk'), 'success'); resume = null; rendre(); }
+      if (m) { const mot = zone.querySelector('#mot-' + CSS.escape(m.dataset.avMod)); const r = NT.api('POST', '/api/avis-services/' + encodeURIComponent(m.dataset.avMod) + '/moderer', { statut: m.dataset.statut, motif: mot ? mot.value : '' }); if (r.statut !== 200) return NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger'); NT.ui.toast(t('av.agModOk'), 'success'); resume = null; rendre(); }
     });
     rendre();
   };

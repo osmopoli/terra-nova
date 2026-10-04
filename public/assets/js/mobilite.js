@@ -262,7 +262,7 @@
   function basculer(l, bouton) {
     const actif = bouton.getAttribute('aria-pressed') !== 'true';
     const r = NT.api('POST', '/api/mobilite/abonnements', { ligne: l, actif });
-    if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger'); return; }
+    if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger'); return; }
     D.abonnements = r.donnees.lignes;
     document.querySelectorAll('[data-mb-suivre="' + l + '"]').forEach((b) => { b.outerHTML = boutonSuivre(l, actif); });
     NT.ui.toast(t(actif ? 'mb.suiviOk' : 'mb.suiviStop', { l }), 'success', 6000);

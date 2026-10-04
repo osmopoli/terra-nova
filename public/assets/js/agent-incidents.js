@@ -190,7 +190,7 @@
       const a = b.dataset.ic || b.dataset.ig;
       if (a === 'resoudre') { etat.ouvert = b.dataset.id; rendre(); const z = document.getElementById('ic-note-' + b.dataset.id); if (z) z.focus(); }
       if (a === 'annuler') { etat.ouvert = null; rendre(); }
-      if (a === 'lever') { const r = NT.api('POST', '/api/incidents/sujets/lever', { cle: b.dataset.cle, motif: 'Levée depuis le Centre de sécurité' }); NT.ui.toast(r.statut === 200 ? t('ic.leverOk') : (r.donnees && r.donnees.erreur) || 'Erreur', r.statut === 200 ? 'success' : 'danger'); charger(); }
+      if (a === 'lever') { const r = NT.api('POST', '/api/incidents/sujets/lever', { cle: b.dataset.cle, motif: 'Levée depuis le Centre de sécurité' }); NT.ui.toast(r.statut === 200 ? t('ic.leverOk') : (r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), r.statut === 200 ? 'success' : 'danger'); charger(); }
       if (a === 'verifier') { const r = NT.api('GET', '/api/integrite/chaine'); if (r.statut === 200) { etat.chaine = r.donnees; rendre(); NT.ui.annoncer && NT.ui.annoncer(r.donnees.texte); } }
       if (a === 'simuler') { const r = NT.api('POST', '/api/integrite/chaine/simulation', {}); if (r.statut === 200) { etat.chaine = r.donnees; rendre(); NT.ui.annoncer && NT.ui.annoncer(r.donnees.texte); } }
       if (a === 'controler') { const r = NT.api('POST', '/api/integrite/controler', {}); if (r.statut === 200) { etat.chaine = null; charger(); NT.ui.toast(r.donnees.chaine.texte, r.donnees.chaine.intacte ? 'success' : 'danger', 8000); } }
@@ -203,7 +203,7 @@
         if (note.length < 5) { fi.querySelector('textarea').focus(); return; }
         const r = NT.api('POST', '/api/incidents/' + encodeURIComponent(fi.dataset.icForm) + '/resoudre', { note });
         if (r.statut === 200) { NT.ui.toast(t('ic.resoluOk', { id: fi.dataset.icForm }), 'success'); etat.ouvert = null; charger(); }
-        else NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger');
+        else NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger');
         return;
       }
       if (e.target.id === 'ig-form') {
@@ -212,7 +212,7 @@
         if (!window.confirm(t('ig.confirmRepa', { n: ids.length }))) return;
         const r = NT.api('POST', '/api/integrite/reparer', { ids });
         if (r.statut === 200) { NT.ui.toast(t('ig.repaOk', { n: r.donnees.faites.length }), 'success'); etat.chaine = null; charger(); }
-        else if (r.statut !== 428) NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger');
+        else if (r.statut !== 428) NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger');
       }
     });
     setInterval(() => { if (!document.hidden && !etat.ouvert && !(racine.contains(document.activeElement) && document.activeElement.matches('textarea, input'))) { const a = NT.api('GET', '/api/incidents'); if (a.statut === 200) { etat.inc = a.donnees; rendre(); } } }, 30000);

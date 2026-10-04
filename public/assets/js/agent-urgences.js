@@ -103,7 +103,7 @@
   }
   function changer(id, statut, note) {
     const r = NT.api('POST', '/api/urgences/' + encodeURIComponent(id) + '/statut', { statut, note: note || '' });
-    if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger'); return; }
+    if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger'); return; }
     NT.ui.toast(t('ua.ok', { id, s: t('s.' + statut) }), 'success');
     NT.ui.annoncer && NT.ui.annoncer(t('ua.ok', { id, s: t('s.' + statut) }));
     etat.ouvertForm = null;
