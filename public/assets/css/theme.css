@@ -324,6 +324,27 @@ option,optgroup{ background-color:var(--nuit-2); color:var(--givre); }
 option:checked{ background-color:var(--iono); color:var(--sur-iono); }
 option:disabled{ background-color:var(--nuit-2); color:var(--brume); }
 @media (hover:hover){ option:not(:checked):not(:disabled):hover{ background-color:color-mix(in oklch, var(--iono) 22%, var(--nuit-2)); color:var(--givre); } }
+/* Listes déroulantes stylées comme le menu de langue (navigateurs qui gèrent le select personnalisable, Chromium ≥ 135).
+   Ailleurs : liste native ci-dessus. Champ fermé : mêmes padding, hauteur et liseré qu'avant, chevron au bout. */
+@supports (appearance: base-select){
+  select, ::picker(select){ appearance:base-select; }
+  select{ display:flex; align-items:center; gap:.5rem; line-height:1.35; cursor:pointer; }
+  select::picker-icon{ margin-inline-start:auto; color:var(--brume); font-size:.8em; transition:rotate 160ms var(--ease-out); }
+  select:open::picker-icon{ rotate:180deg; }
+  ::picker(select){ margin-block:.4rem; padding:.375rem; background:var(--surface-1); color:var(--givre); border:1px solid var(--trait-2); border-radius:var(--r);
+    box-shadow:var(--ombre-flottante), var(--liseré); max-block-size:min(22rem, 70vh); overflow:auto; }
+  select option{ display:flex; align-items:center; gap:.75rem; min-height:2.75rem; padding:.4rem .75rem; border-radius:var(--r-s); background:transparent; color:var(--givre);
+    font-size:var(--t-s); line-height:1.3; cursor:pointer; transition:background-color 120ms ease; }
+  select option + option{ margin-top:.125rem; }
+  select option::checkmark{ order:1; margin-inline-start:auto; color:var(--iono); }
+  select option:checked{ background:color-mix(in oklch, var(--iono) 16%, transparent); color:var(--givre); font-weight:650; }
+  select option:disabled{ background:transparent; color:var(--brume); cursor:not-allowed; }
+  select option:focus-visible{ outline:2px solid var(--iono); outline-offset:-2px; }
+  select optgroup{ background:transparent; color:var(--brume); font-size:var(--t-xs); font-weight:700; }
+  @media (hover:hover){ select option:not(:checked):not(:disabled):hover{ background:color-mix(in oklch, var(--iono) 12%, transparent); color:var(--givre); } }
+  html.contraste ::picker(select){ background:var(--nuit-2); border-width:2px; }
+  html.contraste select option:checked{ outline:1px solid var(--iono); outline-offset:-1px; }
+}
 input:not([type=checkbox]):not([type=radio]):not([type=range]):focus,select:focus,textarea:focus{ outline:2px solid var(--iono); outline-offset:2px; border-color:var(--iono); box-shadow:0 0 0 5px oklch(0.7040 0.1400 182.5 / .12); }
 /* Boutons radio : aucun anneau au clic souris (la règle :focus ci-dessus ne vise plus que les champs de saisie).
    Chromium force border-radius:0 sur un radio natif : son outline ou son box-shadow est donc toujours carré.
