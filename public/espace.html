@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="assets/css/comptes.css">
   <link rel="stylesheet" href="assets/css/participer.css">
   <link rel="stylesheet" href="assets/css/vague16.css">
+  <link rel="stylesheet" href="assets/css/espace.css">
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/store.js"></script>
   <script src="assets/js/avis-service.js"></script>
@@ -25,6 +26,7 @@
   <script src="assets/js/formulaires.js"></script>
   <script src="assets/js/accuse.js"></script>
   <script src="assets/js/sujets.js"></script>
+  <script src="assets/js/espace-onglets.js" defer></script>
   <script src="assets/js/ui.js" defer></script>
 </head>
 <body data-page="espace" data-ariane="nav.accueil|index.html;nav.espace" data-roles="citoyen">
@@ -47,11 +49,23 @@
       <a class="btn btn-primaire" href="demande.html?type=signalement"><i class="ph-duotone ph-map-pin" aria-hidden="true"></i><span data-i18n="c.esp.signaler">Signaler un problème</span></a>
       <a class="btn" href="demande.html?type=demarche"><i class="ph-duotone ph-file-text" aria-hidden="true"></i><span data-i18n="c.esp.demarche">Nouvelle démarche</span></a>
       <a class="btn" href="rendez-vous.html"><i class="ph-duotone ph-calendar-check" aria-hidden="true"></i><span data-i18n="c.esp.rdv">Prendre rendez-vous</span></a>
-      <a class="btn" href="participer.html#idees"><i class="ph-duotone ph-lightbulb-filament" aria-hidden="true"></i><span data-i18n="par.idees">Proposer une idée</span></a>
-      <a class="btn" href="compte.html"><i class="ph-duotone ph-user-gear" aria-hidden="true"></i><span data-i18n="c.esp.compte">Mon compte</span></a>
-      <a class="btn" href="mes-informations.html"><i class="ph-duotone ph-identification-card" aria-hidden="true"></i><span data-i18n="c.esp.infos">Mes informations</span></a>
-      <a class="btn" href="recapitulatif.html"><i class="ph-duotone ph-file-arrow-down" aria-hidden="true"></i><span data-i18n="c.esp.recap">Récapitulatif de mes demandes</span></a>
+      <span class="raccourcis-secondaires">
+        <a href="participer.html#idees"><i class="ph-duotone ph-lightbulb-filament" aria-hidden="true"></i><span data-i18n="par.idees">Proposer une idée</span></a>
+        <a href="compte.html"><i class="ph-duotone ph-user-gear" aria-hidden="true"></i><span data-i18n="c.esp.compte">Mon compte</span></a>
+        <a href="mes-informations.html"><i class="ph-duotone ph-identification-card" aria-hidden="true"></i><span data-i18n="c.esp.infos">Mes informations</span></a>
+        <a href="recapitulatif.html"><i class="ph-duotone ph-file-arrow-down" aria-hidden="true"></i><span data-i18n="c.esp.recap">Récapitulatif de mes demandes</span></a>
+      </span>
     </nav>
+
+    <!-- Allègement : une section visible à la fois (onglets), tout reste dans la page — assets/js/espace-onglets.js -->
+    <div class="onglets-espace" role="tablist" aria-label="Sections de mon espace" data-i18n-attr="aria-label:esp.og.label" id="onglets-espace">
+      <button type="button" role="tab" id="og-suivi" aria-controls="pn-suivi" aria-selected="true"><i class="ph-duotone ph-pulse" aria-hidden="true"></i><span data-i18n="esp.og.suivi">En cours</span><span class="compte" data-compte="suivi"></span></button>
+      <button type="button" role="tab" id="og-historique" aria-controls="pn-historique" aria-selected="false" tabindex="-1"><i class="ph-duotone ph-clock-counter-clockwise" aria-hidden="true"></i><span data-i18n="esp.og.historique">Historique</span><span class="compte" data-compte="historique"></span></button>
+      <button type="button" role="tab" id="og-contrib" aria-controls="pn-contrib" aria-selected="false" tabindex="-1"><i class="ph-duotone ph-chats-circle" aria-hidden="true"></i><span data-i18n="esp.og.contrib">Mes avis et idées</span><span class="compte" data-compte="contrib"></span></button>
+      <button type="button" role="tab" id="og-accuses" aria-controls="pn-accuses" aria-selected="false" tabindex="-1"><i class="ph-duotone ph-seal-check" aria-hidden="true"></i><span data-i18n="esp.og.accuses">Accusés de réception</span><span class="compte" data-compte="accuses"></span></button>
+    </div>
+
+    <div class="panneau-onglet" role="tabpanel" id="pn-suivi" aria-labelledby="og-suivi" tabindex="0">
 
     <!-- D11 : demandes en cours -->
     <section class="bloc" aria-labelledby="t-encours">
@@ -76,6 +90,10 @@
       </section>
     </div>
 
+    </div>
+
+    <div class="panneau-onglet" role="tabpanel" id="pn-contrib" aria-labelledby="og-contrib" tabindex="0" hidden>
+    <p class="doux vide-onglet" id="vide-contrib" hidden data-i18n="esp.og.videContrib">Vos avis sur les services, vos réponses aux consultations et vos idées apparaîtront ici, avec leur reçu.</p>
     <!-- Vague 14 (F76) : mes avis sur les services (reçu COM-xxxx, statut, réponse du service) — assets/js/avis-service.js -->
     <section class="bloc" aria-labelledby="t-mes-avis" id="mes-avis-services" hidden></section>
 
@@ -90,6 +108,9 @@
       </div>
     </section>
 
+    </div>
+
+    <div class="panneau-onglet" role="tabpanel" id="pn-historique" aria-labelledby="og-historique" tabindex="0" hidden>
     <!-- F26 : historique complet -->
     <section class="bloc" aria-labelledby="t-hist" id="historique">
       <div class="titre-section"><div><h2 id="t-hist" data-i18n="c.esp.hist">Historique de mes demandes</h2>
@@ -114,6 +135,10 @@
         </table>
       </div>
     </section>
+    </div>
+
+    <!-- Vague 16 (F83) : « Mes accusés de réception » est inséré ici par assets/js/accuse.js -->
+    <div class="panneau-onglet" role="tabpanel" id="pn-accuses" aria-labelledby="og-accuses" tabindex="0" hidden></div>
   </main>
 
   <script>NT.pret(() => { NT.comptes.espace(); NT.participation.espace(document.getElementById('ma-participation')); });</script>
