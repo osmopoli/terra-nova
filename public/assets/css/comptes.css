@@ -5,6 +5,7 @@
 /* ---------- Mise en page des pages d'accès ---------- */
 .auth-mise-en-page{ display:grid; gap:1.5rem; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); align-items:start; }
 @media (max-width:60rem){ .auth-mise-en-page{ grid-template-columns:1fr; } }
+.auth-seule{ grid-template-columns:minmax(0,1fr); max-width:34rem; margin-inline:auto; }
 .auth-cote{ border-inline-start:2px solid var(--trait-2); padding-inline-start:1.5rem; }
 @media (max-width:60rem){ .auth-cote{ border-inline-start:0; padding-inline-start:0; border-top:1px solid var(--trait); padding-top:1.25rem; } }
 .auth-cote h2{ font-size:1.15rem; }
@@ -59,11 +60,6 @@ html[lang="ar"] .champ .erreur::before{ content:"خطأ: "; }
 .regles li.ok{ color:var(--calme); }
 .regles i{ font-size:1.15rem; flex:none; }
 
-/* ---------- Comptes de démonstration ---------- */
-.liste-demo{ list-style:none; margin:0; padding:0; display:grid; gap:.75rem; }
-.liste-demo li{ display:flex; gap:.75rem; justify-content:space-between; align-items:center; flex-wrap:wrap; padding:.75rem .9rem; border:1px dashed var(--trait-2); border-radius:var(--r); }
-.liste-demo div{ display:flex; flex-direction:column; gap:.1rem; min-width:0; }
-.liste-demo code{ font-size:.82rem; color:var(--brume); overflow-wrap:anywhere; }
 .btn.petit{ min-height:2.5rem; padding:.3rem .9rem; font-size:.9rem; }
 
 /* ---------- Espace personnel ---------- */
