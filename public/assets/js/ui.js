@@ -604,4 +604,6 @@
   if (u) { const scriptVeille = document.createElement('script'); scriptVeille.src = 'assets/js/veille.js'; document.head.append(scriptVeille); }
   // Vague 18 (D10, F89-F92) : recherche globale, assistant d'orientation, langage clair et « Expliquer plus simplement »
   const scriptOrientation = document.createElement('script'); scriptOrientation.src = 'assets/js/orientation.js'; document.head.append(scriptOrientation);
+  // Vague 20 (F97-F100) : lignes interrompues dans « Alertes », usage anonyme, offres des partenaires, menus des agents
+  const scriptVague20 = document.createElement('script'); scriptVague20.src = 'assets/js/vague20.js'; document.head.append(scriptVague20);
 })();

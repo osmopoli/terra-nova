@@ -39,14 +39,16 @@ const ESSENTIEL = [
   /^\/api\/(health|charge)(\/|$)/, /^\/api\/auth\//, /^\/api\/etat$/, /^\/api\/officiels(\/[^/]+\/compris)?$/,
   /^\/api\/services\//, /^\/api\/notifications\//, /^\/api\/accueil\/(code|inscrire)$/, /^\/api\/securite\/etat$/,
   /^\/api\/urgences(\/|-points|$)/, /^\/api\/veille$/, /^\/api\/activite(\/|$)/,   // vague 17 (F86) : urgences médicales et veille, jamais délestées
-  /^\/api\/recherche$/, /^\/api\/orientation(\/suggestions)?$/, /^\/api\/langage-clair(\/[^/]+)?$/   // vague 18 (D10, F89, F91, F92) : trouver le bon service, jamais délesté
+  /^\/api\/recherche$/, /^\/api\/orientation(\/suggestions)?$/, /^\/api\/langage-clair(\/[^/]+)?$/,   // vague 18 (D10, F89, F91, F92) : trouver le bon service, jamais délesté
+  /^\/api\/mobilite(\/itineraire)?$/, /^\/api\/vague20\/resume$/   // vague 20 (F97) : lignes interrompues et solutions de remplacement, jamais délestées
 ];
 const estEssentiel = (req) => ESSENTIEL.some((r) => r.test(req.path))
   || (req.method === 'POST' && req.path === '/api/docs/demandes')            // déposer une demande, un signalement
   || (req.method === 'PATCH' && /^\/api\/docs\/(demandes|notifications|rdv)\//.test(req.path));
 // Délestés dès la charge forte : calculs lourds, non essentiels pour l'habitant
 const LOURD = [/^\/api\/sobriete$/, /^\/api\/indicateurs$/, /^\/api\.php$/, /^\/api\/webcup\//, /^\/api\/mes-donnees$/, /^\/api\/bouclier/, /^\/api\/securite\/journal/,
-  /^\/api\/exports\/(apercu|fichier)$/, /^\/api\/sauvegardes$/, /^\/api\/integrite\/controler$/];   // vague 17 (F85, F87, F88) : exports, sauvegardes, contrôles
+  /^\/api\/exports\/(apercu|fichier)$/, /^\/api\/sauvegardes$/, /^\/api\/integrite\/controler$/,   // vague 17 (F85, F87, F88) : exports, sauvegardes, contrôles
+  /^\/api\/usage(\/|$)/];   // vague 20 (F98) : mesure d'usage et rapport, en pause en forte affluence
 // Délestés en charge critique : utiles mais secondaires
 const SECONDAIRE = [/^\/api\/demandes\/(groupes|publiques)$/, /^\/api\/demandes\/[^/]+\/(semblables|soutenir)$/, /^\/api\/participation/,
   /^\/api\/(consultations|idees|projets)/, /^\/api\/avis-services/, /^\/api\/contributions/, /^\/api\/mon-recapitulatif$/, /^\/api\/mes-informations$/,

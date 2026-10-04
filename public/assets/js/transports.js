@@ -142,17 +142,19 @@
   /* Itinéraires : directs d'abord, sinon une correspondance par un arrêt commun. Prend en compte la perturbation. */
   function effectif(L, a, b) {
     let notes = [], a2 = a, b2 = b;
-    if (L.id === PERT.ligne) {
+    if (L.id === PERT.ligne && !(NT.mobilite && NT.mobilite.donnees())) {   // vague 20 : sinon, les interruptions déclarées par les agents font foi
       if (PERT.fermes.includes(a)) { a2 = PERT.remplace; notes.push({ type: 'depart', ferme: a, remplace: PERT.remplace }); }
       if (PERT.fermes.includes(b)) { b2 = PERT.remplace; notes.push({ type: 'fin', ferme: b, remplace: PERT.remplace }); }
     }
     return { a: a2, b: b2, notes };
   }
+  /* Vague 20 (F97) : un tronçon interrompu (déclaré par un agent) n'est jamais proposé */
+  const coupe = (L, a, b) => !!(NT.mobilite && NT.mobilite.coupe(L.id, a, b));
   function trajets(a, b) {
     const ids = Object.keys(LIGNES), res = [];
     ids.forEach(id => {
       const L = LIGNES[id]; if (idx(L, a) < 0 || idx(L, b) < 0) return;
-      const e = effectif(L, a, b); if (e.a === e.b) return;
+      const e = effectif(L, a, b); if (e.a === e.b || coupe(L, e.a, e.b)) return;
       const sens = sensEntre(L, e.a, e.b);
       const duree = Math.abs(offset(L, e.b, sens) - offset(L, e.a, sens));
       res.push({ etapes: [{ L, de: e.a, vers: e.b, sens, duree, notes: e.notes }], duree, correspondance: null });
@@ -164,7 +166,7 @@
       const L1 = LIGNES[i1], L2 = LIGNES[i2]; if (idx(L1, a) < 0 || idx(L2, b) < 0) return;
       L1.arrets.forEach(([h]) => {
         if (idx(L2, h) < 0 || h === a || h === b) return;
-        const e1 = effectif(L1, a, h), e2 = effectif(L2, h, b); if (e1.a === e1.b || e2.a === e2.b) return;
+        const e1 = effectif(L1, a, h), e2 = effectif(L2, h, b); if (e1.a === e1.b || e2.a === e2.b || coupe(L1, e1.a, e1.b) || coupe(L2, e2.a, e2.b)) return;
         const s1 = sensEntre(L1, e1.a, e1.b), s2 = sensEntre(L2, e2.a, e2.b);
         const d1 = Math.abs(offset(L1, e1.b, s1) - offset(L1, e1.a, s1)), d2 = Math.abs(offset(L2, e2.b, s2) - offset(L2, e2.a, s2));
         res.push({ etapes: [{ L: L1, de: e1.a, vers: e1.b, sens: s1, duree: d1, notes: e1.notes }, { L: L2, de: e2.a, vers: e2.b, sens: s2, duree: d2, notes: e2.notes }], duree: d1 + d2 + 5, correspondance: h });
@@ -178,6 +180,7 @@
 
   function rendreTrafic() {
     const el = document.getElementById('tr-trafic');
+    if (NT.mobilite && NT.mobilite.rendreTrafic(el)) return;   // vague 20 (F97) : interruptions déclarées par les agents (assets/js/mobilite.js)
     const puces = Object.keys(LIGNES).map(id => {
       const perturbee = id === PERT.ligne;
       return `<li class="tr-puce${perturbee ? ' tr-puce-pert' : ''}">${etiquetteLigne(id)}
@@ -225,7 +228,8 @@
     if (!a || !b) { dernierHtml = ''; resultat.innerHTML = `<p class="vide">${echap(t('tr.choisir'))}</p>`; return; }
     if (a === b) { dernierHtml = ''; resultat.innerHTML = `<p class="tr-msg"><i class="ph-duotone ph-info" aria-hidden="true"></i>${echap(t('tr.memeArret'))}</p>`; return; }
     const opts = trajets(a, b);
-    if (!opts.length) { dernierHtml = ''; resultat.innerHTML = `<p class="tr-msg"><i class="ph-duotone ph-info" aria-hidden="true"></i>${echap(t('tr.aucun'))}</p>`; return; }
+    const avis = NT.mobilite ? NT.mobilite.avisTrajet(a, b) : '';   // vague 20 (F97)
+    if (!opts.length) { dernierHtml = ''; resultat.innerHTML = avis || `<p class="tr-msg"><i class="ph-duotone ph-info" aria-hidden="true"></i>${echap(t('tr.aucun'))}</p>`; return; }
     const r = opts[0], e1 = r.etapes[0];
     const nbArrets = e => Math.abs(idx(e.L, e.vers) - idx(e.L, e.de));
     const totalArrets = r.etapes.reduce((s, e) => s + nbArrets(e), 0);
@@ -257,7 +261,7 @@
     }).join('');
 
     const ouvert = !!resultat.querySelector('details[open]');
-    const html = `${alerte}
+    const html = `${avis}${alerte}
       <div class="tr-carte-ligne">
         <div class="tr-quoi">${r.etapes.map(e => etiquetteLigne(e.L.id)).join('<i class="ph ph-plus" aria-hidden="true"></i>')}
           <div><h3>${echap(r.etapes.length > 1 ? r.etapes.map(e => e.L.id).join(' + ') : t('tr.prendre', { l: e1.L.id }))}</h3>
@@ -300,7 +304,7 @@
               <th scope="col">${echap(t('tr.premier'))} ${echap(t('tr.vers', { d: nom(dernier) }))}</th><th scope="col">${echap(t('tr.dernier'))} ${echap(t('tr.vers', { d: nom(dernier) }))}</th>
               <th scope="col">${echap(t('tr.premier'))} ${echap(t('tr.vers', { d: nom(premier) }))}</th><th scope="col">${echap(t('tr.dernier'))} ${echap(t('tr.vers', { d: nom(premier) }))}</th></tr></thead>
             <tbody>${L.arrets.map(([a, o]) => {
-              const ferme = id === PERT.ligne && PERT.fermes.includes(a);
+              const ferme = (!(NT.mobilite && NT.mobilite.donnees()) && id === PERT.ligne && PERT.fermes.includes(a)) || !!(NT.mobilite && NT.mobilite.arretFerme(id, a));   // vague 20 (F97)
               const cell = (sens) => { const off = sens === 'aller' ? o : L.total - o; return [hhmm(versMin(L.premier) + off), hhmm(versMin(L.dernier) + off)]; };
               const al = cell('aller'), re = cell('retour');
               const vide = `<td colspan="4"><span class="statut statut-maintenance">${echap(t('tr.nonDesservi'))}</span></td>`;

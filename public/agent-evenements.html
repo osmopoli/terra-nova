@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <title>Événements de sécurité — Terra Nova</title>
+  <meta name="description" content="Agents : derniers événements de sécurité de la plateforme pour le suivi quotidien (tentatives bloquées, incidents, verrouillages, nouveaux appareils, accès aux données réservées).">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net"><link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css"></noscript>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css"></noscript>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css"></noscript>
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/agent.css">
+  <link rel="stylesheet" href="assets/css/vague20.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="agent-evenements" data-ariane="nav.agent|agent.html;ev.titre" data-roles="agent,admin">
+  <main id="contenu" data-lc-non class="conteneur ag v20-page ev">
+    <header class="titre-page">
+      <h1 data-i18n="ev.titre">Derniers événements de sécurité</h1>
+      <p data-i18n="ev.intro">Le suivi quotidien : ce qui a été bloqué, ce qui demande votre attention et ce qui est déjà traité. Les données personnelles sont réduites au nécessaire.</p>
+    </header>
+    <div id="ev-zone" data-mode="complet"></div>
+  </main>
+
+  <script src="assets/js/v20-commun.js" defer></script>
+  <script src="assets/js/agent-evenements.js" defer></script>
+</body>
+</html>

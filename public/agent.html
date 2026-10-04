@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="assets/css/vague16.css">
   <link rel="stylesheet" href="assets/css/priorites.css">
   <link rel="stylesheet" href="assets/css/vague17.css"><!-- vague 17 (F86) : urgences médicales -->
+  <link rel="stylesheet" href="assets/css/vague20.css"><!-- vague 20 (F100) : derniers événements de sécurité -->
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/store.js"></script>
   <script src="assets/js/agent.js"></script>
@@ -108,6 +109,12 @@
             <li><a class="btn" href="agent-demandes.html"><i class="ph ph-list-checks" aria-hidden="true"></i><span data-i18n="ag.lienToutes">Toutes les demandes citoyennes</span></a></li>
             <li><a class="btn" href="agent-alertes.html"><i class="ph ph-megaphone" aria-hidden="true"></i><span data-i18n="ag.lienAlertes">Diffuser une alerte</span></a></li>
           </ul>
+        </section>
+
+        <!-- Vague 20 (F100) : derniers événements de sécurité, données minimisées pour les agents (assets/js/agent-evenements.js) -->
+        <section class="ag-bloc" aria-labelledby="t-secu">
+          <h2 id="t-secu"><i class="ph-duotone ph-shield-check" aria-hidden="true"></i><span data-i18n="ev.compactTitre">Derniers événements de sécurité</span></h2>
+          <div id="ev-zone" data-mode="compact"></div>
         </section>
 
         <section class="ag-bloc" aria-labelledby="t-actions">
@@ -357,5 +364,6 @@
       setInterval(() => { if (!(NT.charge && NT.charge.enPause())) charger(); }, NT.econome.delai(30000));   // F77, F78 : flux non essentiel en pause pendant la forte affluence
     });
   </script>
+  <script src="assets/js/agent-evenements.js" defer></script><!-- vague 20 (F100) -->
 </body>
 </html>
