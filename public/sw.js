@@ -5,7 +5,7 @@
    - toujours le RÉSEAU D'ABORD pour les pages, les scripts et les styles : la copie ne sert que si le réseau échoue,
      donc jamais d'ancien script après un déploiement. Aucune autre donnée de l'API n'est gardée (rien de personnel). */
 'use strict';
-const VERSION = 'v15-3';
+const VERSION = 'v15-4';
 const CACHE = 'terra-nova-' + VERSION;
 const COQUILLE = ['/', '/index.html', '/services.html', '/annonces.html', '/carte.html', '/simple',
   '/assets/css/theme.css', '/assets/css/vague15.css', '/assets/css/accueil.css', '/assets/css/services.css', '/assets/css/annonces.css',
@@ -45,5 +45,7 @@ self.addEventListener('fetch', (ev) => {
     return;   // toute autre réponse de l'API va directement au serveur, sans copie
   }
   if (url.pathname === '/sw.js') return;
-  ev.respondWith(reseauDabord(req));
+  // styles et scripts versionnés (?v=…) : copie rangée sous l'adresse sans version, pour la retrouver hors connexion
+  const asset = /^\/assets\/(css|js)\//.test(url.pathname) && url.search;
+  ev.respondWith(reseauDabord(req, asset ? url.origin + url.pathname : undefined));
 });

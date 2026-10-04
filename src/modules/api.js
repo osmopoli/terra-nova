@@ -236,7 +236,7 @@ router.post('/api/docs/:col', (req, res) => {
     if (creneau) return erreur(res, creneau.code, creneau.msg);
     const d = regleCreation(col, req, Object.assign({}, brut, col === 'demandes' ? {} : { id: brut.id || uid(col.slice(0, 3)) }));
     if (!d) return erreur(res, req.user ? 403 : 401, 'Action non autorisée pour votre profil.');
-    crees.push(docs.put(col, d));
+    crees.push(col === 'demandes' ? require('./accuses').apresCreation(docs.put(col, d)) : docs.put(col, d));   // F83 : accusé de réception
   }
   res.json(Array.isArray(req.body) ? crees : crees[0]);
 });

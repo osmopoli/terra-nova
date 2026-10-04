@@ -72,6 +72,8 @@ Réinitialiser les données de démonstration : connecté en admin, `POST /api/d
 - `src/modules/participation.js` — consultations, avis (un par habitant), projets et idées (F65-F68), droits contrôlés par le serveur.
 - `src/modules/api.js` — `GET /api/etat` (tout ce que le profil a le droit de voir), écritures `POST/PATCH /api/docs/:collection` contrôlées par règle (un citoyen ne voit et ne modifie que ses données ; seuls agents / admins traitent les demandes, diffusent les alertes, changent l'état des services ; seul l'admin change un rôle), soutiens (F52), contributions données (F51), indicateurs (F50), flux Webcup pour les agents (D19, clé jamais exposée).
 - Vague 14 : `src/modules/officiel.js` (message officiel du Haut Conseil, F73), `associations.js` (associations partenaires, F74), `doublons.js` (demandes semblables TF-IDF, rattachement, réponse commune, F75), `avis-services.js` (avis après un service, reçu COM-xxxx, F76).
+- Vague 16 : `src/modules/formulaires.js` (jetons signés, champ piège, vérification humaine, idempotence et demandes en double, F81-F82), `accuses.js` (accusé de réception vérifiable, F83), `echanges.js` (réponses des agents et fil d’échanges, F84) ; côté navigateur `formulaires.js`, `accuse.js`, `echanges.js`, `agent-robots.js` et `assets/css/vague16.css`.
+
 - Vague 15 : `src/charge.js` (mesure de la charge, délestage 503 + `Retry-After` du non essentiel, file équitable par IP, délai maximal, mémoïsation des lectures chaudes invalidée à chaque écriture, mode dégradé forcé par l'admin, F77/F78), `src/modules/priorites.js` (priorité des dossiers calculée et corrigeable, F80), `src/seed-vague15.js` ; navigateur : `assets/js/resilience.js` (avis calme, recul exponentiel, brouillons, nouveaux essais), `sw.js` (copie hors connexion, réseau d'abord), `assets/js/sujets.js` (tri par sujet, F79), `assets/js/agent-priorites.js`, `assets/js/agent-plateforme.js` ; `tools/charge.js` (test de charge).
 - `src/webcup.js` — interroge l'API toutes les `POLL_INTERVAL_SECONDS` (dédoublonnage sur `request_code`).
 - `public/assets/js/store.js` — client du serveur, même interface pour toutes les pages (`NT.store`, `NT.auth`, `NT.demandes`…).
@@ -101,6 +103,10 @@ Le détail « où et comment le montrer au jury » est dans [`docs/RENDU-JURY.md
 | Associations partenaires (vague 14) | F74 | `services#associations`, fiche d'un service, `carte` |
 | Demandes semblables, attention (vague 14) | F75 | `agent-demandes` |
 | Avis après un service (vague 14) | F76 | `suivi`, `rendez-vous`, `services`, `espace` |
+| Formulaires protégés contre les robots, envois sans doublon (vague 16) | F81, F82 | tous les formulaires publics, `agent-securite` |
+| Accusé de réception vérifiable (vague 16) | F83 | `demande`, `accuse`, `verifier-accuse`, `suivi`, `espace` |
+| Réponses des agents, fil d’échanges (vague 16) | F84 | `agent-demandes`, `agent`, `suivi` |
+
 | Surcharge et affluence : l'essentiel reste disponible (vague 15) | F77, F78 | toutes (pied de page, tiroir « Alertes », brouillons, nouveaux essais, hors connexion), `agent-plateforme`, `tools/charge.js` |
 | Trier et filtrer par sujet (vague 15) | F79 | `suivi`, `espace#historique`, `soutenir` |
 | Dossiers prioritaires des agents (vague 15) | F80 | `agent-demandes`, `agent`, `agent-journal` |
