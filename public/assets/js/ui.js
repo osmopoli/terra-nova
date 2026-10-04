@@ -200,6 +200,9 @@
   if (u && u.role === 'admin') liens.push(['plateforme', 'agent-plateforme.html']);   // vague 15 (F77, F78) : état de la plateforme
   if (u && u.role !== 'citoyen') liens.push(['exports', 'agent-exports.html']);   // vague 17 (F88) : exports des données de suivi
   if (u && u.role === 'admin') liens.push(['sauvegardes', 'admin-sauvegardes.html']);   // vague 17 (F87) : sauvegardes vérifiées
+  /* Vague 18 (F89, F91) : questions sans réponse de l'assistant d'orientation, langage clair */
+  NT.i18n.ajouter({ fr: { 'nav.orientation': 'Orientation' }, en: { 'nav.orientation': 'Guidance' }, es: { 'nav.orientation': 'Orientación' }, ar: { 'nav.orientation': 'التوجيه' } });
+  if (u && u.role !== 'citoyen') liens.push(['orientation', 'agent-orientation.html']);
   if (u) NT.rdv.verifierRappels();   // avant le compteur de la cloche, pour que les rappels dus soient comptés
   const nbNotif = u ? NT.notif.nonLues(u.id) : 0;
   const optionsLangue = Object.entries(NT.i18n.LANGUES).map(([c, n]) => `<option value="${c}" ${c === NT.i18n.langue ? 'selected' : ''} lang="${c}">${n}</option>`).join('');
@@ -574,4 +577,6 @@
   document.head.append(scriptOfficiel);
   // Vague 17 (F85, F86) : veille en direct (urgences médicales pour le personnel, activité inhabituelle, confirmation du mot de passe)
   if (u) { const scriptVeille = document.createElement('script'); scriptVeille.src = 'assets/js/veille.js'; document.head.append(scriptVeille); }
+  // Vague 18 (D10, F89-F92) : recherche globale, assistant d'orientation, langage clair et « Expliquer plus simplement »
+  const scriptOrientation = document.createElement('script'); scriptOrientation.src = 'assets/js/orientation.js'; document.head.append(scriptOrientation);
 })();

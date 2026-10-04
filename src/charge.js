@@ -38,7 +38,8 @@ const rang = (n) => NIVEAUX.indexOf(n);
 const ESSENTIEL = [
   /^\/api\/(health|charge)(\/|$)/, /^\/api\/auth\//, /^\/api\/etat$/, /^\/api\/officiels(\/[^/]+\/compris)?$/,
   /^\/api\/services\//, /^\/api\/notifications\//, /^\/api\/accueil\/(code|inscrire)$/, /^\/api\/securite\/etat$/,
-  /^\/api\/urgences(\/|-points|$)/, /^\/api\/veille$/, /^\/api\/activite(\/|$)/   // vague 17 (F86) : urgences médicales et veille, jamais délestées
+  /^\/api\/urgences(\/|-points|$)/, /^\/api\/veille$/, /^\/api\/activite(\/|$)/,   // vague 17 (F86) : urgences médicales et veille, jamais délestées
+  /^\/api\/recherche$/, /^\/api\/orientation(\/suggestions)?$/, /^\/api\/langage-clair(\/[^/]+)?$/   // vague 18 (D10, F89, F91, F92) : trouver le bon service, jamais délesté
 ];
 const estEssentiel = (req) => ESSENTIEL.some((r) => r.test(req.path))
   || (req.method === 'POST' && req.path === '/api/docs/demandes')            // déposer une demande, un signalement
@@ -49,7 +50,8 @@ const LOURD = [/^\/api\/sobriete$/, /^\/api\/indicateurs$/, /^\/api\.php$/, /^\/
 // Délestés en charge critique : utiles mais secondaires
 const SECONDAIRE = [/^\/api\/demandes\/(groupes|publiques)$/, /^\/api\/demandes\/[^/]+\/(semblables|soutenir)$/, /^\/api\/participation/,
   /^\/api\/(consultations|idees|projets)/, /^\/api\/avis-services/, /^\/api\/contributions/, /^\/api\/mon-recapitulatif$/, /^\/api\/mes-informations$/,
-  /^\/api\/journal$/, /^\/api\/habilitations/, /^\/api\/officiels\/tous$/];
+  /^\/api\/journal$/, /^\/api\/habilitations/, /^\/api\/officiels\/tous$/,
+  /^\/api\/explications/, /^\/api\/orientation\/(questions|synonymes)/];   // vague 18 (F90, F91) : statistiques des agents
 function classe(req) {
   if (!req.path.startsWith('/api')) return 'page';
   if (estEssentiel(req)) return 'essentiel';
