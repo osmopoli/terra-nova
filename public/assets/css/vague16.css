@@ -51,7 +51,7 @@
 .tn-msg-meta{ margin:.4rem 0 0; font-size:.85rem; display:flex; gap:.4rem; align-items:center; flex-wrap:wrap; }
 .tn-echanges-ag{ margin-top:1.25rem; padding-top:.25rem; }
 .tn-echanges-ag h4{ margin:1rem 0 .5rem; font-size:1rem; }
-.rp-badge{ display:inline-flex; align-items:center; gap:.3rem; margin-inline-start:.4rem; padding:.1rem .5rem; border-radius:99px; border:1px solid currentColor; font-size:.75rem; font-weight:700; white-space:nowrap; vertical-align:middle; }
+.rp-badge{ margin-inline-start:.4rem; }   /* gabarit : composant « pastille » (theme.css) */
 .rp-attente{ color:var(--soleil); }
 .rp-repondu{ color:var(--calme); }
 .rp-panneau{ margin:1rem 0; padding:1rem 1.1rem; }

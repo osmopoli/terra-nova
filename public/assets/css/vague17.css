@@ -73,7 +73,7 @@
 .urg-item .actions{ display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.7rem; }
 .urg-item form{ display:grid; gap:.5rem; margin-top:.6rem; }
 .urg-item textarea{ width:100%; min-height:4rem; }
-.urg-badge-ligne{ display:inline-flex; gap:.3rem; align-items:center; margin-inline-start:.4rem; font-size:.72rem; font-weight:700; padding:.1rem .5rem; border-radius:99px; border:1px solid var(--corail); color:var(--corail-clair); }
+.urg-badge-ligne{ margin-inline-start:.4rem; border-color:var(--corail); color:var(--corail-clair); }   /* gabarit : composant « pastille » (theme.css) */
 tr.urg-ligne > *{ background:color-mix(in oklch, var(--corail) 7%, transparent); }
 
 /* ---------- Centre de sécurité : incidents, surveillance, intégrité ---------- */

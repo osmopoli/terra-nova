@@ -63,7 +63,7 @@ html[lang="ar"] .ag-msg details summary::after{ content:" عرض المزيد"; 
 .ag-nouveau-badge{ display:inline-block; margin-inline-start:.4rem; font-size:.7rem; font-weight:800; padding:.05rem .45rem; border-radius:99px; background:var(--aurore); color:var(--sur-iono); vertical-align:middle; }
 tr.ag-nouveau > th{ border-inline-start:3px solid var(--aurore); }
 
-.ag-diff,.ag-prio,.ag-niv,.ag-action-lib{ display:inline-flex; align-items:center; gap:.35rem; font-size:.78rem; font-weight:700; padding:.15rem .6rem; border-radius:99px; border:1px solid currentColor; white-space:nowrap; }
+/* .ag-diff, .ag-prio, .ag-niv, .ag-action-lib : gabarit du composant « pastille » (theme.css) */
 .ag-diff-1{ color:var(--calme); } .ag-diff-2{ color:var(--soleil); } .ag-diff-3{ color:var(--corail); }
 .ag-prio-haute{ color:var(--corail); } .ag-prio-normale{ color:var(--brume); } .ag-prio-basse{ color:var(--brume); }
 .ag-niv-info{ color:var(--iono); } .ag-niv-importante{ color:var(--soleil); } .ag-niv-alerte{ color:var(--corail); }
@@ -107,9 +107,27 @@ tr.ag-action > th{ border-inline-start:3px solid var(--soleil); }
 
 /* Alertes */
 .ag-alertes{ display:grid; gap:1.25rem; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); align-items:start; }
-@media (max-width:1000px){ .ag-alertes{ grid-template-columns:minmax(0,1fr); } }
-.ag-apercu{ position:sticky; top:5.5rem; }
-@media (max-width:1000px){ .ag-apercu{ position:static; } }
+/* Centre de crise : le formulaire passe sur deux colonnes internes quand il a la place (container query sur sa propre largeur,
+   ≥ 40rem de contenu, soit ≈ 2 × 19,5rem par champ). La colonne du formulaire est élargie (1.6fr) pour que ce seuil soit
+   atteint dès ≈ 1180 px de fenêtre ; en dessous (et toujours ≤ 1000px), ou en mode .grand (rem agrandis), une seule colonne comme avant.
+   Deux sous-blocs .cz-col dans l'ordre du DOM : « l'événement » (modèle, quartiers, heure, titre, message) puis
+   « les consignes » (que faire, points d'accueil, services, solution de rechange) — ordre de lecture = ordre de tabulation. */
+.ag-alertes.cz-alertes{ grid-template-columns:minmax(0,1.6fr) minmax(0,1fr); }
+.cz-form{ container:cz-form / inline-size; }
+@media (min-width:1001px){
+  @container cz-form (min-width:40rem){
+    .cz-grille{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 1rem; align-items:start; }
+    /* Services touchés : deux colonnes de cases alignées dans la colonne étroite (sinon une case par ligne, ≈ 580 px de haut). */
+    .cz-grille .cz-services{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
+  }
+}
+@media (max-width:1000px){ .ag-alertes, .ag-alertes.cz-alertes{ grid-template-columns:minmax(0,1fr); } }
+/* Colonne de droite (Aperçu, Crises en cours, Messages officiels) collante : elle accompagne le long formulaire
+   au lieu de laisser un vide sous elle. top = bas de l'en-tête collant (.entete : 7.56rem) + marge ; hauteur bornée
+   à la fenêtre pour que rien ne soit inatteignable. Une seule colonne (≤1000px) ou mode .grand (en-tête statique) : pas de collant. */
+.ag-alertes > aside{ position:sticky; top:8.25rem; max-block-size:calc(100vh - 9.25rem); max-block-size:calc(100dvh - 9.25rem); overflow-y:auto; overscroll-behavior:contain; }
+html.grand .ag-alertes > aside{ top:1rem; max-block-size:calc(100dvh - 2rem); }
+@media (max-width:1000px){ .ag-alertes > aside, html.grand .ag-alertes > aside{ position:static; max-block-size:none; overflow:visible; } }
 .ag-modeles{ display:grid; gap:.5rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr)); margin:0 0 1.25rem; padding:0; list-style:none; }
 .ag-modeles .btn{ width:100%; justify-content:flex-start; text-align:start; min-height:3rem; }
 .ag-modeles small{ display:block; font-weight:500; color:var(--brume); font-size:.78rem; }

@@ -101,8 +101,9 @@
 
     racine.innerHTML = `
       <div class="titre-section"><div><h2 id="t-crise"><i class="ph-duotone ph-lightning-slash" aria-hidden="true"></i> ${echap(t('cz.titre'))}</h2><p>${echap(t('cz.intro'))}</p></div></div>
-      <div class="ag-alertes">
-        <form class="panneau" id="form-crise" novalidate aria-labelledby="t-crise">
+      <div class="ag-alertes cz-alertes">
+        <form class="panneau cz-form" id="form-crise" novalidate aria-labelledby="t-crise">
+          <div class="cz-grille"><div class="cz-col">
           <fieldset><legend>${echap(t('cz.modele'))}</legend><div class="ag-niveaux">
             <label><input type="radio" name="cz-type" value="panne-electrique" checked><span><strong>${echap(t('cz.m.panne'))}</strong></span></label>
             <label><input type="radio" name="cz-type" value="crise-localisee"><span><strong>${echap(t('cz.m.crise'))}</strong></span></label></div></fieldset>
@@ -111,10 +112,12 @@
           <div class="champ"><label for="cz-ret">${echap(t('cz.ret'))}</label><input id="cz-ret" type="datetime-local" aria-describedby="cz-ret-aide cz-ret-err"><span class="aide" id="cz-ret-aide">${echap(t('cz.retAide'))}</span><p class="erreur" id="cz-ret-err" hidden></p></div>
           <div class="champ"><label for="cz-titre">${echap(t('cz.fTitre'))}</label><input id="cz-titre" maxlength="120" autocomplete="off"></div>
           <div class="champ"><label for="cz-message">${echap(t('cz.fMessage'))}</label><textarea id="cz-message" maxlength="1200"></textarea></div>
+          </div><div class="cz-col">
           <div class="champ"><label for="cz-actions">${echap(t('cz.fActions'))}</label><textarea id="cz-actions" class="cz-long"></textarea></div>
           <div class="champ"><label for="cz-points">${echap(t('cz.fPoints'))}</label><textarea id="cz-points" class="cz-court"></textarea></div>
-          <fieldset><legend>${echap(t('cz.fServices'))}</legend><div class="cz-quartiers">${services.map(s => `<label><input type="checkbox" name="cz-s" value="${echap(s.id)}"> ${echap(nomSvc(s))}</label>`).join('')}</div></fieldset>
+          <fieldset><legend>${echap(t('cz.fServices'))}</legend><div class="cz-quartiers cz-services">${services.map(s => `<label><input type="checkbox" name="cz-s" value="${echap(s.id)}"> ${echap(nomSvc(s))}</label>`).join('')}</div></fieldset>
           <div class="champ"><label for="cz-alt">${echap(t('cz.fAlt'))}</label><input id="cz-alt" maxlength="300"></div>
+          </div></div>
           <button type="submit" class="btn btn-primaire"><i class="ph ph-lightning-slash" aria-hidden="true"></i>${echap(t('cz.publier'))}</button>
           <p id="cz-ok" role="status" class="doux cz-ok"></p>
         </form>

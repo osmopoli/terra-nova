@@ -186,7 +186,7 @@ html.grand .capsule .nav-principale{ flex-wrap:wrap; overflow:visible; }
 .select-langue{ width:auto!important; height:var(--h-outil)!important; min-height:0!important; padding-block:0!important; padding-inline:2.1rem .6rem!important; border:1px solid var(--trait-2)!important; border-radius:var(--r)!important; background-color:transparent!important; font-size:.88rem; cursor:pointer; }
 .outils-entete sl-dropdown sl-button::part(base){ height:var(--h-outil); min-height:0; display:inline-flex; align-items:center; border-radius:var(--r); background:transparent; border-color:var(--trait-2); color:var(--givre); font-size:.88rem; font-weight:600; }
 @media (hover:hover){ .outils-entete sl-dropdown sl-button::part(base):hover{ border-color:var(--iono); background:oklch(0.7040 0.1400 182.5 / .08); } }
-.badge-role{ font-size:.7rem; font-weight:700; padding:.1rem .5rem; margin-inline-start:.35rem; border-radius:99px; border:1px solid var(--iono); color:var(--iono); }
+.badge-role{ margin-inline-start:.35rem; color:var(--iono); }   /* gabarit : composant « pastille » (.statut, plus bas) */
 @media (max-width:900px){
   .entete{ position:relative; top:0; }   /* sur écran étroit l'en-tête prend plusieurs lignes : il ne colle plus */
 }
@@ -256,8 +256,16 @@ html.grand .capsule .nav-principale{ flex-wrap:wrap; overflow:visible; }
 @media (hover:hover){ .btn-danger:hover{ background:var(--corail); color:#1b0308; } }
 .btn[disabled]{ opacity:.5; cursor:not-allowed; }
 
-.statut{ display:inline-flex; align-items:center; gap:.4rem; font-size:.8rem; font-weight:700; padding:.2rem .65rem; border-radius:99px; border:1px solid; white-space:nowrap; }
-.statut::before{ content:""; width:.5rem; height:.5rem; border-radius:50%; background:currentColor; }
+/* Composant « pastille » (pilule) partagé : une seule ligne, même hauteur, même police, même retrait, partout.
+   Statut, rôle, niveau de service, avis, type d’événement, soutien, étiquettes, repères de la carte, priorité, réponse, urgence, gravité, difficulté.
+   Hors composant : compteurs numériques (.pastille-compte, .pastille-n, .v20-pastille), mots-clés (.sg-mot), bouton-pastille (.sg-badge). Dans un tableau, c'est la colonne qui s'élargit. */
+.statut,.badge-role,.niveau-svc,.av-statut,.pastille-type,.pastille-sou,.etiquette-nouveau,.etiquette-etape,.badge-actuel,.cm-tag,
+.pr-badge,.rp-badge,.urg-badge-ligne,.ev-grav,.ag-diff,.ag-prio,.ag-niv,.ag-action-lib{ display:inline-flex; align-items:center; gap:.4rem; box-sizing:border-box;
+  min-height:1.625rem; padding:0 .65rem; border:1px solid; border-radius:99px; font-size:var(--t-xs); font-weight:700; line-height:1.2; white-space:nowrap; vertical-align:middle; }
+.statut::before{ content:""; flex:none; width:.5rem; height:.5rem; border-radius:50%; background:currentColor; }
+/* Dernier recours si la place manque vraiment (320 px, zoom 200 %) : le libellé se termine par « … » (title = texte complet), jamais sur deux lignes */
+:has(> .pastille-txt){ max-inline-size:100%; }
+.pastille-txt{ min-inline-size:0; overflow:hidden; text-overflow:ellipsis; }
 .statut-recue,.statut-attente{ color:var(--soleil); }
 .statut-en_cours{ color:var(--iono); }
 .statut-traitee,.statut-ok{ color:var(--calme); }
@@ -274,7 +282,22 @@ input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea{
   transition:border-color 150ms ease, box-shadow 150ms ease; }
 input::placeholder,textarea::placeholder{ color:oklch(0.62 0.025 200); }
 textarea{ min-height:8rem; resize:vertical; }
-input:focus,select:focus,textarea:focus{ outline:2px solid var(--iono); outline-offset:2px; border-color:var(--iono); box-shadow:0 0 0 5px oklch(0.7040 0.1400 182.5 / .12); }
+/* Listes déroulantes natives (tous les <select>) : la liste ouverte prend le fond et le texte des options, pas ceux du champ.
+   Sans fond explicite, un select au fond transparent (sélecteur de langue) s'ouvrait sur fond blanc avec le texte clair hérité (1,2:1).
+   color-scheme:dark est hérité de :root. Jetons seulement : suit .contraste (noir / blanc). Le select fermé ne change pas.
+   Pas d'appearance:base-select : il redessine le champ fermé (flèche dessinée en CSS au lieu de celle du système, retrait, hauteur). */
+option,optgroup{ background-color:var(--nuit-2); color:var(--givre); }
+option:checked{ background-color:var(--iono); color:var(--sur-iono); }
+option:disabled{ background-color:var(--nuit-2); color:var(--brume); }
+@media (hover:hover){ option:not(:checked):not(:disabled):hover{ background-color:color-mix(in oklch, var(--iono) 22%, var(--nuit-2)); color:var(--givre); } }
+input:not([type=checkbox]):not([type=radio]):not([type=range]):focus,select:focus,textarea:focus{ outline:2px solid var(--iono); outline-offset:2px; border-color:var(--iono); box-shadow:0 0 0 5px oklch(0.7040 0.1400 182.5 / .12); }
+/* Boutons radio : aucun anneau au clic souris (la règle :focus ci-dessus ne vise plus que les champs de saisie).
+   Chromium force border-radius:0 sur un radio natif : son outline ou son box-shadow est donc toujours carré.
+   Au clavier (:focus-visible seulement), le focus est porté par l'étiquette de l'option, comme pour les choix en cartes
+   (.choix-par, .choix, .av-note-choix, .dm-choix) : l'anneau suit l'arrondi de la carte. :where() = spécificité nulle,
+   les règles de composant gardent la main sur l'arrondi et l'écart. */
+label > input[type=radio]:focus-visible{ outline:none; }
+:where(label:has(> input[type=radio]:focus-visible)){ outline:3px solid var(--iono); outline-offset:2px; border-radius:var(--r-s); }
 [aria-invalid="true"]{ border-color:var(--corail)!important; }
 fieldset{ border:1px solid var(--trait); border-radius:var(--r); padding:1rem; margin:0 0 1rem; }
 legend{ font-weight:700; padding:0 .4rem; }
@@ -395,7 +418,7 @@ html.econome .liste-sou > li,html.econome .liste-activite > li,html.econome .lis
 .etat-svc-disponible{ border-color:var(--calme); } .etat-svc-disponible > i{ color:var(--calme); }
 .etat-svc-perturbe{ border-color:var(--soleil); } .etat-svc-perturbe > i{ color:var(--soleil); }
 .etat-svc-indisponible{ border-color:var(--corail); } .etat-svc-indisponible > i{ color:var(--corail); }
-.niveau-svc{ display:inline-flex; align-items:center; gap:.35rem; font-size:.8rem; font-weight:700; padding:.2rem .65rem; border-radius:99px; border:1px solid; white-space:nowrap; }
+/* .niveau-svc : gabarit du composant « pastille » (.statut) */
 .niveau-svc-disponible{ color:var(--calme); } .niveau-svc-perturbe{ color:var(--soleil); } .niveau-svc-indisponible{ color:var(--corail); }
 /* F62 : lien discret vers la version simple */
 .pied-simple{ display:inline-flex; align-items:center; gap:.35rem; }
@@ -512,7 +535,7 @@ html.leger .off-fenetre-temps, html.econome .off-fenetre-temps{ display:none; }
 .av-note-choix label:has(input:focus-visible){ outline:3px solid var(--iono); outline-offset:2px; }
 .av-recu{ border:1px solid var(--calme); border-radius:var(--r); padding:.9rem 1rem; background:var(--verre); }
 .av-recu .av-num{ font-family:var(--mono); font-size:1.15rem; font-weight:700; color:var(--iono); }
-.av-statut{ display:inline-flex; align-items:center; gap:.3rem; font-size:.8rem; font-weight:700; padding:.15rem .6rem; border-radius:99px; border:1px solid; white-space:nowrap; }
+/* .av-statut : gabarit du composant « pastille » (.statut) */
 .av-statut-publie{ color:var(--calme); } .av-statut-repondu{ color:var(--iono); } .av-statut-masque{ color:var(--corail); }
 .av-liste{ list-style:none; margin:0; padding:0; display:grid; gap:.75rem; }
 .av-liste > li{ border:1px solid var(--trait); border-radius:var(--r); padding:.8rem .95rem; background:var(--verre); }
