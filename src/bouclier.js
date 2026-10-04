@@ -204,7 +204,7 @@ function filtreReponses(req, res, next) {
 // Accès refusés (403) : visibles dans le journal du bouclier
 function journalRefus(req, res, next) {
   res.on('finish', () => {
-    if (res.statusCode === 403 && !res.locals.bloque && /^\/api(\.php|\/(docs|sensible|habilitations|accueil\/agent|webcup|indicateurs|demo|bouclier|contributions|officiels|associations|avis-services|demandes\/))/.test(req.path)) {
+    if (res.statusCode === 403 && !res.locals.bloque && /^\/api(\.php|\/(docs|sensible|habilitations|accueil\/agent|webcup|indicateurs|demo|bouclier|contributions|officiels|associations|avis-services|demandes\/|partenaires|mobilite|usage\/|veille-securite))/.test(req.path)) {   // vague 20 : partenaires, mobilité, usage, veille
       docs.put('bouclier', { id: uid('blq'), date: maintenant(), type: 'acces', methode: req.method, chemin: req.path.slice(0, 120), ip: ipMasquee(req.ip), compte: req.user ? req.user.email : '', detail: 'accès refusé par les règles de rôle' });
     }
   });

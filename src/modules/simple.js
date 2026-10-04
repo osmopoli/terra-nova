@@ -185,6 +185,7 @@ router.get('/simple', (req, res) => {
   const corps = `<h1>${e(t.titre)}</h1><p>${e(t.intro)}</p>
   ${officiels.length ? `<section aria-labelledby="h-officiel"><h2 id="h-officiel">${e(OFF[0])}</h2><ul class="simple-liste">${officiels.map((m) => `<li><strong>${e(m.titre)}</strong>
     ${m.audience !== 'Toute la ville' ? `<br>${e(t.zone)} : ${e(m.audience)}` : ''}<br>${e(m.message)}<br>${e(OFF[1])} : ${m.actions.map(e).join(' · ')}</li>`).join('')}</ul></section>` : ''}
+  ${require('./mobilite').blocSimple(l, e) /* vague 20 (F97) : lignes interrompues et meilleure solution */}
   <section aria-labelledby="h-alertes"><h2 id="h-alertes">${e(t.alertes)}</h2>
     ${alertes.length ? `<ul class="simple-liste">${alertes.map((a) => `<li><strong>${a.importance === 'alerte' ? '⚠ ' : ''}${e(a.titre)}</strong><br>${e(t.zone)} : ${e(a.zone)}
       ${a.resume ? `<br>${e(a.resume)}` : ''}${a.consignes && a.consignes.length ? `<br>${e(t.consignes)} : ${a.consignes.map(e).join(' · ')}` : ''}</li>`).join('')}</ul>` : `<p>${e(t.aucuneAlerte)}</p>`}</section>

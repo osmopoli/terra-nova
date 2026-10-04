@@ -34,6 +34,9 @@ app.use(require('./src/etag-api').etagApi);   // vague 19 (F95) : JSON inchangé
 app.use(bouclier.apres);   // vague 13 (F69, F70) : validation des entrées, filtrage des champs réservés, journal des refus
 /* Vague 18 (D10, F89-F92) : recherche globale, assistant d'orientation, langage clair. Monté avant la mémoïsation de la vague 15 :
    un message à l'assistant (POST) n'est pas une écriture et ne doit pas vider le cache des autres lectures. */
+/* Vague 20 (F98, F99) : balise d'usage anonyme et offres des partenaires dans la recherche, avant l'orientation et la mémoïsation */
+const vague20 = require('./src/modules/vague20');
+app.use(vague20.avant);
 const orientation = require('./src/modules/orientation');
 app.use(orientation);
 app.use(require('./src/modules/formulaires').garde);   // vague 16 : formulaires protégés contre les robots (F81), envois sans doublon (F82)
@@ -48,6 +51,9 @@ app.post('/api/demo/reinitialiser', (req, res, next) => { res.on('finish', () =>
 app.use(require('./src/modules/urgences').avantCreation);
 const seedVague17 = require('./src/seed-vague17');
 app.post('/api/demo/reinitialiser', (req, res, next) => { res.on('finish', () => { if (res.statusCode === 200) { seedVague17.semer(); integrite.rescellerApresDemo(req.user); } }); next(); });
+const seedVague20 = require('./src/seed-vague20');
+app.post('/api/demo/reinitialiser', (req, res, next) => { res.on('finish', () => { if (res.statusCode === 200) seedVague20.semer(); }); next(); });
+app.use(vague20.apresEcriture);   // vague 20 (F98) : demandes et rendez-vous comptés (compteurs anonymes) à leur enregistrement
 app.use(require('./src/modules/api'));
 app.use(require('./src/renfort').router);   // vague 9 : clés d'accès, deux étapes, appareils
 app.use(require('./src/modules/sobriete'));   // vague 10 : diagnostic de sobriété (F57)
@@ -69,6 +75,8 @@ app.use(require('./src/modules/urgences'));
 const sauvegardes = require('./src/modules/sauvegardes');
 app.use(sauvegardes);
 app.use(require('./src/modules/exports'));
+/* Vague 20 : lignes interrompues (F97), usage des services (F98), offres des partenaires (F99), événements de sécurité (F100) */
+app.use(vague20.router);
 app.use(require('./src/statique').statique(path.join(__dirname, 'public')));   // F58 : fichiers compressés + cache navigateur
 app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
 
@@ -87,8 +95,10 @@ seedVague15.semer();   // vague 15 : données de démonstration ajoutées une se
 comptesEquipe();
 startPolling();
 seedVague17.semer();   // vague 17 : modèles d'export, urgence médicale traitée (une seule fois)
-orientation.semer();
-continuite.semer();   // vague 19 (F93, F94) : numéros d'urgence, contacts utiles et consignes (une seule fois)   // vague 18 (F89) : versions en langage clair, ajoutées une seule fois, jamais écrasées
+orientation.semer();   // vague 18 (F89) : versions en langage clair, ajoutées une seule fois, jamais écrasées
+continuite.semer();   // vague 19 (F93, F94) : numéros d'urgence, contacts utiles et consignes (une seule fois)
+seedVague20.semer();   // vague 20 : interruptions, partenaires et offres, historique d'usage, événements de sécurité (une seule fois)
+require('./src/modules/mobilite').planifier();   // vague 20 (F97) : abonnés prévenus au début et à la fin d'une interruption
 integrite.planifier();   // vague 17 : contrôle d'intégrité 30 s après le démarrage puis toutes les 6 h
 sauvegardes.planifier();   // vague 17 : sauvegarde automatique quotidienne + rétention
 
