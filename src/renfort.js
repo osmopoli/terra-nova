@@ -343,4 +343,4 @@ router.delete('/api/securite/appareils/:appareil', connecte, (req, res) => {
   res.json({ ok: true, sessionsFermees: fermees });
 });
 
-module.exports = { router, apresMotDePasse, ouvrirSessionComplete, deuxEtapesActive };
+module.exports = { router, apresMotDePasse, ouvrirSessionComplete, deuxEtapesActive, identifiantAppareil };
