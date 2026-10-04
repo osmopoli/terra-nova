@@ -304,7 +304,8 @@
     lire: lirePouls
   };
   function lirePouls() {
-    if (document.hidden) return Promise.resolve();
+    // la première lecture se fait toujours (page ouverte en arrière-plan) ; ensuite, pause tant que l'onglet est caché
+    if (document.hidden && lancee) return Promise.resolve();
     return fetch('/api/pouls', { cache: 'no-store', credentials: 'same-origin' }).then(r => (r.ok ? r.json().then(j => ({ j, inchange: r.headers.get('X-Non-Modifie') === '1' })) : null)).then(x => {
       if (!x) return;
       dernier = x.j;
