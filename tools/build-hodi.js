@@ -14,4 +14,16 @@ for (const d of ['src', 'public']) fs.cpSync(path.join(racine, d), path.join(sor
 for (const f of ['demo-seed.json', 'initial-requests.json']) fs.copyFileSync(path.join(racine, 'data', f), path.join(sortie, 'data', f));
 fs.copyFileSync(path.join(racine, 'tools', 'loader.cjs'), path.join(sortie, 'loader.cjs'));
 
+// Feuilles de style allégées pour la prod : commentaires et blancs retirés (aucune chaîne CSS du projet ne contient « /* »
+// ni d'espaces significatifs). Les scripts restent tels quels : les réduire sans outil dédié serait risqué.
+const css = path.join(sortie, 'public', 'assets', 'css');
+for (const f of fs.readdirSync(css).filter(n => n.endsWith('.css'))) {
+  const texte = fs.readFileSync(path.join(css, f), 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/\s+/g, ' ')
+    .replace(/\s*([{};])\s*/g, '$1')
+    .trim();
+  fs.writeFileSync(path.join(css, f), texte + '\n');
+}
+
 console.log('Build Hodifly prêt :', path.relative(racine, sortie));
