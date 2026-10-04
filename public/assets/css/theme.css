@@ -1,6 +1,10 @@
 /* Terra Nova — thème « Future Teal » (tweakcn / shadcn, mode sombre) adapté :
    fond sarcelle profond, primaire sarcelle, police Inter, rayon 0.5rem, ombres douces. Icônes : Phosphor duotone.
    Toutes les tailles en rem : le panneau d'accessibilité agrandit tout via html{font-size}. */
+/* Repli calé sur les métriques d'Inter : le texte ne bouge pas quand Inter arrive (CLS).
+   Latin seulement (comme Inter) : l'arabe garde la police du système. */
+@font-face{ font-family:"Inter repli"; src:local("Arial"),local("Arimo"),local("Liberation Sans"); ascent-override:90.44%; descent-override:22.52%; line-gap-override:0%; size-adjust:107.12%;
+  unicode-range:U+0000-024F, U+1E00-1EFF, U+2000-206F, U+20AC, U+2122, U+2190-2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 :root{
   color-scheme:dark;
   --nuit:oklch(0.1396 0.0155 195.5244);        /* background */
@@ -118,6 +122,8 @@ p{ margin:0 0 1em; }
 .evitement{ position:absolute; left:1rem; top:-5rem; z-index:1000; background:var(--iono); color:var(--sur-iono); padding:.7rem 1.1rem; border-radius:12px; font-weight:700; text-decoration:none; }
 .evitement:focus{ top:1rem; }
 i.ph-duotone, i.ph{ line-height:1; }
+/* Phosphor se charge sans bloquer le rendu : la place de chaque icône (1em) est réservée d'avance, sans décalage (CLS) */
+:where(i.ph, i.ph-duotone)::before{ content:""; display:inline-block; width:1em; }
 
 /* ---------- Mise en page ---------- */
 .conteneur{ width:min(100% - 2rem, var(--largeur)); margin-inline:auto; }
@@ -343,6 +349,8 @@ html.grand .barre-pouce span{ font-size:.75rem; }
 [dir="rtl"] .capsule.deux-niveaux .nav-principale.deborde{ -webkit-mask-image:linear-gradient(270deg, #000 calc(100% - 3rem), transparent); mask-image:linear-gradient(270deg, #000 calc(100% - 3rem), transparent); }
 /* Avant le chargement de Shoelace : le menu du compte reste caché (évite un éclair de liens à plat dans l'en-tête) */
 sl-dropdown:not(:defined) > sl-menu{ display:none; }
+/* Tiroir et fenêtres sont fermés au départ : leur contenu ne s'affiche pas à plat avant Shoelace (CLS) */
+sl-drawer:not(:defined), sl-dialog:not(:defined){ display:none; }
 sl-button:not(:defined){ display:inline-flex; align-items:center; gap:.35rem; height:var(--h-outil, 2.5rem); padding:0 .9rem; border:1px solid var(--trait-2); border-radius:var(--r); font-size:.88rem; font-weight:600; }
 /* ---------- F59 : mode connexion lente ----------
    Polices du système (aucun téléchargement), pas d'animation ni de flou coûteux, images décoratives remplacées par un aplat. */
@@ -389,6 +397,15 @@ html.econome .liste-sou > li,html.econome .liste-activite > li,html.econome .lis
 .balise.officiel{ border-color:var(--iono); background:oklch(0.7040 0.1400 182.5 / .12); }
 .balise.officiel .feu{ background:var(--iono); box-shadow:0 0 10px var(--iono), 0 0 22px var(--lueur); }
 .balise.officiel .feu::after{ content:""; position:absolute; inset:-4px; border-radius:50%; border:2px solid var(--iono); animation:onde 2.4s var(--ease-out) infinite; }
+/* Croix de la carte épinglée (accueil, annonces) : masque le message, qui reste dans le tiroir « Alertes » */
+.off-epingle{ position:relative; padding-inline-end:3.25rem; transition:opacity 160ms var(--ease-out), transform 160ms var(--ease-out); }
+.off-masquer{ position:absolute; top:.45rem; inset-inline-end:.45rem; display:grid; place-items:center; width:2.75rem; height:2.75rem; border:0; border-radius:var(--r);
+  background:transparent; color:var(--brume); cursor:pointer; transition:background-color 160ms ease, color 160ms ease, transform 160ms var(--ease-out); }
+.off-masquer i{ font-size:1.15rem; }
+.off-masquer:active{ transform:scale(.94); }
+@media (hover:hover) and (pointer:fine){ .off-masquer:hover{ background:var(--surface-2); color:var(--givre); } }
+.off-masquer:focus-visible{ outline:2px solid var(--iono); outline-offset:1px; color:var(--givre); }
+.off-epingle.off-sortie{ opacity:0; transform:translateY(-.5rem); }
 .off-carte{ border:1px solid var(--iono); border-inline-start-width:5px; border-radius:var(--r); padding:1rem 1.1rem; margin-bottom:1rem; background:oklch(0.7040 0.1400 182.5 / .06); }
 .off-carte.off-lu{ border-color:var(--trait-2); border-inline-start-color:var(--iono); background:var(--verre); }
 .off-sceau{ display:flex; align-items:center; gap:.65rem; margin-bottom:.7rem; }
@@ -541,3 +558,21 @@ body:not(.simple) main{ min-height:100svh; }
    Filet de sécurité : visible au bout de 2,5 s même si un script ne se charge pas. */
 body:not(.affiche):not(.simple) #contenu{ visibility:hidden; animation:v19-montrer 0s 2.5s forwards; }
 @keyframes v19-montrer{ to{ visibility:visible; } }
+/* Tiroir des notifications : croix pour supprimer */
+.notifs{ list-style:none; margin:0; padding:0; }
+.notif{ padding:.85rem 0; border-bottom:1px solid var(--trait); overflow:hidden; transition:opacity 180ms ease, transform 220ms var(--ease-out), height 240ms var(--ease-out), padding 240ms var(--ease-out); }
+.notif-lue{ opacity:.72; }
+.notif-sort{ opacity:0; transform:translateX(1.25rem); padding-block:0; border-bottom-color:transparent; }
+.notif-tete{ display:flex; align-items:flex-start; gap:.6rem; }
+.notif-tete strong{ flex:1; min-width:0; }
+.notif-quand{ font-size:.8rem; white-space:nowrap; padding-top:.15rem; }
+.notif-point{ display:inline-block; width:.5rem; height:.5rem; margin-inline-end:.45rem; border-radius:50%; background:var(--iono); vertical-align:.12em; }
+.notif-texte{ margin:.3rem 0; padding-inline-end:2.25rem; }
+.notif-x{ all:unset; box-sizing:border-box; flex:none; display:grid; place-items:center; width:2.25rem; height:2.25rem; margin:-.45rem -.35rem 0 0; border-radius:50%; color:var(--brume); cursor:pointer; transition:color 150ms ease, background-color 150ms ease, transform 120ms var(--ease-out); }
+.notif-x i{ font-size:1rem; }
+@media (hover:hover) and (pointer:fine){ .notif-x:hover{ color:var(--givre); background:oklch(1 0 0 / .07); } }
+.notif-x:active{ transform:scale(.92); }
+.notif-x:focus-visible{ outline:2px solid var(--iono); outline-offset:1px; }
+[dir="rtl"] .notif-x{ margin:-.45rem 0 0 -.35rem; }
+[dir="rtl"] .notif-sort{ transform:translateX(-1.25rem); }
+@media (prefers-reduced-motion:reduce){ .notif,.notif-x{ transition:none; } }

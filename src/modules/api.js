@@ -113,7 +113,8 @@ function regleCreation(col, req, doc) {
     case 'demandes': {
       const n = docs.prochainNumero('demandes', 1040);
       // F52 : les soutiens ne s'ajoutent que par /api/demandes/:id/soutenir ; l'auteur est fixé par la session
-      return Object.assign(sans(doc, 'statut', 'agent', 'historique', 'anonymise', 'soutiens', 'userId'), {
+      // vague 17 (F86) : l'urgence médicale est repérée par le serveur (src/modules/urgences.js), jamais fournie par le navigateur
+      return Object.assign(sans(doc, 'statut', 'agent', 'historique', 'anonymise', 'soutiens', 'userId', 'urgenceMedicale', 'urgenceVitale'), {
         id: `NT-${n}`, cree: maintenant(), userId: u ? u.id : null, statut: 'recue', agent: '',
         historique: [{ date: maintenant(), statut: 'recue', note: 'Demande enregistrée et transmise au service concerné.', par: 'Système' }]
       });
@@ -382,6 +383,14 @@ router.get('/api/indicateurs', A.exigerRole('agent', 'admin'), (req, res) => {
     delaiMoyenHeures: delais.length ? Math.round(delais.reduce((a, b) => a + b, 0) / delais.length) : null,
     parJour, parStatut: compter('statut'), parQuartier: compter('quartier'), parService: compter('serviceId'), parType: compter('type')
   });
+});
+
+// Supprimer une de mes notifications (la croix du tiroir) : seulement les siennes
+router.delete('/api/notifications/:id', A.exigerRole(...A.ROLES), (req, res) => {
+  const n = docs.get('notifications', req.params.id);
+  if (!n || n.userId !== req.user.id) return erreur(res, 404, 'Notification introuvable.');
+  docs.suppr('notifications', n.id);
+  res.json({ ok: true });
 });
 
 // Marquer toutes mes notifications comme lues

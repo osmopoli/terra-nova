@@ -101,11 +101,18 @@ function similarite(a, b) {
   return (2 * n) / (A.size + B.size);
 }
 
-// Anonymisation des questions conservées pour les agents : chiffres, adresses e-mail, numéros, mots très longs retirés
-function anonymiser(s) {
-  return normaliser(String(s || '').replace(/\S+@\S+/g, ' ').replace(/https?:\/\/\S+/g, ' '))
-    .replace(/\d+/g, '#').replace(/(# ?){2,}/g, '# ')
-    .split(' ').filter((m) => m && m.length <= 24).slice(0, 14).join(' ').slice(0, 90).trim();
+// Anonymisation des questions conservées pour les agents : adresses e-mail et liens retirés, puis seuls les mots que « garder »
+// reconnaît restent (le moteur lui passe son vocabulaire : noms, rues, numéros, texte libre disparaissent) ; chaque suite de
+// mots inconnus devient un seul « … ». Sans « garder » : chiffres et mots très longs retirés seulement.
+function anonymiser(s, garder) {
+  const ok = garder || ((m) => (/\d/.test(m) || m.length > 24 ? null : m));
+  const out = [];
+  for (const m of normaliser(String(s || '').replace(/\S+@\S+/g, ' ').replace(/https?:\/\/\S+/g, ' ')).split(' ').filter(Boolean).slice(0, 40)) {
+    const g = ok(m);
+    if (g) out.push(g);
+    else if (out[out.length - 1] !== '…') out.push('…');
+  }
+  return out.slice(0, 14).join(' ').slice(0, 90).trim();
 }
 
 module.exports = { normaliser, mots, motsUtiles, raciner, phonetique, distance, seuilFaute, trigrammes, similarite, VIDES, anonymiser, estArabe };

@@ -82,17 +82,21 @@ function marquer(d, motifs, explicite) {
 }
 
 // Monté avant les routes de l'API : le champ de statut de l'urgence ne peut pas venir du navigateur
+// (un dépôt en lot — tableau de demandes — est traité élément par élément : aucune urgence forgée ne passe par ce chemin)
 function avantCreation(req, res, next) {
-  if (req.method !== 'POST' || req.path !== '/api/docs/demandes' || !req.body || Array.isArray(req.body) || typeof req.body !== 'object') return next();
-  const explicite = req.body.urgenceVitale === true;
-  delete req.body.urgenceMedicale; delete req.body.urgenceVitale;
+  if (req.method !== 'POST' || req.path !== '/api/docs/demandes' || !req.body || typeof req.body !== 'object') return next();
+  const liste = Array.isArray(req.body) ? req.body : [req.body];
+  const explicites = liste.map((b) => { if (!b || typeof b !== 'object') return false; const e = b.urgenceVitale === true; delete b.urgenceMedicale; delete b.urgenceVitale; return e; });
   const json = res.json.bind(res);
   res.json = (obj) => {
     try {
-      if (res.statusCode < 300 && obj && /^NT-/.test(obj.id || '')) {
-        const d = docs.get('demandes', obj.id);
-        const r = d && !d.urgenceMedicale ? detecter(d, explicite) : { urgent: false };
-        if (r.urgent) { const maj = marquer(d, r.motifs, explicite); Object.assign(obj, { urgenceMedicale: maj.urgenceMedicale, priorite: maj.priorite, historique: maj.historique }); }
+      if (res.statusCode < 300 && obj) {
+        (Array.isArray(obj) ? obj : [obj]).forEach((o, i) => {
+          if (!o || !/^NT-/.test(o.id || '')) return;
+          const d = docs.get('demandes', o.id);
+          const r = d && !d.urgenceMedicale ? detecter(d, explicites[i]) : { urgent: false };
+          if (r.urgent) { const maj = marquer(d, r.motifs, explicites[i]); Object.assign(o, { urgenceMedicale: maj.urgenceMedicale, priorite: maj.priorite, historique: maj.historique }); }
+        });
       }
     } catch (e) { console.error('[urgences] repérage', e.message); }
     return json(obj);

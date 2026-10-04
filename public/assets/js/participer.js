@@ -7,6 +7,7 @@
   const NT = window.NT;
   NT.i18n.ajouter({
     fr: {
+      'par.q.Centre': 'Centre', 'par.q.Nord': 'Nord', 'par.q.Sud': 'Sud', 'par.q.Est': 'Est', 'par.q.Ouest': 'Ouest',
       'par.titre': 'Participer à la vie de Terra Nova', 'par.sommaire': 'Sur cette page', 'par.consultations': 'Consultations', 'par.projets': 'Projets de la ville', 'par.idees': 'Proposer une idée',
       'par.ouvertes': 'En cours', 'par.terminees': 'Terminées : résultats et décisions', 'par.aucuneOuverte': 'Aucune consultation en cours pour le moment.', 'par.aucuneTerminee': 'Aucune consultation terminée.',
       'par.consultatifT': 'Avis consultatif, pas un vote officiel.', 'par.consultatifCourt': 'Avis consultatif, pas un vote officiel',
@@ -60,6 +61,7 @@
       'par.esp.aucunAvis': 'Vous n’avez encore donné aucun avis.', 'par.esp.aucuneIdee': 'Vous n’avez encore proposé aucune idée.', 'par.esp.voir': 'Tout voir dans Participer'
     },
     en: {
+      'par.q.Centre': 'Centre', 'par.q.Nord': 'North', 'par.q.Sud': 'South', 'par.q.Est': 'East', 'par.q.Ouest': 'West',
       'par.titre': 'Take part in Terra Nova life', 'par.sous': 'Give your opinion on the city’s decisions and projects, follow the works in your neighbourhood and suggest your ideas. Each contribution gives you a receipt and an answer.',
       'par.sommaire': 'On this page', 'par.consultations': 'Consultations', 'par.projets': 'City projects', 'par.idees': 'Suggest an idea',
       'par.consultationsD': 'Some city decisions are submitted to residents’ opinion before being taken. Read the question, choose an answer and follow the decision.',
@@ -117,6 +119,7 @@
       'par.esp.aucunAvis': 'You have not given any opinion yet.', 'par.esp.aucuneIdee': 'You have not suggested any idea yet.', 'par.esp.voir': 'See everything in Take part'
     },
     es: {
+      'par.q.Centre': 'Centro', 'par.q.Nord': 'Norte', 'par.q.Sud': 'Sur', 'par.q.Est': 'Este', 'par.q.Ouest': 'Oeste',
       'par.titre': 'Participar en la vida de Terra Nova', 'par.sous': 'Dé su opinión sobre las decisiones y los proyectos de la ciudad, siga las obras de su barrio y proponga sus ideas. Cada participación le da un recibo y una respuesta.',
       'par.sommaire': 'En esta página', 'par.consultations': 'Consultas', 'par.projets': 'Proyectos de la ciudad', 'par.idees': 'Proponer una idea',
       'par.consultationsD': 'Algunas decisiones de la ciudad se someten a la opinión de los vecinos antes de tomarse. Lea la pregunta, elija una respuesta y siga la decisión.',
@@ -174,6 +177,7 @@
       'par.esp.aucunAvis': 'Todavía no ha dado ninguna opinión.', 'par.esp.aucuneIdee': 'Todavía no ha propuesto ninguna idea.', 'par.esp.voir': 'Ver todo en Participar'
     },
     ar: {
+      'par.q.Centre': 'الوسط', 'par.q.Nord': 'الشمال', 'par.q.Sud': 'الجنوب', 'par.q.Est': 'الشرق', 'par.q.Ouest': 'الغرب',
       'par.titre': 'شارك في حياة تيرا نوفا', 'par.sous': 'أبدِ رأيك في قرارات المدينة ومشاريعها، وتابع أشغال حيّك، واقترح أفكارك. كل مشاركة تمنحك إيصالاً وردّاً.',
       'par.sommaire': 'في هذه الصفحة', 'par.consultations': 'الاستشارات', 'par.projets': 'مشاريع المدينة', 'par.idees': 'اقترح فكرة',
       'par.consultationsD': 'تُعرض بعض قرارات المدينة على رأي السكان قبل اتخاذها. اقرأ السؤال، واختر إجابة، وتابع القرار.',
@@ -241,7 +245,7 @@
   const IDEE_CLASSE = { recue: 'recue', etude: 'en_cours', retenue: 'traitee', non_retenue: 'cloturee' };
   const CATEGORIES = ['cadre', 'mobilite', 'environnement', 'culture', 'solidarite', 'numerique', 'autre'];
   const pastille = (classe, texte) => `<span class="statut statut-${E(classe)}">${E(texte)}</span>`;
-  const quartierLbl = q => (!q || q === 'Toute la ville' ? L('par.toutLaVille') : q);
+  const quartierLbl = q => (!q || q === 'Toute la ville' ? L('par.toutLaVille') : NT.t('par.q.' + q, null, q));   // nom du quartier traduit, valeur brute en repli
   const optionLbl = (c, id) => { const o = (c.options || []).find(x => x.id === id); return c.type === 'projet' ? L('par.opt.' + id) : (o ? o.libelle : id); };
   const locale = () => ({ fr: 'fr-FR', en: 'en-GB', es: 'es-ES', ar: 'ar' }[NT.i18n.langue] || 'fr-FR');
   const euros = n => new Intl.NumberFormat(locale(), { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n || 0);
@@ -390,7 +394,7 @@
           <div class="champ"><label for="nc-contexte">${E(L('par.f.contexte'))}</label><textarea id="nc-contexte" rows="3" maxlength="3000"></textarea></div>
           <div class="champ" id="champ-options"><label for="nc-options">${E(L('par.f.options'))}</label><textarea id="nc-options" rows="4" aria-describedby="nc-options-aide"></textarea><p class="aide" id="nc-options-aide">${E(L('par.f.optionsAide'))}</p></div>
           <div class="grille-champs">
-            <div class="champ"><label for="nc-quartier">${E(L('par.f.quartier'))}</label><select id="nc-quartier"><option value="Toute la ville">${E(L('par.toutLaVille'))}</option>${NT.QUARTIERS.map(q => `<option>${E(q)}</option>`).join('')}</select></div>
+            <div class="champ"><label for="nc-quartier">${E(L('par.f.quartier'))}</label><select id="nc-quartier"><option value="Toute la ville">${E(L('par.toutLaVille'))}</option>${NT.QUARTIERS.map(q => `<option value="${E(q)}">${E(quartierLbl(q))}</option>`).join('')}</select></div>
             <div class="champ"><label for="nc-decideur">${E(L('par.f.decideur'))}</label><input id="nc-decideur" value="Haut Conseil de la Ville" maxlength="120"></div>
             <div class="champ"><label for="nc-echeance">${E(L('par.f.echeance'))}</label><input id="nc-echeance" type="date" min="${demain}" value="${dans14}"></div>
           </div>
@@ -415,7 +419,7 @@
       const liens = (p.consultations || []).map(c => `<a class="btn ${c.etat === 'ouverte' ? 'btn-primaire' : ''}" href="#${E(c.id)}"><i class="ph-duotone ${c.etat === 'ouverte' ? 'ph-chat-circle-text' : 'ph-gavel'}" aria-hidden="true"></i> ${E(c.etat === 'ouverte' ? L('par.donnerAvis') : c.etat === 'decidee' ? L('par.voirDecision') : L('par.voirResultats'))}</a>`).join('');
       const s = p.serviceId && NT.services && NT.services.get ? NT.services.get(p.serviceId) : null;
       return `<li><article class="carte-par" id="${E(p.id)}" aria-labelledby="t-${E(p.id)}">
-        <div class="tete-par"><div><span class="surtitre-par"><i class="ph ph-map-pin" aria-hidden="true"></i>${E(p.quartier)}${s ? ' · ' + E(NT.i18n.choisir(s.nom)) : ''}</span>
+        <div class="tete-par"><div><span class="surtitre-par"><i class="ph ph-map-pin" aria-hidden="true"></i>${E(quartierLbl(p.quartier))}${s ? ' · ' + E(NT.i18n.choisir(s.nom)) : ''}</span>
           <h3 id="t-${E(p.id)}">${E(p.titre)}</h3></div>${pastille(PROJET_CLASSE[p.statut], L('par.p.' + p.statut))}</div>
         <p>${E(p.resume)}</p>
         <div class="avancement-par"><div class="barre-tete"><span>${E(L('par.avancement'))}</span><strong>${E(p.avancement)} %</strong></div>
@@ -479,7 +483,7 @@
           <div class="champ"><label for="i-titre">${E(L('par.i.titre'))}</label><input id="i-titre" maxlength="120" autocomplete="off" aria-describedby="i-titre-aide"><p class="aide" id="i-titre-aide">${E(L('par.i.titreAide'))}</p></div>
           <div class="champ"><label for="i-description">${E(L('par.i.description'))}</label><textarea id="i-description" rows="4" maxlength="2000" aria-describedby="i-description-aide"></textarea><p class="aide" id="i-description-aide">${E(L('par.i.descriptionAide'))}</p></div>
           <div class="grille-champs">
-            <div class="champ"><label for="i-quartier">${E(L('par.i.quartier'))}</label><select id="i-quartier"><option value="Toute la ville">${E(L('par.toutLaVille'))}</option>${NT.QUARTIERS.map(q => `<option ${q === u.quartier ? 'selected' : ''}>${E(q)}</option>`).join('')}</select></div>
+            <div class="champ"><label for="i-quartier">${E(L('par.i.quartier'))}</label><select id="i-quartier"><option value="Toute la ville">${E(L('par.toutLaVille'))}</option>${NT.QUARTIERS.map(q => `<option value="${E(q)}" ${q === u.quartier ? 'selected' : ''}>${E(quartierLbl(q))}</option>`).join('')}</select></div>
             <div class="champ"><label for="i-categorie">${E(L('par.i.categorie'))}</label><select id="i-categorie">${CATEGORIES.map(c => `<option value="${c}">${E(L('par.c.' + c))}</option>`).join('')}</select></div>
           </div>
           <button class="btn btn-primaire" type="submit"><i class="ph-duotone ph-paper-plane-tilt" aria-hidden="true"></i> ${E(L('par.i.envoyer'))}</button>
@@ -555,7 +559,7 @@
     }
 
     // Filtres des projets
-    $('#f-quartier').innerHTML = `<option value="">${E(L('par.tousQuartiers'))}</option>` + NT.QUARTIERS.map(q => `<option>${E(q)}</option>`).join('');
+    $('#f-quartier').innerHTML = `<option value="">${E(L('par.tousQuartiers'))}</option>` + NT.QUARTIERS.map(q => `<option value="${E(q)}">${E(quartierLbl(q))}</option>`).join('');
     $('#f-statut').innerHTML = `<option value="">${E(L('par.tousStatuts'))}</option>` + ['etude', 'travaux', 'termine'].map(k => `<option value="${k}">${E(L('par.p.' + k))}</option>`).join('');
     $('#f-quartier').addEventListener('change', rendreProjets);
     $('#f-statut').addEventListener('change', rendreProjets);

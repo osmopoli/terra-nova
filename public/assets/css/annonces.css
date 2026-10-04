@@ -82,3 +82,17 @@
 .an-case label{ font-weight:600; }
 .an-case-q{ margin-bottom:.5rem; }
 .an-prefs-actions{ margin:.75rem 0 1rem; }
+
+/* Allègement : compléments des alertes (personnes à protéger, lieux) ouverts à la demande — assets/js/annonces-allege.js */
+.an-plus{ display:inline-flex; align-items:center; gap:.4rem; min-height:2.75rem; margin:.35rem 0 .15rem; padding:0 .25rem; border:0; border-radius:var(--r-s);
+  background:transparent; color:var(--iono); font:inherit; font-size:var(--t-s); font-weight:600; cursor:pointer; }
+.an-plus i{ transition:transform 200ms var(--ease-out); }
+.an-plus[aria-expanded="true"] i{ transform:rotate(180deg); }
+.an-plus:active{ transform:scale(.97); }
+@media (hover:hover) and (pointer:fine){ .an-plus:hover span{ text-decoration:underline; text-underline-offset:.2em; } }
+.an-plus:focus-visible{ outline:2px solid var(--iono); outline-offset:2px; }
+.an-complements:not([hidden]){ animation:an-ouvrir 180ms var(--ease-out); }
+@keyframes an-ouvrir{ from{ opacity:0; transform:translateY(-.25rem); } to{ opacity:1; transform:none; } }
+@media (prefers-reduced-motion:reduce){ .an-plus i{ transition:none; } .an-complements:not([hidden]){ animation:none; } }
+/* Message officiel dans la colonne principale : même ligne de départ que « Être prévenu » */
+.an-principal > .off-epingle-zone{ margin-top:0; }

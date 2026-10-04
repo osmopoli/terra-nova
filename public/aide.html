@@ -3,12 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
   <title>Aide et lexique — Terra Nova</title>
   <meta name="description" content="Questions fréquentes et lexique des mots difficiles de la plateforme Terra Nova, expliqués simplement.">
   <meta name="theme-color" content="#0b1a1c">
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net"><link rel="preconnect" href="https://unpkg.com">
   <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css"></noscript>
   <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
   <link rel="stylesheet" href="assets/css/icones.css"><!-- vague 19 (F95) : icônes utilisées seulement (tools/icones.js) -->
   <link rel="stylesheet" href="assets/css/theme.css">
@@ -18,7 +19,7 @@
   <script src="assets/js/glossaire.js"></script>
   <script src="assets/js/ui.js" defer></script>
 </head>
-<body data-page="aide" data-ariane="nav.accueil|index.html;Aide et lexique" data-roles="">
+<body data-page="aide" data-ariane="nav.accueil|index.html;pied.aide" data-roles="">
   <main id="contenu" class="conteneur">
 
     <header class="titre-page">
@@ -149,9 +150,9 @@
 
       /* Lexique */
       const champ = document.getElementById('ai-q'), liste = document.getElementById('ai-lexique-liste'), compteur = document.getElementById('ai-compteur');
-      const locale = NT.i18n.langue === 'en' ? 'en' : 'fr';
+      const locale = NT.i18n.langue || 'fr';
       const termes = window.NT_glossaireLangue().slice().sort((a, b) => a.terme.localeCompare(b.terme, locale));
-      const id = g => 'mot-' + norm(g.terme).replace(/[^a-z0-9]+/g, '-');
+      const id = g => 'mot-' + norm(g.cle || g.terme).replace(/[^a-z0-9]+/g, '-');   // ancre stable quelle que soit la langue
       function rendre() {
         const mots = norm(champ.value).split(/\s+/).filter(Boolean);
         const l = termes.filter(g => { const x = norm([g.terme, g.synonymes.join(' '), g.definition].join(' ')); return mots.every(m => x.includes(m)); });

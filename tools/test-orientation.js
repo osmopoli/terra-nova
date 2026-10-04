@@ -109,4 +109,10 @@ const vide = M.rechercher(index, 'xqzwv blorp', 'fr');
 console.log(`\nRecherche sans résultat → repli : ${vide.repli ? vide.repli.services.map((s) => s.id).join(', ') : 'AUCUN'}`);
 const rech = M.rechercher(index, 'lampadère cassé', 'fr');
 console.log(`Recherche « lampadère cassé » → vouliez-vous dire « ${rech.corrige} » ; ${rech.total} résultats, meilleur geste : ${rech.meilleur && rech.meilleur.titre}`);
+// Garde-fou : « Déclarer un décès » n'est jamais proposé sans un mot de la famille décès (« père » ne suffit pas)
+const malaise = M.repondre(index, { message: 'mon père fait un malaise', langue: 'fr', pasUrgent: true });
+const proposes = [malaise.reponse && malaise.reponse.id].concat((malaise.clarification ? malaise.clarification.options : []).map((o) => o.id)).filter(Boolean);
+const gardeFou = !proposes.includes('acte-deces');
+console.log(`Garde-fou « mon père fait un malaise » (pas une urgence vitale) → ${proposes.join(', ') || 'aucune démarche proposée'} : ${gardeFou ? 'OK' : 'KO (Déclarer un décès proposé)'}`);
+if (!gardeFou) process.exitCode = 1;
 if (process.argv.includes('--exiger')) process.exit(top1 / CAS.length >= 0.8 ? 0 : 1);

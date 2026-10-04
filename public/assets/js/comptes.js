@@ -394,7 +394,8 @@
       $('#liste-notifs').innerHTML = l.length ? '<ul class="liste-simple">' + l.map(n => '<li><i class="ph-duotone ' + (n.niveau === 'alerte' ? 'ph-warning-octagon' : 'ph-bell-simple') + '" aria-hidden="true"></i><div>' +
         '<strong>' + (n.lu ? '' : '<span class="etiquette-nouveau">' + E(L('c.esp.nouveau', 'Nouveau')) + '</span> ') + E(n.titre) + '</strong>' +
         '<span class="doux">' + E(n.texte) + ' · ' + E(NT.ui.depuis(n.cree)) + '</span>' +
-        (n.lien ? '<a href="' + E(n.lien) + '" data-lu="' + E(n.id) + '">' + E(L('ui.voir', 'Voir')) + '</a>' : '') + '</div></li>').join('') + '</ul>'
+        (n.lien ? '<a href="' + E(n.lien) + '" data-lu="' + E(n.id) + '">' + E(L('ui.voir', 'Voir')) + '</a>' : '') + '</div>' +
+        '<button type="button" class="btn-croix" data-suppr="' + E(n.id) + '" aria-label="' + E(L('c.esp.supprNotif', 'Supprimer la notification « {t} »', { t: n.titre })) + '" title="' + E(L('c.esp.suppr', 'Supprimer')) + '"><i class="ph ph-x" aria-hidden="true"></i></button></li>').join('') + '</ul>'
         : '<p class="vide">' + E(L('ui.aucuneNotif', 'Aucune notification pour le moment.')) + '</p>';
     }
 
@@ -420,7 +421,18 @@
       const p = $('.pastille-compte'); if (p) p.remove();
       NT.ui.toast(L('c.esp.toutLuOk', 'Toutes vos notifications sont marquées comme lues.'), 'success');
     });
-    $('#liste-notifs').addEventListener('click', e => { const a = e.target.closest('[data-lu]'); if (a) NT.notif.lire(a.dataset.lu); });
+    $('#liste-notifs').addEventListener('click', e => {
+      const x = e.target.closest('[data-suppr]');
+      if (x) {   // croix : la ligne s'efface vite (160 ms), puis la liste et les compteurs sont redessinés
+        const li = x.closest('li'), suivant = li.nextElementSibling || li.previousElementSibling;
+        if (!NT.notif.supprimer(x.dataset.suppr)) return;
+        const fin = () => { rendreNotifs(); rendreKpis(); const f = suivant && $('#liste-notifs [data-suppr="' + (suivant.querySelector('[data-suppr]') || {}).dataset?.suppr + '"]'); (f || $('#btn-tout-lu')).focus(); NT.ui.toast(L('c.esp.supprOk', 'Notification supprimée.'), 'success'); };
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return fin();
+        li.classList.add('sortie'); setTimeout(fin, 160);
+        return;
+      }
+      const a = e.target.closest('[data-lu]'); if (a) NT.notif.lire(a.dataset.lu);
+    });
 
     /* --- D12 : parcours d'accueil en 3 étapes --- */
     const parcours = $('#parcours');

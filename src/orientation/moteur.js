@@ -207,6 +207,8 @@ function classer(index, phrase) {
   if (!a.racines.length && !a.concepts.size) return { a, liste: [] };
   const liste = [];
   for (const f of index.fiches) {
+    // garde-fou : un besoin « requiert » une famille de mots (« Déclarer un décès » sans mot de la famille décès : jamais proposé)
+    if (f.ref && f.ref.requiert && !f.ref.requiert.some((c) => a.concepts.has(c))) continue;
     const d = noter(index, a, f);
     if (d.score > 0.3) liste.push({ f, d, score: d.score });
   }
@@ -417,4 +419,17 @@ function suggerer(index, { message, langue } = {}) {
 
 const cibles = () => B.BESOINS.map((b) => ({ id: b.id, titre: b.titre.fr, service: b.service }));
 
-module.exports = { construire, analyser, rechercher, repondre, suggerer, cibles, classer, langueOk };
+// Anonymisation des questions gardées pour les agents : ne restent que les mots que le moteur connaît (vocabulaire des fiches,
+// racines, familles de mots, mots vides) ou qu'il sait corriger ; noms, rues, numéros et texte libre deviennent « … »
+function anonymiser(index, phrase) {
+  const connu = (m) => T.VIDES.has(m) || index.vocab.has(m) || index.df.has(T.raciner(m)) || parRacine.has(T.raciner(m));
+  const garder = (m) => (/\d/.test(m) ? null : connu(m) ? m : corriger(index, m));
+  // Un terme court et inconnu (« zorglub », un mot local : au plus 3 mots, un seul inconnu) est gardé tel quel : c'est
+  // justement ce que les agents doivent pouvoir apprendre. Une phrase plus longue n'en garde que les mots du vocabulaire.
+  const mots = T.mots(phrase);
+  const inconnus = mots.filter((m) => !garder(m));
+  if (mots.length <= 3 && inconnus.length === 1 && !/\d/.test(inconnus[0]) && inconnus[0].length <= 24) return T.anonymiser(phrase, (m) => garder(m) || m);
+  return T.anonymiser(phrase, garder);
+}
+
+module.exports = { construire, analyser, rechercher, repondre, suggerer, cibles, classer, langueOk, anonymiser };

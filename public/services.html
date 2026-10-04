@@ -3,12 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
   <title>Services de la ville — Terra Nova</title>
   <meta name="description" content="Les douze services municipaux de Terra Nova : recherche, démarches courantes, horaires, contact et état de disponibilité.">
   <meta name="theme-color" content="#0b1a1c">
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net"><link rel="preconnect" href="https://unpkg.com">
   <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css"></noscript>
   <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
   <link rel="stylesheet" href="assets/css/icones.css"><!-- vague 19 (F95) : icônes utilisées seulement (tools/icones.js) -->
   <link rel="stylesheet" href="assets/css/theme.css">
@@ -19,6 +20,7 @@
   <script src="assets/js/avis-service.js"></script>
   <script src="assets/js/formulaires.js"></script>
   <script src="assets/js/ui.js" defer></script>
+  <link rel="stylesheet" href="assets/css/espace.css">
 </head>
 <body data-page="services" data-ariane="nav.accueil|index.html;nav.services" data-roles="">
   <main id="contenu" class="conteneur">
@@ -31,6 +33,13 @@
     <!-- F76 : avis des habitants à traiter (agents et admins seulement) — assets/js/avis-service.js -->
     <section class="panneau av-agents" id="sv-avis-agents" aria-labelledby="av-h-agents" hidden></section>
 
+    <!-- Allègement : services municipaux et associations partenaires dans deux onglets — assets/js/services-onglets.js -->
+    <div class="onglets-espace" role="tablist" aria-label="Services et associations" data-i18n-attr="aria-label:sv.og.label" id="onglets-services">
+      <button type="button" role="tab" id="og-sv-services" aria-controls="pn-sv-services" aria-selected="true"><i class="ph-duotone ph-buildings" aria-hidden="true"></i><span data-i18n="sv.og.services">Services de la ville</span><span class="compte" data-compte="services"></span></button>
+      <button type="button" role="tab" id="og-sv-assos" aria-controls="pn-sv-assos" aria-selected="false" tabindex="-1"><i class="ph-duotone ph-hand-heart" aria-hidden="true"></i><span data-i18n="sv.og.assos">Associations partenaires</span><span class="compte" data-compte="assos"></span></button>
+    </div>
+
+    <div class="panneau-onglet" role="tabpanel" id="pn-sv-services" aria-labelledby="og-sv-services" tabindex="0">
     <!-- D05 / F32 : recherche instantanée + filtres -->
     <section class="sv-outils" aria-labelledby="sv-lbl-recherche">
       <form class="sv-recherche" role="search" id="sv-form" action="services.html">
@@ -47,14 +56,19 @@
     </section>
 
     <div id="sv-resultats"></div>
+    </div>
+
+    <div class="panneau-onglet" role="tabpanel" id="pn-sv-assos" aria-labelledby="og-sv-assos" tabindex="0" hidden>
 
     <!-- F74 : associations partenaires (horaires en direct, lieu, téléphone, actions) — assets/js/associations.js -->
-    <section class="section sv-section" id="sv-associations" aria-labelledby="as-h" data-secondaire></section>
+    <section class="section sv-section" id="sv-associations" aria-labelledby="as-h"></section>
+    </div>
 
     <!-- D05 : détail d'un service, ouvert via #id -->
     <sl-drawer id="sv-detail" placement="end" label="Service" class="sv-tiroir"></sl-drawer>
   </main>
 
+  <script src="assets/js/services-onglets.js" defer></script>
   <script src="assets/js/associations.js" defer></script>
   <script src="assets/js/services.js" defer></script>
 </body>

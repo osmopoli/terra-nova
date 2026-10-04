@@ -1,4 +1,4 @@
-/* Terra Nova — icônes Phosphor 2.1.1 (licence MIT) réduites aux 216 icônes utilisées. Fichier produit par tools/icones.js : ne pas modifier à la main. */
+/* Terra Nova — icônes Phosphor 2.1.1 (licence MIT) réduites aux 217 icônes utilisées. Fichier produit par tools/icones.js : ne pas modifier à la main. */
 @font-face{font-family:"Phosphor";src:url("https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/Phosphor.woff2") format("woff2"),url("https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/Phosphor.woff") format("woff");font-weight:normal;font-style:normal;font-display:block}
 @font-face{font-family:"Phosphor-Duotone";src:url("https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/Phosphor-Duotone.woff2") format("woff2"),url("https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/Phosphor-Duotone.woff") format("woff");font-weight:normal;font-style:normal;font-display:block}
 .ph,.ph-duotone{display:inline-block;width:1em;text-align:center;speak:never;font-style:normal;font-weight:normal;font-variant:normal;text-transform:none;line-height:1;letter-spacing:0;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
@@ -365,6 +365,8 @@ html.leger .ph-duotone:after,html.essentiel-dabord .ph-duotone:after{content:non
 .ph-duotone.ph-squares-four:before{content:"\e464";opacity:.2}.ph-duotone.ph-squares-four:after{content:"\e465";margin-inline-start:-1em}
 .ph.ph-stack:before{content:"\e466"}
 .ph-duotone.ph-stack:before{content:"\e466";opacity:.2}.ph-duotone.ph-stack:after{content:"\e467";margin-inline-start:-1em}
+.ph.ph-stack-minus:before{content:"\edf4"}
+.ph-duotone.ph-stack-minus:before{content:"\edf4";opacity:.2}.ph-duotone.ph-stack-minus:after{content:"\edf5";margin-inline-start:-1em}
 .ph.ph-star:before{content:"\e46a"}
 .ph-duotone.ph-star:before{content:"\e46a";opacity:.2}.ph-duotone.ph-star:after{content:"\e46b";margin-inline-start:-1em}
 .ph.ph-stethoscope:before{content:"\e7ea"}

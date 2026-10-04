@@ -212,7 +212,7 @@
   entete.innerHTML = `
     <div class="capsule">
       <a class="logo" href="${u && u.role !== 'citoyen' ? 'agent.html' : 'index.html'}"><span class="logo-embleme" aria-hidden="true"></span><span class="logo-mot">Terra&nbsp;Nova</span></a>
-      <nav class="nav-principale" aria-label="Navigation principale">
+      <nav class="nav-principale" aria-label="${echap(t('ui.navPrincipale'))}">
         ${liens.map(([cle, href]) => `<a href="${href}" ${cle === page ? 'aria-current="page"' : ''}>${echap(t('nav.' + cle))}</a>`).join('')}
       </nav>
       <div class="outils-entete">
@@ -580,17 +580,42 @@
     const lienInterne = l => (typeof l === 'string' && l.trim() && !/^\s*[a-z][a-z0-9+.\-]*:/i.test(l) && !/^\s*[\\/]{2}/.test(l) ? l.trim() : '');
     function rendreNotifs() {
       const l = NT.notif.pour(u.id).map(n => Object.assign({}, n, { lien: lienInterne(n.lien) }));
-      tiroir.innerHTML = (l.length ? `<ul style="list-style:none;margin:0;padding:0">${l.map(n => `
-        <li style="padding:.85rem 0;border-bottom:1px solid var(--trait)${n.lu ? ';opacity:.7' : ''}">
-          <div class="ligne entre"><strong>${n.lu ? '' : '<span class="sr-only">Non lu : </span>●&nbsp;'}${echap(n.titre)}</strong><span class="doux" style="font-size:.8rem">${echap(ui.depuis(n.cree))}</span></div>
-          <p style="margin:.3rem 0">${echap(n.texte)}</p>
+      tiroir.innerHTML = (l.length ? `<ul class="notifs">${l.map(n => `
+        <li class="notif${n.lu ? ' notif-lue' : ''}" data-notif="${echap(n.id)}">
+          <div class="notif-tete"><strong>${n.lu ? '' : '<span class="sr-only">' + echap(t('ui.nonLu')) + ' : </span><span class="notif-point" aria-hidden="true"></span>'}${echap(n.titre)}</strong><span class="doux notif-quand">${echap(ui.depuis(n.cree))}</span>
+            <button type="button" class="notif-x" data-notif-x="${echap(n.id)}" aria-label="${echap(t('ui.supprNotif', { t: n.titre }))}" title="${echap(t('ui.suppr'))}"><i class="ph ph-x" aria-hidden="true"></i></button></div>
+          <p class="notif-texte">${echap(n.texte)}</p>
           ${n.lien ? `<a href="${echap(n.lien)}" data-lu="${n.id}">${echap(t('ui.voir'))} →</a>` : ''}
         </li>`).join('')}</ul>` : `<p class="vide">${echap(t('ui.aucuneNotif'))}</p>`) +
         `<sl-button slot="footer" id="nt-tout-lu">${echap(t('ui.toutLu'))}</sl-button>`;
       tiroir.querySelector('#nt-tout-lu').addEventListener('click', () => { NT.notif.toutLire(u.id); rendreNotifs(); majCloche(); });
     }
-    function majCloche() { const b = entete.querySelector('.pastille-compte'); if (b && !NT.notif.nonLues(u.id)) b.remove(); }
-    tiroir.addEventListener('click', e => { const id = e.target.closest('[data-lu]')?.dataset.lu; if (id) NT.notif.lire(id); });
+    function majCloche() {
+      const b = entete.querySelector('.pastille-compte'), nb = NT.notif.nonLues(u.id);
+      if (b && !nb) b.remove(); else if (b) b.textContent = nb;
+    }
+    // Croix : la notification glisse et s'efface, la liste se resserre, le focus passe à la suivante
+    function supprimerNotif(id, bouton) {
+      const li = bouton.closest('.notif'); if (!li || li.classList.contains('notif-sort')) return;
+      if (!NT.notif.supprimer(id)) return;
+      const suivante = (li.nextElementSibling || li.previousElementSibling)?.querySelector('.notif-x');
+      const fin = () => {
+        li.remove();
+        if (!tiroir.querySelector('.notif')) rendreNotifs();
+        (suivante || tiroir.querySelector('#nt-tout-lu'))?.focus();
+      };
+      majCloche(); ui.annoncer(t('ui.notifSupprimee'));
+      const calme = matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.contains('leger');
+      if (calme) return fin();
+      li.style.height = li.offsetHeight + 'px';
+      li.classList.add('notif-sort');
+      requestAnimationFrame(() => requestAnimationFrame(() => { li.style.height = '0px'; }));
+      setTimeout(fin, 260);
+    }
+    tiroir.addEventListener('click', e => {
+      const x = e.target.closest('[data-notif-x]'); if (x) { supprimerNotif(x.dataset.notifX, x); return; }
+      const id = e.target.closest('[data-lu]')?.dataset.lu; if (id) NT.notif.lire(id);
+    });
     // Shoelace peut ne pas être encore chargé au clic : on attend la définition de sl-drawer avant d'ouvrir
     entete.querySelector('#nt-btn-notif').addEventListener('click', () => { rendreNotifs(); montrer(tiroir, 'sl-drawer'); });
     // Notifications importantes non encore présentées : toast immédiat
