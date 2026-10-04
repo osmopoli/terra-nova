@@ -19,6 +19,8 @@ const IMAGES = { '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg
 const REFERENCE = /(["'])(\/?assets\/(?:css|js)\/[\w.-]+\.(?:css|js))\1/g;
 // images : « assets/img/x.webp » (src, srcset, chaîne JS) ou « ../img/x.webp » (url() d'une feuille de style), sans version
 const REFERENCE_IMG = /((?:\/?assets\/|\.\.\/)img\/[\w.-]+\.(?:webp|png|jpg|svg|ico))(?=[\s"'),])/g;
+// v2 : les adresses versionnées de la v1 ont été gardées par le cache partagé de l'hébergeur avec un mauvais encodage
+const SEL = 'v2|';
 const VERSIONNABLES = new Set(['.css', '.js', '.webp', '.png', '.jpg', '.svg', '.ico']);
 
 const empreinte = (buf) => crypto.createHash('sha1').update(buf).digest('base64url').slice(0, 20);
@@ -50,7 +52,8 @@ function statique(racine) {
       versions.set(fichier, { mtime: st.mtimeMs, version: brute, brute, deps: [] });   // valeur provisoire si une dépendance revient ici
       deps = [...new Set(referencesDe(brut.toString('utf8'), path.dirname(fichier)))].map(f => ({ f, v: versionDe(f, pile) })).filter(d => d.v);
     }
-    const version = deps.length ? empreinte(brute + deps.map(d => d.v).join('')).slice(0, 10) : brute;
+    // SEL : changé quand des copies déjà mises en cache doivent être abandonnées (adresses toutes nouvelles)
+    const version = empreinte(SEL + brute + deps.map(d => d.v).join('')).slice(0, 10);
     versions.set(fichier, { mtime: st.mtimeMs, version, brute, deps });
     pile.delete(fichier);
     return version;
@@ -109,7 +112,9 @@ function statique(racine) {
     res.setHeader('Vary', 'Accept-Encoding');
     // fichier demandé avec sa version exacte : son contenu ne changera jamais à cette adresse
     const versionne = VERSIONNABLES.has(ext) && req.query && req.query.v === versionDe(fichier);
-    res.setHeader('Cache-Control', versionne ? 'public, max-age=31536000, immutable'
+    // « private » : seul le navigateur garde le fichier. Un cache partagé (proxy de l'hébergeur) servait la version
+    // Brotli étiquetée gzip : le navigateur recevait des octets illisibles (page sans styles ni scripts).
+    res.setHeader('Cache-Control', versionne ? 'private, max-age=31536000, immutable'
       : TYPES[ext] ? 'no-cache' : 'public, max-age=3600, stale-while-revalidate=604800');
     if (req.headers['if-none-match'] === e.etag) { res.statusCode = 304; return res.end(); }
     const accepte = String(req.headers['accept-encoding'] || '');
