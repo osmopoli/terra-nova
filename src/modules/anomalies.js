@@ -144,11 +144,15 @@ const SENSIBLES = [
   { m: 'POST', re: /^\/api\/accueil\/agent\/inscrire$/, partie: 'comptes' }, { m: 'POST', re: /^\/api\/auth\/supprimer$/, partie: 'comptes' }
 ];
 const sensible = (req) => SENSIBLES.find((r) => r.m === req.method && r.re.test(req.path) && (!r.staff || A.estPersonnel(req.user)));
+/* Une adresse absente, locale ou privée (derrière le proxy de l'hébergeur, réseau partagé) ne désigne pas une personne :
+   on n'y attache aucune mesure, pour ne jamais pénaliser tous les habitants à cause d'un seul. Les mesures par compte restent. */
+const ipFiable = (ip) => !!ip && !/^(::1$|::ffff:127.|127.|::ffff:10.|10.|::ffff:192.168.|192.168.|::ffff:172.(1[6-9]|2d|3[01]).|172.(1[6-9]|2d|3[01]).|f[cd][0-9a-f]{2}:|fe80:)/i.test(ip);
+const sujetIp = (req) => (ipFiable(req.ip) ? sujets.get('ip:' + req.ip) : null);
 function risque(req) {
-  const su = req.user ? sujets.get('u:' + req.user.id) : null, si = sujets.get('ip:' + req.ip);
+  const su = req.user ? sujets.get('u:' + req.user.id) : null, si = sujetIp(req);
   return Math.max(su ? score(su) : 0, si ? score(si) : 0);
 }
-const ralenti = (req) => { const t = Date.now(); const su = req.user && sujets.get('u:' + req.user.id), si = sujets.get('ip:' + req.ip); return (su && su.ralentiJusqu > t) || (si && si.ralentiJusqu > t); };
+const ralenti = (req) => { const t = Date.now(); const su = req.user && sujets.get('u:' + req.user.id), si = sujetIp(req); return (su && su.ralentiJusqu > t) || (si && si.ralentiJusqu > t); };
 const REAUTH = { ok: false, reauth: true, protection: 'confirmation', erreur: 'Par sécurité, confirmez votre mot de passe pour cette action : une activité inhabituelle a été remarquée.' };
 // Utilisé par les routes qui exigent toujours la confirmation (téléchargement d'une sauvegarde, export nominatif)
 const exigerConfirmation = (req, res) => { if (A.estVerifie(req)) return true; res.status(428).json(Object.assign({}, REAUTH, { erreur: 'Confirmez votre mot de passe pour cette action sensible.' })); return false; };
@@ -157,6 +161,7 @@ const exigerConfirmation = (req, res) => { if (A.estVerifie(req)) return true; r
 const ESSENTIEL = (req) => { try { return require('../charge').classe(req) === 'essentiel'; } catch { return false; } };
 function surveiller(req, res, next) {
   if (!req.path.startsWith('/api/') || req.path === '/api/health') return next();
+  if (!req.user && !ipFiable(req.ip)) return next();   // visiteur sans adresse identifiable : rien à suivre
   const cle = req.user ? 'u:' + req.user.id : 'ip:' + req.ip;
   const s = sujet(cle, req.user ? 'compte' : 'ip', req.user ? `${req.user.prenom} ${req.user.nom} (${req.user.email})` : `adresse ${ipMasquee(req.ip)}`, req.user ? req.user.id : null);
   const t = Date.now();
@@ -194,7 +199,7 @@ function surveiller(req, res, next) {
     res.json = (obj) => {
       try {
         if (obj && obj.ok && obj.utilisateur && obj.utilisateur.id) apresConnexion(req, obj.utilisateur);
-        else if (obj && obj.ok === false && !obj.deuxEtapes) {
+        else if (obj && obj.ok === false && !obj.deuxEtapes && ipFiable(req.ip)) {
           const si = sujet('ip:' + req.ip, 'ip', `adresse ${ipMasquee(req.ip)}`);
           si.evts.echecs.push(Date.now());
           const nb = fenetre(si.evts.echecs, 10 * 60e3).length;
