@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="assets/css/icones.css"><!-- vague 19 (F95) : icônes utilisées seulement (tools/icones.js) -->
   <link rel="stylesheet" href="assets/css/theme.css">
   <link rel="stylesheet" href="assets/css/transports.css">
+  <link rel="stylesheet" href="assets/css/vague20.css"><!-- vague 20 (F97) -->
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/store.js"></script>
   <script src="assets/js/ui.js" defer></script>
@@ -30,6 +31,18 @@
     <section class="tr-trafic" aria-labelledby="tr-h-trafic">
       <h2 id="tr-h-trafic" data-i18n="tr.trafic">Info trafic</h2>
       <div id="tr-trafic"></div>
+    </section>
+
+    <!-- Vague 20 (F97) : itinéraire de remplacement qui évite les lignes interrompues (assets/js/mobilite.js) -->
+    <section class="panneau mb-remplacement" id="remplacement" aria-labelledby="mb-h-remplacement">
+      <h2 id="mb-h-remplacement" data-i18n="mb.h.remplacement">Itinéraire de remplacement</h2>
+      <p class="doux" data-i18n="mb.remplacementD">Choisissez d’où vous partez et où vous allez (un arrêt ou un quartier) : le trajet évite les lignes interrompues.</p>
+      <form id="mb-form" class="mb-form" novalidate>
+        <div class="champ"><label for="mb-de" data-i18n="mb.de">Je pars de</label><select id="mb-de"></select></div>
+        <div class="champ"><label for="mb-vers" data-i18n="mb.vers">Je vais à</label><select id="mb-vers"></select></div>
+        <button class="btn btn-primaire" type="submit"><i class="ph ph-signpost" aria-hidden="true"></i><span data-i18n="mb.chercher">Trouver un itinéraire</span></button>
+      </form>
+      <div id="mb-res" class="mb-res" aria-live="polite"></div>
     </section>
 
     <!-- F36 : Mon trajet -->
@@ -52,6 +65,13 @@
       <div id="tr-resultat" class="tr-resultat"></div>
     </section>
 
+    <!-- Vague 20 (F97) : être prévenu quand une ligne est interrompue puis rétablie -->
+    <section class="section mb-suivre-section" id="suivre" aria-labelledby="mb-h-suivre">
+      <div class="titre-section"><div><h2 id="mb-h-suivre" data-i18n="mb.h.suivre">Être prévenu</h2>
+        <p data-i18n="mb.suivreD">Choisissez vos lignes : vous recevez un message (cloche et tiroir « Alertes ») quand elles sont interrompues puis rétablies.</p></div></div>
+      <div id="mb-suivre"></div>
+    </section>
+
     <!-- F36 : horaires par ligne -->
     <section class="section" aria-labelledby="tr-h-lignes" data-secondaire>
       <div class="titre-section"><div><h2 id="tr-h-lignes" data-i18n="tr.lignes">Horaires par ligne</h2>
@@ -60,6 +80,7 @@
     </section>
   </main>
 
+  <script src="assets/js/mobilite.js" defer></script><!-- vague 20 (F97) : avant transports.js -->
   <script src="assets/js/transports.js" defer></script>
 </body>
 </html>

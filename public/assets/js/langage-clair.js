@@ -186,6 +186,7 @@
     for (const el of racine.querySelectorAll('p, li, dd')) {
       if (n >= 15) break;
       if (el.dataset.lcEquipe || el.closest(EXCLUS) || el.querySelector('p, ul, ol, input, select, textarea')) continue;
+      if (el.closest('a') || (el.firstElementChild && el.firstElementChild.tagName === 'A' && el.firstElementChild.textContent.trim() === el.textContent.trim())) continue;   // carte-lien (accueil, listes) : le bouton sortirait de la carte
       const texte = el.textContent.trim();
       if (texte.length < 60 || !termesDans(texte).length) continue;
       ajouterBouton(el, hash(texte), '');

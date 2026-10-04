@@ -676,4 +676,6 @@
   // Vague 18 (D10, F89-F92) : recherche globale, assistant d'orientation, langage clair et « Expliquer plus simplement »
   // vague 19 (F95) : d'office seulement sur les pages qui s'en servent dès l'affichage, sinon à la demande (voir chargerOrientation)
   if (PAGES_ORIENTATION.includes(page) || ui.param('assistant') === '1') chargerOrientation();
+  // Vague 20 (F97-F100) : lignes interrompues dans « Alertes », usage anonyme, offres des partenaires, menus des agents
+  const scriptVague20 = document.createElement('script'); scriptVague20.src = 'assets/js/vague20.js'; document.head.append(scriptVague20);
 })();

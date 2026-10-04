@@ -59,6 +59,7 @@
 
 /* Formulaires */
 .form-arr .grille-champs{ display:grid; gap:0 1rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr)); }
+.form-arr .btn + .note-lien{ margin:1.1rem 0 0; }   /* « Vous avez une adresse e-mail ? » sous le bouton */
 .form-arr .erreur{ color:var(--corail); font-weight:700; font-size:.9rem; }
 .resume-arr:not(:empty){ border:1px solid var(--corail); padding:.8rem 1rem; border-radius:var(--r); margin-bottom:1rem; font-weight:600; }
 .code-saisie{ font-family:var(--mono); letter-spacing:.2em; }
