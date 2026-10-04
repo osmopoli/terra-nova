@@ -91,7 +91,7 @@
     if (!z) return;
     const c = donnees.compte;
     const item = id => { const d = NT.store.find('demandes', id); if (!d) return ''; const i = P.info(id);
-      return `<li><button type="button" class="pr-ouvrir" data-pr-ouvrir="${e(id)}"><span class="ag-code">${e(id)}</span> ${e(d.objet)}</button> ${P.badge(d)}
+      return `<li><button type="button" class="pr-ouvrir" data-pr-ouvrir="${e(id)}" dir="auto" title="${e(id + ' ' + d.objet)}"><span class="ag-code">${e(id)}</span> ${e(d.objet)}</button> ${P.badge(d)}
         ${i && i.raisons[0] ? `<span class="pr-raison">${e(raison(i.raisons.slice().sort((a, b) => b.points - a.points)[0]))}</span>` : ''}</li>`; };
     z.innerHTML = `<h2 id="pr-h"><i class="ph-duotone ph-list-numbers" aria-hidden="true"></i> ${e(t('pr.titre'))} <span class="pastille-n">${donnees.mes.length}</span></h2>
       <p class="doux pr-intro">${e(t('pr.intro'))}</p>
