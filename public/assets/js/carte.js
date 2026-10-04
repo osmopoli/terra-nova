@@ -381,7 +381,8 @@
         return `<g class="cm-badge cm-${l}" data-ligne="${l}"><rect x="${fmt(x - 16)}" y="${fmt(y - 10)}" width="32" height="20" rx="7"/><text x="${fmt(x)}" y="${fmt(y + 4.5)}" text-anchor="middle">${l}</text></g>`;
       }).join('') + '</g>';
       // boussole : l'orientation reste lisible même si la composition est orbitale
-      h += '<g class="cm-boussole" transform="translate(760 40)"><circle r="19"/><path d="M0,-12 L5,-1 L-5,-1Z"/><text y="12" text-anchor="middle">N</text></g>';
+      // boussole à l'opposé du titre : à droite en LTR, à gauche en RTL (le titre passe à droite et la recouvrirait)
+      h += '<g class="cm-boussole" transform="translate(' + (document.documentElement.dir === 'rtl' ? 40 : 760) + ' 40)"><circle r="19"/><path d="M0,-12 L5,-1 L-5,-1Z"/><text y="12" text-anchor="middle">N</text></g>';
       h += '<g id="cm-sel"></g>';
       $('cm-plan').innerHTML = h;
     }
