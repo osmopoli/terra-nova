@@ -40,9 +40,10 @@
 @media (prefers-reduced-motion:reduce){ .panneau-onglet{ animation:none; } }
 .vide-onglet{ padding:2rem 1rem; text-align:center; border:1px dashed var(--trait-2); border-radius:var(--r-l); }
 
-/* Demandes en cours : 3 visibles, le reste derrière « Afficher les N autres » */
-#liste-encours.replie > li.demande:nth-child(n+4){ display:none; }
-.plus-encours{ display:flex; margin:.75rem auto 0; }
+/* Listes repliées : demandes en cours (3 visibles), notifications (1 visible), le reste derrière « Afficher les N autres » */
+.replie[data-visibles="3"] > li:nth-child(n+4), .replie[data-visibles="1"] > li:nth-child(n+2){ display:none; }
+.plus-liste{ display:flex; margin:.75rem auto 0; }
+#liste-notifs .liste-simple > li:only-child, #liste-notifs .replie > li:first-child{ border-bottom:0; }
 
 @media (max-width:40rem){
   .raccourcis-secondaires{ margin-inline-start:0; width:100%; }
