@@ -35,6 +35,12 @@ Hodifly redéploie à chaque push sur `main` avec la commande de build du projet
 - Base SQLite : `~/terranova-data/terranova.db`, hors du dossier de release, donc conservée entre deux déploiements (`DB_PATH` pour la déplacer). Aucune migration à lancer.
 - Node 22.13 ou plus récent requis (`node:sqlite` sans option).
 - Vague 13 (F69) : définir `DATA_ENCRYPTION_KEY` (longue valeur aléatoire, à ne jamais changer ensuite) pour chiffrer les données sensibles ; sans elle, une clé est créée dans `~/terranova-data/terranova.key` (à conserver avec la base). `NODE_ENV=production` active HSTS et `upgrade-insecure-requests`.
+- **Clé de chiffrement et sauvegardes** : les téléphones et dossiers des habitants ne sont lisibles qu'avec la clé qui les a chiffrés.
+  Ne jamais changer `DATA_ENCRYPTION_KEY` (ni l'ajouter après coup sur une base qui tournait avec `terranova.key`) sans réchiffrer
+  la base ; sauvegarder `terranova.key` **avec** `terranova.db`. Au démarrage, le serveur relit un témoin chiffré dans la base : si la
+  clé ne correspond plus, il affiche « clé de chiffrement différente de celle de la base » et s'arrête (code 1) au lieu de servir
+  des profils illisibles. `CHIFFREMENT_IGNORER_TEMOIN=1` force le démarrage pour dépanner : les valeurs illisibles sont alors
+  conservées telles quelles en base (jamais écrasées) et renvoyées vides à l'écran jusqu'au retour de la bonne clé.
 - Surveillance : `GET /api/health` → `{"status":"ok","service":"terra-nova","database":"ok",…}` (inchangé) ; vague 15 : niveau de charge public sur `GET /api/charge` (`normal` / `forte` / `critique`) et en-tête `X-Charge` sur chaque réponse de l'API.
 - Vague 15 (F77, F78) : seuils réglables sans toucher au code (`CHARGE_LAG_FORTE`=120 ms, `CHARGE_LAG_CRITIQUE`=350 ms, `CHARGE_EN_COURS_FORTE`, `CHARGE_PAR_IP`=8, `CHARGE_DELAI_MAX`=15000 ms…) ; `CHARGE_CACHE=0` désactive la mémoïsation (mesure « sans cache »).
 

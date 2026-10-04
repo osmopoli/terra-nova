@@ -80,15 +80,18 @@ router.post('/api/avis-services', A.exigerRole('citoyen'), (req, res) => {
   const avant = docs.tous(COL).find((a) => a.userId === req.user.id && a.procedure === d.procedure);
   let a;
   if (avant) {
-    a = docs.patch(COL, avant.id, { note, commentaire, maj: maintenant(), modifications: (avant.modifications || 0) + 1, statut: avant.statut === 'masque' ? 'publie' : avant.statut });
-    notifier(req.user.id, `Avis ${a.id} modifié`, `Votre nouvel avis (${note}/5) sur « ${nomService(d.serviceId)} » remplace le précédent.`, 'espace.html#mes-avis-services', 'info');
+    // Un avis retiré par un agent reste retiré (statut conservé) : seule la modération (/moderer) le republie
+    a = docs.patch(COL, avant.id, { note, commentaire, maj: maintenant(), modifications: (avant.modifications || 0) + 1, statut: avant.statut });
+    notifier(req.user.id, `Avis ${a.id} modifié`, `Votre nouvel avis (${note}/5) sur « ${nomService(d.serviceId)} » remplace le précédent.`
+      + (a.statut === 'masque' ? ` Il reste non publié : ${a.motifModeration || 'décision du service'}.` : ''), 'espace.html#mes-avis-services', 'info');
   } else {
     const n = docs.prochainNumero(COL, 0);
     a = docs.put(COL, { id: `COM-${String(n).padStart(4, '0')}`, cree: maintenant(), maj: maintenant(), userId: req.user.id, serviceId: d.serviceId,
       procedure: d.procedure, procedureLibelle: d.libelle, note, commentaire, statut: 'publie', reponse: null, modifications: 0 });
     notifier(req.user.id, `Avis ${a.id} enregistré`, `Merci : votre avis (${note}/5) sur « ${nomService(d.serviceId)} » est publié sans votre nom. Vous serez prévenu si le service vous répond.`, 'espace.html#mes-avis-services', 'info');
   }
-  res.json({ ok: true, modifie: !!avant, masque: commentaire !== brut, avis: vueHabitant(a) });
+  res.json({ ok: true, modifie: !!avant, masque: commentaire !== brut, avis: vueHabitant(a),
+    message: a.statut === 'masque' ? `Votre avis reste non publié : ${a.motifModeration || 'décision du service'}.` : '' });
 });
 
 // Personnel : tous les avis, avec l'auteur, pour répondre et modérer
