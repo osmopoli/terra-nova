@@ -208,7 +208,13 @@
   if (u && u.role !== 'citoyen') liens.push(['orientation', 'agent-orientation.html']);
   if (u) NT.rdv.verifierRappels();   // avant le compteur de la cloche, pour que les rappels dus soient comptés
   const nbNotif = u ? NT.notif.nonLues(u.id) : 0;
-  const optionsLangue = Object.entries(NT.i18n.LANGUES).map(([c, n]) => `<option value="${c}" ${c === NT.i18n.langue ? 'selected' : ''} lang="${c}">${n}</option>`).join('');
+  /* Sélecteur de langue : bouton + menu de choix fait main (plus de <select> natif, dont la liste ouverte suit le système).
+     Chaque langue est écrite dans sa langue, avec lang et dir. Le libellé du bouton empile les quatre noms dans la même case
+     (un seul visible) : sa largeur est celle du nom le plus long, comme l'ancien <select>, et ne change pas d'une langue à l'autre. */
+  const langueActive = NT.i18n.langue, sensDe = c => (c === 'ar' ? 'rtl' : 'ltr');
+  const nomsBoutonLangue = Object.entries(NT.i18n.LANGUES).map(([c, n]) => `<span lang="${c}" dir="${sensDe(c)}"${c === langueActive ? '' : ' class="cale" aria-hidden="true"'}>${n}</span>`).join('');
+  const optionsLangue = Object.entries(NT.i18n.LANGUES).map(([c, n]) => `<li role="menuitemradio" tabindex="-1" aria-checked="${c === langueActive}" data-langue="${c}">
+            <span class="ml-nom" lang="${c}" dir="${sensDe(c)}">${n}</span><span class="ml-code" aria-hidden="true">${c.toUpperCase()}</span><i class="ph ph-check" aria-hidden="true"></i></li>`).join('');
 
   const entete = document.createElement('header');
   entete.className = 'entete';
@@ -219,9 +225,13 @@
         ${liens.map(([cle, href]) => `<a href="${href}" ${cle === page ? 'aria-current="page"' : ''}>${echap(t('nav.' + cle))}</a>`).join('')}
       </nav>
       <div class="outils-entete">
-        <label class="sr-only" for="nt-langue">${echap(t('ui.langue'))}</label>
         <button type="button" class="balise" id="nt-balise" aria-haspopup="dialog"><span class="feu" aria-hidden="true"></span><span class="libelle-balise">${echap(t('ui.alertes'))}</span><span id="nt-balise-nb"></span></button>
-        <span class="champ-langue"><i class="ph ph-globe-simple" aria-hidden="true"></i><select id="nt-langue" class="select-langue">${optionsLangue}</select></span>
+        <div class="menu-langue">
+          <button type="button" class="btn-langue" id="nt-langue" aria-haspopup="menu" aria-expanded="false" aria-controls="nt-menu-langue"><i class="ph ph-globe-simple" aria-hidden="true"></i><span class="sr-only">${echap(t('ui.langue'))}, </span><span class="btn-langue-nom">${nomsBoutonLangue}</span><i class="ph ph-caret-down" aria-hidden="true"></i></button>
+          <ul class="menu-langue-liste" id="nt-menu-langue" role="menu" aria-label="${echap(t('ui.langue'))}" hidden>
+            ${optionsLangue}
+          </ul>
+        </div>
         <button type="button" class="bouton-rond" id="nt-btn-a11y" title="${echap(t('ui.accessibilite'))}"><i class="ph-duotone ph-person-arms-spread" aria-hidden="true"></i><span class="sr-only">${echap(t('ui.accessibilite'))}</span></button>
         ${u ? `
         <button type="button" class="bouton-rond" id="nt-btn-notif" title="${echap(t('ui.notifications'))}"><i class="ph-duotone ph-bell-simple" aria-hidden="true"></i>
@@ -572,7 +582,57 @@
   NT.ui.activerLexique = activerLexique;
 
   /* ---------- Langue ---------- */
-  entete.querySelector('#nt-langue').addEventListener('change', e => NT.i18n.changer(e.target.value));
+  /* Modèle ARIA « bouton de menu + menuitemradio » : choisir une langue est une action immédiate (la page se recharge), pas la
+     valeur d'un formulaire à valider ; c'est le modèle du menu du compte voisin, et le clavier attendu (Entrée, Espace, flèches,
+     Début, Fin, Échap, Tab, première lettre) est exactement celui d'un menu. La langue est cochée (aria-checked), une seule à la fois.
+     Le changement passe par le même appel qu'avant : NT.i18n.changer(code). */
+  {
+    const btnLangue = entete.querySelector('#nt-langue'), menuLangue = entete.querySelector('#nt-menu-langue');
+    const choixLangue = [...menuLangue.querySelectorAll('[role="menuitemradio"]')];
+    const estOuvert = () => !menuLangue.hidden;
+    // jamais hors de l'écran (en-tête compact à 360 px) : on décale le panneau du débordement côté début de ligne
+    const placerMenu = () => {
+      menuLangue.style.insetInlineEnd = '';
+      const R = menuLangue.getBoundingClientRect(), marge = 8;
+      const deborde = getComputedStyle(menuLangue).direction === 'rtl' ? R.right - (document.documentElement.clientWidth - marge) : marge - R.left;
+      if (deborde > 0) menuLangue.style.insetInlineEnd = -Math.ceil(deborde) + 'px';
+    };
+    const fermerLangue = rendreFocus => {
+      if (!estOuvert()) return;
+      if (rendreFocus) btnLangue.focus();
+      menuLangue.hidden = true; btnLangue.setAttribute('aria-expanded', 'false');
+    };
+    const ouvrirLangue = () => {
+      menuLangue.hidden = false; btnLangue.setAttribute('aria-expanded', 'true'); placerMenu();
+      (choixLangue.find(li => li.getAttribute('aria-checked') === 'true') || choixLangue[0]).focus();
+    };
+    const choisirLangue = li => { const l = li.dataset.langue; fermerLangue(true); if (l !== NT.i18n.langue) NT.i18n.changer(l); };
+    const sansAccent = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    btnLangue.addEventListener('click', () => (estOuvert() ? fermerLangue(false) : ouvrirLangue()));
+    btnLangue.addEventListener('keydown', e => { if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); ouvrirLangue(); } });
+    menuLangue.addEventListener('click', e => { const li = e.target.closest('[role="menuitemradio"]'); if (li) choisirLangue(li); });
+    menuLangue.addEventListener('keydown', e => {
+      const n = choixLangue.length, i = choixLangue.indexOf(document.activeElement);
+      const aller = j => choixLangue[(j + n) % n].focus();
+      if (e.key === 'Tab') { fermerLangue(true); return; }   // le focus revient au bouton, puis Tab suit son cours
+      if (e.ctrlKey || e.altKey || e.metaKey) return;
+      if (e.key === 'ArrowDown') aller(i + 1);
+      else if (e.key === 'ArrowUp') aller(i - 1);
+      else if (e.key === 'Home' || e.key === 'PageUp') aller(0);
+      else if (e.key === 'End' || e.key === 'PageDown') aller(n - 1);
+      else if (e.key === 'Enter' || e.key === ' ') { if (i >= 0) choisirLangue(choixLangue[i]); }
+      else if (e.key === 'Escape') fermerLangue(true);
+      else if (e.key.length === 1) {   // première lettre du nom (dans sa langue) ou du code : F, E, A…
+        const k = sansAccent(e.key);
+        for (let d = 1; d <= n; d++) { const li = choixLangue[(i + d) % n];
+          if (sansAccent(li.querySelector('.ml-nom').textContent).startsWith(k) || li.dataset.langue.startsWith(k)) { li.focus(); break; } }
+      } else return;
+      e.preventDefault(); e.stopPropagation();   // ni défilement, ni raccourcis globaux (« / », « ? ») pendant le choix
+    });
+    document.addEventListener('click', e => { if (estOuvert() && !e.target.closest('.menu-langue')) fermerLangue(false); });
+    // focus parti ailleurs (lecteur d'écran, clic sur un autre contrôle) : le menu se referme
+    menuLangue.addEventListener('focusout', e => { if (estOuvert() && e.relatedTarget && !e.relatedTarget.closest('.menu-langue')) fermerLangue(false); });
+  }
 
   /* ---------- Compte : menu + notifications (F30, F40) ---------- */
   if (u) {
