@@ -96,7 +96,13 @@
     if ((dg || hl) && !annonce) { annonce = true; NT.ui.annoncer(t('ch.annonce')); }
     else if (!dg && !hl && annonce) { annonce = false; NT.ui.annoncer(t('ch.retour')); }
   }
-  ligne.addEventListener('click', ev => { if (ev.target.id === 'nt-charge-savoir' && NT.ui.tiroirAlertes) NT.ui.tiroirAlertes.show(); });
+  // « En savoir plus » : le tiroir des alertes quand Shoelace est prêt ; sans CDN, l'explication s'affiche sous la ligne du pied de page
+  const detailCharge = () => {
+    let d = ligne.querySelector('.pied-charge-detail');
+    if (!d) { d = document.createElement('span'); d.className = 'pied-charge-detail'; d.setAttribute('tabindex', '-1'); ligne.append(d); }
+    d.textContent = t(horsLigne() ? 'ch.texteHL' : 'ch.texte'); d.focus();
+  };
+  ligne.addEventListener('click', ev => { if (ev.target.id === 'nt-charge-savoir') { if (NT.ui.ouvrirAlertes) NT.ui.ouvrirAlertes(detailCharge); else detailCharge(); } });
   C.surChangement(() => { rendre(); surveiller(); });
 
   /* ---------- Retour à la normale : GET /api/charge tant que la plateforme est chargée (recul exponentiel + gigue) ---------- */
