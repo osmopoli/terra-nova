@@ -1,10 +1,12 @@
 /* Terra Nova — envoi sobre des fichiers (F58, F59)
    - textes (HTML, CSS, JS, SVG, JSON) compressés en Brotli ou gzip, compressés une seule fois puis gardés en mémoire ;
    - empreinte (ETag) : un fichier inchangé n'est pas renvoyé (304) ;
-   - versions : dans les pages et les scripts, chaque « assets/…css|js » reçoit l'empreinte de son contenu (?v=…).
+   - versions : dans les pages, les scripts et les feuilles de style, chaque « assets/…css|js|img » reçoit l'empreinte de son
+     contenu (?v=…).
      Un fichier modifié change donc d'adresse : un navigateur ne peut plus garder une ancienne feuille de style ou un
      ancien script après un déploiement, quel que soit ce qu'il a en cache. Les fichiers versionnés sont gardés un an ;
    - pages, et fichiers demandés sans version : revalidés à chaque visite (304 si inchangés), images et polices gardées 1 h ;
+   - /favicon.ico : l'emblème (assets/img/favicon.ico), demandé d'office par les navigateurs ;
    - réponses JSON de l'API compressées en gzip au-delà de 1,4 Ko. */
 const fs = require('node:fs');
 const path = require('node:path');
@@ -15,6 +17,9 @@ const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=
 const IMAGES = { '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.ico': 'image/x-icon', '.woff2': 'font/woff2' };
 // « assets/css/x.css » ou « assets/js/x.js » entre guillemets (attribut HTML ou chaîne JS), sans version déjà posée
 const REFERENCE = /(["'])(\/?assets\/(?:css|js)\/[\w.-]+\.(?:css|js))\1/g;
+// images : « assets/img/x.webp » (src, srcset, chaîne JS) ou « ../img/x.webp » (url() d'une feuille de style), sans version
+const REFERENCE_IMG = /((?:\/?assets\/|\.\.\/)img\/[\w.-]+\.(?:webp|png|jpg|svg|ico))(?=[\s"'),])/g;
+const VERSIONNABLES = new Set(['.css', '.js', '.webp', '.png', '.jpg', '.svg', '.ico']);
 
 const empreinte = (buf) => crypto.createHash('sha1').update(buf).digest('base64url').slice(0, 20);
 
@@ -39,6 +44,12 @@ function statique(racine) {
       if (!v) return tout;
       deps.push(cible);
       return q + ref + '?v=' + v + q;
+    }).replace(REFERENCE_IMG, (ref) => {
+      const cible = ref.startsWith('../') ? path.join(dossier, ref) : path.join(racine, ref);
+      const v = versionDe(cible);
+      if (!v) return ref;
+      deps.push(cible);
+      return ref + '?v=' + v;
     });
     return { sortie, deps };
   }
@@ -49,6 +60,7 @@ function statique(racine) {
     let rel;
     try { rel = decodeURIComponent(req.path); } catch { return next(); }   // %E0%A4%A… : chemin indécodable, pas un fichier
     if (rel.endsWith('/')) rel += 'index.html';
+    if (rel === '/favicon.ico') rel = '/assets/img/favicon.ico';   // demandé d'office par les navigateurs
     let fichier = path.join(racine, path.normalize(rel));
     if (!fichier.startsWith(racine)) return next();
     if (!path.extname(fichier) && fs.existsSync(fichier + '.html')) fichier += '.html';
@@ -63,7 +75,7 @@ function statique(racine) {
       let brut = fs.readFileSync(fichier);
       const version = empreinte(brut).slice(0, 10);
       let deps;
-      if (ext === '.html' || ext === '.js') { const r = versionner(brut.toString('utf8'), path.dirname(fichier)); brut = Buffer.from(r.sortie, 'utf8'); deps = r.deps; }
+      if (ext === '.html' || ext === '.js' || ext === '.css') { const r = versionner(brut.toString('utf8'), path.dirname(fichier)); brut = Buffer.from(r.sortie, 'utf8'); deps = r.deps; }
       e = { mtime: st.mtimeMs, brut, version, deps, etag: '"' + empreinte(brut) + '"' };
       if (TYPES[ext] && brut.length > 1024) {
         e.br = zlib.brotliCompressSync(brut, { params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 10 } });
@@ -75,7 +87,7 @@ function statique(racine) {
     res.setHeader('ETag', e.etag);
     res.setHeader('Vary', 'Accept-Encoding');
     // fichier demandé avec sa version exacte : son contenu ne changera jamais à cette adresse
-    const versionne = (ext === '.css' || ext === '.js') && req.query && req.query.v === versionDe(fichier);
+    const versionne = VERSIONNABLES.has(ext) && req.query && req.query.v === versionDe(fichier);
     res.setHeader('Cache-Control', versionne ? 'public, max-age=31536000, immutable'
       : TYPES[ext] ? 'no-cache' : 'public, max-age=3600, stale-while-revalidate=604800');
     if (req.headers['if-none-match'] === e.etag) { res.statusCode = 304; return res.end(); }
