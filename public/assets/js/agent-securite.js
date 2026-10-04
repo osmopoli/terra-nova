@@ -13,7 +13,7 @@
     'cs.acces': 'Access to restricted data', 'cs.accesD': 'Who showed what, when and why. This log cannot be modified.', 'cs.accesCap': 'Log of access to restricted data',
     'cs.aAgent': 'Staff member', 'cs.aPersonne': 'Person concerned', 'cs.aChamps': 'Data', 'cs.aMotif': 'Reason', 'cs.prot': 'Active protections',
     'cs.k24': 'Attempts blocked (24 h)', 'cs.kDebit': 'Bursts stopped (24 h)', 'cs.kCsrf': 'Outside requests refused (24 h)', 'cs.kEchecs': 'Failed logins (24 h)', 'cs.kVerrou': 'Accounts locked now', 'cs.kAcces': 'Restricted data views (7 days)',
-    'cs.t.tous': 'All types', 'cs.t.debit': 'Too many attempts', 'cs.t.csrf': 'Outside request', 'cs.t.validation': 'Invalid data', 'cs.t.acces': 'Access denied',
+    'cs.t.tous': 'All types', 'cs.t.debit': 'Too many attempts', 'cs.t.csrf': 'Outside request', 'cs.t.validation': 'Invalid data', 'cs.t.acces': 'Access denied', 'cs.t.robot': 'Automated submission',
     'cs.nb': '{n} attempt(s) shown.', 'cs.aucun': 'No blocked attempt. Everything is calm.', 'cs.aucunAcces': 'No access to restricted data yet.',
     'cs.habOui': 'Authorised', 'cs.habNon': 'Not authorised', 'cs.habRole': 'Authorised (administrator)', 'cs.accorder': 'Grant', 'cs.retirer': 'Withdraw', 'cs.par': 'by {p}, {d}',
     'cs.motifTitre': 'Reason for this decision', 'cs.motifAide': 'Mission or service justifying the decision (5 characters minimum).', 'cs.confirmer': 'Confirm', 'cs.annuler': 'Cancel',
@@ -31,7 +31,7 @@
     'cs.acces': 'Consultas de datos reservados', 'cs.accesD': 'Quién mostró qué, cuándo y por qué. Este registro no se puede modificar.', 'cs.accesCap': 'Registro de consultas de datos reservados',
     'cs.aAgent': 'Agente', 'cs.aPersonne': 'Persona afectada', 'cs.aChamps': 'Datos', 'cs.aMotif': 'Motivo', 'cs.prot': 'Protecciones activas',
     'cs.k24': 'Intentos bloqueados (24 h)', 'cs.kDebit': 'Ráfagas detenidas (24 h)', 'cs.kCsrf': 'Solicitudes externas rechazadas (24 h)', 'cs.kEchecs': 'Conexiones fallidas (24 h)', 'cs.kVerrou': 'Cuentas bloqueadas ahora', 'cs.kAcces': 'Consultas reservadas (7 días)',
-    'cs.t.tous': 'Todos los tipos', 'cs.t.debit': 'Demasiados intentos', 'cs.t.csrf': 'Solicitud externa', 'cs.t.validation': 'Datos no válidos', 'cs.t.acces': 'Acceso denegado',
+    'cs.t.tous': 'Todos los tipos', 'cs.t.debit': 'Demasiados intentos', 'cs.t.csrf': 'Solicitud externa', 'cs.t.validation': 'Datos no válidos', 'cs.t.acces': 'Acceso denegado', 'cs.t.robot': 'Envío automático',
     'cs.nb': '{n} intento(s) mostrado(s).', 'cs.aucun': 'Ningún intento bloqueado. Todo está tranquilo.', 'cs.aucunAcces': 'Todavía no hay consultas de datos reservados.',
     'cs.habOui': 'Habilitado', 'cs.habNon': 'No habilitado', 'cs.habRole': 'Habilitado (administrador)', 'cs.accorder': 'Conceder', 'cs.retirer': 'Retirar', 'cs.par': 'por {p}, {d}',
     'cs.motifTitre': 'Motivo de esta decisión', 'cs.motifAide': 'Misión o servicio que justifica la decisión (mínimo 5 caracteres).', 'cs.confirmer': 'Confirmar', 'cs.annuler': 'Cancelar',
@@ -49,7 +49,7 @@
     'cs.acces': 'الاطلاع على البيانات المحمية', 'cs.accesD': 'من عرض ماذا، ومتى، ولماذا. لا يمكن تعديل هذا السجل.', 'cs.accesCap': 'سجل الاطلاع على البيانات المحمية',
     'cs.aAgent': 'العون', 'cs.aPersonne': 'الشخص المعني', 'cs.aChamps': 'البيانات', 'cs.aMotif': 'السبب', 'cs.prot': 'الحمايات المفعّلة',
     'cs.k24': 'محاولات محظورة (24 س)', 'cs.kDebit': 'موجات محاولات أوقفت (24 س)', 'cs.kCsrf': 'طلبات خارجية مرفوضة (24 س)', 'cs.kEchecs': 'دخول فاشل (24 س)', 'cs.kVerrou': 'حسابات مقفلة الآن', 'cs.kAcces': 'اطلاعات محمية (7 أيام)',
-    'cs.t.tous': 'كل الأنواع', 'cs.t.debit': 'محاولات كثيرة', 'cs.t.csrf': 'طلب خارجي', 'cs.t.validation': 'بيانات غير صالحة', 'cs.t.acces': 'وصول مرفوض',
+    'cs.t.tous': 'كل الأنواع', 'cs.t.debit': 'محاولات كثيرة', 'cs.t.csrf': 'طلب خارجي', 'cs.t.validation': 'بيانات غير صالحة', 'cs.t.acces': 'وصول مرفوض', 'cs.t.robot': 'إرسال آلي',
     'cs.nb': '{n} محاولة معروضة.', 'cs.aucun': 'لا توجد محاولات محظورة. كل شيء هادئ.', 'cs.aucunAcces': 'لا يوجد اطلاع على بيانات محمية بعد.',
     'cs.habOui': 'مؤهل', 'cs.habNon': 'غير مؤهل', 'cs.habRole': 'مؤهل (مسؤول)', 'cs.accorder': 'منح', 'cs.retirer': 'سحب', 'cs.par': 'من طرف {p}، {d}',
     'cs.motifTitre': 'سبب هذا القرار', 'cs.motifAide': 'المهمة أو المصلحة التي تبرر القرار (5 أحرف على الأقل).', 'cs.confirmer': 'تأكيد', 'cs.annuler': 'إلغاء',
@@ -63,7 +63,7 @@
   const L = (cle, fr, vars) => NT.t(cle, vars, fr);
   const E = s => NT.ui.echap(s);
   const $ = s => document.querySelector(s);
-  const TYPES = { debit: ['ph-gauge', 'Trop de tentatives'], csrf: ['ph-arrows-left-right', 'Requête extérieure'], validation: ['ph-brackets-curly', 'Données invalides'], acces: ['ph-prohibit', 'Accès refusé'] };
+  const TYPES = { debit: ['ph-gauge', 'Trop de tentatives'], csrf: ['ph-arrows-left-right', 'Requête extérieure'], validation: ['ph-brackets-curly', 'Données invalides'], acces: ['ph-prohibit', 'Accès refusé'], robot: ['ph-robot', 'Envoi automatique'] };   // vague 16 (F81)
   const MOTIFS = { instruction: 'Instruction d’une demande', contact: 'Contact au sujet du dossier', eligibilite: 'Vérification d’une aide', habitant: 'À la demande de l’habitant', urgence: 'Situation d’urgence', autre: 'Autre motif' };
   const typeLib = t => L('cs.t.' + t, (TYPES[t] || ['', t])[1]);
   const kpi = (v, lib, fort) => `<div class="kpi${fort ? ' fort' : ''}"><div class="valeur">${E(v)}</div><div class="libelle">${E(lib)}</div></div>`;

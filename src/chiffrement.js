@@ -82,4 +82,7 @@ function ouvrir(col, obj) {
   return obj;
 }
 
-module.exports = { chiffrer, dechiffrer, empreinte, sceller, ouvrir, CHAMPS, PREFIXE };
+// Vague 16 : sous-clé dérivée pour un usage précis (jetons de formulaire, codes d'accusé de réception), stable entre deux démarrages
+const deriver = (usage) => crypto.createHmac('sha256', cle()).update('tn-derivee:' + String(usage)).digest();
+
+module.exports = { chiffrer, dechiffrer, empreinte, sceller, ouvrir, deriver, CHAMPS, PREFIXE };
