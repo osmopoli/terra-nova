@@ -108,8 +108,12 @@ tr.ag-action > th{ border-inline-start:3px solid var(--soleil); }
 /* Alertes */
 .ag-alertes{ display:grid; gap:1.25rem; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); align-items:start; }
 @media (max-width:1000px){ .ag-alertes{ grid-template-columns:minmax(0,1fr); } }
-.ag-apercu{ position:sticky; top:5.5rem; }
-@media (max-width:1000px){ .ag-apercu{ position:static; } }
+/* Colonne de droite (Aperçu, Crises en cours, Messages officiels) collante : elle accompagne le long formulaire
+   au lieu de laisser un vide sous elle. top = bas de l'en-tête collant (.entete : 7.56rem) + marge ; hauteur bornée
+   à la fenêtre pour que rien ne soit inatteignable. Une seule colonne (≤1000px) ou mode .grand (en-tête statique) : pas de collant. */
+.ag-alertes > aside{ position:sticky; top:8.25rem; max-block-size:calc(100vh - 9.25rem); max-block-size:calc(100dvh - 9.25rem); overflow-y:auto; overscroll-behavior:contain; }
+html.grand .ag-alertes > aside{ top:1rem; max-block-size:calc(100dvh - 2rem); }
+@media (max-width:1000px){ .ag-alertes > aside, html.grand .ag-alertes > aside{ position:static; max-block-size:none; overflow:visible; } }
 .ag-modeles{ display:grid; gap:.5rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr)); margin:0 0 1.25rem; padding:0; list-style:none; }
 .ag-modeles .btn{ width:100%; justify-content:flex-start; text-align:start; min-height:3rem; }
 .ag-modeles small{ display:block; font-weight:500; color:var(--brume); font-size:.78rem; }
