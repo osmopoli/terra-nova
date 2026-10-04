@@ -91,7 +91,8 @@ function reseauDabord(req, cle, cache) {
   const api = new URL(req.url).pathname.startsWith('/api');
   const reseau = fetch(req).then((r) => {
     if (r && r.ok && r.type === 'basic' && (cache === PERSO || conservable(req.url, r))) { const copie = r.clone(); caches.open(cache || CACHE).then((c) => c.put(cle || req, copie)).catch(() => {}); }
-    if (r && r.status === 401 && cache === PERSO) caches.delete(PERSO);   // plus connecté : la copie personnelle disparaît
+    // plus connecté : la copie personnelle disparaît — sauf pendant un incident du serveur (incident: true), où la session n'est pas lisible
+    if (r && r.status === 401 && cache === PERSO) r.clone().json().then((j) => (j && j.incident ? null : caches.delete(PERSO))).catch(() => caches.delete(PERSO));
     return r;
   });
   // styles et scripts : n'importe quelle version copiée convient hors connexion (src/statique.js pose ?v=… sur les adresses de ce fichier)

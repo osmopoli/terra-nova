@@ -231,7 +231,7 @@
       if (invalide) { dlg.querySelector('#as-err').innerHTML = `<p class="erreur">${e(t('as.eHeure'))}</p>`; return; }
       const plages = [...parHoraire.entries()].map(([cle, jours]) => [jours, ...cle.split('|')]);
       const r = NT.api('PATCH', '/api/associations/' + encodeURIComponent(a.id), { plages, info: dlg.querySelector('#as-info').value });
-      if (r.statut !== 200) { dlg.querySelector('#as-err').innerHTML = `<p class="erreur">${e((r.donnees && r.donnees.erreur) || 'Erreur')}</p>`; return; }
+      if (r.statut !== 200) { dlg.querySelector('#as-err').innerHTML = `<p class="erreur">${e((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'))}</p>`; return; }
       dlg.hide(); NT.ui.toast(t('as.ok', { nom: a.nom }), 'success');
       if (A.rendreListe) A.rendreListe(); else A.liste(true);
       const b = document.querySelector(`[data-as-modifier="${CSS.escape(a.id)}"]`); if (b) b.focus();

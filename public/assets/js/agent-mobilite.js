@@ -18,7 +18,8 @@
       'am.remplacement': 'Remplacement', 'am.r.aucun': 'Aucun remplacement', 'am.r.navette': 'Navette de remplacement', 'am.r.bus-relais': 'Bus-relais', 'am.frequence': 'Passage toutes les (minutes)', 'am.arretsRelais': 'Arrêts desservis par le remplacement',
       'am.texteRelais': 'Où le prendre (facultatif)', 'am.tad': 'Proposer le transport à la demande aux personnes à mobilité réduite', 'am.apercu': 'Ce que verront les habitants', 'am.enregistrer': 'Déclarer l’interruption', 'am.enregistrerMaj': 'Enregistrer les modifications',
       'am.erreur': 'Corrigez : {e}', 'am.toute': 'toute la ligne', 'am.m.travaux': 'Travaux sur la voie', 'am.m.panne': 'Navette en panne', 'am.m.meteo': 'Conditions météo', 'am.m.evenement': 'Événement dans la ville', 'am.m.securite': 'Raison de sécurité', 'am.m.autre': 'Autre raison',
-      'am.solutions': 'Meilleure solution calculée : {s}', 'am.chargement': 'Chargement…' },
+      'am.solutions': 'Meilleure solution calculée : {s}', 'am.chargement': 'Chargement…',
+      'am.titreLigne': 'Ligne {l} interrompue jusqu’à {fin}', 'am.titreLigneSans': 'Ligne {l} interrompue jusqu’à nouvel ordre', 'am.o.marche': 'À pied', 'am.o.velo': 'Vélo en libre-service', 'am.o.tad': 'Transport à la demande' },
     en: { 'am.titre': 'Interrupted lines', 'nav.mobiliteAgent': 'Mobility', 'am.intro': 'Declare an interruption (line, section, period, reason, replacement): residents immediately see replacement options and subscribers to the line are notified.',
       'am.enCours': 'Current and planned', 'am.declarer': 'Declare an interruption', 'am.modifier': 'Edit interruption {id}', 'am.terminees': 'Finished', 'am.aucune': 'No current interruption: all lines are running.', 'am.aucuneFin': 'No finished interruption.',
       'am.s.en_cours': 'Current', 'am.s.programmee': 'Planned', 'am.s.terminee': 'Finished', 'am.du': 'From {d}', 'am.au': 'to {d}', 'am.nouvelOrdre': 'until further notice', 'am.abonnes': '{n} resident(s) follow these lines',
@@ -30,7 +31,8 @@
       'am.remplacement': 'Replacement', 'am.r.aucun': 'No replacement', 'am.r.navette': 'Replacement shuttle', 'am.r.bus-relais': 'Relay bus', 'am.frequence': 'Every (minutes)', 'am.arretsRelais': 'Stops served by the replacement',
       'am.texteRelais': 'Where to board (optional)', 'am.tad': 'Offer on-demand transport to people with reduced mobility', 'am.apercu': 'What residents will see', 'am.enregistrer': 'Declare the interruption', 'am.enregistrerMaj': 'Save changes',
       'am.erreur': 'Please fix: {e}', 'am.toute': 'the whole line', 'am.m.travaux': 'Track works', 'am.m.panne': 'Shuttle breakdown', 'am.m.meteo': 'Weather conditions', 'am.m.evenement': 'Event in the city', 'am.m.securite': 'Safety reasons', 'am.m.autre': 'Other reason',
-      'am.solutions': 'Best computed option: {s}', 'am.chargement': 'Loading…' },
+      'am.solutions': 'Best computed option: {s}', 'am.chargement': 'Loading…',
+      'am.titreLigne': 'Line {l} interrupted until {fin}', 'am.titreLigneSans': 'Line {l} interrupted until further notice', 'am.o.marche': 'On foot', 'am.o.velo': 'Self-service bike', 'am.o.tad': 'On-demand transport' },
     es: { 'am.titre': 'Líneas interrumpidas', 'nav.mobiliteAgent': 'Movilidad', 'am.intro': 'Declare una interrupción (línea, tramo, periodo, motivo, sustitución): los habitantes ven al instante las soluciones y se avisa a quienes siguen la línea.',
       'am.enCours': 'En curso y previstas', 'am.declarer': 'Declarar una interrupción', 'am.modifier': 'Modificar la interrupción {id}', 'am.terminees': 'Terminadas', 'am.aucune': 'Ninguna interrupción en curso: todas las líneas circulan.', 'am.aucuneFin': 'Ninguna interrupción terminada.',
       'am.s.en_cours': 'En curso', 'am.s.programmee': 'Prevista', 'am.s.terminee': 'Terminada', 'am.du': 'Del {d}', 'am.au': 'al {d}', 'am.nouvelOrdre': 'hasta nuevo aviso', 'am.abonnes': '{n} habitante(s) siguen estas líneas',
@@ -42,7 +44,8 @@
       'am.remplacement': 'Sustitución', 'am.r.aucun': 'Sin sustitución', 'am.r.navette': 'Lanzadera de sustitución', 'am.r.bus-relais': 'Autobús de relevo', 'am.frequence': 'Pasa cada (minutos)', 'am.arretsRelais': 'Paradas de la sustitución',
       'am.texteRelais': 'Dónde tomarlo (opcional)', 'am.tad': 'Ofrecer transporte a demanda a las personas con movilidad reducida', 'am.apercu': 'Lo que verán los habitantes', 'am.enregistrer': 'Declarar la interrupción', 'am.enregistrerMaj': 'Guardar los cambios',
       'am.erreur': 'Corrija: {e}', 'am.toute': 'toda la línea', 'am.m.travaux': 'Obras en la vía', 'am.m.panne': 'Lanzadera averiada', 'am.m.meteo': 'Condiciones meteorológicas', 'am.m.evenement': 'Evento en la ciudad', 'am.m.securite': 'Motivo de seguridad', 'am.m.autre': 'Otro motivo',
-      'am.solutions': 'Mejor solución calculada: {s}', 'am.chargement': 'Cargando…' },
+      'am.solutions': 'Mejor solución calculada: {s}', 'am.chargement': 'Cargando…',
+      'am.titreLigne': 'Línea {l} interrumpida hasta {fin}', 'am.titreLigneSans': 'Línea {l} interrumpida hasta nuevo aviso', 'am.o.marche': 'A pie', 'am.o.velo': 'Bicicleta compartida', 'am.o.tad': 'Transporte a demanda' },
     ar: { 'am.titre': 'الخطوط المتوقفة', 'nav.mobiliteAgent': 'التنقل', 'am.intro': 'صرّح بتوقف (الخط، المقطع، الفترة، السبب، البديل): يرى السكان الحلول البديلة فوراً ويُنبَّه متابعو الخط.',
       'am.enCours': 'الجارية والمقررة', 'am.declarer': 'التصريح بتوقف', 'am.modifier': 'تعديل التوقف {id}', 'am.terminees': 'المنتهية', 'am.aucune': 'لا يوجد توقف جارٍ: كل الخطوط تعمل.', 'am.aucuneFin': 'لا يوجد توقف منتهٍ.',
       'am.s.en_cours': 'جارٍ', 'am.s.programmee': 'مقرر', 'am.s.terminee': 'منتهٍ', 'am.du': 'من {d}', 'am.au': 'إلى {d}', 'am.nouvelOrdre': 'حتى إشعار آخر', 'am.abonnes': '{n} ساكن يتابعون هذه الخطوط',
@@ -54,7 +57,8 @@
       'am.remplacement': 'البديل', 'am.r.aucun': 'بدون بديل', 'am.r.navette': 'حافلة استبدال', 'am.r.bus-relais': 'حافلة بديلة', 'am.frequence': 'كل (دقائق)', 'am.arretsRelais': 'المحطات التي يخدمها البديل',
       'am.texteRelais': 'مكان الركوب (اختياري)', 'am.tad': 'اقتراح النقل حسب الطلب لذوي الحركة المحدودة', 'am.apercu': 'ما سيراه السكان', 'am.enregistrer': 'التصريح بالتوقف', 'am.enregistrerMaj': 'حفظ التعديلات',
       'am.erreur': 'يرجى التصحيح: {e}', 'am.toute': 'الخط بأكمله', 'am.m.travaux': 'أشغال على الطريق', 'am.m.panne': 'عطل في الحافلة', 'am.m.meteo': 'ظروف جوية', 'am.m.evenement': 'حدث في المدينة', 'am.m.securite': 'سبب أمني', 'am.m.autre': 'سبب آخر',
-      'am.solutions': 'أفضل حل محسوب: {s}', 'am.chargement': 'جارٍ التحميل…' }
+      'am.solutions': 'أفضل حل محسوب: {s}', 'am.chargement': 'جارٍ التحميل…',
+      'am.titreLigne': 'الخط {l} متوقف حتى {fin}', 'am.titreLigneSans': 'الخط {l} متوقف حتى إشعار آخر', 'am.o.marche': 'سيراً على الأقدام', 'am.o.velo': 'دراجة ذاتية الخدمة', 'am.o.tad': 'نقل حسب الطلب' }
   });
   const t = (k, v) => NT.t(k, v);
   const E = (s) => NT.ui.echap(s == null ? '' : String(s));
@@ -62,6 +66,7 @@
   let D = null, edition = null;
   const nom = (a) => NT.t('tr.arret.' + a, null, (D && D.arrets[a] && D.arrets[a].nom) || a);
   const dh = (iso) => (iso ? NT.ui.dateHeure(iso) : '');
+  const fleche = () => (document.documentElement.dir === 'rtl' ? ' ← ' : ' → ');   // « de → à » dans le sens de lecture
   const local = (iso) => { if (!iso) return ''; const d = new Date(iso); const p = (n) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`; };
 
   function charger() {
@@ -73,17 +78,17 @@
   }
   function meilleure(i) {
     const s = (i.solutions || [])[0]; const o = s && s.options[0]; if (!o) return '';
-    const lib = { relais: t('am.r.' + (o.sousType || 'navette')), 'autres-lignes': (o.lignes || []).join(' + '), marche: NT.t('mb.o.marche', null, 'À pied'), velo: NT.t('mb.o.velo', null, 'Vélo'), tad: 'TAD' }[o.type] || o.type;
+    const lib = { relais: t('am.r.' + (o.sousType || 'navette')), 'autres-lignes': (o.lignes || []).join(' + '), marche: t('am.o.marche'), velo: t('am.o.velo'), tad: t('am.o.tad') }[o.type] || o.type;
     return t('am.solutions', { s: `${lib}${o.perte != null ? ` (+${o.perte} min)` : ''}` });
   }
   function carte(i) {
     const s = i.statut;
     return `<article class="am-carte am-${s}" data-id="${E(i.id)}">
       <div class="am-tete">${i.troncons.map((tr) => `<span class="tr-ligne tr-${E(tr.ligne)}">${E(tr.ligne)}</span>`).join('')}
-        <div><h3>${i.troncons.map((tr) => `${E(tr.ligne)} · ${E(tr.touteLaLigne ? t('am.toute') : nom(tr.de) + ' → ' + nom(tr.a))}`).join(' ; ')}</h3>
+        <div><h3>${i.troncons.map((tr) => `${E(tr.ligne)} · ${E(tr.touteLaLigne ? t('am.toute') : nom(tr.de) + fleche() + nom(tr.a))}`).join(' ; ')}</h3>
         <p class="doux">${E(i.id)} · <strong class="statut ${s === 'en_cours' ? 'statut-incident' : s === 'programmee' ? 'statut-maintenance' : 'statut-ok'}">${E(t('am.s.' + s))}</strong> · ${E(t('am.du', { d: dh(i.debut && i.debut.iso) }))} ${E(i.fin ? t('am.au', { d: dh(i.fin.iso) }) : t('am.nouvelOrdre'))}</p></div></div>
       <p>${E(t('am.m.' + i.motif))}${i.precision ? ' — ' + E(i.precision) : ''}</p>
-      <p class="doux">${E(t('am.r.' + ((i.remplacement && i.remplacement.type) || 'aucun')))}${i.remplacement && i.remplacement.type !== 'aucun' ? ` · ${i.remplacement.frequence} min · ${E(i.remplacement.arrets.map(nom).join(' › '))}` : ''}${i.tad ? ' · TAD' : ''}</p>
+      <p class="doux">${E(t('am.r.' + ((i.remplacement && i.remplacement.type) || 'aucun')))}${i.remplacement && i.remplacement.type !== 'aucun' ? ` · ${i.remplacement.frequence} min · ${E(i.remplacement.arrets.map(nom).join(' › '))}` : ''}${i.tad ? ' · ' + E(t('am.o.tad')) : ''}</p>
       ${s !== 'terminee' ? `<p class="doux">${E(meilleure(i))}</p>` : ''}
       <p class="doux">${E(i.declarePar ? t('am.par', { p: i.declarePar }) : '')}${i.leveePar ? ' · ' + E(t('am.leveePar', { p: i.leveePar, d: dh(i.leveeLe) })) : ''} · ${E(t('am.abonnes', { n: i.abonnes || 0 }))}</p>
       ${s !== 'terminee' ? `<div class="am-actions"><button type="button" class="btn" data-am-modifier="${E(i.id)}"><i class="ph ph-pencil-simple" aria-hidden="true"></i>${E(t('am.btnModifier'))}</button>
@@ -157,8 +162,8 @@
     // aperçu : même formulation que la page Transports
     const fin = $('am-fin-date').disabled ? null : $('am-fin-date').value;
     const finTxt = fin ? new Date(fin).toLocaleString(NT.i18n.langue === 'en' ? 'en-GB' : NT.i18n.langue, { weekday: 'short', hour: '2-digit', minute: '2-digit' }) : '';
-    $('am-apercu').innerHTML = lireTroncons().map((tr) => `<p class="am-apercu-ligne"><span class="tr-ligne tr-${E(tr.ligne)}">${E(tr.ligne)}</span><strong>${E(fin ? NT.t('mb.titre', { l: tr.ligne, fin: finTxt }, `Ligne ${tr.ligne} interrompue jusqu’à ${finTxt}`) : NT.t('mb.titreSans', { l: tr.ligne }, `Ligne ${tr.ligne} interrompue jusqu’à nouvel ordre`))}</strong>
-      <span class="doux">${E(arretsSection(tr).length === D.lignes.find((l) => l.id === tr.ligne).arrets.length ? t('am.toute') : nom(tr.de) + ' → ' + nom(tr.a))} · ${E(t('am.m.' + $('am-motif').value))}</span></p>`).join('');
+    $('am-apercu').innerHTML = lireTroncons().map((tr) => `<p class="am-apercu-ligne"><span class="tr-ligne tr-${E(tr.ligne)}">${E(tr.ligne)}</span><strong>${E(fin ? t('am.titreLigne', { l: tr.ligne, fin: finTxt }) : t('am.titreLigneSans', { l: tr.ligne }))}</strong>
+      <span class="doux">${E(arretsSection(tr).length === D.lignes.find((l) => l.id === tr.ligne).arrets.length ? t('am.toute') : nom(tr.de) + fleche() + nom(tr.a))} · ${E(t('am.m.' + $('am-motif').value))}</span></p>`).join('');
   }
   function envoyer(e) {
     e.preventDefault();
@@ -192,7 +197,7 @@
       e.preventDefault();
       const id = lf.dataset.amLeverForm;
       const r = NT.api('POST', '/api/mobilite/interruptions/' + encodeURIComponent(id) + '/lever', { motif: lf.querySelector('input').value });
-      if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger'); return; }
+      if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger'); return; }
       NT.ui.toast(t('am.leve', { n: r.donnees.prevenus || 0 }), 'success', 7000);
       charger(); $('am-t-cours').setAttribute('tabindex', '-1'); $('am-t-cours').focus();
     }

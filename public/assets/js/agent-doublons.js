@@ -128,7 +128,7 @@
 
   function lier(principale, ids) {
     const r = NT.api('POST', '/api/demandes/' + encodeURIComponent(principale) + '/lier', { ids });
-    if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger'); return false; }
+    if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger'); return false; }
     NT.recharger(); X.recharger(); X.rendre(); X.onChange();
     NT.ui.toast(t('sg.okLier', { n: ids.length, id: principale }), 'success', 8000);
     return true;
@@ -181,7 +181,7 @@
     const dl = ev.target.closest('[data-sg-delier]');
     if (dl) {
       const r = NT.api('POST', '/api/demandes/' + encodeURIComponent(dl.dataset.sgDelier) + '/delier', {});
-      if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger'); return; }
+      if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger'); return; }
       NT.recharger(); X.recharger(); X.rendre(); X.onChange(); NT.ui.toast(t('sg.okDelier', { id: dl.dataset.sgDelier }), 'success');
       X.ouvrir(dl.dataset.sgDelier);
     }

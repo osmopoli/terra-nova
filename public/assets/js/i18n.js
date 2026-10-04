@@ -142,6 +142,14 @@
       'v13.ins.sansEmail': 'ليس لديك بريد إلكتروني؟', 'v13.ins.sansEmailLien': 'أنشئ حساباً بمعرّف ورمز سري' }
   });
 
+  /* ---------- Vagues 19-21 : textes communs à plusieurs pages (erreur générique des envois, noms des quartiers) ---------- */
+  i18n.ajouter({
+    fr: { 'ui.erreur': 'Erreur', 'tr.q.Centre': 'Centre', 'tr.q.Nord': 'Nord', 'tr.q.Sud': 'Sud', 'tr.q.Est': 'Est', 'tr.q.Ouest': 'Ouest' },
+    en: { 'ui.erreur': 'Error', 'tr.q.Centre': 'Centre', 'tr.q.Nord': 'North', 'tr.q.Sud': 'South', 'tr.q.Est': 'East', 'tr.q.Ouest': 'West' },
+    es: { 'ui.erreur': 'Error', 'tr.q.Centre': 'Centro', 'tr.q.Nord': 'Norte', 'tr.q.Sud': 'Sur', 'tr.q.Est': 'Este', 'tr.q.Ouest': 'Oeste' },
+    ar: { 'ui.erreur': 'خطأ', 'tr.q.Centre': 'الوسط', 'tr.q.Nord': 'الشمال', 'tr.q.Sud': 'الجنوب', 'tr.q.Est': 'الشرق', 'tr.q.Ouest': 'الغرب' }
+  });
+
   /* ---------- Vague 17 : menu (F87 sauvegardes, F88 exports) ---------- */
   i18n.ajouter({
     fr: { 'nav.exports': 'Exports', 'nav.sauvegardes': 'Sauvegardes' },

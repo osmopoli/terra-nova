@@ -171,7 +171,7 @@
   const typeLabel = t => L('c.j.' + t, (TYPES[t] || [])[2] || t);
   function pastilleType(t) {
     const d = TYPES[t] || ['ph-info', 'info', t];
-    return '<span class="pastille-type niveau-' + d[1] + '"><i class="ph-duotone ' + d[0] + '" aria-hidden="true"></i>' + E(typeLabel(t)) + '</span>';
+    return '<span class="pastille-type niveau-' + d[1] + '" title="' + E(typeLabel(t)) + '"><i class="ph-duotone ' + d[0] + '" aria-hidden="true"></i><span class="pastille-txt">' + E(typeLabel(t)) + '</span></span>';
   }
 
   /* =====================================================================

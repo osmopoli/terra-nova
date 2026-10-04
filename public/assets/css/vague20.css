@@ -127,7 +127,7 @@ ol.us-phrases li{ display:list-item; }
 .us-cell-barre .num{ text-align:start; }
 .us-barre{ flex:1 1 6rem; height:.75rem; border-radius:99px; background:var(--surface-2); overflow:hidden; }
 .us-barre > span{ display:block; height:100%; border-radius:inherit; background:var(--iono); }
-.us-barre.faible > span{ background:repeating-linear-gradient(45deg,var(--soleil) 0 4px,color-mix(in oklch,var(--soleil) 45%,transparent) 4px 8px); }
+.us-barre.faible > span{ background:var(--soleil); }
 .us-tend{ white-space:nowrap; font-weight:700; }
 .us-tend.hausse{ color:var(--calme); }
 .us-tend.baisse{ color:var(--corail-clair); }
@@ -231,7 +231,7 @@ ol.us-phrases li{ display:list-item; }
 .ev-item.ev-info{ border-inline-start-color:var(--aurore); }
 @media (max-width:560px){ .ev-item{ grid-template-columns:1fr; } }
 .ev-liste.compact .ev-item{ grid-template-columns:1fr; padding:.7rem .8rem; }
-.ev-grav{ display:inline-flex; align-items:center; gap:.3rem; align-self:start; justify-self:start; font-size:var(--t-xs); font-weight:800; padding:.15rem .55rem; border-radius:99px; border:1px solid; white-space:nowrap; }
+.ev-grav{ align-self:start; justify-self:start; }   /* gabarit : composant « pastille » (theme.css) */
 .ev-grav i{ font-size:1rem; }
 .ev-grav-critique,.ev-grav-haute{ color:var(--corail-clair); border-color:var(--corail); }
 .ev-grav-moyenne{ color:var(--soleil); }

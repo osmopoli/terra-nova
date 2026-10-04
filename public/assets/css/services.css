@@ -120,15 +120,36 @@
 .as-liste > *,.as-carte{ min-width:0; }
 .as-carte{ overflow-wrap:anywhere; }
 .as-actions .btn{ max-width:100%; white-space:normal; }
-.as-tete > div{ min-width:0; flex:1; } .as-etat .statut{ white-space:normal; }
+.as-tete > div{ min-width:0; flex:1; }
 
 /* Fiches des associations : l'essentiel visible, le détail se déplie (accordéon) */
-.as-liste:not(.as-liste-compacte){ align-items:start; }
+/* Cartes d'une même rangée à la même hauteur (étirement par défaut de la grille) ; les actions et le pied
+   « Horaires et détails » sont poussés en bas (.as-actions ci-dessous) pour s'aligner d'une carte à l'autre. */
+.as-liste:not(.as-liste-compacte){ align-items:stretch; }
+/* Fiche dépliée : elle agrandit sa rangée, mais ses voisines de rangée gardent leur hauteur naturelle (sinon grand
+   vide au-dessus de leurs boutons) ; les autres rangées restent alignées. Le nombre de colonnes se déduit de la largeur
+   de la zone : n colonnes de 22rem + gouttières de 1rem tiennent dès 23n − 1 rem (voir .as-liste). */
+#sv-associations{ container:as-zone / inline-size; }
+.as-liste .as-ouverte{ align-self:start; }
+@container as-zone (45rem <= width < 68rem){
+  .as-liste .as-ouverte:nth-child(odd) + .as-carte,
+  .as-liste .as-carte:has(+ .as-ouverte:nth-child(even)){ align-self:start; }
+}
+@container as-zone (68rem <= width < 91rem){
+  .as-liste .as-ouverte:nth-child(3n+1) + .as-carte,
+  .as-liste .as-ouverte:nth-child(3n+1) + .as-carte + .as-carte,
+  .as-liste .as-ouverte:nth-child(3n+2) + .as-carte,
+  .as-liste .as-carte:has(+ .as-ouverte:nth-child(3n+2)),
+  .as-liste .as-carte:has(+ .as-ouverte:nth-child(3n)),
+  .as-liste .as-carte:has(+ .as-carte + .as-ouverte:nth-child(3n)){ align-self:start; }
+}
+/* Au-delà (4 colonnes et plus, très grands écrans) : repli simple, toutes les fiches à hauteur naturelle tant qu'une est dépliée. */
+@container as-zone (width >= 91rem){ .as-liste:has(> .as-ouverte) > .as-carte{ align-self:start; } }
 .as-resume{ margin:.75rem 0 0; color:var(--givre); font-size:.95rem; line-height:1.5; }
 .as-cles{ list-style:none; margin:.6rem 0 0; padding:0; display:grid; gap:.25rem; font-size:.9rem; color:var(--brume); }
 .as-cles li{ display:flex; gap:.45rem; align-items:baseline; }
 .as-cles i{ color:var(--iono); flex:none; transform:translateY(.12em); }
-.as-carte:not(.as-compact) .as-actions{ margin-top:0; }
+.as-carte:not(.as-compact) .as-actions{ margin-block-start:auto; }
 .as-plus{ all:unset; box-sizing:border-box; display:flex; align-items:center; justify-content:space-between; gap:.5rem; width:100%; min-height:2.75rem; margin-top:.8rem; padding:.55rem .1rem 0; border-top:1px solid var(--trait); color:var(--brume); font-weight:700; font-size:.9rem; cursor:pointer; transition:color 160ms ease; }
 .as-plus i{ font-size:1rem; transition:transform 220ms var(--ease-out); }
 .as-plus[aria-expanded="true"]{ color:var(--givre); }

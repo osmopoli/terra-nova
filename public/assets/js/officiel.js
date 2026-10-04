@@ -37,7 +37,8 @@
   });
 
   /* vague 21 (F101) : crise localisée (panne électrique…) portée par un message officiel (src/modules/crise.js).
-     Habitant du quartier touché : message critique (fenêtre sans fermeture automatique, actions visibles, revient à chaque mise à jour) ;
+     Habitant du quartier touché : message critique (fenêtre réduite à l'essentiel : titre, quartier, heure de rétablissement, bouton
+     « Ce que vous devez faire » qui ouvre le tiroir Alertes ; sans fermeture automatique, revient à chaque mise à jour) ;
      autres habitants : information ; visiteur : quartier nommé. « Rétablissement estimé » et « Dernière mise à jour il y a N min » vivants. */
   NT.i18n.ajouter({
     fr: { 'cr.ret': 'Rétablissement estimé : {h}', 'cr.retInconnu': 'Rétablissement : en cours d’estimation', 'cr.maj': 'Dernière mise à jour il y a {n} min', 'cr.majMaint': 'Dernière mise à jour à l’instant',
@@ -72,21 +73,20 @@
   const t = NT.t, { echap } = NT.ui;
   const heureCrise =iso => { const l = NT.i18n.langue, h = new Date(iso).toLocaleTimeString(l === 'ar' ? 'ar' : l, { hour: '2-digit', minute: '2-digit' }); return l === 'fr' ? h.replace(':', ' h ') : h; };
   const majCrise = iso => { const n = Math.max(0, Math.round((Date.now() - Date.parse(iso)) / 60000)); return n < 1 ? t('cr.majMaint') : t('cr.maj', { n }); };
-  const zoneCrise = m => m.crise.quartiers.map(q => t('off.quartier', { q: t('cm.q.' + q, null, q) })).join(', ');
-  function blocCrise(m, mode) {   // mode : 'carte' (complet), 'compact', 'fenetre'
+  const zoneCrise = m => m.crise.quartiers.map(q => t('off.quartier', { q: t('tr.q.' + q, null, q) })).join(', ');
+  function blocCrise(m, mode) {   // mode : 'carte' (complet), 'compact' et 'fenetre' (statut et heure de rétablissement seulement)
     if (!m.crise) return '';
     if (m.crise.type === 'tempete-solaire') return blocTempete(m, mode);   // vague 22 (F104)
     const c = m.crise, u = NT.auth && NT.auth.utilisateur && NT.auth.utilisateur();
     const qui = m.critique ? `<strong>${echap(t('cr.critique'))}</strong>` : u && u.role === 'citoyen' ? echap(t('cr.info')) : echap(t('cr.zone', { q: zoneCrise(m) }));
     const temps = `<p class="cr-temps"><i class="ph-duotone ph-clock-countdown" aria-hidden="true"></i><span><strong>${echap(c.retablissement ? t('cr.ret', { h: heureCrise(c.retablissement) }) : t('cr.retInconnu'))}</strong>
       <small data-crise-maj="${echap(c.majLe)}">${echap(majCrise(c.majLe))}</small></span></p>`;
-    const tete = `<p class="cr-statut${m.critique ? ' cr-statut-critique' : ''}"><i class="ph-duotone ph-lightning-slash" aria-hidden="true"></i><span>${echap(t('cr.t.' + c.type, null, ''))} · ${qui}</span></p>`;
-    if (mode === 'compact') return tete + temps;
-    const c2 = contenu(m);
-    const actions = mode === 'fenetre' && m.critique ? `<h3 class="off-quoi">${echap(t('off.quoi'))}</h3><ol class="off-actions" lang="${c2.langue}">${c2.actions.map(a => `<li>${echap(a)}</li>`).join('')}</ol>` : '';
-    const points = (c.points || []).length && mode !== 'fenetre' ? `<h4 class="off-quoi"><i class="ph-duotone ph-battery-charging" aria-hidden="true"></i>${echap(t('cr.points'))}</h4><ul class="cr-points">${c.points.map(p => `<li>${echap(p)}</li>`).join('')}</ul>` : '';
-    return tete + temps + (c.progression && mode !== 'fenetre' ? `<p class="cr-avancement"><strong>${echap(t('cr.avancement'))} :</strong> ${echap(c.progression)}</p>` : '') + actions + points
-      + (mode !== 'fenetre' ? `<p class="cr-leger"><a href="/essentiel?lang=${echap(NT.i18n.langue)}"><i class="ph ph-battery-low" aria-hidden="true"></i>${echap(t('cr.leger'))}</a></p>` : '');
+    // dans la fenêtre, le titre nomme déjà la crise : seule la ligne « quartier » reste
+    const tete = `<p class="cr-statut${m.critique ? ' cr-statut-critique' : ''}"><i class="ph-duotone ph-lightning-slash" aria-hidden="true"></i><span>${mode === 'fenetre' ? '' : echap(t('cr.t.' + c.type, null, '')) + ' · '}${qui}</span></p>`;
+    if (mode === 'compact' || mode === 'fenetre') return tete + temps;
+    const points = (c.points || []).length ? `<h4 class="off-quoi"><i class="ph-duotone ph-battery-charging" aria-hidden="true"></i>${echap(t('cr.points'))}</h4><ul class="cr-points">${c.points.map(p => `<li>${echap(p)}</li>`).join('')}</ul>` : '';
+    return tete + temps + (c.progression ? `<p class="cr-avancement"><strong>${echap(t('cr.avancement'))} :</strong> ${echap(c.progression)}</p>` : '') + points
+      + `<p class="cr-leger"><a href="/essentiel?lang=${echap(NT.i18n.langue)}"><i class="ph ph-battery-low" aria-hidden="true"></i>${echap(t('cr.leger'))}</a></p>`;
   }
   /* vague 22 (F104) : bloc « tempête solaire » ; le compte à rebours et les cases sont animés par assets/js/tempete.js (data-tp-*) */
   const dureeTp = min => { const h = Math.floor(min / 60), r = min % 60; return h ? (r ? `${h} h ${r} min` : `${h} h`) : `${r} min`; };
@@ -128,7 +128,7 @@
     return { titre: ok ? tr.titre : m.titre, message: ok ? tr.message : m.message, actions: ok && tr.actions && tr.actions.length ? tr.actions : m.actions,
       langue: ok || l === 'fr' ? l : 'fr', nonTraduit: l !== 'fr' && !ok };
   }
-  const zone = m => (m.audience === 'Toute la ville' ? t('off.toute') : t('off.quartier', { q: t('cm.q.' + m.audience, null, m.audience) }));
+  const zone = m => (m.audience === 'Toute la ville' ? t('off.toute') : t('off.quartier', { q: t('tr.q.' + m.audience, null, m.audience) }));
 
   function carte(m, mode, compact) {
     const c = contenu(m), compris = estCompris(m), id = 'off-' + mode + '-' + m.id;
@@ -177,6 +177,8 @@
 
   /* À l'arrivée : une fenêtre discrète (pas une modale) présente le message pas encore compris, une fois par visite.
      Elle s'efface seule après 9 s (minuterie en pause au survol, au focus et onglet caché), sauf message marqué critique.
+     Crise critique (vague 21, décision du 4 octobre) : l'essentiel seulement (titre, quartier, heure de rétablissement) et un bouton
+     « Ce que vous devez faire » qui ouvre le tiroir « Alertes » où se trouvent les consignes complètes ; 45 % de l'écran au plus.
      En partant, elle « rentre » vers la balise Alertes, qui s'allume une fois : on voit où retrouver l'information. */
   const lireS = (cle) => { try { return JSON.parse(sessionStorage.getItem('nt:' + cle)) || []; } catch (e) { return []; } };
   const ecrireS = (cle, v) => { try { sessionStorage.setItem('nt:' + cle, JSON.stringify(v.slice(-50))); } catch (e) { /* stockage bloqué */ } };
@@ -210,10 +212,11 @@
         <button type="button" class="off-fenetre-x" data-off-fermer><i class="ph ph-x" aria-hidden="true"></i><span class="sr-only">${echap(t('off.fermer'))}</span></button>
       </div>
       <h2 id="off-fenetre-titre" lang="${c.langue}" dir="${dir}">${echap(c.titre)}</h2>
-      <p class="off-fenetre-texte" lang="${c.langue}" dir="${dir}">${echap(c.message)}</p>${blocCrise(m, 'fenetre')}
+      ${m.critique ? '' : `<p class="off-fenetre-texte" lang="${c.langue}" dir="${dir}">${echap(c.message)}</p>`}${blocCrise(m, 'fenetre')}
       <div class="off-fenetre-pied">
-        <button type="button" class="btn btn-primaire" data-off-voir-fenetre><i class="ph-duotone ph-broadcast" aria-hidden="true"></i>${echap(t('off.voirAlerte'))}</button>
-        ${m.critique && !estCompris(m) ? `<button type="button" class="btn" data-off-compris="${echap(m.id)}"><i class="ph ph-check" aria-hidden="true"></i>${echap(t('off.compris'))}</button>` : ''}<span class="off-fenetre-note"><i class="ph ph-bell-simple" aria-hidden="true"></i>${echap(t('off.dansAlertes'))}</span>
+        ${m.critique
+          ? `<button type="button" class="btn btn-primaire" data-off-voir-fenetre><i class="ph-duotone ph-list-checks" aria-hidden="true"></i>${echap(t('off.quoi'))} (${c.actions.length})</button>`
+          : `<button type="button" class="btn btn-primaire" data-off-voir-fenetre><i class="ph-duotone ph-broadcast" aria-hidden="true"></i>${echap(t('off.voirAlerte'))}</button>`}<span class="off-fenetre-note"><i class="ph ph-bell-simple" aria-hidden="true"></i>${echap(t('off.dansAlertes'))}</span>
       </div>
       ${m.critique ? '' : '<span class="off-fenetre-temps" aria-hidden="true"></span>'}`;
     document.body.append(el);
@@ -290,7 +293,7 @@
     }
     if (e.target.closest('[data-off-voir]')) ouvrirAlertes(e.target.closest('[data-off]'));
     if (e.target.closest('[data-off-fermer]')) fermerFenetre(true);
-    if (e.target.closest('[data-off-voir-fenetre]')) { const src = e.target.closest('[data-off]'); fermerFenetre(false); ouvrirAlertes(src); }
+    if (e.target.closest('[data-off-voir-fenetre]')) { const src = e.target.closest('[data-off]'); fermerFenetre(true); ouvrirAlertes(src); }
   });
 
   let minuterie = null;

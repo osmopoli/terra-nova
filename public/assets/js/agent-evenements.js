@@ -141,7 +141,7 @@
     if (!fo) return;
     e.preventDefault();
     const r = NT.api('POST', '/api/veille-securite/traite', { id: fo.dataset.evForm, note: fo.querySelector('input').value });
-    if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger', 8000); fo.querySelector('input').focus(); return; }
+    if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger', 8000); fo.querySelector('input').focus(); return; }
     NT.ui.toast(t('ev.traiteOk'), 'success'); const id = fo.dataset.evForm; charger(); if (NT.v20lire) NT.v20lire(); const it = document.getElementById('ev-' + id); if (it) it.focus();
   });
   function demarrer() { if (zone()) charger(); }

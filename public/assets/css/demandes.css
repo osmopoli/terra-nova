@@ -25,7 +25,7 @@
 .dm-coche{ display:none; position:absolute; inset-block-start:.8rem; inset-inline-end:.8rem; font-size:1.4rem; color:var(--iono); }
 .dm-choix:has(input:checked) .dm-choix-corps{ border-color:var(--iono); background:oklch(0.7040 0.1400 182.5 / .10); box-shadow:0 0 0 1px var(--iono) inset; }
 .dm-choix:has(input:checked) .dm-coche{ display:block; }
-.dm-choix:has(input:focus-visible) .dm-choix-corps{ outline:3px solid var(--iono); outline-offset:2px; }
+.dm-choix:has(input:focus-visible) .dm-choix-corps{ outline:3px solid var(--iono); outline-offset:2px; } .dm-choix:has(input:focus-visible){ outline:none; } /* l'anneau est sur le corps, pas sur l'étiquette (theme.css) */
 .dm-choix:has(input:disabled){ cursor:not-allowed; }
 .dm-choix:has(input:disabled) .dm-choix-corps{ opacity:.6; }
 .dm-choix:active .dm-choix-corps{ transform:scale(.985); }

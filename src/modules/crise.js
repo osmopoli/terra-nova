@@ -273,7 +273,9 @@ const DEMO = {
 };
 function semer() {
   try {
-    if (docs.get('essentiel', 'vague21-crise')) return false;   // une seule fois, même si la crise a été close depuis
+    // une seule fois, même si la crise a été close depuis ; ressemée si le message gardé a disparu (« Réinitialiser la démo » vide les officiels)
+    const g = docs.get('essentiel', 'vague21-crise');
+    if (g && docs.get(COL, g.crise)) return false;
     const t = Date.now(), quart = 15 * 60e3;
     const ret = Math.ceil((t + 2 * 3600e3) / quart) * quart;   // heure ronde (au quart d'heure) dans environ 2 h
     const r = creer(Object.assign({}, DEMO, { retablissement: new Date(ret).toISOString() }), null,

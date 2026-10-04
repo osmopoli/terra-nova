@@ -2,12 +2,13 @@
 // - F97 : trois lignes interrompues (N4 jusqu'à 18 h, N1 en panne sur le tronçon nord, N2 : Canal Sud non desservi, montée des
 //   eaux). Repère « demo » : tant qu'aucun agent ne les a modifiées ou levées, elles sont renouvelées quand leur fin est passée,
 //   pour que la démonstration reste parlante (sans prévenir les abonnés). Une interruption modifiée par un agent ne l'est plus.
-// - F99 : deux partenaires (comptes lumen@nova.test et velo@nova.test, mot de passe Partenaire2026), six offres dont cinq
-//   vérifiées et publiées et une en attente de vérification, deux réservations.
+// - F99 : deux partenaires (comptes lumen@nova.test et velo@nova.test, mot de passe Partenaire2026 ; en production,
+//   PARTENAIRE_PASSWORD le remplace au démarrage comme ADMIN_PASSWORD / AGENT_PASSWORD pour les autres comptes de démo),
+//   six offres dont cinq vérifiées et publiées et une en attente de vérification, deux réservations.
 // - F98 : historique anonyme de 90 jours de compteurs d'usage (src/modules/usage.js).
 // - F100 : quelques événements de sécurité récents (repère seed: 'v20').
 const { docs, maintenant } = require('./donnees');
-const { creerCompte, parEmail } = require('./auth');
+const { creerCompte, parEmail, motsDePasseDemo } = require('./auth');
 const mobilite = require('./modules/mobilite');
 
 function semerMobilite() {
@@ -72,6 +73,7 @@ function semerPartenaires() {
     const { compte, ...doc } = p;   // eslint-disable-line no-unused-vars
     docs.put('partenaires', Object.assign(doc, { statut: 'actif', comptes: comptes[p.id] ? [comptes[p.id]] : [], cree: maintenant(), valideLe: maintenant(), validePar: 'Coordination Solidaire' }));
   }
+  motsDePasseDemo();   // production : PARTENAIRE_PASSWORD remplace tout de suite le mot de passe public des comptes partenaires
   for (const o of OFFRES) {
     const dispo = Object.assign({ prochaineDate: o.d.jours ? jour(o.d.jours) : o.d.statut === 'complet' ? jour(21) : '', note: o.d.note || '', maj: maintenant() }, { statut: o.d.statut, placesRestantes: o.d.placesRestantes });
     docs.put('offresPartenaires', o.enAttente

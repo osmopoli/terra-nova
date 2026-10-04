@@ -277,9 +277,19 @@
     const saisie = e.target.closest && e.target.closest('input, textarea, select, [contenteditable="true"]');
     if ((e.key === '/' && !saisie && !e.ctrlKey && !e.altKey && !e.metaKey) || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k')) { e.preventDefault(); btnRecherche.click(); }
   });
+  /* « Expliquer plus simplement » (F90) sur une sélection de texte : orientation.js (et langage-clair.js) ne sont téléchargés
+     qu'une fois la sélection confirmée, c'est-à-dire stable pendant 600 ms (un double-clic ou un glissé au passage ne chargent rien). */
+  const texteSelection = () => String(window.getSelection ? getSelection() : '').trim();
+  let attenteSelection = null;
   const surSelection = () => {
-    if (NT.orientation || String(window.getSelection ? getSelection() : '').trim().length < 3) return;
-    chargerOrientation().then(() => setTimeout(() => document.dispatchEvent(new MouseEvent('mouseup', { bubbles: true })), 450));
+    clearTimeout(attenteSelection);
+    if (NT.orientation) return;
+    const sel = texteSelection();
+    if (sel.length < 3) return;
+    attenteSelection = setTimeout(() => {
+      if (NT.orientation || texteSelection() !== sel) return;
+      chargerOrientation().then(() => setTimeout(() => document.dispatchEvent(new MouseEvent('mouseup', { bubbles: true })), 450));
+    }, 600);
   };
   document.addEventListener('mouseup', () => setTimeout(surSelection, 20));
   document.addEventListener('touchend', () => setTimeout(surSelection, 260), { passive: true });
