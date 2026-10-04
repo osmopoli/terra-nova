@@ -23,7 +23,9 @@
       'tr.perturbeIci': 'Perturbation sur ce trajet', 'tr.arretFerme': 'L’arrêt {a} n’est pas desservi : prenez la navette à {r}.', 'tr.arretFermeFin': 'L’arrêt {a} n’est pas desservi : descendez à {r}.', 'tr.marche': 'environ {n} min à pied',
       'tr.premier': 'Premier départ', 'tr.dernier': 'Dernier départ', 'tr.arret': 'Arrêt', 'tr.vers': 'vers {d}', 'tr.captionLigne': 'Horaires de la ligne {l} : premiers et derniers passages à chaque arrêt',
       'tr.serviceDe': 'Service de {a} à {b}', 'tr.tousJours': 'tous les jours', 'tr.nonDesservi': 'Non desservi',
-      'tr.ligne.N1': 'Centre – Nord', 'tr.ligne.N2': 'Sud – Gare orbitale', 'tr.ligne.N3': 'Est – Ouest', 'tr.ligne.N4': 'Est – Gare orbitale'
+      'tr.ligne.N1': 'Centre – Nord', 'tr.ligne.N2': 'Sud – Gare orbitale', 'tr.ligne.N3': 'Est – Ouest', 'tr.ligne.N4': 'Est – Gare orbitale',
+      'tr.q.Centre': 'Centre', 'tr.q.Nord': 'Nord', 'tr.q.Sud': 'Sud', 'tr.q.Est': 'Est', 'tr.q.Ouest': 'Ouest',
+      'tr.arret.gare': 'Gare orbitale', 'tr.arret.mairie': 'Hôtel de ville', 'tr.arret.dispensaire': 'Dispensaire central', 'tr.arret.quai': 'Quai des Arrivées', 'tr.arret.serres': 'Parc des Serres', 'tr.arret.orion': 'Arrêt Orion', 'tr.arret.observatoire': 'Observatoire', 'tr.arret.canal': 'Canal Sud', 'tr.arret.pionniers': 'Place des Pionniers', 'tr.arret.social': 'Centre social', 'tr.arret.ateliers': 'Zone des Ateliers', 'tr.arret.aurore': 'Résidence Aurore', 'tr.arret.habitat': 'Pôle habitat', 'tr.arret.kepler': 'Lycée Kepler', 'tr.arret.culturel': 'Dôme culturel', 'tr.arret.tri': 'Centre de tri', 'tr.arret.emploi': 'Maison de l’emploi', 'tr.arret.jardins': 'Jardins hydroponiques'
     },
     en: {
       'tr.titre': 'City shuttles', 'tr.intro': 'Pick your departure and arrival stops: the line to take and the next departures show up right away.',
@@ -33,8 +35,8 @@
       'tr.nommeQuartier': '{q} district',
       'tr.traficOk': 'Running normally', 'tr.traficPerturbee': 'Disrupted', 'tr.traficTitre': 'Disruption on line {l}', 'tr.traficAlt': 'What to do?', 'tr.voirAlerte': 'See the rising water alert',
       'tr.traficResume': '1 line disrupted, 3 lines normal.', 'tr.toutNormal': 'All 4 lines are running normally.',
-      'tr.pertMsg': 'Rising water in the South district: the Canal Sud stop is not served. Line N2 temporarily starts from Place des Pionniers.',
-      'tr.pertAlt': 'Walk to Place des Pionniers (about 6 minutes): line N2 stops there every 15 minutes. Avoid lower levels near the canal.',
+      'tr.pertMsg': 'Rising water in the South district: the South canal stop is not served. Line N2 temporarily starts from Pioneers’ square.',
+      'tr.pertAlt': 'Walk to Pioneers’ square (about 6 minutes): line N2 stops there every 15 minutes. Avoid lower levels near the canal.',
       'tr.prendre': 'Take line {l}', 'tr.direction': 'towards {d}', 'tr.depuisArret': 'from {a}', 'tr.jusqua': 'to {a}',
       'tr.prochains': 'Next 3 departures', 'tr.dans': 'in {n} min', 'tr.maintenant': 'now', 'tr.demain': 'tomorrow', 'tr.arriveeA': 'arrives {h}',
       'tr.duree': 'Estimated duration', 'tr.nbArrets': 'Stops', 'tr.frequence': 'Frequency', 'tr.minutes': '{n} min', 'tr.arrets': '{n} stops', 'tr.arret1': '1 stop', 'tr.freq': 'Every {n} min',
@@ -43,7 +45,9 @@
       'tr.perturbeIci': 'Disruption on this trip', 'tr.arretFerme': 'The {a} stop is not served: board at {r}.', 'tr.arretFermeFin': 'The {a} stop is not served: get off at {r}.', 'tr.marche': 'about {n} min on foot',
       'tr.premier': 'First departure', 'tr.dernier': 'Last departure', 'tr.arret': 'Stop', 'tr.vers': 'towards {d}', 'tr.captionLigne': 'Line {l} timetable: first and last departures at each stop',
       'tr.serviceDe': 'Service from {a} to {b}', 'tr.tousJours': 'every day', 'tr.nonDesservi': 'Not served',
-      'tr.ligne.N1': 'Centre – North', 'tr.ligne.N2': 'South – Orbital station', 'tr.ligne.N3': 'East – West', 'tr.ligne.N4': 'East – Orbital station'
+      'tr.ligne.N1': 'Centre – North', 'tr.ligne.N2': 'South – Orbital station', 'tr.ligne.N3': 'East – West', 'tr.ligne.N4': 'East – Orbital station',
+      'tr.q.Centre': 'Centre', 'tr.q.Nord': 'North', 'tr.q.Sud': 'South', 'tr.q.Est': 'East', 'tr.q.Ouest': 'West',
+      'tr.arret.gare': 'Orbital station', 'tr.arret.mairie': 'City hall', 'tr.arret.dispensaire': 'Central clinic', 'tr.arret.quai': 'Arrivals quay', 'tr.arret.serres': 'Greenhouse park', 'tr.arret.orion': 'Orion stop', 'tr.arret.observatoire': 'Observatory', 'tr.arret.canal': 'South canal', 'tr.arret.pionniers': 'Pioneers’ square', 'tr.arret.social': 'Community centre', 'tr.arret.ateliers': 'Workshops area', 'tr.arret.aurore': 'Aurore residence', 'tr.arret.habitat': 'Housing centre', 'tr.arret.kepler': 'Kepler high school', 'tr.arret.culturel': 'Cultural dome', 'tr.arret.tri': 'Sorting centre', 'tr.arret.emploi': 'Job centre', 'tr.arret.jardins': 'Hydroponic gardens'
     },
     es: {
       'tr.titre': 'Lanzaderas municipales', 'tr.intro': 'Elija su parada de salida y de llegada: la línea que debe tomar y las próximas salidas aparecen al instante.',
@@ -53,8 +57,8 @@
       'tr.nommeQuartier': 'Barrio {q}',
       'tr.traficOk': 'Circulación normal', 'tr.traficPerturbee': 'Con incidencias', 'tr.traficTitre': 'Incidencia en la línea {l}', 'tr.traficAlt': '¿Qué hacer?', 'tr.voirAlerte': 'Ver la alerta de subida del agua',
       'tr.traficResume': '1 línea con incidencias, 3 normales.', 'tr.toutNormal': 'Las 4 líneas circulan con normalidad.',
-      'tr.pertMsg': 'Subida del agua en el barrio Sur: la parada Canal Sur no tiene servicio. La línea N2 sale provisionalmente de Place des Pionniers.',
-      'tr.pertAlt': 'Camine hasta Place des Pionniers (unos 6 minutos): la línea N2 pasa cada 15 minutos. Evite los niveles inferiores cerca del canal.',
+      'tr.pertMsg': 'Subida del agua en el barrio Sur: la parada Canal Sur no tiene servicio. La línea N2 sale provisionalmente de Plaza de los Pioneros.',
+      'tr.pertAlt': 'Camine hasta Plaza de los Pioneros (unos 6 minutos): la línea N2 pasa cada 15 minutos. Evite los niveles inferiores cerca del canal.',
       'tr.prendre': 'Tome la línea {l}', 'tr.direction': 'dirección {d}', 'tr.depuisArret': 'desde {a}', 'tr.jusqua': 'hasta {a}',
       'tr.prochains': 'Las 3 próximas salidas', 'tr.dans': 'en {n} min', 'tr.maintenant': 'ahora', 'tr.demain': 'mañana', 'tr.arriveeA': 'llegada {h}',
       'tr.duree': 'Duración estimada', 'tr.nbArrets': 'Paradas', 'tr.frequence': 'Frecuencia', 'tr.minutes': '{n} min', 'tr.arrets': '{n} paradas', 'tr.arret1': '1 parada', 'tr.freq': 'Cada {n} min',
@@ -63,7 +67,9 @@
       'tr.perturbeIci': 'Incidencia en este trayecto', 'tr.arretFerme': 'La parada {a} no tiene servicio: tome la lanzadera en {r}.', 'tr.arretFermeFin': 'La parada {a} no tiene servicio: bájese en {r}.', 'tr.marche': 'unos {n} min a pie',
       'tr.premier': 'Primera salida', 'tr.dernier': 'Última salida', 'tr.arret': 'Parada', 'tr.vers': 'hacia {d}', 'tr.captionLigne': 'Horarios de la línea {l}: primeros y últimos pasos en cada parada',
       'tr.serviceDe': 'Servicio de {a} a {b}', 'tr.tousJours': 'todos los días', 'tr.nonDesservi': 'Sin servicio',
-      'tr.ligne.N1': 'Centro – Norte', 'tr.ligne.N2': 'Sur – Estación orbital', 'tr.ligne.N3': 'Este – Oeste', 'tr.ligne.N4': 'Este – Estación orbital'
+      'tr.ligne.N1': 'Centro – Norte', 'tr.ligne.N2': 'Sur – Estación orbital', 'tr.ligne.N3': 'Este – Oeste', 'tr.ligne.N4': 'Este – Estación orbital',
+      'tr.q.Centre': 'Centro', 'tr.q.Nord': 'Norte', 'tr.q.Sud': 'Sur', 'tr.q.Est': 'Este', 'tr.q.Ouest': 'Oeste',
+      'tr.arret.gare': 'Estación orbital', 'tr.arret.mairie': 'Ayuntamiento', 'tr.arret.dispensaire': 'Dispensario central', 'tr.arret.quai': 'Muelle de Llegadas', 'tr.arret.serres': 'Parque de los Invernaderos', 'tr.arret.orion': 'Parada Orion', 'tr.arret.observatoire': 'Observatorio', 'tr.arret.canal': 'Canal Sur', 'tr.arret.pionniers': 'Plaza de los Pioneros', 'tr.arret.social': 'Centro social', 'tr.arret.ateliers': 'Zona de Talleres', 'tr.arret.aurore': 'Residencia Aurore', 'tr.arret.habitat': 'Centro de vivienda', 'tr.arret.kepler': 'Instituto Kepler', 'tr.arret.culturel': 'Cúpula cultural', 'tr.arret.tri': 'Centro de reciclaje', 'tr.arret.emploi': 'Casa del Empleo', 'tr.arret.jardins': 'Jardines hidropónicos'
     },
     ar: {
       'tr.titre': 'حافلات البلدية', 'tr.intro': 'اختر محطة الانطلاق والوصول: يظهر الخط المناسب والرحلات القادمة فوراً.',
@@ -73,8 +79,8 @@
       'tr.nommeQuartier': 'حي {q}',
       'tr.traficOk': 'سير عادي', 'tr.traficPerturbee': 'مضطرب', 'tr.traficTitre': 'اضطراب جارٍ على الخط {l}', 'tr.traficAlt': 'ماذا أفعل؟', 'tr.voirAlerte': 'عرض تنبيه ارتفاع المياه',
       'tr.traficResume': 'خط واحد مضطرب، 3 خطوط عادية.', 'tr.toutNormal': 'الخطوط الأربعة تسير بشكل عادي.',
-      'tr.pertMsg': 'ارتفاع المياه في الحي الجنوبي: لم تعد محطة Canal Sud مخدومة. ينطلق الخط N2 مؤقتاً من Place des Pionniers.',
-      'tr.pertAlt': 'توجّه سيراً إلى Place des Pionniers (نحو 6 دقائق): يمر الخط N2 كل 15 دقيقة. تجنّب الطوابق السفلى قرب القناة.',
+      'tr.pertMsg': 'ارتفاع المياه في الحي الجنوبي: لم تعد محطة قناة الجنوب مخدومة. ينطلق الخط N2 مؤقتاً من ساحة الروّاد.',
+      'tr.pertAlt': 'توجّه سيراً إلى ساحة الروّاد (نحو 6 دقائق): يمر الخط N2 كل 15 دقيقة. تجنّب الطوابق السفلى قرب القناة.',
       'tr.prendre': 'خذ الخط {l}', 'tr.direction': 'اتجاه {d}', 'tr.depuisArret': 'من {a}', 'tr.jusqua': 'حتى {a}',
       'tr.prochains': 'الرحلات الثلاث القادمة', 'tr.dans': 'بعد {n} د', 'tr.maintenant': 'الآن', 'tr.demain': 'غداً', 'tr.arriveeA': 'الوصول {h}',
       'tr.duree': 'المدة التقديرية', 'tr.nbArrets': 'المحطات', 'tr.frequence': 'التواتر', 'tr.minutes': '{n} د', 'tr.arrets': '{n} محطات', 'tr.arret1': 'محطة واحدة', 'tr.freq': 'كل {n} د',
@@ -83,7 +89,9 @@
       'tr.perturbeIci': 'اضطراب على هذه الرحلة', 'tr.arretFerme': 'محطة {a} غير مخدومة: خذ الحافلة من {r}.', 'tr.arretFermeFin': 'محطة {a} غير مخدومة: انزل في {r}.', 'tr.marche': 'نحو {n} د سيراً',
       'tr.premier': 'أول رحلة', 'tr.dernier': 'آخر رحلة', 'tr.arret': 'المحطة', 'tr.vers': 'نحو {d}', 'tr.captionLigne': 'مواعيد الخط {l}: أول وآخر مرور عند كل محطة',
       'tr.serviceDe': 'الخدمة من {a} إلى {b}', 'tr.tousJours': 'كل يوم', 'tr.nonDesservi': 'غير مخدومة',
-      'tr.ligne.N1': 'الوسط – الشمال', 'tr.ligne.N2': 'الجنوب – المحطة المدارية', 'tr.ligne.N3': 'الشرق – الغرب', 'tr.ligne.N4': 'الشرق – المحطة المدارية'
+      'tr.ligne.N1': 'الوسط – الشمال', 'tr.ligne.N2': 'الجنوب – المحطة المدارية', 'tr.ligne.N3': 'الشرق – الغرب', 'tr.ligne.N4': 'الشرق – المحطة المدارية',
+      'tr.q.Centre': 'الوسط', 'tr.q.Nord': 'الشمال', 'tr.q.Sud': 'الجنوب', 'tr.q.Est': 'الشرق', 'tr.q.Ouest': 'الغرب',
+      'tr.arret.gare': 'المحطة المدارية', 'tr.arret.mairie': 'دار البلدية', 'tr.arret.dispensaire': 'المستوصف المركزي', 'tr.arret.quai': 'رصيف الوصول', 'tr.arret.serres': 'حديقة البيوت الزجاجية', 'tr.arret.orion': 'محطة أوريون', 'tr.arret.observatoire': 'المرصد', 'tr.arret.canal': 'قناة الجنوب', 'tr.arret.pionniers': 'ساحة الروّاد', 'tr.arret.social': 'المركز الاجتماعي', 'tr.arret.ateliers': 'منطقة الورش', 'tr.arret.aurore': 'إقامة أورور', 'tr.arret.habitat': 'مركز السكن', 'tr.arret.kepler': 'ثانوية كيبلر', 'tr.arret.culturel': 'القبة الثقافية', 'tr.arret.tri': 'مركز الفرز', 'tr.arret.emploi': 'دار التشغيل', 'tr.arret.jardins': 'الحدائق المائية'
     }
   });
 
@@ -109,7 +117,8 @@
   /* ---------- Calculs ---------- */
   const { echap } = NT.ui;
   const t = NT.t;
-  const nom = id => ARRETS[id][0];
+  const nom = id => t('tr.arret.' + id, null, ARRETS[id][0]);   // nom d'arrêt traduit, FR en repli
+  const nomQuartier = q => t('tr.q.' + q, null, q);
   const pad = n => String(n).padStart(2, '0');
   const hhmm = m => { m = ((Math.round(m) % 1440) + 1440) % 1440; return pad(Math.floor(m / 60)) + ':' + pad(m % 60); };
   const versMin = s => { const [h, m] = s.split(':'); return (+h) * 60 + (+m); };
@@ -198,7 +207,7 @@
     const ordre = NT.QUARTIERS.slice();
     const options = '<option value="">' + echap(t('tr.choisir')) + '</option>' + ordre.map(q => {
       const ids = Object.keys(ARRETS).filter(id => ARRETS[id][1] === q);
-      return ids.length ? `<optgroup label="${echap(t('tr.nommeQuartier', { q }))}">${ids.map(id => `<option value="${id}">${echap(nom(id))}</option>`).join('')}</optgroup>` : '';
+      return ids.length ? `<optgroup label="${echap(t('tr.nommeQuartier', { q: nomQuartier(q) }))}">${ids.map(id => `<option value="${id}">${echap(nom(id))}</option>`).join('')}</optgroup>` : '';
     }).join('');
     selDep.innerHTML = options; selArr.innerHTML = options;
   }
@@ -317,7 +326,7 @@
     } else if (u && u.quartier) {
       // Premier arrêt du quartier de l'utilisateur (le démo place Canal Sud en tête pour le quartier Sud)
       dep = Object.keys(ARRETS).find(id => ARRETS[id][1] === u.quartier) || '';
-      note.textContent = dep ? t('tr.noteQuartier', { q: u.quartier }) : '';
+      note.textContent = dep ? t('tr.noteQuartier', { q: nomQuartier(u.quartier) }) : '';
     } else {
       dep = 'pionniers';
       note.textContent = t('tr.noteVisiteur');
