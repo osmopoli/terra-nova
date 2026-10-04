@@ -42,6 +42,7 @@ Hodifly redéploie à chaque push sur `main` avec la commande de build du projet
   des profils illisibles. `CHIFFREMENT_IGNORER_TEMOIN=1` force le démarrage pour dépanner : les valeurs illisibles sont alors
   conservées telles quelles en base (jamais écrasées) et renvoyées vides à l'écran jusqu'au retour de la bonne clé.
 - Surveillance : `GET /api/health` → `{"status":"ok","service":"terra-nova","database":"ok",…}` (inchangé) ; vague 15 : niveau de charge public sur `GET /api/charge` (`normal` / `forte` / `critique`) et en-tête `X-Charge` sur chaque réponse de l'API.
+- Vague 17 (F85-F87), variables facultatives (valeurs par défaut sûres) : `SAUVEGARDES_DIR` (dossier des sauvegardes, défaut `~/terranova-data/sauvegardes`), `SAUVEGARDES_GARDER` (sauvegardes automatiques gardées, 7), `URGENCE_DELAI_MINUTES` (délai de prise en charge avant escalade, 5), `INTEGRITE_INTERVALLE_HEURES` (contrôle d’intégrité, 6), `ANOMALIE_SEUIL_SURVEILLE` / `_ELEVE` / `_CRITIQUE` (30 / 60 / 85), `ANOMALIE_RAFALE_MINUTE` (240), `TZ_VILLE` (fuseau des heures affichées et des habitudes de connexion, `Indian/Mayotte`). Pour les utiliser en production, ajouter leurs préfixes au `grep` du `.env`. Les sauvegardes ne contiennent jamais la clé de chiffrement : la conserver à part.
 - Vague 15 (F77, F78) : seuils réglables sans toucher au code (`CHARGE_LAG_FORTE`=120 ms, `CHARGE_LAG_CRITIQUE`=350 ms, `CHARGE_EN_COURS_FORTE`, `CHARGE_PAR_IP`=8, `CHARGE_DELAI_MAX`=15000 ms…) ; `CHARGE_CACHE=0` désactive la mémoïsation (mesure « sans cache »).
 
 ## Test de charge (vague 15)
@@ -75,6 +76,7 @@ Réinitialiser les données de démonstration : connecté en admin, `POST /api/d
 - Vague 16 : `src/modules/formulaires.js` (jetons signés, champ piège, vérification humaine, idempotence et demandes en double, F81-F82), `accuses.js` (accusé de réception vérifiable, F83), `echanges.js` (réponses des agents et fil d’échanges, F84) ; côté navigateur `formulaires.js`, `accuse.js`, `echanges.js`, `agent-robots.js` et `assets/css/vague16.css`.
 
 - Vague 15 : `src/charge.js` (mesure de la charge, délestage 503 + `Retry-After` du non essentiel, file équitable par IP, délai maximal, mémoïsation des lectures chaudes invalidée à chaque écriture, mode dégradé forcé par l'admin, F77/F78), `src/modules/priorites.js` (priorité des dossiers calculée et corrigeable, F80), `src/seed-vague15.js` ; navigateur : `assets/js/resilience.js` (avis calme, recul exponentiel, brouillons, nouveaux essais), `sw.js` (copie hors connexion, réseau d'abord), `assets/js/sujets.js` (tri par sujet, F79), `assets/js/agent-priorites.js`, `assets/js/agent-plateforme.js` ; `tools/charge.js` (test de charge).
+- Vague 17 : `src/modules/integrite.js` (registre d’audit scellé SHA-256 + HMAC, contrôles de cohérence et réparations, F85), `anomalies.js` (habitudes, score de risque, mot de passe redemandé, ralentissement, sessions fermées, « C’était moi », F85), `src/incidents.js`, `urgences.js` (urgence médicale, escalade, F86), `sauvegardes.js` (VACUUM INTO, test de restauration, F87), `exports.js` (exports pseudonymisés, modèles, F88), `src/seed-vague17.js` ; navigateur : `veille.js` (balise « Alertes » : urgences, activité inhabituelle, fenêtre de confirmation du mot de passe), `urgence-medicale.js`, `agent-urgences.js`, `agent-incidents.js`, `admin-sauvegardes.js`, `agent-exports.js`, `assets/css/vague17.css`.
 - `src/webcup.js` — interroge l'API toutes les `POLL_INTERVAL_SECONDS` (dédoublonnage sur `request_code`).
 - `public/assets/js/store.js` — client du serveur, même interface pour toutes les pages (`NT.store`, `NT.auth`, `NT.demandes`…).
 - `data/demo-seed.json` — données de démonstration (dates relatives).
@@ -110,3 +112,8 @@ Le détail « où et comment le montrer au jury » est dans [`docs/RENDU-JURY.md
 | Surcharge et affluence : l'essentiel reste disponible (vague 15) | F77, F78 | toutes (pied de page, tiroir « Alertes », brouillons, nouveaux essais, hors connexion), `agent-plateforme`, `tools/charge.js` |
 | Trier et filtrer par sujet (vague 15) | F79 | `suivi`, `espace#historique`, `soutenir` |
 | Dossiers prioritaires des agents (vague 15) | F80 | `agent-demandes`, `agent`, `agent-journal` |
+
+| Centre de cybersécurité : intégrité, activité inhabituelle, incidents (vague 17) | F85 | `agent-securite`, `securite`, balise « Alertes » (toutes les pages) |
+| Signalement d’urgence médicale (vague 17) | F86 | `demande`, `urgence`, `suivi`, `agent`, `agent-demandes` |
+| Sauvegardes vérifiées (vague 17) | F87 | `admin-sauvegardes` |
+| Exports des données de suivi (vague 17) | F88 | `agent-exports` |

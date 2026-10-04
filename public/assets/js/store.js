@@ -110,6 +110,7 @@
     let donnees = null;
     try { donnees = x.responseText ? JSON.parse(x.responseText) : null; } catch (e) { /* réponse non JSON */ }
     charge.observer(x.status, x.getResponseHeader('X-Charge'));   // F77, F78
+    if (x.status === 428 && donnees && donnees.reauth && NT.reauth) setTimeout(() => NT.reauth({ auto: true, methode, url }), 0);   // vague 17 (F85) : confirmation du mot de passe demandée
     if (methode !== 'GET') { if (x.status >= 200 && x.status < 300) charge.ecrituresOk++; else if (x.status === 0 || x.status >= 500 || x.status === 429) charge.echecsEcriture++; }
     return { statut: x.status, donnees };
   }

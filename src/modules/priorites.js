@@ -30,6 +30,8 @@ function calculer(d, ctx) {
     ajouter('terminee', 0);
     return { niveau: 'basse', score: 0, raisons };
   }
+  // Vague 17 (F86) : une urgence médicale en cours est toujours Critique, hors de la file normale
+  if (d.urgenceMedicale && d.urgenceMedicale.statut !== 'close') { ajouter('urgenceMedicale', 100); return { niveau: 'critique', score: 100, raisons }; }
   const motC = cherche(texte, MOTS_CRITIQUES);
   if (motC) ajouter('mot', 45, { mot: motC });
   else { const motH = cherche(texte, MOTS_HAUTS); if (motH) ajouter('mot', 15, { mot: motH }); }
@@ -67,7 +69,8 @@ function tout() {
   const r = new Map();
   for (const d of demandes) {
     const c = calculer(d, ctx);
-    const manuel = d.prioriteDossier && NIVEAUX.includes(d.prioriteDossier.niveau) ? d.prioriteDossier : null;
+    const urgenceEnCours = d.urgenceMedicale && d.urgenceMedicale.statut !== 'close';   // vague 17 (F86) : aucune correction ne la fait descendre
+    const manuel = !urgenceEnCours && d.prioriteDossier && NIVEAUX.includes(d.prioriteDossier.niveau) ? d.prioriteDossier : null;
     r.set(d.id, { niveau: manuel ? manuel.niveau : c.niveau, auto: c.niveau, score: c.score, raisons: c.raisons, manuel, agent: d.agent || '', ouverte: OUVERTES.has(d.statut) });
   }
   memo = { v, t: Date.now(), r };

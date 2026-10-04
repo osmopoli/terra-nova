@@ -37,13 +37,15 @@ const rang = (n) => NIVEAUX.indexOf(n);
 // Toujours servis (jamais délestés, passent devant dans la file d'attente)
 const ESSENTIEL = [
   /^\/api\/(health|charge)(\/|$)/, /^\/api\/auth\//, /^\/api\/etat$/, /^\/api\/officiels(\/[^/]+\/compris)?$/,
-  /^\/api\/services\//, /^\/api\/notifications\//, /^\/api\/accueil\/(code|inscrire)$/, /^\/api\/securite\/etat$/
+  /^\/api\/services\//, /^\/api\/notifications\//, /^\/api\/accueil\/(code|inscrire)$/, /^\/api\/securite\/etat$/,
+  /^\/api\/urgences(\/|-points|$)/, /^\/api\/veille$/, /^\/api\/activite(\/|$)/   // vague 17 (F86) : urgences médicales et veille, jamais délestées
 ];
 const estEssentiel = (req) => ESSENTIEL.some((r) => r.test(req.path))
   || (req.method === 'POST' && req.path === '/api/docs/demandes')            // déposer une demande, un signalement
   || (req.method === 'PATCH' && /^\/api\/docs\/(demandes|notifications|rdv)\//.test(req.path));
 // Délestés dès la charge forte : calculs lourds, non essentiels pour l'habitant
-const LOURD = [/^\/api\/sobriete$/, /^\/api\/indicateurs$/, /^\/api\.php$/, /^\/api\/webcup\//, /^\/api\/mes-donnees$/, /^\/api\/bouclier/, /^\/api\/securite\/journal/];
+const LOURD = [/^\/api\/sobriete$/, /^\/api\/indicateurs$/, /^\/api\.php$/, /^\/api\/webcup\//, /^\/api\/mes-donnees$/, /^\/api\/bouclier/, /^\/api\/securite\/journal/,
+  /^\/api\/exports\/(apercu|fichier)$/, /^\/api\/sauvegardes$/, /^\/api\/integrite\/controler$/];   // vague 17 (F85, F87, F88) : exports, sauvegardes, contrôles
 // Délestés en charge critique : utiles mais secondaires
 const SECONDAIRE = [/^\/api\/demandes\/(groupes|publiques)$/, /^\/api\/demandes\/[^/]+\/(semblables|soutenir)$/, /^\/api\/participation/,
   /^\/api\/(consultations|idees|projets)/, /^\/api\/avis-services/, /^\/api\/contributions/, /^\/api\/mon-recapitulatif$/, /^\/api\/mes-informations$/,
@@ -115,7 +117,7 @@ function mesurer(req, res, next) {
   let fini = false;
   const fin = () => {
     if (fini) return; fini = true; m.enCours--;
-    if (!api) return;
+    if (!api || res.locals.ralenti) return;   // vague 17 (F85) : un ralentissement volontaire (activité inhabituelle) n'est pas une surcharge
     durees.push([Date.now(), Number(process.hrtime.bigint() - t0) / 1e6]);
     if (durees.length > 20000) durees.splice(0, 5000);
     if (res.statusCode >= 500 && !res.locals.deleste) m.erreurs5xx++;

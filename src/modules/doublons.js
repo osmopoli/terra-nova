@@ -60,7 +60,7 @@ const SEUIL = 0.5, SEUIL_TEXTE = 0.25;
 function groupes() {
   const toutes = docs.tous('demandes');
   const parId = new Map(toutes.map((d) => [d.id, d]));
-  const ouvertes = toutes.filter((d) => OUVERTES.has(d.statut) && !d.principale);
+  const ouvertes = toutes.filter((d) => OUVERTES.has(d.statut) && !d.principale && !d.urgenceMedicale);   // vague 17 (F86) : une urgence médicale n'est jamais groupée
   const v = vecteurs(ouvertes);
   const parent = ouvertes.map((_, i) => i);
   const racine = (i) => (parent[i] === i ? i : (parent[i] = racine(parent[i])));
@@ -118,7 +118,7 @@ router.get('/api/demandes/:id/semblables', A.exigerRole('agent', 'admin'), (req,
   const v = vecteurs([d].concat(autres));
   res.set('Cache-Control', 'no-store');
   res.json(autres.map((x, i) => ({ id: x.id, r: ressemblance(d, x, v[0], v[i + 1]), x }))
-    .filter(({ x, r }) => x.principale === d.id || (r.score >= 0.4 && r.texteSim >= 0.2 && x.type !== 'demarche' && d.type !== 'demarche'))
+    .filter(({ x, r }) => x.principale === d.id || (!x.urgenceMedicale && !d.urgenceMedicale && r.score >= 0.4 && r.texteSim >= 0.2 && x.type !== 'demarche' && d.type !== 'demarche'))
     .sort((a, b) => b.r.score - a.r.score).slice(0, 8)
     .map(({ x, r }) => ({ id: x.id, objet: x.objet, statut: x.statut, quartier: quartierDe(x), serviceId: x.serviceId, cree: x.cree, rattachee: x.principale === d.id,
       principale: x.principale || '', estPrincipale: (x.liees || []).length > 0, score: Math.round(r.score * 100) / 100, memeService: r.memeService, memeQuartier: r.memeQuartier, ecartJours: Math.round(r.ecartJours * 10) / 10 })));
@@ -134,6 +134,7 @@ router.post('/api/demandes/:id/lier', A.exigerRole('agent', 'admin'), (req, res)
   const cibles = ids.map((id) => docs.get('demandes', id));
   if (cibles.some((x) => !x)) return erreur(res, 404, 'Une des demandes est introuvable.');
   if (cibles.some((x) => x.type === 'demarche')) return erreur(res, 400, 'Une démarche administrative est personnelle : elle ne peut pas être rattachée.');
+  if (p.urgenceMedicale || cibles.some((x) => x.urgenceMedicale)) return erreur(res, 409, 'Une urgence médicale est toujours traitée seule : elle ne peut être ni rattachée ni fusionnée.');   // vague 17 (F86)
   if (cibles.some((x) => (x.liees || []).length)) return erreur(res, 409, 'Une des demandes est elle-même principale d’un groupe : rattachez plutôt ce groupe à elle.');
   const ailleurs = cibles.find((x) => x.principale && x.principale !== p.id);
   if (ailleurs) return erreur(res, 409, `La demande ${ailleurs.id} est déjà rattachée à ${ailleurs.principale}.`);
