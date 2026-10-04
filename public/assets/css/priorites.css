@@ -1,5 +1,5 @@
 /* Terra Nova — vague 15 (F80) : dossiers prioritaires (agent-demandes, espace agents). Jetons et classes existants uniquement. */
-.pr-badge{ display:inline-flex; align-items:center; gap:.3rem; font-size:.82rem; font-weight:700; padding:.15rem .6rem; border-radius:99px; border:1px solid currentColor; white-space:nowrap; }
+/* .pr-badge : gabarit du composant « pastille » (theme.css) */
 .pr-critique{ color:var(--corail); } .pr-haute{ color:var(--soleil); } .pr-normale{ color:var(--iono); } .pr-basse{ color:var(--brume); }
 .pr-badge.pr-critique{ background:color-mix(in oklch, var(--corail) 12%, transparent); }
 .pr-panneau{ margin-bottom:1rem; }
@@ -15,7 +15,7 @@
 .pr-liste{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:auto minmax(0,1fr); gap:.3rem; }
 /* Liste compacte : badge en colonne, titre sur deux lignes au plus, motif dessous */
 .pr-liste li{ grid-column:1 / -1; display:grid; grid-template-columns:subgrid; column-gap:.6rem; align-items:center; padding:.25rem .6rem; border:1px solid var(--trait); border-radius:var(--r-s); }
-.pr-liste .pr-badge{ grid-column:1; grid-row:1; justify-self:start; font-size:.75rem; padding:.05rem .5rem; }
+.pr-liste .pr-badge{ grid-column:1; grid-row:1; justify-self:start; }
 .pr-ouvrir{ font:inherit; background:none; border:0; color:var(--givre); text-align:start; cursor:pointer; padding:.2rem 0; text-decoration:underline; text-underline-offset:3px; min-height:2rem; }
 .pr-liste .pr-ouvrir{ grid-column:2; grid-row:1; min-width:0; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-clamp:2; overflow:hidden; font-size:.92rem; min-height:1.75rem; }
 .pr-raison{ font-size:.78rem; color:var(--brume); grid-column:2; grid-row:2; margin-top:-.2rem; }

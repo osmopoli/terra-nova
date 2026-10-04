@@ -63,7 +63,7 @@ html[lang="ar"] .ag-msg details summary::after{ content:" عرض المزيد"; 
 .ag-nouveau-badge{ display:inline-block; margin-inline-start:.4rem; font-size:.7rem; font-weight:800; padding:.05rem .45rem; border-radius:99px; background:var(--aurore); color:var(--sur-iono); vertical-align:middle; }
 tr.ag-nouveau > th{ border-inline-start:3px solid var(--aurore); }
 
-.ag-diff,.ag-prio,.ag-niv,.ag-action-lib{ display:inline-flex; align-items:center; gap:.35rem; font-size:.78rem; font-weight:700; padding:.15rem .6rem; border-radius:99px; border:1px solid currentColor; white-space:nowrap; }
+/* .ag-diff, .ag-prio, .ag-niv, .ag-action-lib : gabarit du composant « pastille » (theme.css) */
 .ag-diff-1{ color:var(--calme); } .ag-diff-2{ color:var(--soleil); } .ag-diff-3{ color:var(--corail); }
 .ag-prio-haute{ color:var(--corail); } .ag-prio-normale{ color:var(--brume); } .ag-prio-basse{ color:var(--brume); }
 .ag-niv-info{ color:var(--iono); } .ag-niv-importante{ color:var(--soleil); } .ag-niv-alerte{ color:var(--corail); }
