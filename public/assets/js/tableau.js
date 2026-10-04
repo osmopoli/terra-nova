@@ -106,7 +106,7 @@
     ['recue', 'm-points-soleil', 'var(--soleil)'],
     ['en_cours', 'm-hach-iono', 'var(--iono)'],
     ['traitee', 'm-plein-calme', 'var(--calme)'],
-    ['cloturee', 'm-hach-calme', 'var(--calme)']
+    ['cloturee', 'm-plein-brume', 'var(--brume)']
   ];
 
   let ind = null, dernierJson = '', majLe = null, enCours = false, echec = false;
