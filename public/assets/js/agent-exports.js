@@ -104,6 +104,7 @@
     el('ex-nominatif').hidden = p.pseudonymiser;
     if (!p.colonnes.length) { z.innerHTML = `<p class="doux">${E(t('ex.colonnesMin'))}</p>`; return; }
     const r = NT.api('POST', '/api/exports/apercu', p);
+    if (r.statut === 428) { NT.reauth({ apres: apercu }); z.innerHTML = `<p class="doux">${E((r.donnees && r.donnees.erreur) || '')}</p>`; return; }
     if (r.statut !== 200) { z.innerHTML = `<p class="doux">${E((r.donnees && r.donnees.erreur) || 'Erreur')}</p>`; return; }
     const d = r.donnees;
     z.innerHTML = d.total ? `<div class="table-defile"><table class="table-sec"><caption>${E(t('ex.apercuTitre', { n: d.lignes.length, t: d.total }))}</caption>
