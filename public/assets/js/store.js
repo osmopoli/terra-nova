@@ -255,9 +255,9 @@
   /* ---------- Demandes citoyennes (D04, D11, D16, D17, F22, F25, F26) : numéro attribué par le serveur ---------- */
   const demandes = {
     creer(data) {
-      const u = auth.utilisateur();
+      // F83 : l'accusé de réception (notification comprise) est produit par le serveur, une seule fois même si l'envoi est rejoué (F82)
       const d = store.add('demandes', Object.assign({ type: 'contact', serviceId: '', objet: '', message: '', lieu: '', quartier: '', priorite: 'normale' }, data));
-      if (d && u) notif.ajouter(u.id, 'Demande ' + d.id + ' bien reçue', 'Votre demande « ' + d.objet + ' » a été enregistrée. Suivez son avancement dans votre espace.', 'suivi.html?id=' + d.id, 'info');
+      if (d && auth.utilisateur()) NT.recharger();
       return d;
     },
     changerStatut(id, statut, note) {

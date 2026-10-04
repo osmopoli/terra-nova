@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr" class="sl-theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Accusé de réception — Terra Nova</title>
+  <meta name="description" content="Accusé de réception d’une demande à Terra Nova : référence, date et heure, service, code de vérification, à imprimer ou enregistrer en PDF.">
+  <meta name="theme-color" content="#0b1a1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" id="nt-polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" media="print" onload="if(!document.documentElement.classList.contains('leger'))this.media='all'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/informations.css">
+  <link rel="stylesheet" href="assets/css/vague16.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/accuse.js"></script>
+  <script src="assets/js/ui.js" defer></script>
+</head>
+<body data-page="accuse" data-ariane="nav.accueil|index.html;acc.ariane">
+  <main id="contenu" class="conteneur">
+    <header class="titre-page sans-impression">
+      <h1 data-i18n="acc.titre">Accusé de réception</h1>
+      <p data-i18n="acc.sous">La preuve que la ville a bien reçu votre demande, à garder, imprimer ou citer.</p>
+    </header>
+    <div class="entete-doc actions-doc" id="actions-accuse">
+      <button class="btn btn-primaire" type="button" id="btn-imprimer"><i class="ph-duotone ph-printer" aria-hidden="true"></i><span data-i18n="acc.imprimer">Télécharger (PDF / imprimer)</span></button>
+      <a class="btn sans-impression" href="suivi.html" id="lien-suivi" hidden><i class="ph-duotone ph-list-checks" aria-hidden="true"></i><span data-i18n="acc.suivre">Suivre la demande</span></a>
+      <a class="btn sans-impression" href="verifier-accuse.html"><i class="ph-duotone ph-seal-check" aria-hidden="true"></i><span data-i18n="acc.verifierLien">Vérifier un accusé de réception</span></a>
+    </div>
+    <p class="mention-doc" data-i18n="acc.aide">Pour le PDF, choisissez « Enregistrer au format PDF » dans la fenêtre d’impression.</p>
+    <div id="zone-accuse" aria-live="polite"></div>
+  </main>
+</body>
+</html>

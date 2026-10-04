@@ -91,12 +91,32 @@ function semerVague14(s) {
   return true;
 }
 
+/* Vague 16 : réponses types des agents (F84) et fils d'échanges de démonstration. Chargés une seule fois, y compris sur une base
+   déjà en service (compteur « seed_vague16 ») ; un échange n'est ajouté qu'à une demande de démonstration existante, qui
+   appartient bien au compte prévu et n'a encore aucun échange (jamais sur une vraie demande). */
+function semerVague16(s, forcer) {
+  const fait = db.prepare('SELECT valeur FROM compteurs WHERE nom = ?').get('seed_vague16');
+  if (!forcer && fait && fait.valeur > 0) return false;
+  const v = s.vague16 || {};
+  for (const r of v.reponsesTypes || []) if (forcer || !docs.get('reponsesTypes', r.id)) docs.put('reponsesTypes', Object.assign({ cree: new Date().toISOString() }, r));
+  let n = 0;
+  for (const [id, liste] of Object.entries(v.echanges || {})) {
+    const d = docs.get('demandes', id);
+    if (!d || d.userId !== (v.proprietaires || {})[id] || (d.echanges || []).length) continue;
+    const echanges = liste.map((e, i) => Object.assign({ id: `ech-demo-${id}-${i}` }, e));
+    docs.patch('demandes', id, { echanges }); n++;
+  }
+  docs.fixerCompteur('seed_vague16', 1);
+  return true;
+}
+
 function semer({ forcer = false } = {}) {
   const lire = () => absolu(JSON.parse(fs.readFileSync(FICHIER, 'utf8')), Date.now());
   if (!forcer && docs.compte('services') > 0) {
     if (docs.compte('projets') === 0) { semerParticipation(lire()); console.log('[demo] participation (vague 12) chargée'); }
     if (semerVague13(lire())) console.log('[demo] comptes et dossiers de la vague 13 chargés');
     if (semerVague14(lire())) console.log('[demo] contenus de la vague 14 chargés (message officiel, associations, demandes semblables, avis)');
+    if (semerVague16(lire())) console.log('[demo] contenus de la vague 16 chargés (réponses types, échanges avec les habitants)');
     motsDePasseDemo();
     return false;
   }
@@ -112,6 +132,7 @@ function semer({ forcer = false } = {}) {
   docs.fixerCompteur('demandes', compteur);
   semerParticipation(s);
   semerVague14(s);
+  semerVague16(s, true);
   motsDePasseDemo();
   console.log('[demo] données de démonstration chargées');
   return true;
