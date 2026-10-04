@@ -264,7 +264,7 @@
       if (texte.length < 5) { err.textContent = t('ech.errAg'); err.hidden = false; msg.setAttribute('aria-invalid', 'true'); msg.focus(); return; }
       const liees = f.querySelector('#rp-liees');
       const r = NT.api('POST', '/api/demandes/' + encodeURIComponent(d.id) + '/repondre', { message: texte, statut: f.querySelector('#rp-statut').value, modele: f.querySelector('#rp-modele').value, liees: liees ? liees.checked : false });
-      if (r.statut !== 200) { err.textContent = (r.donnees && r.donnees.erreur) || 'Erreur'; err.hidden = false; return; }
+      if (r.statut !== 200) { err.textContent = (r.donnees && r.donnees.erreur) || NT.t('ui.erreur'); err.hidden = false; return; }
       NT.recharger();
       NT.ui.toast(t('ech.okAg', { id: d.id }) + (r.donnees.communes ? ' ' + t('ech.okCommun', { n: r.donnees.communes }) : ''), 'success');
       if (apres) apres();

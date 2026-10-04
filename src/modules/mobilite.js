@@ -146,7 +146,8 @@ function verifier() {
   for (const i of docs.tous(COL)) {
     const n = Object.assign({ debut: false, fin: false }, i.notifie || {});
     const s = statut(i, t);
-    if (i.demo && !i.leveeLe && s === 'terminee' && i.fin && t - Date.parse(i.fin) > 3600e3) { renouvelerDemo(i); continue; }
+    // démonstration (tant qu'aucun agent n'y touche) : fin passée → renouvelée une heure plus tard, sans prévenir les abonnés
+    if (i.demo && !i.leveeLe && s === 'terminee') { if (i.fin && t - Date.parse(i.fin) > 3600e3) renouvelerDemo(i); continue; }
     if (s === 'en_cours' && !n.debut) { prevenir(i, 'debut'); docs.patch(COL, i.id, { notifie: Object.assign(n, { debut: true }) }); }
     else if (s === 'terminee' && n.debut && !n.fin) { prevenir(i, 'fin'); docs.patch(COL, i.id, { notifie: Object.assign(n, { fin: true }) }); }
   }

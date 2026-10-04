@@ -99,7 +99,7 @@
     const html = `<article class="v20-tiroir" aria-labelledby="v20-d-t"><h3 id="v20-d-t"><i class="ph-duotone ph-bus" aria-hidden="true"></i>${E(t('v20.dTitre', { n: items.length }))}</h3><ul>${items.map(({ i, tr, k, suivie }) => {
       const best = (i.meilleure || [])[k];
       return `<li class="${suivie ? 'v20-suivie' : ''}"><span class="tr-ligne tr-${E(tr.ligne)}">${E(tr.ligne)}</span><div><strong>${E(titreLigne(i, tr.ligne))}</strong>${suivie ? ` <span class="v20-badge">${E(t('v20.dSuivie'))}</span>` : ''}
-        ${best && best.option ? `<p>${E(t('v20.dMeilleure', { s: solution(best.option) }))}</p>` : ''}<a href="transports.html#int-${E(i.id)}">${E(t('v20.dVoir'))} →</a></div></li>`;
+        ${best && best.option ? `<p>${E(t('v20.dMeilleure', { s: solution(best.option) }))}</p>` : ''}<a href="transports.html#int-${E(i.id)}">${E(t('v20.dVoir'))} <i class="ph ph-arrow-right" aria-hidden="true"></i></a></div></li>`;
     }).join('')}</ul></article>`;
     return { n: items.length, html };
   }

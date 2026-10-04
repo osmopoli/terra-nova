@@ -45,32 +45,45 @@
       'cz.eQuartier': 'اختر حياً واحداً على الأقل.', 'cz.eRet': 'يجب أن تكون الساعة المتوقعة في المستقبل.' }
   });
 
-  // Modèles (texte en français, traductions envoyées seulement si le texte du modèle n'a pas été modifié)
+  // Modèles (texte en français ; les traductions EN / ES / AR, générées à partir du modèle avec le nom du quartier,
+  // ne sont envoyées que si l'agent n'a pas modifié le texte du modèle)
+  const QUARTIER = { fr: { Centre: 'Centre', Nord: 'Nord', Sud: 'Sud', Est: 'Est', Ouest: 'Ouest' }, en: { Centre: 'Centre', Nord: 'North', Sud: 'South', Est: 'East', Ouest: 'West' },
+    es: { Centre: 'Centro', Nord: 'Norte', Sud: 'Sur', Est: 'Este', Ouest: 'Oeste' }, ar: { Centre: 'الوسط', Nord: 'الشمال', Sud: 'الجنوب', Est: 'الشرق', Ouest: 'الغرب' } };
+  // « secteur Nord » / « secteurs Nord, Sud » dans chaque langue
+  const SECTEUR = { fr: q => (q.length > 1 ? 'secteurs ' : 'secteur ') + q.map(x => QUARTIER.fr[x] || x).join(', '), en: q => q.map(x => QUARTIER.en[x] || x).join(', ') + (q.length > 1 ? ' sectors' : ' sector'),
+    es: q => (q.length > 1 ? 'sectores ' : 'sector ') + q.map(x => QUARTIER.es[x] || x).join(', '), ar: q => (q.length > 1 ? 'قطاعات ' : 'قطاع ') + q.map(x => QUARTIER.ar[x] || x).join('، ') };
   const MODELES = {
     'panne-electrique': {
-      titre: q => `Panne électrique — ${q.length > 1 ? 'secteurs ' + q.join(', ') : 'secteur ' + q[0]}`,
-      message: q => `Une panne électrique touche le ${q.length > 1 ? 'secteurs ' + q.join(', ') : 'secteur ' + q[0]}. Les équipes de la centrale réparent le réseau. Les ascenseurs et l’éclairage public du secteur sont arrêtés.`,
+      titre: q => `Panne électrique — ${SECTEUR.fr(q)}`,
+      message: q => `Une panne électrique touche le ${SECTEUR.fr(q)}. Les équipes de la centrale réparent le réseau. Les ascenseurs et l’éclairage public du secteur sont arrêtés.`,
       actions: ['Débranchez les appareils sensibles (ordinateur, télévision)', 'Gardez le réfrigérateur et le congélateur fermés', 'Personnes sous assistance respiratoire : appelez le 15', 'Utilisez une lampe de poche, pas de bougie', 'Rechargez votre téléphone au point d’accueil le plus proche'],
       points: q => ['Dôme des Pionniers — salle polyvalente, recharge et eau, ouvert 24 h/24', q[0] === 'Nord' ? 'Maison de quartier Nord — arrêt Orion, accueil jusqu’à 22 h' : `Maison de quartier ${q[0]} — accueil jusqu’à 22 h`],
       services: ['eau-energie', 'voirie'],
       alternative: 'Signalez une urgence électrique à l’astreinte technique du dôme ; accueil et recharge au Dôme des Pionniers.',
-      traductions: q => (q.length === 1 && q[0] === 'Nord' ? {
-        en: { titre: 'Power cut — North sector', message: 'A power cut is affecting the North sector. The power plant teams are repairing the network. Lifts and street lighting in the sector are down.',
+      traductions: q => ({
+        en: { titre: `Power cut — ${SECTEUR.en(q)}`, message: `A power cut is affecting the ${SECTEUR.en(q)}. The power plant teams are repairing the network. Lifts and street lighting in the area are down.`,
           actions: ['Unplug sensitive devices (computer, TV)', 'Keep the fridge and freezer closed', 'People on breathing support: call 15', 'Use a torch, not a candle', 'Charge your phone at the nearest reception point'] },
-        es: { titre: 'Corte eléctrico — sector Norte', message: 'Un corte eléctrico afecta al sector Norte. Los equipos de la central reparan la red. Los ascensores y el alumbrado público del sector están parados.',
+        es: { titre: `Corte eléctrico — ${SECTEUR.es(q)}`, message: `Un corte eléctrico afecta al ${SECTEUR.es(q)}. Los equipos de la central reparan la red. Los ascensores y el alumbrado público de la zona están parados.`,
           actions: ['Desenchufe los aparatos sensibles (ordenador, televisión)', 'Mantenga cerrados el frigorífico y el congelador', 'Personas con asistencia respiratoria: llamen al 15', 'Use una linterna, no velas', 'Cargue su teléfono en el punto de acogida más cercano'] },
-        ar: { titre: 'انقطاع الكهرباء — القطاع الشمالي', message: 'انقطاع في الكهرباء يمس القطاع الشمالي. فرق المحطة تصلح الشبكة. المصاعد والإنارة العامة في القطاع متوقفة.',
+        ar: { titre: `انقطاع الكهرباء — ${SECTEUR.ar(q)}`, message: `انقطاع في الكهرباء يمس ${SECTEUR.ar(q)}. فرق المحطة تصلح الشبكة. المصاعد والإنارة العامة في المنطقة متوقفة.`,
           actions: ['افصل الأجهزة الحساسة (الحاسوب، التلفاز)', 'أبقِ الثلاجة والمجمد مغلقين', 'الأشخاص تحت التنفس الاصطناعي: اتصلوا بالرقم 15', 'استعمل مصباحاً يدوياً لا شمعة', 'اشحن هاتفك في أقرب نقطة استقبال'] }
-      } : {})
+      })
     },
     'crise-localisee': {
-      titre: q => `Incident en cours — ${q.length > 1 ? 'secteurs ' + q.join(', ') : 'secteur ' + q[0]}`,
-      message: q => `Un incident touche le ${q.length > 1 ? 'secteurs ' + q.join(', ') : 'secteur ' + q[0]}. Les équipes de la ville sont sur place. Suivez les consignes ci-dessous.`,
+      titre: q => `Incident en cours — ${SECTEUR.fr(q)}`,
+      message: q => `Un incident touche le ${SECTEUR.fr(q)}. Les équipes de la ville sont sur place. Suivez les consignes ci-dessous.`,
       actions: ['Restez chez vous si vous le pouvez', 'Suivez les consignes des agents sur place', 'En cas de danger, appelez le 112', 'Prenez des nouvelles de vos voisins âgés ou isolés'],
       points: () => ['Dôme des Pionniers — accueil et informations, ouvert 24 h/24'],
       services: [],
       alternative: 'Rendez-vous au point d’accueil indiqué ou appelez la mairie.',
-      traductions: () => ({})
+      traductions: q => ({
+        en: { titre: `Ongoing incident — ${SECTEUR.en(q)}`, message: `An incident is affecting the ${SECTEUR.en(q)}. City teams are on site. Follow the instructions below.`,
+          actions: ['Stay home if you can', 'Follow the instructions of the staff on site', 'In case of danger, call 112', 'Check on your elderly or isolated neighbours'] },
+        es: { titre: `Incidente en curso — ${SECTEUR.es(q)}`, message: `Un incidente afecta al ${SECTEUR.es(q)}. Los equipos de la ciudad están en el lugar. Siga las instrucciones siguientes.`,
+          actions: ['Quédese en casa si puede', 'Siga las instrucciones de los agentes en el lugar', 'En caso de peligro, llame al 112', 'Pregunte por sus vecinos mayores o aislados'] },
+        ar: { titre: `حادث جارٍ — ${SECTEUR.ar(q)}`, message: `حادث يمس ${SECTEUR.ar(q)}. فرق المدينة في المكان. اتبع التعليمات أدناه.`,
+          actions: ['ابقَ في منزلك إن أمكن', 'اتبع تعليمات الأعوان في المكان', 'في حال الخطر، اتصل بالرقم 112', 'اطمئن على جيرانك المسنين أو المعزولين'] }
+      })
     }
   };
 
@@ -98,12 +111,12 @@
           <div class="champ"><label for="cz-ret">${echap(t('cz.ret'))}</label><input id="cz-ret" type="datetime-local" aria-describedby="cz-ret-aide cz-ret-err"><span class="aide" id="cz-ret-aide">${echap(t('cz.retAide'))}</span><p class="erreur" id="cz-ret-err" hidden></p></div>
           <div class="champ"><label for="cz-titre">${echap(t('cz.fTitre'))}</label><input id="cz-titre" maxlength="120" autocomplete="off"></div>
           <div class="champ"><label for="cz-message">${echap(t('cz.fMessage'))}</label><textarea id="cz-message" maxlength="1200"></textarea></div>
-          <div class="champ"><label for="cz-actions">${echap(t('cz.fActions'))}</label><textarea id="cz-actions" style="min-height:7rem"></textarea></div>
-          <div class="champ"><label for="cz-points">${echap(t('cz.fPoints'))}</label><textarea id="cz-points" style="min-height:4rem"></textarea></div>
+          <div class="champ"><label for="cz-actions">${echap(t('cz.fActions'))}</label><textarea id="cz-actions" class="cz-long"></textarea></div>
+          <div class="champ"><label for="cz-points">${echap(t('cz.fPoints'))}</label><textarea id="cz-points" class="cz-court"></textarea></div>
           <fieldset><legend>${echap(t('cz.fServices'))}</legend><div class="cz-quartiers">${services.map(s => `<label><input type="checkbox" name="cz-s" value="${echap(s.id)}"> ${echap(nomSvc(s))}</label>`).join('')}</div></fieldset>
           <div class="champ"><label for="cz-alt">${echap(t('cz.fAlt'))}</label><input id="cz-alt" maxlength="300"></div>
           <button type="submit" class="btn btn-primaire"><i class="ph ph-lightning-slash" aria-hidden="true"></i>${echap(t('cz.publier'))}</button>
-          <p id="cz-ok" role="status" class="doux" style="margin:.8rem 0 0"></p>
+          <p id="cz-ok" role="status" class="doux cz-ok"></p>
         </form>
         <aside class="panneau" aria-labelledby="t-cz-liste"><h3 id="t-cz-liste">${echap(t('cz.encours'))}</h3><ul class="ag-annonces" id="cz-liste"></ul>
           <details><summary>${echap(t('cz.terminees'))}</summary><ul class="ag-annonces" id="cz-fini"></ul></details></aside>
@@ -129,15 +142,15 @@
       const actives = l.filter(m => m.crise.statut === 'en-cours' && m.statut !== 'retire'), finies = l.filter(m => !actives.includes(m));
       $('cz-liste').innerHTML = actives.length ? actives.map(m => `<li data-cz="${echap(m.id)}"><div class="ligne entre"><strong>${echap(m.id)} · ${echap(m.titre)}</strong>
           <span class="statut statut-en_cours"><i class="ph ph-lightning-slash" aria-hidden="true"></i>${echap(m.crise.quartiers.join(', '))}</span></div>
-        <p class="doux" style="margin:.3rem 0 0;font-size:.85rem">${echap(t('cz.depuis', { d: NT.ui.dateHeure(m.debut) }))} · <strong>${echap(m.crise.retablissement ? t('cz.retEst', { h: heure(m.crise.retablissement) }) : '—')}</strong><br>
+        <p class="doux cz-meta">${echap(t('cz.depuis', { d: NT.ui.dateHeure(m.debut) }))} · <strong>${echap(m.crise.retablissement ? t('cz.retEst', { h: heure(m.crise.retablissement) }) : '—')}</strong><br>
           ${echap(t('cz.majLe', { d: NT.ui.dateHeure(m.crise.majLe) }))}${m.crise.progression ? ' · ' + echap(m.crise.progression) : ''}<br>${echap(t('cz.compris', { n: m.nbCompris, h: m.nbHabitants }))}</p>
         <details class="cz-maj"><summary class="btn">${echap(t('cz.maj'))}</summary>
           <div class="champ"><label for="cz-h-${echap(m.id)}">${echap(t('cz.nouvelleHeure'))}</label><input id="cz-h-${echap(m.id)}" type="datetime-local" value="${m.crise.retablissement ? local(new Date(m.crise.retablissement)) : ''}"></div>
           <div class="champ"><label for="cz-p-${echap(m.id)}">${echap(t('cz.avancement'))}</label><input id="cz-p-${echap(m.id)}" maxlength="300"></div>
           <button type="button" class="btn btn-primaire" data-cz-maj="${echap(m.id)}"><i class="ph ph-paper-plane-tilt" aria-hidden="true"></i>${echap(t('cz.envoyerMaj'))}</button></details>
-        <button type="button" class="btn" style="margin-top:.5rem" data-cz-retablir="${echap(m.id)}"><i class="ph ph-check-circle" aria-hidden="true"></i>${echap(t('cz.retablir'))}</button></li>`).join('')
+        <button type="button" class="btn cz-retablir" data-cz-retablir="${echap(m.id)}"><i class="ph ph-check-circle" aria-hidden="true"></i>${echap(t('cz.retablir'))}</button></li>`).join('')
         : `<li class="doux">${echap(t('cz.aucune'))}</li>`;
-      $('cz-fini').innerHTML = finies.map(m => `<li><strong>${echap(m.id)} · ${echap(m.titre)}</strong><p class="doux" style="margin:.2rem 0 0;font-size:.85rem">${echap(t('cz.retablieLe', { d: NT.ui.dateHeure(m.crise.retablieLe || m.crise.majLe) }))}</p></li>`).join('') || `<li class="doux">—</li>`;
+      $('cz-fini').innerHTML = finies.map(m => `<li><strong>${echap(m.id)} · ${echap(m.titre)}</strong><p class="doux cz-meta">${echap(t('cz.retablieLe', { d: NT.ui.dateHeure(m.crise.retablieLe || m.crise.majLe) }))}</p></li>`).join('') || `<li class="doux">—</li>`;
     }
     liste();
 
@@ -153,7 +166,7 @@
       const r = NT.api('POST', '/api/crises', { type: type(), quartiers: q, retablissement: $('cz-ret').value ? new Date(ret).toISOString() : '',
         titre: $('cz-titre').value, message: $('cz-message').value, actions: lignes($('cz-actions').value), points: lignes($('cz-points').value),
         services: [...racine.querySelectorAll('[name="cz-s"]:checked')].map(i => i.value), alternative: $('cz-alt').value, traductions: inchange ? modele.traductions : {} });
-      if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger'); return; }
+      if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger'); return; }
       const m = r.donnees, nb = (liste(), NT.api('GET', '/api/crises').donnees || []).find(x => x.id === m.id);
       const msg = t('cz.ok', { id: m.id, n: nb ? nb.nbHabitants : 0, s: (m.crise.services || []).map(id => nomSvc(services.find(s => s.id === id) || { id })).join(', ') || '—' });
       $('cz-ok').textContent = msg; NT.ui.toast(msg, 'success');
@@ -166,7 +179,7 @@
       if (bm) {
         const id = bm.dataset.czMaj, h = $('cz-h-' + id).value, p = $('cz-p-' + id).value.trim();
         const r = NT.api('POST', '/api/crises/' + encodeURIComponent(id) + '/maj', { retablissement: h ? new Date(h).toISOString() : '', progression: p });
-        if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger'); return; }
+        if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger'); return; }
         NT.ui.toast(t('cz.majOk'), 'success'); liste(); if (NT.officiel) NT.officiel.charger();
         return;
       }
@@ -175,7 +188,7 @@
       // confirmation en deux temps, sans fenêtre bloquante
       if (!br.dataset.confirme) { br.dataset.confirme = '1'; br.classList.add('btn-primaire'); br.lastChild.textContent = t('cz.confirmer'); return; }
       const r = NT.api('POST', '/api/crises/' + encodeURIComponent(br.dataset.czRetablir) + '/retablir', {});
-      if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger'); return; }
+      if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger'); return; }
       NT.ui.toast(t('cz.retabliOk', { id: br.dataset.czRetablir }), 'success'); liste();
       if (NT.recharger) NT.recharger();
       if (NT.officiel) NT.officiel.charger();

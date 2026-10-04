@@ -136,7 +136,7 @@
       Object.keys(LANGUES).forEach(l => { const tt = $(`ao-${l}-titre`).value.trim(), tm = $(`ao-${l}-message`).value.trim(), ta = lignes($(`ao-${l}-actions`).value); if (tt || tm || ta.length) traductions[l] = { titre: tt, message: tm, actions: ta }; });
       const r = NT.api('POST', '/api/officiels', { titre: $('ao-titre').value, message: $('ao-message').value, actions: lignes($('ao-actions').value), audience: $('ao-audience').value,
         immediat: !prog, debut: prog ? new Date($('ao-debut').value).toISOString() : undefined, fin: new Date($('ao-fin').value).toISOString(), traductions });
-      if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger'); return; }
+      if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger'); return; }
       const m = r.donnees, msg = m.etat === 'actif' ? t('ao.okActif', { id: m.id }) : t('ao.okProg', { id: m.id, d: NT.ui.dateHeure(m.debut) });
       $('ao-ok').textContent = msg; NT.ui.toast(msg, 'success');
       ev.target.reset(); $('ao-zone-debut').hidden = true; $('ao-fin').value = local(new Date(Date.now() + 864e5));
@@ -147,7 +147,7 @@
       // confirmation en deux temps, sans fenêtre bloquante : le premier clic demande de confirmer
       if (!b.dataset.confirme) { b.dataset.confirme = '1'; b.lastChild.textContent = t('ao.confirmer'); return; }
       const r = NT.api('POST', '/api/officiels/' + encodeURIComponent(b.dataset.aoRetirer) + '/retirer', {});
-      if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || 'Erreur', 'danger'); return; }
+      if (r.statut !== 200) { NT.ui.toast((r.donnees && r.donnees.erreur) || NT.t('ui.erreur'), 'danger'); return; }
       NT.ui.toast(t('ao.retire', { id: b.dataset.aoRetirer }), 'success'); liste(); if (NT.officiel) NT.officiel.charger();
     });
   });

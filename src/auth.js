@@ -72,7 +72,8 @@ function chargerUtilisateur(req, res, next) {
 const estPersonnel = (u) => !!u && (u.role === 'agent' || u.role === 'admin');
 function exigerRole(...roles) {
   return (req, res, next) => {
-    if (!req.user) return res.status(401).json({ erreur: 'Connexion requise.' });
+    // vague 19 (F93) : pendant un incident la session n'est pas lisible → 503 « incident », pas une fausse déconnexion (401)
+    if (!req.user) return req.incident ? require('./continuite').repondreIncident(req, res) : res.status(401).json({ erreur: 'Connexion requise.' });
     if (!roles.includes(req.user.role)) { journal('acces_refuse', req.user.email, req.originalUrl); return res.status(403).json({ erreur: 'Accès refusé pour votre profil.' }); }
     next();
   };
@@ -138,7 +139,7 @@ function connecter(req, res, email, motdepasse, verificationReussie) {
 }
 
 // Comptes de démonstration de l'équipe (en plus de ceux de demo-seed.json) : variables d'environnement facultatives
-const MDP_EXEMPLE = ['admin1234', 'agent1234'];   // valeurs de .env.example : jamais en production
+const MDP_EXEMPLE = ['admin1234', 'agent1234', 'partenaire1234'];   // valeurs de .env.example : jamais en production
 const PROD = process.env.NODE_ENV === 'production';
 function comptesEquipe() {
   const seeds = [
@@ -153,10 +154,11 @@ function comptesEquipe() {
 }
 
 // Comptes de démonstration publics (README) : en production, ADMIN_PASSWORD remplace le mot de passe de admin@nova.test
-// et AGENT_PASSWORD celui des agents de démo, à chaque démarrage (base déjà semée comprise). Les sessions ouvertes
-// avec l'ancien mot de passe sont fermées. Les comptes citoyens de démo restent inchangés.
+// et AGENT_PASSWORD celui des agents de démo, PARTENAIRE_PASSWORD celui des comptes partenaires (vague 20, F99), à chaque
+// démarrage (base déjà semée comprise). Les sessions ouvertes avec l'ancien mot de passe sont fermées. Les comptes citoyens
+// de démo restent inchangés.
 function motsDePasseDemo() {
-  const cibles = [['ADMIN_PASSWORD', ['admin@nova.test']], ['AGENT_PASSWORD', ['agent@nova.test', 'social@nova.test']]];
+  const cibles = [['ADMIN_PASSWORD', ['admin@nova.test']], ['AGENT_PASSWORD', ['agent@nova.test', 'social@nova.test']], ['PARTENAIRE_PASSWORD', ['lumen@nova.test', 'velo@nova.test']]];
   for (const [variable, emails] of cibles) {
     const mdp = process.env[variable];
     if (!mdp) { if (PROD) console.warn(`[auth] ${variable} non défini : ${emails.join(', ')} garde(nt) le mot de passe public du README`); continue; }
