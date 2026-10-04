@@ -24,6 +24,7 @@
     'ao.synonymes': L('Expressions apprises', 'Learned phrases', 'Expresiones aprendidas', 'عبارات مُتعلَّمة'), 'ao.c.expression': L('Expression', 'Phrase', 'Expresión', 'العبارة'), 'ao.c.cible': L('Démarche ou service', 'Procedure or service', 'Trámite o servicio', 'الإجراء أو الخدمة'), 'ao.c.par': L('Par', 'By', 'Por', 'بواسطة'),
     'ao.expl': L('Passages souvent expliqués', 'Passages often explained', 'Pasajes a menudo explicados', 'مقاطع يُطلب شرحها كثيراً'),
     'ao.explD': L('Combien de fois les habitants ont demandé « Expliquer plus simplement » (compteur anonyme). Un passage très demandé mérite d’être réécrit.', 'How often residents asked “Explain more simply” (anonymous counter). A passage asked often deserves a rewrite.', 'Cuántas veces se pidió «Explicar más sencillo» (contador anónimo).', 'عدد مرات طلب «اشرح ببساطة» (عداد مجهول).'),
+    'ao.t.paragraphe': L('Paragraphe', 'Paragraph', 'Párrafo', 'فقرة'), 'ao.t.selection': L('Passage sélectionné', 'Selected passage', 'Pasaje seleccionado', 'مقطع محدد'), 'ao.t.terme': L('Mot', 'Word', 'Palabra', 'كلمة'),
     'ao.c.page': L('Page', 'Page', 'Página', 'الصفحة'), 'ao.c.passage': L('Passage ou mots', 'Passage or words', 'Pasaje o palabras', 'المقطع أو الكلمات'), 'ao.c.type': L('Type', 'Type', 'Tipo', 'النوع'),
     'ao.clair': L('Versions en langage clair', 'Plain-language versions', 'Versiones en lenguaje claro', 'نسخ بلغة واضحة'),
     'ao.clairD': L('Phrases courtes, un encadré par question. Le serveur refuse d’enregistrer si une date, un délai, un montant, une référence ou un document du texte officiel a disparu.', 'Short sentences, one box per question. The server refuses to save if a date, deadline, amount, reference or document of the official text is missing.', 'Frases cortas. El servidor rechaza guardar si falta una fecha, un plazo, un importe, una referencia o un documento.', 'جمل قصيرة. يرفض الخادم الحفظ إذا اختفى تاريخ أو مهلة أو مبلغ أو مرجع أو وثيقة.'),
@@ -99,7 +100,7 @@
     appel('GET', '/api/explications/stats').then((l) => {
       $('#ao-explications').innerHTML = !l.length ? `<p class="vide">${E(t('ao.aucune'))}</p>` : `<table class="ao-table"><caption class="sr-only">${E(t('ao.expl'))}</caption>
         <thead><tr><th scope="col">${E(t('ao.c.page'))}</th><th scope="col">${E(t('ao.c.passage'))}</th><th scope="col">${E(t('ao.c.type'))}</th><th scope="col">${E(t('ao.c.fois'))}</th></tr></thead>
-        <tbody>${l.map((x) => `<tr><td>${E(x.page)}</td><td dir="auto">${E(x.extrait || x.cle.split('|').pop())}</td><td>${E(x.type)}</td><td>${x.n}</td></tr>`).join('')}</tbody></table>`;
+        <tbody>${l.map((x) => `<tr><td>${E(x.page)}</td><td dir="auto">${E(x.extrait || x.cle.split('|').pop())}</td><td class="ao-type">${E(['paragraphe', 'selection', 'terme'].includes(x.type) ? t('ao.t.' + x.type) : x.type)}</td><td>${x.n}</td></tr>`).join('')}</tbody></table>`;
     }).catch(() => {});
 
     /* ---------- Langage clair : édition contrôlée ---------- */
