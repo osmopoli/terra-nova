@@ -94,9 +94,10 @@ router.post('/api/accueil/inscrire', (req, res) => {
   const b = req.body || {};
   const e = controlerPersonne(b);
   if (e) return erreur(res, 400, e);
-  const ec = validerCode(b.code);
+  const code = String(b.code ?? '');
+  const ec = validerCode(code);
   if (ec) return erreur(res, 400, ec);
-  const { profil, identifiant } = creerSansEmail(b, b.code);
+  const { profil, identifiant } = creerSansEmail(b, code);
   A.ouvrirSession(res, A.parEmail(profil.email).id);
   journal('inscription', profil.email, 'compte sans e-mail');
   notifier(profil.id, 'Bienvenue sur Terra Nova', `Votre identifiant est ${identifiant}. Notez-le : il remplace l’adresse e-mail pour vous connecter.`, 'bienvenue.html#guide', 'info');
@@ -123,12 +124,15 @@ router.post('/api/accueil/agent/inscrire', A.exigerRole('agent', 'admin'), (req,
   res.json({ ok: true, resultats });
 });
 
-// F71 — remplacer le code provisoire (ou changer de code après confirmation du mot de passe actuel)
-router.post('/api/accueil/code', A.exigerRole(...A.ROLES), (req, res) => {
+// F71 — remplacer le code provisoire (ou changer de code après confirmation du mot de passe actuel).
+// Habitants seulement (le personnel passe par /api/auth/mot-de-passe) ; le code à 6 chiffres est réservé aux comptes sans e-mail.
+router.post('/api/accueil/code', A.exigerRole('citoyen'), (req, res) => {
   if (!req.user.codeProvisoire && !A.estVerifie(req)) return erreur(res, 403, 'Confirmez d’abord votre code actuel.');
-  const ec = validerCode((req.body || {}).nouveau);
+  const nouveau = String((req.body || {}).nouveau ?? '');
+  const manques = req.user.sansEmail === true ? [] : A.validerMotDePasse(nouveau);
+  const ec = req.user.sansEmail === true ? validerCode(nouveau) : manques.length ? `Mot de passe trop faible : ${manques.join(', ')}.` : '';
   if (ec) return erreur(res, 400, ec);
-  db.prepare('UPDATE users SET password_hash = ? WHERE doc_id = ?').run(A.hacher(req.body.nouveau), req.user.id);
+  db.prepare('UPDATE users SET password_hash = ? WHERE doc_id = ?').run(A.hacher(nouveau), req.user.id);
   docs.patch('utilisateurs', req.user.id, { codeProvisoire: false });
   journal('mdp_change', req.user.email, 'code secret choisi par l’habitant');
   res.json({ ok: true });

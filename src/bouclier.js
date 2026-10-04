@@ -13,6 +13,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const { docs, uid, maintenant } = require('./donnees');
+const { illisible } = require('./chiffrement');   // valeur restée chiffrée (clé absente ou différente)
 
 const PROD = process.env.NODE_ENV === 'production';
 const ECRITURE = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
@@ -177,6 +178,10 @@ function filtrer(o, req, res, profondeur) {
   if (Array.isArray(o)) { for (const x of o) filtrer(x, req, res, profondeur + 1); return; }
   for (const k of Object.keys(o)) if (SECRETS.has(k)) delete o[k];
   const profil = typeof o.id === 'string' && o.id.startsWith('usr-') && 'prenom' in o;
+  if (profil) {   // valeur restée chiffrée (clé de chiffrement absente ou différente) : rien d'exploitable en sortie
+    if (illisible(o.telephone)) { o.telephone = ''; o.telephoneIllisible = true; }
+    if (illisible(o.dossier)) o.dossier = null;
+  }
   if (profil && !res.locals.reveler) {
     const moi = req.user && req.user.id === o.id;
     const staff = req.user && (req.user.role === 'agent' || req.user.role === 'admin');

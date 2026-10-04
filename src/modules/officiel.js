@@ -42,7 +42,7 @@ router.get('/api/officiels/tous', A.exigerRole('agent', 'admin'), (req, res) => 
 });
 
 function lireActions(v) {
-  const l = (Array.isArray(v) ? v : String(v || '').split('\n')).map((x) => texte(x, 160)).filter(Boolean);
+  const l = (Array.isArray(v) ? v.filter((x) => typeof x === 'string') : typeof v === 'string' ? v.split('\n') : []).map((x) => texte(x, 160)).filter(Boolean);
   return l.slice(0, 6);
 }
 
@@ -86,14 +86,22 @@ router.post('/api/officiels/:id/retirer', A.exigerRole('agent', 'admin'), (req, 
   res.json({ ...maj, etat: 'retire' });
 });
 
-// « J'ai compris » : enregistré pour le compte connecté ; un visiteur est compté par appareil (le navigateur garde la trace)
+// « J'ai compris » : enregistré pour le compte connecté ; un visiteur est compté par appareil (le navigateur garde la trace).
+// Visiteurs : une seule écriture par (IP masquée, message) sur 24 h, pour que le compteur ne soit pas gonflable en boucle.
+const { ipMasquee } = require('../bouclier');
+const comprisAnonymes = new Map();   // "ip|message" → horodatage
+const COMPRIS_FENETRE = 24 * 3600e3;
+setInterval(() => { const t = Date.now(); for (const [k, v] of comprisAnonymes) if (t - v > COMPRIS_FENETRE) comprisAnonymes.delete(k); }, 3600e3).unref();
 router.post('/api/officiels/:id/compris', (req, res) => {
   const m = docs.get(COL, req.params.id);
   if (!m || etatDe(m) !== 'actif') return erreur(res, 404, 'Ce message n’est plus en cours.');
   const u = req.user;
   if (u) {
     if (!(m.accuses || []).some((a) => a.userId === u.id)) docs.patch(COL, m.id, { accuses: (m.accuses || []).concat([{ userId: u.id, date: maintenant() }]) });
-  } else if (!(req.body || {}).dejaCompte) docs.patch(COL, m.id, { accusesAppareils: (m.accusesAppareils || 0) + 1 });
+  } else if (!(req.body || {}).dejaCompte) {
+    const cle = `${ipMasquee(req.ip)}|${m.id}`;
+    if (Date.now() - (comprisAnonymes.get(cle) || 0) > COMPRIS_FENETRE) { comprisAnonymes.set(cle, Date.now()); docs.patch(COL, m.id, { accusesAppareils: (m.accusesAppareils || 0) + 1 }); }
+  }
   res.json({ ok: true, compris: true, date: maintenant() });
 });
 
