@@ -215,7 +215,12 @@
       if (rep.ok) { ecrire('depuis', maintenant()); recharger(); }
       return rep;
     },
-    deconnecter() { api('POST', '/api/auth/deconnecter'); recharger(); },
+    deconnecter() {
+      api('POST', '/api/auth/deconnecter');
+      // poste partagé : la copie hors connexion (Service Worker) des pages personnelles est purgée, sans bloquer la déconnexion
+      try { if (window.caches) caches.keys().then(l => Promise.all(l.filter(k => k.startsWith('terra-nova-')).map(k => caches.delete(k)))).catch(() => {}); } catch (e) { /* stockage bloqué */ }
+      recharger();
+    },
     verifierMotDePasse(u, mdp) { return !!(api('POST', '/api/auth/verifier', { motdepasse: mdp || '' }).donnees || {}).ok; },
     changerMotDePasse(u, mdp) { const r = api('POST', '/api/auth/mot-de-passe', { nouveau: mdp }); if (r.statut !== 200) refus(r); return r.statut === 200; },
     supprimerCompte() { const r = api('POST', '/api/auth/supprimer'); if (r.statut === 200) recharger(); else refus(r); return r.statut === 200; },
