@@ -43,6 +43,12 @@
     const liste = document.getElementById('onglets-espace');
     if (!liste) return;
     const onglets = [...liste.querySelectorAll('[role="tab"]')];
+    // Petit écran : fondu au bord tant qu'il reste des onglets à faire défiler (sinon le 4e onglet est hors écran sans indice)
+    const marquerDebord = () => liste.classList.toggle('deborde', Math.abs(liste.scrollLeft) + liste.clientWidth < liste.scrollWidth - 1);
+    liste.addEventListener('scroll', marquerDebord, { passive: true });
+    if (window.ResizeObserver) { const ro = new ResizeObserver(marquerDebord); ro.observe(liste); onglets.forEach((o) => ro.observe(o)); }
+    else window.addEventListener('resize', marquerDebord);
+    marquerDebord();
     const panneau = (o) => document.getElementById(o.getAttribute('aria-controls'));
 
     function choisir(o, { focus = false, memoriser = true } = {}) {

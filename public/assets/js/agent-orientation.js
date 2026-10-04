@@ -18,6 +18,8 @@
     'ao.c.dernier': L('Dernière fois', 'Last time', 'Última vez', 'آخر مرة'), 'ao.c.piste': L('Associer à', 'Link to', 'Asociar a', 'ربط بـ'), 'ao.c.action': L('Action', 'Action', 'Acción', 'إجراء'),
     'ao.associer': L('Associer', 'Link', 'Asociar', 'ربط'), 'ao.ignorer': L('Ignorer', 'Ignore', 'Ignorar', 'تجاهل'), 'ao.retirer': L('Retirer', 'Remove', 'Quitar', 'إزالة'),
     'ao.aucune': L('Aucune question dans cette liste.', 'No question in this list.', 'Ninguna pregunta en esta lista.', 'لا أسئلة في هذه القائمة.'),
+    'ao.nbQuestions': L('{n} questions affichées.', '{n} questions shown.', '{n} preguntas mostradas.', '{n} أسئلة معروضة.'), 'ao.nbQuestion1': L('1 question affichée.', '1 question shown.', '1 pregunta mostrada.', 'سؤال واحد معروض.'),
+    'ao.sansContenu': L('Aucun contenu chargé : rechargez la page.', 'No content loaded: reload the page.', 'Ningún contenido cargado: recargue la página.', 'لم يُحمَّل أي محتوى: أعد تحميل الصفحة.'),
     'ao.associee': L('Expression apprise : « {e} » → {c}', 'Phrase learned: “{e}” → {c}', 'Expresión aprendida: «{e}» → {c}', 'عبارة مُتعلَّمة: «{e}» ← {c}'),
     'ao.synonymes': L('Expressions apprises', 'Learned phrases', 'Expresiones aprendidas', 'عبارات مُتعلَّمة'), 'ao.c.expression': L('Expression', 'Phrase', 'Expresión', 'العبارة'), 'ao.c.cible': L('Démarche ou service', 'Procedure or service', 'Trámite o servicio', 'الإجراء أو الخدمة'), 'ao.c.par': L('Par', 'By', 'Por', 'بواسطة'),
     'ao.expl': L('Passages souvent expliqués', 'Passages often explained', 'Pasajes a menudo explicados', 'مقاطع يُطلب شرحها كثيراً'),
@@ -64,6 +66,8 @@
           ${statut === 'ouverte' ? `<td><label class="sr-only" for="ao-c-${i}">${E(t('ao.c.piste'))} : ${E(q.texte)}</label><select id="ao-c-${i}"><option value="">—</option>${options(q.piste && q.piste.id)}</select></td>
           <td class="ligne" style="gap:.4rem"><button type="button" class="btn petit btn-primaire" data-associer="${i}">${E(t('ao.associer'))}</button><button type="button" class="btn petit" data-ignorer="${i}">${E(t('ao.ignorer'))}</button></td>`
           : `<td>${E(((donnees.cibles || []).find((c) => c.id === q.cible) || {}).titre || q.cible || '—')}${q.par ? ` <span class="doux">· ${E(q.par)}</span>` : ''}</td>`}</tr>`).join('')}</tbody></table>`;
+      // un résumé pour le lecteur d'écran plutôt qu'un tableau entier en zone vivante
+      NT.ui.annoncer(!l.length ? t('ao.aucune') : l.length === 1 ? t('ao.nbQuestion1') : t('ao.nbQuestions', { n: l.length }));
     }
     function rendreSynonymes() {
       const l = donnees.synonymes || [];
@@ -128,9 +132,10 @@
     }).catch(() => {});
     $('#ao-lc-id').addEventListener('change', chargerContenu);
     $('#ao-lc-langue').addEventListener('change', () => contenu && rendreContenu());
-    $('#ao-lc-verifier').addEventListener('click', () => appel('POST', '/api/langage-clair/' + encodeURIComponent(contenu.id) + '/verifier', { langue: $('#ao-lc-langue').value, clair: lireForm() }).then(resultat).catch((e) => NT.ui.toast(t('ao.erreur', { e: e.message }), 'danger')));
+    $('#ao-lc-verifier').addEventListener('click', () => { if (!contenu) { NT.ui.annoncer(t('ao.sansContenu')); return; } appel('POST', '/api/langage-clair/' + encodeURIComponent(contenu.id) + '/verifier', { langue: $('#ao-lc-langue').value, clair: lireForm() }).then(resultat).catch((e) => NT.ui.toast(t('ao.erreur', { e: e.message }), 'danger')); });
     $('#ao-form-lc').addEventListener('submit', (e) => {
       e.preventDefault();
+      if (!contenu) { NT.ui.annoncer(t('ao.sansContenu')); return; }
       appel('PUT', '/api/langage-clair/' + encodeURIComponent(contenu.id), { langue: $('#ao-lc-langue').value, clair: lireForm(), motif: $('#ao-lc-motif').value })
         .then((c) => { contenu = c; NT.ui.toast(t('ao.enregistre', { v: c.version }), 'success'); $('#ao-lc-verif').innerHTML = `<p class="ao-ok" role="status">${E(t('ao.enregistre', { v: c.version }))}</p>`; })
         .catch((er) => { if (er.donnees && er.donnees.manquants) resultat({ ok: false, manquants: er.donnees.manquants, requis: er.donnees.requis || [] }); else NT.ui.toast(t('ao.erreur', { e: er.message }), 'danger'); });
