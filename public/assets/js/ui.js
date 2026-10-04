@@ -212,7 +212,7 @@
   entete.innerHTML = `
     <div class="capsule">
       <a class="logo" href="${u && u.role !== 'citoyen' ? 'agent.html' : 'index.html'}"><span class="logo-embleme" aria-hidden="true"></span><span class="logo-mot">Terra&nbsp;Nova</span></a>
-      <nav class="nav-principale" aria-label="Navigation principale">
+      <nav class="nav-principale" aria-label="${echap(t('ui.navPrincipale'))}">
         ${liens.map(([cle, href]) => `<a href="${href}" ${cle === page ? 'aria-current="page"' : ''}>${echap(t('nav.' + cle))}</a>`).join('')}
       </nav>
       <div class="outils-entete">
