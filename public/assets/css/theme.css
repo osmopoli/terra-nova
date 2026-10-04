@@ -397,6 +397,15 @@ html.econome .liste-sou > li,html.econome .liste-activite > li,html.econome .lis
 .balise.officiel{ border-color:var(--iono); background:oklch(0.7040 0.1400 182.5 / .12); }
 .balise.officiel .feu{ background:var(--iono); box-shadow:0 0 10px var(--iono), 0 0 22px var(--lueur); }
 .balise.officiel .feu::after{ content:""; position:absolute; inset:-4px; border-radius:50%; border:2px solid var(--iono); animation:onde 2.4s var(--ease-out) infinite; }
+/* Croix de la carte épinglée (accueil, annonces) : masque le message, qui reste dans le tiroir « Alertes » */
+.off-epingle{ position:relative; padding-inline-end:3.25rem; transition:opacity 160ms var(--ease-out), transform 160ms var(--ease-out); }
+.off-masquer{ position:absolute; top:.45rem; inset-inline-end:.45rem; display:grid; place-items:center; width:2.75rem; height:2.75rem; border:0; border-radius:var(--r);
+  background:transparent; color:var(--brume); cursor:pointer; transition:background-color 160ms ease, color 160ms ease, transform 160ms var(--ease-out); }
+.off-masquer i{ font-size:1.15rem; }
+.off-masquer:active{ transform:scale(.94); }
+@media (hover:hover) and (pointer:fine){ .off-masquer:hover{ background:var(--surface-2); color:var(--givre); } }
+.off-masquer:focus-visible{ outline:2px solid var(--iono); outline-offset:1px; color:var(--givre); }
+.off-epingle.off-sortie{ opacity:0; transform:translateY(-.5rem); }
 .off-carte{ border:1px solid var(--iono); border-inline-start-width:5px; border-radius:var(--r); padding:1rem 1.1rem; margin-bottom:1rem; background:oklch(0.7040 0.1400 182.5 / .06); }
 .off-carte.off-lu{ border-color:var(--trait-2); border-inline-start-color:var(--iono); background:var(--verre); }
 .off-sceau{ display:flex; align-items:center; gap:.65rem; margin-bottom:.7rem; }

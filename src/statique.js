@@ -27,12 +27,32 @@ function statique(racine) {
   const memoire = new Map();   // chemin → { mtime, etag, version, brut, br, gz, deps }
   const versions = new Map();  // chemin → { mtime, version } (empreinte du contenu d'origine)
 
-  function versionDe(fichier) {
+  // Version d'un fichier = empreinte de son contenu ET des versions des fichiers qu'il référence (un script qui charge
+  // assets/js/officiel.js change de version quand officiel.js change) : sinon le navigateur garderait un an l'ancien
+  // ui.js, qui pointe vers l'ancien officiel.js. Une référence circulaire est coupée (pile).
+  function referencesDe(texte, dossier) {
+    const refs = [];
+    texte.replace(REFERENCE, (tout, q, ref) => { refs.push(path.join(racine, ref)); return tout; });
+    texte.replace(REFERENCE_IMG, (ref) => { refs.push(ref.startsWith('../') ? path.join(dossier, ref) : path.join(racine, ref)); return ref; });
+    return refs;
+  }
+  function versionDe(fichier, pile = new Set()) {
     let st; try { st = fs.statSync(fichier); } catch { return null; }
+    if (pile.has(fichier)) { const v = versions.get(fichier); return v ? v.brute : null; }
+    pile.add(fichier);
     const v = versions.get(fichier);
-    if (v && v.mtime === st.mtimeMs) return v.version;
-    const version = empreinte(fs.readFileSync(fichier)).slice(0, 10);
-    versions.set(fichier, { mtime: st.mtimeMs, version });
+    if (v && v.mtime === st.mtimeMs && v.deps.every(d => versionDe(d.f, pile) === d.v)) { pile.delete(fichier); return v.version; }
+    const brut = fs.readFileSync(fichier);
+    const brute = empreinte(brut).slice(0, 10);
+    const ext = path.extname(fichier).toLowerCase();
+    let deps = [];
+    if (ext === '.js' || ext === '.css') {
+      versions.set(fichier, { mtime: st.mtimeMs, version: brute, brute, deps: [] });   // valeur provisoire si une dépendance revient ici
+      deps = [...new Set(referencesDe(brut.toString('utf8'), path.dirname(fichier)))].map(f => ({ f, v: versionDe(f, pile) })).filter(d => d.v);
+    }
+    const version = deps.length ? empreinte(brute + deps.map(d => d.v).join('')).slice(0, 10) : brute;
+    versions.set(fichier, { mtime: st.mtimeMs, version, brute, deps });
+    pile.delete(fichier);
     return version;
   }
   // Pose ?v=… sur les références ; retient les fichiers référencés pour reconstruire si l'un d'eux change
@@ -42,18 +62,19 @@ function statique(racine) {
       const cible = ref.startsWith('/') ? path.join(racine, ref) : path.join(racine, ref);
       const v = versionDe(cible);
       if (!v) return tout;
-      deps.push(cible);
+      deps.push({ f: cible, v });
       return q + ref + '?v=' + v + q;
     }).replace(REFERENCE_IMG, (ref) => {
       const cible = ref.startsWith('../') ? path.join(dossier, ref) : path.join(racine, ref);
       const v = versionDe(cible);
       if (!v) return ref;
-      deps.push(cible);
+      deps.push({ f: cible, v });
       return ref + '?v=' + v;
     });
     return { sortie, deps };
   }
-  const depsAJour = (e) => !e.deps || e.deps.every(d => { const v = versions.get(d); try { return v && fs.statSync(d).mtimeMs === v.mtime; } catch { return false; } });
+  // contenu réécrit à jour tant que chaque fichier référencé garde la version posée (et non seulement sa date)
+  const depsAJour = (e) => !e.deps || e.deps.every(d => versionDe(d.f) === d.v);
 
   return (req, res, next) => {
     if (req.method !== 'GET' && req.method !== 'HEAD') return next();

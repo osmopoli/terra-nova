@@ -17,22 +17,22 @@
     fr: { 'off.sceau': 'Haut Conseil de la Ville', 'off.type': 'Message officiel', 'off.quoi': 'Ce que vous devez faire', 'off.compris': 'J’ai compris',
       'off.dejaCompris': 'Vous avez indiqué avoir compris ce message.', 'off.merci': 'Merci, c’est noté.', 'off.jusqua': 'En vigueur jusqu’au {d}', 'off.depuis': 'Publié {d}',
       'off.toute': 'Toute la ville', 'off.quartier': 'Quartier {q}', 'off.votreQuartier': 'Votre quartier est concerné', 'off.nouveau': 'Nouveau message officiel du Haut Conseil : {t}',
-      'off.baliseNonLu': 'message officiel à lire', 'off.epingle': 'Message officiel en cours', 'off.voir': 'Voir dans les alertes', 'off.versionFr': 'Ce message n’est pas encore traduit : version française.',
+      'off.baliseNonLu': 'message officiel à lire', 'off.epingle': 'Message officiel en cours', 'off.voir': 'Voir dans les alertes', 'off.masquer': 'Masquer ce message (il reste dans les alertes)', 'off.masque': 'Message masqué. Il reste disponible dans « Alertes ».', 'off.versionFr': 'Ce message n’est pas encore traduit : version française.',
       'off.voirAlerte': 'Voir l’alerte', 'off.fermer': 'Fermer', 'off.dansAlertes': 'Toujours disponible dans Alertes' },
     en: { 'off.sceau': 'City High Council', 'off.type': 'Official message', 'off.quoi': 'What you need to do', 'off.compris': 'I understand',
       'off.dejaCompris': 'You have confirmed that you understood this message.', 'off.merci': 'Thank you, noted.', 'off.jusqua': 'In force until {d}', 'off.depuis': 'Published {d}',
       'off.toute': 'Whole city', 'off.quartier': '{q} district', 'off.votreQuartier': 'Your district is concerned', 'off.nouveau': 'New official message from the High Council: {t}',
-      'off.baliseNonLu': 'official message to read', 'off.epingle': 'Current official message', 'off.voir': 'See in alerts', 'off.versionFr': 'This message is not translated yet: French version.',
+      'off.baliseNonLu': 'official message to read', 'off.epingle': 'Current official message', 'off.voir': 'See in alerts', 'off.masquer': 'Hide this message (it stays in alerts)', 'off.masque': 'Message hidden. It is still available in “Alerts”.', 'off.versionFr': 'This message is not translated yet: French version.',
       'off.voirAlerte': 'See the alert', 'off.fermer': 'Close', 'off.dansAlertes': 'Always available in Alerts' },
     es: { 'off.sceau': 'Alto Consejo de la Ciudad', 'off.type': 'Mensaje oficial', 'off.quoi': 'Lo que debe hacer', 'off.compris': 'Lo he entendido',
       'off.dejaCompris': 'Ha indicado que entendió este mensaje.', 'off.merci': 'Gracias, queda anotado.', 'off.jusqua': 'Vigente hasta el {d}', 'off.depuis': 'Publicado {d}',
       'off.toute': 'Toda la ciudad', 'off.quartier': 'Barrio {q}', 'off.votreQuartier': 'Su barrio está afectado', 'off.nouveau': 'Nuevo mensaje oficial del Alto Consejo: {t}',
-      'off.baliseNonLu': 'mensaje oficial por leer', 'off.epingle': 'Mensaje oficial en curso', 'off.voir': 'Ver en las alertas', 'off.versionFr': 'Este mensaje aún no está traducido: versión en francés.',
+      'off.baliseNonLu': 'mensaje oficial por leer', 'off.epingle': 'Mensaje oficial en curso', 'off.voir': 'Ver en las alertas', 'off.masquer': 'Ocultar este mensaje (sigue en las alertas)', 'off.masque': 'Mensaje oculto. Sigue disponible en «Alertas».', 'off.versionFr': 'Este mensaje aún no está traducido: versión en francés.',
       'off.voirAlerte': 'Ver la alerta', 'off.fermer': 'Cerrar', 'off.dansAlertes': 'Siempre disponible en Alertas' },
     ar: { 'off.sceau': 'المجلس الأعلى للمدينة', 'off.type': 'رسالة رسمية', 'off.quoi': 'ما يجب عليك فعله', 'off.compris': 'فهمت',
       'off.dejaCompris': 'لقد أكدت أنك فهمت هذه الرسالة.', 'off.merci': 'شكراً، تم التسجيل.', 'off.jusqua': 'سارية حتى {d}', 'off.depuis': 'نُشرت {d}',
       'off.toute': 'كل المدينة', 'off.quartier': 'حي {q}', 'off.votreQuartier': 'حيّك معني', 'off.nouveau': 'رسالة رسمية جديدة من المجلس الأعلى: {t}',
-      'off.baliseNonLu': 'رسالة رسمية للقراءة', 'off.epingle': 'رسالة رسمية جارية', 'off.voir': 'عرض في التنبيهات', 'off.versionFr': 'هذه الرسالة غير مترجمة بعد: النسخة الفرنسية.',
+      'off.baliseNonLu': 'رسالة رسمية للقراءة', 'off.epingle': 'رسالة رسمية جارية', 'off.voir': 'عرض في التنبيهات', 'off.masquer': 'إخفاء هذه الرسالة (تبقى في التنبيهات)', 'off.masque': 'تم إخفاء الرسالة. ما زالت متاحة في «التنبيهات».', 'off.versionFr': 'هذه الرسالة غير مترجمة بعد: النسخة الفرنسية.',
       'off.voirAlerte': 'عرض التنبيه', 'off.fermer': 'إغلاق', 'off.dansAlertes': 'متاح دائماً في التنبيهات' }
   });
 
@@ -43,6 +43,9 @@
   let connus = null;   // identifiants déjà vus pendant cette visite (annonce vocale des nouveaux)
   const comprisLocal = () => lireL('officielsCompris');
   const estCompris = m => m.compris || comprisLocal().includes(m.id);
+  // Croix de la carte épinglée : masque le message sur cette page pour cet appareil ; il reste dans le tiroir « Alertes »
+  const masquesLocal = () => lireL('officielsMasques');
+  const croix = m => `<button type="button" class="off-masquer" data-off-masquer="${echap(m.id)}" aria-label="${echap(t('off.masquer'))}" title="${echap(t('off.masquer'))}"><i class="ph ph-x" aria-hidden="true"></i></button>`;
 
   // Contenu dans la langue de l'habitant si l'agent l'a traduit, sinon en français (signalé)
   function contenu(m) {
@@ -56,7 +59,7 @@
   function carte(m, mode, compact) {
     const c = contenu(m), compris = estCompris(m), id = 'off-' + mode + '-' + m.id;
     // version compacte (accueil) : l'essentiel sur deux lignes, « Ce que vous devez faire » ouvre le tiroir des alertes
-    if (compact) return `<article class="off-carte off-${mode} off-compact${compris ? ' off-lu' : ''}" aria-labelledby="${id}" data-off="${echap(m.id)}">
+    if (compact) return `<article class="off-carte off-${mode} off-compact${compris ? ' off-lu' : ''}" aria-labelledby="${id}" data-off="${echap(m.id)}">${mode === 'epingle' ? croix(m) : ''}
       <div class="off-sceau"><span class="off-sceau-ic" aria-hidden="true"><i class="ph-duotone ph-seal-check"></i></span>
         <span><strong>${echap(t('off.sceau'))}</strong><small>${echap(t('off.type'))} · ${echap(zone(m))}</small></span></div>
       <h3 id="${id}" lang="${c.langue}" dir="${c.langue === 'ar' ? 'rtl' : 'ltr'}">${echap(c.titre)}</h3>
@@ -65,7 +68,7 @@
         ${compris ? `<p class="off-ok" role="status"><i class="ph-duotone ph-check-circle" aria-hidden="true"></i>${echap(t('off.merci'))}</p>`
           : `<button type="button" class="btn btn-primaire" data-off-compris="${echap(m.id)}"><i class="ph ph-check" aria-hidden="true"></i>${echap(t('off.compris'))}</button>`}</div>
     </article>`;
-    return `<article class="off-carte off-${mode}${compris ? ' off-lu' : ''}" aria-labelledby="${id}" data-off="${echap(m.id)}">
+    return `<article class="off-carte off-${mode}${compris ? ' off-lu' : ''}" aria-labelledby="${id}" data-off="${echap(m.id)}">${mode === 'epingle' ? croix(m) : ''}
       <div class="off-sceau"><span class="off-sceau-ic" aria-hidden="true"><i class="ph-duotone ph-seal-check"></i></span>
         <span><strong>${echap(t('off.sceau'))}</strong><small>${echap(t('off.type'))} · ${echap(m.id)}</small></span></div>
       <h3 id="${id}" lang="${c.langue}" dir="${c.langue === 'ar' ? 'rtl' : 'ltr'}">${echap(c.titre)}</h3>
@@ -89,8 +92,9 @@
     if (NT.ui.rafraichirAlertes) NT.ui.rafraichirAlertes();
     const ep = document.getElementById('nt-officiel-epingle');
     if (ep) {
-      ep.hidden = !messages.length;
-      ep.innerHTML = messages.length ? `<h2 class="sr-only">${echap(t('off.epingle'))}</h2>` + messages.map(m => carte(m, 'epingle', ep.dataset.mode === 'compact')).join('') : '';
+      const masques = masquesLocal(), visibles = messages.filter(m => !masques.includes(m.id));
+      ep.hidden = !visibles.length;
+      ep.innerHTML = visibles.length ? `<h2 class="sr-only">${echap(t('off.epingle'))}</h2>` + visibles.map(m => carte(m, 'epingle', ep.dataset.mode === 'compact')).join('') : '';
       // arrivée par annonces.html#off-epingle-<id> (repli sans CDN) : la carte est rendue après la page, on y défile une fois
       const anc = /^#off-epingle-(.+)$/.exec(location.hash || '');
       if (anc && !ep.dataset.ancre && versEpingle(decodeURIComponent(anc[1]))) ep.dataset.ancre = '1';
@@ -192,6 +196,15 @@
           rendre(); NT.ui.toast(t('off.merci'), 'success', 3000);
           const el = (dansTiroir ? NT.ui.tiroirAlertes : document.getElementById('nt-officiel-epingle') || document).querySelector(`[data-off="${CSS.escape(id)}"] .off-ok`); if (el) { el.setAttribute('tabindex', '-1'); el.focus(); }
         });
+      return;
+    }
+    const x = e.target.closest('[data-off-masquer]');
+    if (x) {   // la carte s'efface vite (160 ms), puis la page se resserre ; le focus va au contenu qui suit
+      const id = x.dataset.offMasquer, art = x.closest('.off-carte');
+      ecrireL('officielsMasques', masquesLocal().concat([id]));
+      const fin = () => { rendre(); NT.ui.toast(t('off.masque'), 'success', 4000); const suite = document.querySelector('#an-q, main h2:not(.sr-only), main h1'); if (suite) { if (!suite.matches('input')) suite.setAttribute('tabindex', '-1'); suite.focus({ preventScroll: true }); } };
+      if (!art || matchMedia('(prefers-reduced-motion: reduce)').matches) return fin();
+      art.classList.add('off-sortie'); setTimeout(fin, 160);
       return;
     }
     if (e.target.closest('[data-off-voir]')) ouvrirAlertes(e.target.closest('[data-off]'));
