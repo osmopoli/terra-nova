@@ -181,6 +181,7 @@
   /* ---------- Contrôle d'accès (D09) ---------- */
   const roles = (corps.dataset.roles || '').split(',').map(s => s.trim()).filter(Boolean);
   if (roles.length) {
+    if (!u && NT.horsLigne) { NT.charge.pageSecours(); return; }   // vague 15 (F77, F78) : serveur injoignable → page de secours
     if (!u) { location.replace('connexion.html?retour=' + encodeURIComponent(location.pathname.split('/').pop() + location.search)); return; }
     if (!roles.includes('connecte') && !roles.includes(u.role)) {
       sessionStorage.setItem('nt:refus', '1');
@@ -196,6 +197,7 @@
     : [['agent', 'agent.html'], ['tableau', 'agent-tableau.html'], ['demandesAgent', 'agent-demandes.html'], ['alertes', 'agent-alertes.html'], ['comptes', 'admin-comptes.html'], ['journal', 'agent-journal.html'], ['participer', 'participer.html'], ['services', 'services.html']];
   if (u && u.role !== 'citoyen') liens.splice(5, 0, ['accueilAgent', 'agent-accueil.html']);   // vague 13 (F71) : inscription au guichet
   if (u && u.role === 'admin') liens.push(['securite', 'agent-securite.html']);   // vague 13 (F69, F70) : centre de sécurité
+  if (u && u.role === 'admin') liens.push(['plateforme', 'agent-plateforme.html']);   // vague 15 (F77, F78) : état de la plateforme
   if (u) NT.rdv.verifierRappels();   // avant le compteur de la cloche, pour que les rappels dus soient comptés
   const nbNotif = u ? NT.notif.nonLues(u.id) : 0;
   const optionsLangue = Object.entries(NT.i18n.LANGUES).map(([c, n]) => `<option value="${c}" ${c === NT.i18n.langue ? 'selected' : ''} lang="${c}">${n}</option>`).join('');
@@ -312,10 +314,51 @@
   /* ---------- Pied de page ---------- */
   const pied = document.createElement('footer');
   pied.className = 'pied';
-  pied.innerHTML = `<div class="conteneur"><span>${echap(t('pied.texte'))}</span>
-    <span class="ligne"><a href="demande.html">${echap(t('pied.contact'))}</a><a href="aide.html">${echap(t('pied.aide'))}</a><a href="donnees.html">${echap(t('pied.donnees'))}</a><a href="sobriete.html">${echap(t('pied.sobriete'))}</a><a href="${echap(ui.lienSimple())}" class="pied-simple" id="nt-lien-simple"><i class="ph ph-article" aria-hidden="true"></i>${echap(t('pied.simple'))}</a><a href="securite.html">${echap(t('pied.securite'))}</a><a href="bienvenue.html">${echap(t('pied.bienvenue'))}</a><a href="transports.html">${echap(t('nav.transports'))}</a>
-      <a href="#" id="nt-lien-a11y">${echap(t('pied.accessibilite'))}</a><a href="#" id="nt-lien-clavier">${echap(t('clavier.titre'))}</a></span></div>`;
+  NT.i18n.ajouter({
+    fr: { 'pied.g1': 'Vos démarches', 'pied.g2': 'Aide et accessibilité', 'pied.g3': 'Vos données', 'barre.signaler': 'Signaler', 'barre.nav': 'Actions rapides' },
+    en: { 'pied.g1': 'Your procedures', 'pied.g2': 'Help and accessibility', 'pied.g3': 'Your data', 'barre.signaler': 'Report', 'barre.nav': 'Quick actions' },
+    es: { 'pied.g1': 'Sus trámites', 'pied.g2': 'Ayuda y accesibilidad', 'pied.g3': 'Sus datos', 'barre.signaler': 'Señalar', 'barre.nav': 'Acciones rápidas' },
+    ar: { 'pied.g1': 'معاملاتك', 'pied.g2': 'المساعدة وسهولة الوصول', 'pied.g3': 'بياناتك', 'barre.signaler': 'إبلاغ', 'barre.nav': 'إجراءات سريعة' }
+  });
+  pied.innerHTML = `<div class="conteneur">
+    <div class="pied-marque"><span class="logo"><span class="logo-embleme" aria-hidden="true"></span><span class="logo-mot">Terra&nbsp;Nova</span></span><p>${echap(t('pied.texte'))}</p></div>
+    <nav class="pied-colonnes" aria-label="${echap(t('pied.g1'))}, ${echap(t('pied.g2'))}, ${echap(t('pied.g3'))}">
+      <div><h2>${echap(t('pied.g1'))}</h2><ul><li><a href="demande.html">${echap(t('pied.contact'))}</a></li><li><a href="bienvenue.html">${echap(t('pied.bienvenue'))}</a></li><li><a href="transports.html">${echap(t('nav.transports'))}</a></li></ul></div>
+      <div><h2>${echap(t('pied.g2'))}</h2><ul><li><a href="aide.html">${echap(t('pied.aide'))}</a></li><li><a href="#" id="nt-lien-a11y">${echap(t('pied.accessibilite'))}</a></li><li><a href="#" id="nt-lien-clavier">${echap(t('clavier.titre'))}</a></li><li><a href="${echap(ui.lienSimple())}" class="pied-simple" id="nt-lien-simple"><i class="ph ph-article" aria-hidden="true"></i>${echap(t('pied.simple'))}</a></li></ul></div>
+      <div><h2>${echap(t('pied.g3'))}</h2><ul><li><a href="donnees.html">${echap(t('pied.donnees'))}</a></li><li><a href="securite.html">${echap(t('pied.securite'))}</a></li><li><a href="sobriete.html">${echap(t('pied.sobriete'))}</a></li></ul></div>
+    </nav></div>`;
   corps.append(pied);
+  /* Barre d'actions au pouce (écrans étroits, habitants et visiteurs) : les gestes essentiels restent à portée */
+  if (!u || u.role === 'citoyen') {
+    const barre = document.createElement('nav');
+    barre.className = 'barre-pouce';
+    barre.setAttribute('aria-label', t('barre.nav'));
+    const actif = (p) => (p === page ? ' aria-current="page"' : '');
+    barre.innerHTML = `
+      <a href="index.html"${actif('accueil')}><i class="ph-duotone ph-house-simple" aria-hidden="true"></i><span>${echap(t('nav.accueil'))}</span></a>
+      <a href="services.html"${actif('services')}><i class="ph-duotone ph-compass" aria-hidden="true"></i><span>${echap(t('nav.services'))}</span></a>
+      <a href="demande.html?type=signalement" class="barre-signaler"><span class="rond" aria-hidden="true"><i class="ph ph-plus"></i></span><span>${echap(t('barre.signaler'))}</span></a>
+      <a href="${u ? 'espace.html' : 'connexion.html'}"${actif(u ? 'espace' : 'connexion')}><i class="ph-duotone ph-user-circle" aria-hidden="true"></i><span>${echap(u ? t('nav.espace') : t('nav.connexion'))}</span></a>
+      <button type="button" data-barre-alertes><i class="ph-duotone ph-broadcast" aria-hidden="true"></i><span>${echap(t('ui.alertes'))}</span><span class="barre-nb" id="nt-barre-nb" aria-hidden="true"></span></button>`;
+    corps.append(barre);
+    corps.classList.add('avec-barre');
+    barre.querySelector('[data-barre-alertes]').addEventListener('click', () => customElements.whenDefined('sl-drawer').then(() => panneauAlertes.show()));
+    const majBarre = () => { const n = balise.querySelector('#nt-balise-nb').textContent; const el = barre.querySelector('#nt-barre-nb'); el.textContent = n; el.hidden = !n; };
+    majBarre();
+    new MutationObserver(majBarre).observe(balise.querySelector('#nt-balise-nb'), { childList: true, characterData: true, subtree: true });
+  }
+
+  /* Apparition des sections marquées data-revele quand elles arrivent à l'écran : une seule fois, jamais en mouvement réduit */
+  const revelables = document.querySelectorAll('[data-revele]');
+  if (revelables.length && 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches
+      && !NT.leger.actif() && !NT.econome.actif() && !document.documentElement.classList.contains('calme')) {
+    const obs = new IntersectionObserver(entrees => entrees.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('revele'); e.target.classList.remove('a-reveler'); obs.unobserve(e.target);
+    }), { rootMargin: '0px 0px -8% 0px', threshold: .08 });
+    revelables.forEach(el => { if (el.getBoundingClientRect().top > innerHeight * .92) { el.classList.add('a-reveler'); obs.observe(el); } });
+  }
+
   /* F59 : le mode connexion lente se voit et se désactive en un clic ; s'il s'est activé tout seul, on le dit une fois */
   const indicateurLeger = document.createElement('span');
   indicateurLeger.className = 'pied-leger';

@@ -2,7 +2,8 @@
    Chargé par ui.js sur toutes les pages. Les messages en cours (GET /api/officiels, le serveur décide qui les voit et quand)
    sont relus toutes les 30 s sans recharger la page (même rythme que les notifications F49 : 2 min en connexion lente,
    espacé sur appareil peu puissant, en pause quand l'onglet est caché).
-   - la balise « Alertes » les met en évidence et le tiroir s'ouvre UNE fois tout seul par message (mémorisé sur l'appareil) ;
+   - la balise « Alertes » les met en évidence ; à l'arrivée, un message pas encore compris apparaît dans une fenêtre
+     discrète (une fois par visite), qui s'efface seule ; il reste ensuite dans le tiroir « Alertes » ;
    - sceau « Haut Conseil de la Ville », ce qu'il faut savoir, « Ce que vous devez faire », bouton « J'ai compris »
      (enregistré sur le compte si connecté, sur l'appareil sinon) ;
    - carte épinglée en haut de l'accueil et des annonces tant que le message est en cours (#nt-officiel-epingle).
@@ -16,19 +17,23 @@
     fr: { 'off.sceau': 'Haut Conseil de la Ville', 'off.type': 'Message officiel', 'off.quoi': 'Ce que vous devez faire', 'off.compris': 'J’ai compris',
       'off.dejaCompris': 'Vous avez indiqué avoir compris ce message.', 'off.merci': 'Merci, c’est noté.', 'off.jusqua': 'En vigueur jusqu’au {d}', 'off.depuis': 'Publié {d}',
       'off.toute': 'Toute la ville', 'off.quartier': 'Quartier {q}', 'off.votreQuartier': 'Votre quartier est concerné', 'off.nouveau': 'Nouveau message officiel du Haut Conseil : {t}',
-      'off.baliseNonLu': 'message officiel à lire', 'off.epingle': 'Message officiel en cours', 'off.voir': 'Voir dans les alertes', 'off.versionFr': 'Ce message n’est pas encore traduit : version française.' },
+      'off.baliseNonLu': 'message officiel à lire', 'off.epingle': 'Message officiel en cours', 'off.voir': 'Voir dans les alertes', 'off.versionFr': 'Ce message n’est pas encore traduit : version française.',
+      'off.voirAlerte': 'Voir l’alerte', 'off.fermer': 'Fermer', 'off.dansAlertes': 'Toujours disponible dans Alertes' },
     en: { 'off.sceau': 'City High Council', 'off.type': 'Official message', 'off.quoi': 'What you need to do', 'off.compris': 'I understand',
       'off.dejaCompris': 'You have confirmed that you understood this message.', 'off.merci': 'Thank you, noted.', 'off.jusqua': 'In force until {d}', 'off.depuis': 'Published {d}',
       'off.toute': 'Whole city', 'off.quartier': '{q} district', 'off.votreQuartier': 'Your district is concerned', 'off.nouveau': 'New official message from the High Council: {t}',
-      'off.baliseNonLu': 'official message to read', 'off.epingle': 'Current official message', 'off.voir': 'See in alerts', 'off.versionFr': 'This message is not translated yet: French version.' },
+      'off.baliseNonLu': 'official message to read', 'off.epingle': 'Current official message', 'off.voir': 'See in alerts', 'off.versionFr': 'This message is not translated yet: French version.',
+      'off.voirAlerte': 'See the alert', 'off.fermer': 'Close', 'off.dansAlertes': 'Always available in Alerts' },
     es: { 'off.sceau': 'Alto Consejo de la Ciudad', 'off.type': 'Mensaje oficial', 'off.quoi': 'Lo que debe hacer', 'off.compris': 'Lo he entendido',
       'off.dejaCompris': 'Ha indicado que entendió este mensaje.', 'off.merci': 'Gracias, queda anotado.', 'off.jusqua': 'Vigente hasta el {d}', 'off.depuis': 'Publicado {d}',
       'off.toute': 'Toda la ciudad', 'off.quartier': 'Barrio {q}', 'off.votreQuartier': 'Su barrio está afectado', 'off.nouveau': 'Nuevo mensaje oficial del Alto Consejo: {t}',
-      'off.baliseNonLu': 'mensaje oficial por leer', 'off.epingle': 'Mensaje oficial en curso', 'off.voir': 'Ver en las alertas', 'off.versionFr': 'Este mensaje aún no está traducido: versión en francés.' },
+      'off.baliseNonLu': 'mensaje oficial por leer', 'off.epingle': 'Mensaje oficial en curso', 'off.voir': 'Ver en las alertas', 'off.versionFr': 'Este mensaje aún no está traducido: versión en francés.',
+      'off.voirAlerte': 'Ver la alerta', 'off.fermer': 'Cerrar', 'off.dansAlertes': 'Siempre disponible en Alertas' },
     ar: { 'off.sceau': 'المجلس الأعلى للمدينة', 'off.type': 'رسالة رسمية', 'off.quoi': 'ما يجب عليك فعله', 'off.compris': 'فهمت',
       'off.dejaCompris': 'لقد أكدت أنك فهمت هذه الرسالة.', 'off.merci': 'شكراً، تم التسجيل.', 'off.jusqua': 'سارية حتى {d}', 'off.depuis': 'نُشرت {d}',
       'off.toute': 'كل المدينة', 'off.quartier': 'حي {q}', 'off.votreQuartier': 'حيّك معني', 'off.nouveau': 'رسالة رسمية جديدة من المجلس الأعلى: {t}',
-      'off.baliseNonLu': 'رسالة رسمية للقراءة', 'off.epingle': 'رسالة رسمية جارية', 'off.voir': 'عرض في التنبيهات', 'off.versionFr': 'هذه الرسالة غير مترجمة بعد: النسخة الفرنسية.' }
+      'off.baliseNonLu': 'رسالة رسمية للقراءة', 'off.epingle': 'رسالة رسمية جارية', 'off.voir': 'عرض في التنبيهات', 'off.versionFr': 'هذه الرسالة غير مترجمة بعد: النسخة الفرنسية.',
+      'off.voirAlerte': 'عرض التنبيه', 'off.fermer': 'إغلاق', 'off.dansAlertes': 'متاح دائماً في التنبيهات' }
   });
 
   const t = NT.t, { echap } = NT.ui;
@@ -89,14 +94,60 @@
     }
   }
 
-  // Le tiroir s'ouvre tout seul une seule fois par message (et pas pour un message déjà compris)
-  function ouvrirUneFois() {
-    const ouverts = lireL('officielsOuverts');
-    const neufs = messages.filter(m => !estCompris(m) && !ouverts.includes(m.id));
-    if (!neufs.length) return;
-    ecrireL('officielsOuverts', ouverts.concat(neufs.map(m => m.id)));
-    customElements.whenDefined('sl-drawer').then(() => { const d = NT.ui.tiroirAlertes; if (d && !document.querySelector('sl-dialog[open]')) d.show(); });
+  /* À l'arrivée : une fenêtre discrète (pas une modale) présente le message pas encore compris, une fois par visite.
+     Elle s'efface seule après 9 s (minuterie en pause au survol, au focus et onglet caché), sauf message marqué critique.
+     En partant, elle « rentre » vers la balise Alertes, qui s'allume une fois : on voit où retrouver l'information. */
+  const lireS = (cle) => { try { return JSON.parse(sessionStorage.getItem('nt:' + cle)) || []; } catch (e) { return []; } };
+  const ecrireS = (cle, v) => { try { sessionStorage.setItem('nt:' + cle, JSON.stringify(v.slice(-50))); } catch (e) { /* stockage bloqué */ } };
+  let fenetre = null;
+  function fermerFenetre(versBalise) {
+    const el = fenetre; if (!el) return;
+    fenetre = null; clearTimeout(el._minuterie);
+    const balise = document.getElementById('nt-balise');
+    el.classList.add('sortie');
+    const fini = () => el.remove();
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || NT.leger.actif() || NT.econome.actif()) fini();
+    else { el.addEventListener('transitionend', fini, { once: true }); setTimeout(fini, 400); }
+    if (versBalise && balise) { balise.classList.remove('signale'); void balise.offsetWidth; balise.classList.add('signale'); setTimeout(() => balise.classList.remove('signale'), 1600); }
   }
+  function montrerFenetre() {
+    if (fenetre || document.querySelector('sl-dialog[open], sl-drawer[open]')) return;
+    const vus = lireS('officielsVus');
+    const m = messages.find(x => !estCompris(x) && !vus.includes(x.id));
+    if (!m) return;
+    ecrireS('officielsVus', vus.concat(m.id));
+    const c = contenu(m), dir = c.langue === 'ar' ? 'rtl' : 'ltr';
+    const el = document.createElement('section');
+    el.className = 'off-fenetre';
+    el.setAttribute('role', m.critique ? 'alert' : 'status');
+    el.setAttribute('aria-labelledby', 'off-fenetre-titre');
+    el.innerHTML = `<div class="off-fenetre-tete">
+        <span class="off-fenetre-sceau" aria-hidden="true"><i class="ph-duotone ph-seal-check"></i></span>
+        <p class="off-fenetre-source">${echap(t('off.sceau'))}<span>${echap(t('off.type'))} · ${echap(zone(m))}</span></p>
+        <button type="button" class="off-fenetre-x" data-off-fermer><i class="ph ph-x" aria-hidden="true"></i><span class="sr-only">${echap(t('off.fermer'))}</span></button>
+      </div>
+      <h2 id="off-fenetre-titre" lang="${c.langue}" dir="${dir}">${echap(c.titre)}</h2>
+      <p class="off-fenetre-texte" lang="${c.langue}" dir="${dir}">${echap(c.message)}</p>
+      <div class="off-fenetre-pied">
+        <button type="button" class="btn btn-primaire" data-off-voir-fenetre><i class="ph-duotone ph-broadcast" aria-hidden="true"></i>${echap(t('off.voirAlerte'))}</button>
+        <span class="off-fenetre-note"><i class="ph ph-bell-simple" aria-hidden="true"></i>${echap(t('off.dansAlertes'))}</span>
+      </div>
+      ${m.critique ? '' : '<span class="off-fenetre-temps" aria-hidden="true"></span>'}`;
+    document.body.append(el);
+    fenetre = el;
+    requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('visible')));
+    if (m.critique) return;
+    // disparition automatique : 9 s de lecture réelle (pause au survol, au focus, onglet caché)
+    let reste = 9000, depart = Date.now();
+    const lancer = () => { depart = Date.now(); el.classList.remove('pause'); el._minuterie = setTimeout(() => fermerFenetre(true), reste); };
+    const pause = () => { clearTimeout(el._minuterie); reste = Math.max(1500, reste - (Date.now() - depart)); el.classList.add('pause'); };
+    el.style.setProperty('--off-duree', reste + 'ms');
+    el.addEventListener('pointerenter', pause); el.addEventListener('pointerleave', lancer);
+    el.addEventListener('focusin', pause); el.addEventListener('focusout', e => { if (!el.contains(e.relatedTarget)) lancer(); });
+    document.addEventListener('visibilitychange', () => { if (fenetre !== el) return; if (document.hidden) pause(); else lancer(); });
+    lancer();
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && fenetre) fermerFenetre(true); });
 
   function charger() {
     return fetch('/api/officiels', { cache: 'no-store', credentials: 'same-origin' }).then(r => (r.ok ? r.json() : null)).then(j => {
@@ -107,7 +158,7 @@
       connus = new Set(messages.map(m => m.id));
       if (JSON.stringify(messages) !== avant) rendre();
       nouveaux.forEach(m => NT.ui.annoncer(t('off.nouveau', { t: contenu(m).titre })));
-      ouvrirUneFois();
+      montrerFenetre();
     }).catch(() => {});
   }
 
@@ -126,6 +177,8 @@
       return;
     }
     if (e.target.closest('[data-off-voir]') && NT.ui.tiroirAlertes) NT.ui.tiroirAlertes.show();
+    if (e.target.closest('[data-off-fermer]')) fermerFenetre(true);
+    if (e.target.closest('[data-off-voir-fenetre]')) { fermerFenetre(false); customElements.whenDefined('sl-drawer').then(() => NT.ui.tiroirAlertes && NT.ui.tiroirAlertes.show()); }
   });
 
   let minuterie = null;

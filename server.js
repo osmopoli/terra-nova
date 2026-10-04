@@ -8,8 +8,11 @@ const { startPolling } = require('./src/webcup');
 const app = express();
 app.disable('x-powered-by');
 app.set('trust proxy', 'loopback, linklocal, uniquelocal');   // derrière un proxy HTTPS : origine correcte pour les clés d'accès
+const charge = require('./src/charge');   // vague 15 (F77, F78) : mesure de la charge, délestage, file équitable, mémoïsation
+app.use(charge.mesurer);
 const bouclier = require('./src/bouclier');   // vague 13 (F69) : en-têtes stricts, anti-CSRF, limitation de débit
 app.use(bouclier.avant(path.join(__dirname, 'public')));
+app.use(charge.proteger);   // vague 15 : l'essentiel passe toujours, le non essentiel attend quand le serveur est surchargé
 app.use(express.json({ limit: '1mb' }));   // photos de signalement (miniatures ~60 Ko)
 app.use(chargerUtilisateur);
 
@@ -22,6 +25,11 @@ app.get('/api/health', (req, res) => {
 app.use('/api', require('./src/statique').jsonCompresse);   // F58 : réponses JSON compressées
 app.use(bouclier.apres);   // vague 13 (F69, F70) : validation des entrées, filtrage des champs réservés, journal des refus
 app.use(require('./src/modules/formulaires').garde);   // vague 16 : formulaires protégés contre les robots (F81), envois sans doublon (F82)
+app.use(charge.memo);   // vague 15 : lectures chaudes (GET /api/etat…) mémorisées par profil, invalidées à chaque écriture
+app.use(charge.router);   // vague 15 : GET /api/charge (public), /api/charge/details, POST /api/charge/forcer (admin)
+app.use(require('./src/modules/priorites'));   // vague 15 : priorité des dossiers pour les agents (F80)
+const seedVague15 = require('./src/seed-vague15');
+app.post('/api/demo/reinitialiser', (req, res, next) => { res.on('finish', () => { if (res.statusCode === 200) seedVague15.semer(); }); next(); });
 app.use(require('./src/modules/api'));
 app.use(require('./src/renfort').router);   // vague 9 : clés d'accès, deux étapes, appareils
 app.use(require('./src/modules/sobriete'));   // vague 10 : diagnostic de sobriété (F57)
@@ -48,8 +56,9 @@ app.use((err, req, res, _next) => {
 });
 
 semer();
+seedVague15.semer();   // vague 15 : données de démonstration ajoutées une seule fois, y compris sur une base déjà en service
 comptesEquipe();
 startPolling();
 
 const port = Number(process.env.PORT) || 3000;
-app.listen(port, () => console.log(`Terra Nova sur http://localhost:${port}`));
+charge.regler(app.listen(port, () => console.log(`Terra Nova sur http://localhost:${port}`)));

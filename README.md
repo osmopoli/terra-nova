@@ -35,7 +35,15 @@ Hodifly redéploie à chaque push sur `main` avec la commande de build du projet
 - Base SQLite : `~/terranova-data/terranova.db`, hors du dossier de release, donc conservée entre deux déploiements (`DB_PATH` pour la déplacer). Aucune migration à lancer.
 - Node 22.13 ou plus récent requis (`node:sqlite` sans option).
 - Vague 13 (F69) : définir `DATA_ENCRYPTION_KEY` (longue valeur aléatoire, à ne jamais changer ensuite) pour chiffrer les données sensibles ; sans elle, une clé est créée dans `~/terranova-data/terranova.key` (à conserver avec la base). `NODE_ENV=production` active HSTS et `upgrade-insecure-requests`.
-- Surveillance : `GET /api/health` → `{"status":"ok","service":"terra-nova","database":"ok",…}`.
+- Surveillance : `GET /api/health` → `{"status":"ok","service":"terra-nova","database":"ok",…}` (inchangé) ; vague 15 : niveau de charge public sur `GET /api/charge` (`normal` / `forte` / `critique`) et en-tête `X-Charge` sur chaque réponse de l'API.
+- Vague 15 (F77, F78) : seuils réglables sans toucher au code (`CHARGE_LAG_FORTE`=120 ms, `CHARGE_LAG_CRITIQUE`=350 ms, `CHARGE_EN_COURS_FORTE`, `CHARGE_PAR_IP`=8, `CHARGE_DELAI_MAX`=15000 ms…) ; `CHARGE_CACHE=0` désactive la mémoïsation (mesure « sans cache »).
+
+## Test de charge (vague 15)
+```bash
+node tools/charge.js --url http://localhost:3000 --clients 100 --duree 30            # aucune dépendance
+node tools/charge.js --clients 40 --duree 10 --meme-ip                                 # tous derrière une seule adresse
+```
+Résultats mesurés (avant / après) dans [`docs/RENDU-JURY.md`](docs/RENDU-JURY.md#mesures-de-tenue-en-charge-f77-f78). `--ecritures 0.005` ajoute des dépôts de demandes : à ne pas utiliser sur la base de production.
 
 ## Comptes de démonstration (créés au premier démarrage)
 
@@ -59,6 +67,8 @@ Réinitialiser les données de démonstration : connecté en admin, `POST /api/d
 - `src/modules/api.js` — `GET /api/etat` (tout ce que le profil a le droit de voir), écritures `POST/PATCH /api/docs/:collection` contrôlées par règle (un citoyen ne voit et ne modifie que ses données ; seuls agents / admins traitent les demandes, diffusent les alertes, changent l'état des services ; seul l'admin change un rôle), soutiens (F52), contributions données (F51), indicateurs (F50), flux Webcup pour les agents (D19, clé jamais exposée).
 - Vague 14 : `src/modules/officiel.js` (message officiel du Haut Conseil, F73), `associations.js` (associations partenaires, F74), `doublons.js` (demandes semblables TF-IDF, rattachement, réponse commune, F75), `avis-services.js` (avis après un service, reçu COM-xxxx, F76).
 - Vague 16 : `src/modules/formulaires.js` (jetons signés, champ piège, vérification humaine, idempotence et demandes en double, F81-F82), `accuses.js` (accusé de réception vérifiable, F83), `echanges.js` (réponses des agents et fil d’échanges, F84) ; côté navigateur `formulaires.js`, `accuse.js`, `echanges.js`, `agent-robots.js` et `assets/css/vague16.css`.
+
+- Vague 15 : `src/charge.js` (mesure de la charge, délestage 503 + `Retry-After` du non essentiel, file équitable par IP, délai maximal, mémoïsation des lectures chaudes invalidée à chaque écriture, mode dégradé forcé par l'admin, F77/F78), `src/modules/priorites.js` (priorité des dossiers calculée et corrigeable, F80), `src/seed-vague15.js` ; navigateur : `assets/js/resilience.js` (avis calme, recul exponentiel, brouillons, nouveaux essais), `sw.js` (copie hors connexion, réseau d'abord), `assets/js/sujets.js` (tri par sujet, F79), `assets/js/agent-priorites.js`, `assets/js/agent-plateforme.js` ; `tools/charge.js` (test de charge).
 - `src/webcup.js` — interroge l'API toutes les `POLL_INTERVAL_SECONDS` (dédoublonnage sur `request_code`).
 - `public/assets/js/store.js` — client du serveur, même interface pour toutes les pages (`NT.store`, `NT.auth`, `NT.demandes`…).
 - `data/demo-seed.json` — données de démonstration (dates relatives).
@@ -90,3 +100,7 @@ Le détail « où et comment le montrer au jury » est dans [`docs/RENDU-JURY.md
 | Formulaires protégés contre les robots, envois sans doublon (vague 16) | F81, F82 | tous les formulaires publics, `agent-securite` |
 | Accusé de réception vérifiable (vague 16) | F83 | `demande`, `accuse`, `verifier-accuse`, `suivi`, `espace` |
 | Réponses des agents, fil d’échanges (vague 16) | F84 | `agent-demandes`, `agent`, `suivi` |
+
+| Surcharge et affluence : l'essentiel reste disponible (vague 15) | F77, F78 | toutes (pied de page, tiroir « Alertes », brouillons, nouveaux essais, hors connexion), `agent-plateforme`, `tools/charge.js` |
+| Trier et filtrer par sujet (vague 15) | F79 | `suivi`, `espace#historique`, `soutenir` |
+| Dossiers prioritaires des agents (vague 15) | F80 | `agent-demandes`, `agent`, `agent-journal` |

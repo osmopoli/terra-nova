@@ -2430,5 +2430,137 @@
    "NT-1031": "usr-musjmvnmt9x1",
    "NT-1040": "usr-musjmvnrzm4a"
   }
+ },
+ "vague15": {
+  "note": "Vague 15 (F79, F80) : demandes variées pour trier par sujet et classer par priorité. Chargées une seule fois (repère seed: v15).",
+  "demandes": [
+   {
+    "ref": "gaz",
+    "userId": "usr-musjmvnr04t2",
+    "type": "signalement",
+    "serviceId": "eau-energie",
+    "categorie": "gaz",
+    "objet": "Odeur de gaz dans la cage d’escalier",
+    "message": "Depuis ce matin, une forte odeur de gaz dans la cage d’escalier du bâtiment B. Ma voisine âgée ne peut pas descendre seule.",
+    "lieu": "Résidence des Alizés, bâtiment B",
+    "quartier": "Est",
+    "priorite": "normale",
+    "statut": "recue",
+    "agent": "",
+    "cree": "@7200000"
+   },
+   {
+    "ref": "cable",
+    "userId": "usr-musjmvnrxscz",
+    "type": "signalement",
+    "serviceId": "voirie",
+    "categorie": "voirie",
+    "objet": "Câble électrique tombé sur le trottoir",
+    "message": "Un câble électrique pend du poteau et touche presque le trottoir devant l’école du Nord. Les enfants passent à côté.",
+    "lieu": "Rue des Lucioles, devant l’école du Nord",
+    "quartier": "Nord",
+    "priorite": "haute",
+    "statut": "en_cours",
+    "agent": "Karim Benali",
+    "cree": "@93600000",
+    "historique": [
+     {
+      "date": "@90000000",
+      "statut": "en_cours",
+      "note": "Périmètre de sécurité demandé, équipe électricité prévenue.",
+      "par": "Karim Benali"
+     }
+    ],
+    "prioriteDossier": {
+     "niveau": "critique",
+     "justification": "Câble sous tension confirmé par les pompiers, passage d’enfants : intervention avant ce soir.",
+     "par": "Karim Benali",
+     "email": "agent@nova.test",
+     "date": "@90000000"
+    }
+   },
+   {
+    "ref": "courses",
+    "userId": "usr-musjmvnrzm4a",
+    "type": "contact",
+    "serviceId": "social",
+    "categorie": "",
+    "objet": "Aide pour les courses pendant ma convalescence",
+    "message": "Je sors de l’hôpital et je ne peux pas porter de charges pendant trois semaines. Existe-t-il une aide pour les courses ?",
+    "lieu": "",
+    "quartier": "Sud",
+    "priorite": "normale",
+    "statut": "recue",
+    "agent": "",
+    "cree": "@518400000"
+   },
+   {
+    "ref": "horaires",
+    "userId": "usr-musjmvnmt9x1",
+    "type": "contact",
+    "serviceId": "culture",
+    "categorie": "",
+    "objet": "Horaires de la médiathèque le dimanche",
+    "message": "La médiathèque est-elle ouverte le dimanche après-midi pendant les vacances ?",
+    "lieu": "",
+    "quartier": "Sud",
+    "priorite": "basse",
+    "statut": "recue",
+    "agent": "",
+    "cree": "@72000000"
+   },
+   {
+    "ref": "ecole",
+    "userId": "usr-musjmvnmt9x1",
+    "type": "demarche",
+    "serviceId": "education",
+    "categorie": "",
+    "objet": "Inscription de mon enfant à l’école des Dunes",
+    "message": "Je souhaite inscrire mon fils en CE1 à l’école des Dunes pour la rentrée de janvier.",
+    "lieu": "",
+    "quartier": "Sud",
+    "priorite": "normale",
+    "statut": "en_cours",
+    "agent": "Inès Rousseau",
+    "cree": "@259200000",
+    "historique": [
+     {
+      "date": "@172800000",
+      "statut": "en_cours",
+      "note": "Dossier reçu : il manque le certificat de radiation de l’ancienne école.",
+      "par": "Inès Rousseau"
+     }
+    ]
+   },
+   {
+    "ref": "navette",
+    "userId": "usr-musjmvnmt9x1",
+    "type": "contact",
+    "serviceId": "transports",
+    "categorie": "",
+    "objet": "Navette de nuit : arrêt Place des Pionniers non desservi",
+    "message": "Depuis lundi, la navette de 23 h ne s’arrête plus place des Pionniers. Est-ce normal ?",
+    "lieu": "Place des Pionniers",
+    "quartier": "Sud",
+    "priorite": "normale",
+    "statut": "traitee",
+    "agent": "Karim Benali",
+    "cree": "@777600000",
+    "historique": [
+     {
+      "date": "@691200000",
+      "statut": "en_cours",
+      "note": "Question transmise au service des transports.",
+      "par": "Karim Benali"
+     },
+     {
+      "date": "@604800000",
+      "statut": "traitee",
+      "note": "L’arrêt était déplacé pendant les travaux ; il est de nouveau desservi depuis jeudi.",
+      "par": "Karim Benali"
+     }
+    ]
+   }
+  ]
  }
 }

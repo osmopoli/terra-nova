@@ -375,7 +375,6 @@
     const moi = () => NT.auth.utilisateur();
     $('#titre-espace').textContent = L('c.esp.bonjour', 'Bonjour {prenom}', { prenom: moi().prenom });
     const mesDemandes = () => NT.demandes.pour(moi().id);
-    const f = { statut: '', q: '', ordre: 'desc' };
 
     /* --- KPI --- */
     function rendreKpis() {
@@ -418,12 +417,9 @@
     }
 
     /* --- F26 : historique filtrable --- */
-    function rendreHistorique() {
-      const q = f.q.trim().toLowerCase();
-      const toutes = mesDemandes();
-      const l = toutes.filter(d => (!f.statut || d.statut === f.statut) && (!q || (d.objet + ' ' + d.id + ' ' + nomService(d)).toLowerCase().includes(q)))
-        .sort((a, b) => (f.ordre === 'desc' ? b.cree.localeCompare(a.cree) : a.cree.localeCompare(b.cree)));
-      $('#f-resultat').textContent = L('c.esp.resultats', '{n} demande(s) affichée(s) sur {total}.', { n: l.length, total: toutes.length });
+    // F79 : le filtrage (sujet, état, mot-clé) et le tri viennent de NT.sujets ; ici, le dessin du tableau
+    function rendreHistorique(l, total) {
+      $('#f-resultat').textContent = L('c.esp.resultats', '{n} demande(s) affichée(s) sur {total}.', { n: l.length, total });
       $('#tbody-hist').innerHTML = l.length ? l.map(d => '<tr><th scope="row" data-label="' + E(L('c.esp.cRef', 'Référence')) + '"><a href="suivi.html?id=' + E(d.id) + '">' + E(d.id) + '</a></th>' +
         '<td data-label="' + E(L('c.esp.cObjet', 'Objet')) + '">' + E(d.objet) + '</td>' +
         '<td data-label="' + E(L('c.esp.cType', 'Type')) + '">' + E(typeLabelDemande(d.type)) + '</td>' +
@@ -432,10 +428,10 @@
         '<td data-label="' + E(L('c.esp.cStatut', 'Statut')) + '">' + NT.ui.statut(d.statut) + '</td></tr>').join('')
         : '<tr><td colspan="6"><p class="vide">' + E(L('c.esp.aucuneHist', 'Aucune demande ne correspond à ce filtre.')) + '</p></td></tr>';
     }
-    $('#f-statut').innerHTML = '<option value="">' + E(L('c.esp.tousStatuts', 'Tous les statuts')) + '</option>' + Object.keys(NT.STATUTS).map(k => '<option value="' + k + '">' + E(statutTxt(k)) + '</option>').join('');
-    $('#f-statut').addEventListener('change', e => { f.statut = e.target.value; rendreHistorique(); });
-    $('#f-q').addEventListener('input', e => { f.q = e.target.value; rendreHistorique(); });
-    $('#f-ordre').addEventListener('change', e => { f.ordre = e.target.value; rendreHistorique(); });
+    const historique = NT.sujets.monter({ conteneur: $('#filtres-hist'), prefixe: 'h', statuts: true, compte: $('#f-resultat'), elements: mesDemandes,
+      sujetDe: d => d.serviceId || '', statutDe: d => d.statut, dateDe: d => d.cree, texteDe: d => d.objet + ' ' + d.id + ' ' + nomService(d) + ' ' + (d.lieu || ''),
+      libelleCompte: (n, total) => L('c.esp.resultats', '{n} demande(s) affichée(s) sur {total}.', { n, total }),
+      onChange: l => rendreHistorique(l, mesDemandes().length) });
 
     $('#btn-tout-lu').addEventListener('click', () => {
       NT.notif.toutLire(moi().id); rendreNotifs(); rendreKpis();
@@ -513,7 +509,7 @@
       }
     });
 
-    rendreParcours(); rendreKpis(); rendreEnCours(); rendreRdv(); rendreNotifs(); rendreHistorique();
+    rendreParcours(); rendreKpis(); rendreEnCours(); rendreRdv(); rendreNotifs(); historique.appliquer();
 
     /* --- F35 : astuces contextuelles, au bon moment --- */
     NT.ui.astuce($('#astuces-haut'), 'esp-signaler', L('c.tip.signaler', 'Un problème dans votre rue ? Le bouton « Signaler un problème » ci-dessous vous guide : dites quoi, puis où.'));
