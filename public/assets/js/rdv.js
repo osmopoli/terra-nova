@@ -35,7 +35,8 @@
     'rdv.rappelCalendrier': 'للحصول على تذكير على هاتفك، أضف الموعد أيضاً إلى تقويمك: يحتوي الملف على المنبّه المختار.',
     'rdv.exemple': 'عرض مثال على التذكير'
   };
-  NT.i18n.ajouter({ en: EN, es: ES, ar: AR });
+  EN['rdv.etapes'] = 'Appointment steps'; ES['rdv.etapes'] = 'Etapas de la cita'; AR['rdv.etapes'] = 'خطوات الموعد';
+  NT.i18n.ajouter({ fr: { 'rdv.etapes': 'Étapes du rendez-vous' }, en: EN, es: ES, ar: AR });
 
   /* Textes courts : FR et EN dans l'appel bi(fr, en) ; ES et AR dans cette table (clé = texte FR), repli sur EN. */
   const TR = {
