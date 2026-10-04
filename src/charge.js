@@ -36,7 +36,8 @@ const rang = (n) => NIVEAUX.indexOf(n);
 /* ---------- Classement des chemins ---------- */
 // Toujours servis (jamais délestés, passent devant dans la file d'attente)
 const ESSENTIEL = [
-  /^\/api\/(health|charge)(\/|$)/, /^\/api\/auth\//, /^\/api\/etat$/, /^\/api\/(essentiel(\/moi)?|pouls|continuite(\/simuler)?)$/,   // vague 19 (F93-F95) /^\/api\/officiels(\/[^/]+\/compris)?$/,
+  /^\/api\/(health|charge)(\/|$)/, /^\/api\/auth\//, /^\/api\/etat$/, /^\/api\/officiels(\/[^/]+\/compris)?$/,
+  /^\/api\/(essentiel(\/moi)?|pouls|continuite(\/simuler)?)$/,   // vague 19 (F93-F95)
   /^\/api\/services\//, /^\/api\/notifications\//, /^\/api\/accueil\/(code|inscrire)$/, /^\/api\/securite\/etat$/,
   /^\/api\/urgences(\/|-points|$)/, /^\/api\/veille$/, /^\/api\/activite(\/|$)/,   // vague 17 (F86) : urgences médicales et veille, jamais délestées
   /^\/api\/recherche$/, /^\/api\/orientation(\/suggestions)?$/, /^\/api\/langage-clair(\/[^/]+)?$/,   // vague 18 (D10, F89, F91, F92) : trouver le bon service, jamais délesté
