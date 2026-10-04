@@ -22,7 +22,7 @@
       'cm.ligne.N1': 'Centre – Nord', 'cm.ligne.N2': 'Sud – Gare orbitale', 'cm.ligne.N3': 'Est – Ouest', 'cm.ligne.N4': 'Est – Gare orbitale',
       'cm.st.ouvert': 'Ouvert maintenant', 'cm.st.ferme': 'Fermé maintenant', 'cm.h24': '24h/24', 'cm.jusqua': 'jusqu’à {h}',
       'cm.ouvreAuj': 'ouvre aujourd’hui à {h}', 'cm.ouvreDem': 'ouvre demain à {h}', 'cm.ouvreJour': 'ouvre {j} à {h}',
-      'cm.dansQuartier': 'Dans votre quartier', 'cm.svc.maintenance': 'Service en maintenance', 'cm.svc.incident': 'Incident sur le service', 'cm.svc.desactive': 'Service indisponible (désactivé)',
+      'cm.dansQuartier': 'Dans votre quartier', 'cm.svc.maintenance': 'Service en maintenance', 'cm.svc.incident': 'Incident sur le service', 'cm.svc.perturbe': 'Service perturbé', 'cm.svc.desactive': 'Service indisponible (désactivé)',
       'cm.fermer': 'Fermer', 'cm.fermerFiche': 'Fermer la fiche du lieu', 'cm.adresse': 'Adresse', 'cm.horaires': 'Horaires', 'cm.tel': 'Téléphone', 'cm.acces': 'Accès PMR',
       'cm.pmrOui': 'Accessible aux personnes à mobilité réduite', 'cm.pmrNon': 'Accès limité pour le moment : appelez avant de venir.',
       'cm.yAller': 'Y aller en navette', 'cm.arret': 'Arrêt le plus proche', 'cm.lignes': 'Ligne(s)', 'cm.trajet': 'Calculer mon trajet', 'cm.voirService': 'Voir le service', 'cm.rdv': 'Prendre rendez-vous',
@@ -50,7 +50,7 @@
       'cm.ligne.N1': 'Centre – North', 'cm.ligne.N2': 'South – Orbital station', 'cm.ligne.N3': 'East – West', 'cm.ligne.N4': 'East – Orbital station',
       'cm.st.ouvert': 'Open now', 'cm.st.ferme': 'Closed now', 'cm.h24': '24/7', 'cm.jusqua': 'until {h}',
       'cm.ouvreAuj': 'opens today at {h}', 'cm.ouvreDem': 'opens tomorrow at {h}', 'cm.ouvreJour': 'opens {j} at {h}',
-      'cm.dansQuartier': 'In your district', 'cm.svc.maintenance': 'Service under maintenance', 'cm.svc.incident': 'Service incident', 'cm.svc.desactive': 'Service unavailable (disabled)',
+      'cm.dansQuartier': 'In your district', 'cm.svc.maintenance': 'Service under maintenance', 'cm.svc.incident': 'Service incident', 'cm.svc.perturbe': 'Service disrupted', 'cm.svc.desactive': 'Service unavailable (disabled)',
       'cm.fermer': 'Close', 'cm.fermerFiche': 'Close the place details', 'cm.adresse': 'Address', 'cm.horaires': 'Opening hours', 'cm.tel': 'Phone', 'cm.acces': 'Accessibility',
       'cm.pmrOui': 'Accessible to people with reduced mobility', 'cm.pmrNon': 'Limited access for now: please call before coming.',
       'cm.yAller': 'Getting there by shuttle', 'cm.arret': 'Nearest stop', 'cm.lignes': 'Line(s)', 'cm.trajet': 'Plan my trip', 'cm.voirService': 'See the service', 'cm.rdv': 'Book an appointment',
@@ -78,7 +78,7 @@
       'cm.ligne.N1': 'Centro – Norte', 'cm.ligne.N2': 'Sur – Estación orbital', 'cm.ligne.N3': 'Este – Oeste', 'cm.ligne.N4': 'Este – Estación orbital',
       'cm.st.ouvert': 'Abierto ahora', 'cm.st.ferme': 'Cerrado ahora', 'cm.h24': '24 h', 'cm.jusqua': 'hasta las {h}',
       'cm.ouvreAuj': 'abre hoy a las {h}', 'cm.ouvreDem': 'abre mañana a las {h}', 'cm.ouvreJour': 'abre el {j} a las {h}',
-      'cm.dansQuartier': 'En su barrio', 'cm.svc.maintenance': 'Servicio en mantenimiento', 'cm.svc.incident': 'Incidencia en el servicio', 'cm.svc.desactive': 'Servicio no disponible (desactivado)',
+      'cm.dansQuartier': 'En su barrio', 'cm.svc.maintenance': 'Servicio en mantenimiento', 'cm.svc.incident': 'Incidencia en el servicio', 'cm.svc.perturbe': 'Servicio con incidencias', 'cm.svc.desactive': 'Servicio no disponible (desactivado)',
       'cm.fermer': 'Cerrar', 'cm.fermerFiche': 'Cerrar la ficha del lugar', 'cm.adresse': 'Dirección', 'cm.horaires': 'Horarios', 'cm.tel': 'Teléfono', 'cm.acces': 'Accesibilidad',
       'cm.pmrOui': 'Accesible para personas con movilidad reducida', 'cm.pmrNon': 'Acceso limitado por el momento: llame antes de venir.',
       'cm.yAller': 'Ir en lanzadera', 'cm.arret': 'Parada más cercana', 'cm.lignes': 'Línea(s)', 'cm.trajet': 'Calcular mi trayecto', 'cm.voirService': 'Ver el servicio', 'cm.rdv': 'Pedir cita',
@@ -106,7 +106,7 @@
       'cm.ligne.N1': 'الوسط – الشمال', 'cm.ligne.N2': 'الجنوب – المحطة المدارية', 'cm.ligne.N3': 'الشرق – الغرب', 'cm.ligne.N4': 'الشرق – المحطة المدارية',
       'cm.st.ouvert': 'مفتوح الآن', 'cm.st.ferme': 'مغلق الآن', 'cm.h24': 'على مدار الساعة', 'cm.jusqua': 'حتى {h}',
       'cm.ouvreAuj': 'يفتح اليوم الساعة {h}', 'cm.ouvreDem': 'يفتح غداً الساعة {h}', 'cm.ouvreJour': 'يفتح يوم {j} الساعة {h}',
-      'cm.dansQuartier': 'في حيّك', 'cm.svc.maintenance': 'الخدمة قيد الصيانة', 'cm.svc.incident': 'عطل في الخدمة', 'cm.svc.desactive': 'الخدمة غير متاحة (معطّلة)',
+      'cm.dansQuartier': 'في حيّك', 'cm.svc.maintenance': 'الخدمة قيد الصيانة', 'cm.svc.incident': 'عطل في الخدمة', 'cm.svc.perturbe': 'الخدمة مضطربة', 'cm.svc.desactive': 'الخدمة غير متاحة (معطّلة)',
       'cm.fermer': 'إغلاق', 'cm.fermerFiche': 'إغلاق بطاقة المكان', 'cm.adresse': 'العنوان', 'cm.horaires': 'أوقات العمل', 'cm.tel': 'الهاتف', 'cm.acces': 'إمكانية الوصول',
       'cm.pmrOui': 'ميسّر لذوي الحركة المحدودة', 'cm.pmrNon': 'الوصول محدود حالياً: اتصل قبل الحضور.',
       'cm.yAller': 'الذهاب بالحافلة', 'cm.arret': 'أقرب محطة', 'cm.lignes': 'الخط (الخطوط)', 'cm.trajet': 'حساب رحلتي', 'cm.voirService': 'عرض الخدمة', 'cm.rdv': 'حجز موعد',
@@ -486,7 +486,7 @@
           <span class="cm-item-sous">${echap(typeLabel(l.type))} · ${echap(qLabel(l.quartier))}</span>
           <span class="cm-item-etat">${statutHtml(l)}<span class="cm-detail-st" data-std="${echap(l.id)}">${echap(st.detail)}</span>
             ${etat.q && l.quartier === etat.q ? `<span class="cm-tag cm-tag-proche"><i class="ph ph-map-pin" aria-hidden="true"></i>${echap(t('cm.dansQuartier'))}</span>` : ''}
-            ${cs ? `<span class="cm-tag cm-tag-alerte"><i class="ph ph-wrench" aria-hidden="true"></i>${echap(t('cm.svc.' + cs))}</span>` : ''}</span>
+            ${cs ? `<span class="cm-tag cm-tag-alerte"><i class="ph ${cs === 'perturbe' ? 'ph-warning' : 'ph-wrench'}" aria-hidden="true"></i>${echap(t('cm.svc.' + cs))}</span>` : ''}</span>
         </span></button></li>`;
     }
 
@@ -561,7 +561,7 @@
       const arret = arretEff(l.arret), lignes = lignesDe(arret);
       const lienTel = 'tel:' + l.tel.replace(/[^\d+]/g, '');
       const alerteSvc = cs ? `<div class="cm-alerte cm-alerte-${echap(cs)}" role="group" aria-label="${echap(t('cm.svc.' + cs))}">
-          <i class="ph-duotone ${cs === 'incident' ? 'ph-warning-octagon' : 'ph-wrench'}" aria-hidden="true"></i>
+          <i class="ph-duotone ${cs === 'incident' ? 'ph-warning-octagon' : cs === 'perturbe' ? 'ph-warning' : 'ph-wrench'}" aria-hidden="true"></i>
           <div><p><strong>${echap(t('cm.svc.' + cs))}</strong></p><p>${echap(t('cm.svcAlerte', { s: NT.i18n.choisir(svc.nom) }))}</p>
           ${svc.etat.message ? `<p>${echap(svc.etat.message)}</p>` : ''}${svc.etat.retour ? `<p>${echap(t('cm.svcRetour') + svc.etat.retour)}</p>` : ''}</div></div>` : '';
       const canal = FERMES[l.arret] ? `<p class="cm-note"><i class="ph-duotone ph-warning" aria-hidden="true"></i><span>${echap(t('cm.canalFerme', { a: arretNom(l.arret), r: arretNom(FERMES[l.arret]) }))}</span></p>` : '';
