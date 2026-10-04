@@ -4,12 +4,13 @@
    Une ligne calme en pied de page, une carte en tête du tiroir « Alertes », une teinte discrète (sans clignotement) sur la balise. */
 .pied-charge{ display:inline-flex; align-items:center; gap:.4rem; flex-wrap:wrap; color:var(--givre); }
 .pied-charge i{ color:var(--calme); }
+.pied-charge-detail{ flex-basis:100%; margin-top:.3rem; font-size:.92rem; }
 .balise.charge:not(.active):not(.importante):not(.officiel){ border-color:var(--calme); }
 .balise.charge:not(.active):not(.importante):not(.officiel) .feu{ background:var(--calme); }
-.alerte-fiche.niveau-charge{ border-color:var(--calme); background:oklch(0.6700 0.1336 230 / .07); }
+.alerte-fiche.niveau-charge{ border-color:var(--calme); background:color-mix(in oklch, var(--calme) 7%, transparent); }
 .alerte-fiche.niveau-charge h3 i{ color:var(--calme); }
 .alerte-fiche.niveau-charge p{ margin:.5rem 0 0; }
-.brouillon-note,.reessai-note{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .75rem; margin:0 0 1rem; padding:.7rem .9rem; border:1px solid var(--calme); border-radius:var(--r); background:oklch(0.6700 0.1336 230 / .07); font-size:.92rem; }
+.brouillon-note,.reessai-note{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .75rem; margin:0 0 1rem; padding:.7rem .9rem; border:1px solid var(--calme); border-radius:var(--r); background:color-mix(in oklch, var(--calme) 7%, transparent); font-size:.92rem; }
 .brouillon-note i,.reessai-note i{ color:var(--calme); font-size:1.2rem; flex:none; }
 .reessai-note{ margin:1rem 0 0; }
 .reessai-note p{ margin:0; flex:1 1 16rem; }

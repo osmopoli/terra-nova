@@ -105,14 +105,26 @@
         'an.prevH': 'Recibir avisos', 'an.prevIntro': 'Los anuncios importantes y las alertas generan una notificación en la campana y un mensaje en pantalla en su próxima visita.',
         'an.prevVisiteur': 'Inicie sesión para elegir qué desea recibir y recibir solo las alertas de su barrio.', 'an.seConnecter': 'Iniciar sesión', 'an.creerCompte': 'Crear una cuenta',
         'an.prevLegende': '¿Qué anuncios desea recibir?', 'an.alerteToujours': 'Alertas de seguridad (siempre enviadas)', 'an.quartierSeul': 'Solo alertas de mi barrio ({q})',
-        'an.enregistrer': 'Guardar mis preferencias', 'an.enregistre': 'Preferencias guardadas.', 'an.tester': 'Recibir una notificación de prueba'
+        'an.enregistrer': 'Guardar mis preferencias', 'an.enregistre': 'Preferencias guardadas.', 'an.tester': 'Recibir una notificación de prueba',
+        'an.vous': 'Usted es una persona prioritaria', 'an.vousTexte': 'Su perfil indica una situación de vulnerabilidad. Siga estas consignas desde ahora, avise a un allegado y llame al 15 ante el menor malestar.',
+        'an.lNote': 'La mediateca está cerrada por mantenimiento.', 'an.prevPoint': 'Las alertas también están visibles en todo momento gracias a la baliza «Alertas» en la parte superior de la página.',
+        'an.testTitre': 'Notificación de prueba', 'an.testTexte': 'Así es como se le avisará de un anuncio importante.', 'an.testToast': 'Notificación de prueba enviada: encuéntrela en la campana.'
       },
       ar: {
         'an.titre': 'الإعلانات والتنبيهات', 'an.intro': 'أخبار البلدية وتغييرات الخدمات والتنبيهات الجارية. التنبيهات أولاً دائماً مع ما يجب فعله.',
         'an.rechercheLabel': 'البحث في الإعلانات', 'an.recherchePh': 'الماء، البلدية، الجمع، الحر…', 'an.filtrer': 'الفئة:', 'an.toutes': 'الكل',
         'an.cat.alerte': 'تنبيهات', 'an.cat.sanitaire': 'الصحة', 'an.cat.municipale': 'البلدية', 'an.cat.pratique': 'عملي',
         'an.alertesTitre': 'تنبيهات جارية', 'an.infosTitre': 'معلومات المدينة', 'an.quefaire': 'ماذا أفعل؟', 'an.urgences': 'أرقام الطوارئ', 'an.lire': 'قراءة الإعلان كاملاً',
-        'an.prevH': 'كن على علم', 'an.seConnecter': 'تسجيل الدخول', 'an.enregistrer': 'حفظ تفضيلاتي', 'an.enregistre': 'تم حفظ التفضيلات.'
+        'an.prevH': 'كن على علم', 'an.seConnecter': 'تسجيل الدخول', 'an.enregistrer': 'حفظ تفضيلاتي', 'an.enregistre': 'تم حفظ التفضيلات.',
+        'an.nb0': 'لا يوجد إعلان مطابق.', 'an.nb1': 'إعلان واحد معروض.', 'an.nbN': '{n} إعلانات معروضة.', 'an.archivesTitre': 'إعلانات منتهية', 'an.terminee': 'منتهٍ',
+        'an.zone': 'المنطقة المعنية', 'an.zoneToute': 'كل المدينة', 'an.depuis': 'منذ', 'an.concerne': 'حيّك معنيّ', 'an.pasConcerne': 'لا يخص حيّك ({q})',
+        'an.publics': 'أشخاص تجب حمايتهم أولاً', 'an.vous': 'أنت معنيّ بالأولوية', 'an.vousTexte': 'يشير ملفك إلى وضع هش. اتبع هذه التعليمات فوراً، وأخبر أحد أقاربك، واتصل بالرقم 15 عند أي وعكة.',
+        'an.lieux': 'أين تنتعش', 'an.lNote': 'المكتبة الإعلامية مغلقة للصيانة.', 'an.appeler': 'الاتصال بالرقم {n}', 'an.aucune': 'لا يوجد إعلان يطابق بحثك.',
+        'an.prevIntro': 'الإعلانات المهمة والتنبيهات تُطلق إشعاراً في الجرس ورسالة على الشاشة عند زيارتك القادمة.',
+        'an.prevVisiteur': 'سجّل الدخول لاختيار ما تريد استلامه ولتلقي تنبيهات حيّك فقط.', 'an.creerCompte': 'إنشاء حساب',
+        'an.prevPoint': 'التنبيهات مرئية أيضاً في أي وقت بفضل شارة «التنبيهات» أعلى الصفحة.', 'an.prevLegende': 'ما الإعلانات التي تريد استلامها؟',
+        'an.alerteToujours': 'تنبيهات السلامة (تُرسل دائماً)', 'an.quartierSeul': 'تنبيهات حيّي فقط ({q})',
+        'an.tester': 'تلقي إشعار تجريبي', 'an.testTitre': 'إشعار تجريبي', 'an.testTexte': 'هكذا سيتم إخطارك بإعلان مهم.', 'an.testToast': 'تم إرسال الإشعار التجريبي: تجده في الجرس.'
       }
     });
 
@@ -121,7 +133,7 @@
       const norm = s => String(s == null ? '' : s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
       const u = NT.auth.utilisateur();
       const CATS = ['alerte', 'sanitaire', 'municipale', 'pratique'];
-      const catLib = c => t('an.cat.' + c, null, c);
+      const catLib = c => { c = c || 'municipale'; return t('an.cat.' + c, null, c); };
       const champ = document.getElementById('an-q'), boutons = document.getElementById('an-boutons'), liste = document.getElementById('an-liste'), compteur = document.getElementById('an-compteur');
       let categorie = '';
       const ouverts = new Set();

@@ -91,6 +91,9 @@
     if (ep) {
       ep.hidden = !messages.length;
       ep.innerHTML = messages.length ? `<h2 class="sr-only">${echap(t('off.epingle'))}</h2>` + messages.map(m => carte(m, 'epingle', ep.dataset.mode === 'compact')).join('') : '';
+      // arrivée par annonces.html#off-epingle-<id> (repli sans CDN) : la carte est rendue après la page, on y défile une fois
+      const anc = /^#off-epingle-(.+)$/.exec(location.hash || '');
+      if (anc && !ep.dataset.ancre && versEpingle(decodeURIComponent(anc[1]))) ep.dataset.ancre = '1';
     }
   }
 
@@ -119,6 +122,7 @@
     const c = contenu(m), dir = c.langue === 'ar' ? 'rtl' : 'ltr';
     const el = document.createElement('section');
     el.className = 'off-fenetre';
+    el.dataset.off = m.id;
     el.setAttribute('role', m.critique ? 'alert' : 'status');
     el.setAttribute('aria-labelledby', 'off-fenetre-titre');
     el.innerHTML = `<div class="off-fenetre-tete">
@@ -162,6 +166,20 @@
     }).catch(() => {});
   }
 
+  /* « Ce que vous devez faire » / « Voir l'alerte » : le tiroir des alertes quand Shoelace est prêt ; sans CDN, le message complet
+     est montré sur la page des annonces (carte épinglée, ancre off-epingle-<id>), ou l'on défile jusqu'à lui s'il y est déjà. */
+  function versEpingle(id) {
+    const el = document.getElementById('off-epingle-' + id);
+    if (!el) return false;
+    el.scrollIntoView({ block: 'start' }); el.setAttribute('tabindex', '-1'); el.focus({ preventScroll: true });
+    return true;
+  }
+  function ouvrirAlertes(src) {
+    const id = src && src.dataset.off || (messages[0] || {}).id || '';
+    const repli = () => { if (!versEpingle(id)) location.href = 'annonces.html#off-epingle-' + encodeURIComponent(id); };
+    if (NT.ui.ouvrirAlertes) NT.ui.ouvrirAlertes(repli); else repli();
+  }
+
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-off-compris]');
     if (b) {
@@ -176,9 +194,9 @@
         });
       return;
     }
-    if (e.target.closest('[data-off-voir]') && NT.ui.tiroirAlertes) NT.ui.tiroirAlertes.show();
+    if (e.target.closest('[data-off-voir]')) ouvrirAlertes(e.target.closest('[data-off]'));
     if (e.target.closest('[data-off-fermer]')) fermerFenetre(true);
-    if (e.target.closest('[data-off-voir-fenetre]')) { fermerFenetre(false); customElements.whenDefined('sl-drawer').then(() => NT.ui.tiroirAlertes && NT.ui.tiroirAlertes.show()); }
+    if (e.target.closest('[data-off-voir-fenetre]')) { const src = e.target.closest('[data-off]'); fermerFenetre(false); ouvrirAlertes(src); }
   });
 
   let minuterie = null;
