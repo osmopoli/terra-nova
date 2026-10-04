@@ -19,7 +19,7 @@
   <script src="assets/js/glossaire.js"></script>
   <script src="assets/js/ui.js" defer></script>
 </head>
-<body data-page="aide" data-ariane="nav.accueil|index.html;Aide et lexique" data-roles="">
+<body data-page="aide" data-ariane="nav.accueil|index.html;pied.aide" data-roles="">
   <main id="contenu" class="conteneur">
 
     <header class="titre-page">
@@ -150,9 +150,9 @@
 
       /* Lexique */
       const champ = document.getElementById('ai-q'), liste = document.getElementById('ai-lexique-liste'), compteur = document.getElementById('ai-compteur');
-      const locale = NT.i18n.langue === 'en' ? 'en' : 'fr';
+      const locale = NT.i18n.langue || 'fr';
       const termes = window.NT_glossaireLangue().slice().sort((a, b) => a.terme.localeCompare(b.terme, locale));
-      const id = g => 'mot-' + norm(g.terme).replace(/[^a-z0-9]+/g, '-');
+      const id = g => 'mot-' + norm(g.cle || g.terme).replace(/[^a-z0-9]+/g, '-');   // ancre stable quelle que soit la langue
       function rendre() {
         const mots = norm(champ.value).split(/\s+/).filter(Boolean);
         const l = termes.filter(g => { const x = norm([g.terme, g.synonymes.join(' '), g.definition].join(' ')); return mots.every(m => x.includes(m)); });
